@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # specify the project core variables
-GO_MODULE="git.zqbjj.top/pet/services/pet-feeder/cmd/http"
+GO_MODULE="git.zqbjj.top/pet/services/cmd/http"
 
 # get the directory where the script file is located
 script_abs_path=$(realpath "$0")
@@ -49,7 +49,7 @@ do
     service_name=$(basename "$file" .thrift)
     echo "服务名： $service_name"
     # new server layout by cwgo
-    if [ "$service_name" != "std_resp" ]
+    if [ "$service_name" != "idl-ref.yml" ] && [ "$service_name" != "req" ] && [ "$service_name" != "resp" ]
     then
     cwgo server \
         --type HTTP --service "$service_name" \
@@ -58,7 +58,8 @@ do
         --template "$STATIC_DIR/tpl/custom_http_server_tpl" \
         --pass "--handler_dir ./api/" \
         --pass "--router_dir ./router/" \
-        --pass "--model_dir ./dto/hertz_gen/"
+        --pass "--model_dir ./dto/hertz_gen/" \
+        --pass "--snake_tag"
     fi
   fi
 done

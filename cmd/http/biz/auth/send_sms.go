@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 
-	auth "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/auth"
-	resp "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
+	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	resp "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 

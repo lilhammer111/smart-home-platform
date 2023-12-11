@@ -34,7 +34,7 @@ func TestMobileRegister(t *testing.T) {
 func TestMobileLogin(t *testing.T) {
 	h := server.Default()
 	h.GET("/api/auth/mobile_login", MobileLogin)
-	w := ut.PerformRequest(h.Engine, "POST", "/api/auth/mobile_login", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+	w := ut.PerformRequest(h.Engine, "GET", "/api/auth/mobile_login", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
 		ut.Header{})
 	resp := w.Result()
 	assert.DeepEqual(t, 201, resp.StatusCode())
@@ -45,7 +45,18 @@ func TestMobileLogin(t *testing.T) {
 func TestMiniProgLogin(t *testing.T) {
 	h := server.Default()
 	h.GET("/api/auth/mini_prog_login", MiniProgLogin)
-	w := ut.PerformRequest(h.Engine, "POST", "/api/auth/mini_prog_login", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+	w := ut.PerformRequest(h.Engine, "GET", "/api/auth/mini_prog_login", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+		ut.Header{})
+	resp := w.Result()
+	assert.DeepEqual(t, 201, resp.StatusCode())
+	assert.DeepEqual(t, "", string(resp.Body()))
+	// todo edit your unit test.
+}
+
+func TestPwdLogin(t *testing.T) {
+	h := server.Default()
+	h.GET("/api/auth/pwd_login", PwdLogin)
+	w := ut.PerformRequest(h.Engine, "GET", "/api/auth/pwd_login", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
 		ut.Header{})
 	resp := w.Result()
 	assert.DeepEqual(t, 201, resp.StatusCode())

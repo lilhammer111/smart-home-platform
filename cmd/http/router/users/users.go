@@ -5,7 +5,7 @@ package users
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 
-	users "git.zqbjj.top/pet/services/pet-feeder/cmd/http/api/users"
+	users "git.zqbjj.top/pet/services/cmd/http/api/users"
 )
 
 /*
@@ -20,11 +20,10 @@ func Register(r *server.Hertz) {
 	root := r.Group("/", rootMw()...)
 	{
 		_api := root.Group("/api", _apiMw()...)
-		{
-			_users := _api.Group("/users", _usersMw()...)
-			_users.GET("/detail", append(_getuserdetailMw(), users.GetUserDetail)...)
-			_users.PUT("/detail", append(_updateuserinfoMw(), users.UpdateUserInfo)...)
-			_users.GET("/detail", append(_deregisteruserMw(), users.DeregisterUser)...)
-		}
+		_api.PUT("/users", append(_updateuserinfoMw(), users.UpdateUserInfo)...)
+		_api.DELETE("/users", append(_deregisteruserMw(), users.DeregisterUser)...)
+		_api.GET("/users", append(_usersMw(), users.GetUserList)...)
+		_users := _api.Group("/users", _usersMw()...)
+		_users.GET("/detail", append(_getuserdetailMw(), users.GetUserDetail)...)
 	}
 }

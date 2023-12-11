@@ -36,6 +36,11 @@ func _mobileregisterMw() []app.HandlerFunc {
 	return nil
 }
 
+func _pwdloginMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
 func _sendsmsMw() []app.HandlerFunc {
 	// your code...
 	return nil

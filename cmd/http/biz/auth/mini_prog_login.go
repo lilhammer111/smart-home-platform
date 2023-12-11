@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 
-	auth "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/auth"
-	resp "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
+	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	resp "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +17,7 @@ func NewMiniProgLoginService(Context context.Context, RequestContext *app.Reques
 	return &MiniProgLoginService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *MiniProgLoginService) Do(req *auth.MobileRegisterReq) (resp *resp.StdResp, err error) {
+func (h *MiniProgLoginService) Do(req *auth.MiniProgLoginReq) (resp *resp.StdResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

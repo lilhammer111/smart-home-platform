@@ -3,8 +3,8 @@ package users
 import (
 	"context"
 
-	resp "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
-	users "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/users"
+	req "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/req"
+	resp "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +17,7 @@ func NewGetUserDetailService(Context context.Context, RequestContext *app.Reques
 	return &GetUserDetailService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetUserDetailService) Do(req *users.UserID) (resp *resp.StdResp, err error) {
+func (h *GetUserDetailService) Do(req *req.IdReq) (resp *resp.StdResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

@@ -3,7 +3,7 @@ package main
 import (
 	"net"
 
-	"git.zqbjj.top/pet/services/pet-feeder/cmd/rpc/users_srv/dto/kitex_gen/users/users"
+	"git.zqbjj.top/pet/services/cmd/rpc/users_srv/dto/kitex_gen/users/users"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"

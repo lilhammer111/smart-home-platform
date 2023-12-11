@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	resp "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
-	users "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/users"
+	resp "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
+	users "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/users"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )

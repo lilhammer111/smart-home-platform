@@ -13,9 +13,7 @@ layouts:
       	"github.com/cloudwego/hertz/pkg/app/server"
       
       	{{range $k, $v := .HandlerPackages}}
-        {{- if ne  $k "resp" }}
           {{$k}} "{{$v}}"
-        {{- end}}
         {{- end}}
       )
       
@@ -65,14 +63,14 @@ layouts:
 
        "github.com/cloudwego/hertz/pkg/app"
        "github.com/cloudwego/hertz/pkg/protocol/consts"
-      {{- range $k, $v := .Imports}}
-      {{- if ne $k $excludedNamespace }}
+      {{- range $k, $v := .Imports}} {{- if ne $k $excludedNamespace }}
         "{{$v.Package}}"
-      {{- end}}
-      {{- end}}
+        {{- end}}{{- end}}
       {{- range $_, $OutDir := $OutDirs}}
         {{if eq $OutDir "" -}}
+        {{- if ne $.PackageName $excludedNamespace }}
         biz  "{{$.ProjPackage}}/biz/{{$.PackageName}}"
+        {{- end}}
         {{- else -}}
         "{{$.ProjPackage}}/biz/{{$OutDir}}"
         {{- end -}}

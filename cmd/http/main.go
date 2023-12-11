@@ -3,8 +3,8 @@
 package main
 
 import (
-	"git.zqbjj.top/pet/services/pet-feeder/cmd/http/conf"
-	"git.zqbjj.top/pet/services/pet-feeder/cmd/http/router"
+	"git.zqbjj.top/pet/services/cmd/http/conf"
+	"git.zqbjj.top/pet/services/cmd/http/router"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"

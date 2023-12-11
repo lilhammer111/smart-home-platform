@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"git.zqbjj.top/pet/services/pet-feeder/cmd/rpc/users_srv/conf"
+	"git.zqbjj.top/pet/services/cmd/rpc/users_srv/conf"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

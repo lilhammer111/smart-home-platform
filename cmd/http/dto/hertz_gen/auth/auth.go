@@ -5,12 +5,12 @@ package auth
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
 type SendSmsReq struct {
-	Mobile string `thrift:"Mobile,1,required" json:"Mobile,required" query:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$)"`
+	Mobile string `thrift:"Mobile,1,required" json:"mobile,required" query:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$)"`
 }
 
 func NewSendSmsReq() *SendSmsReq {
@@ -651,7 +651,7 @@ func (p *MobileLoginReq) String() string {
 }
 
 type MiniProgLoginReq struct {
-	WxCode string `thrift:"WxCode,1,required" form:"WxCode,required" json:"WxCode,required" query:"WxCode,required"`
+	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required" query:"wx_code,required"`
 }
 
 func NewMiniProgLoginReq() *MiniProgLoginReq {
@@ -794,14 +794,212 @@ func (p *MiniProgLoginReq) String() string {
 	return fmt.Sprintf("MiniProgLoginReq(%+v)", *p)
 }
 
+type PwdLoginReq struct {
+	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')"`
+	Password string `thrift:"Password,2,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')"`
+}
+
+func NewPwdLoginReq() *PwdLoginReq {
+	return &PwdLoginReq{}
+}
+
+func (p *PwdLoginReq) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *PwdLoginReq) GetPassword() (v string) {
+	return p.Password
+}
+
+var fieldIDToName_PwdLoginReq = map[int16]string{
+	1: "Username",
+	2: "Password",
+}
+
+func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetUsername bool = false
+	var issetPassword bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetUsername = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetPassword = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetUsername {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetPassword {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PwdLoginReq[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_PwdLoginReq[fieldId]))
+}
+
+func (p *PwdLoginReq) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Username = v
+	}
+	return nil
+}
+func (p *PwdLoginReq) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Password = v
+	}
+	return nil
+}
+
+func (p *PwdLoginReq) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("PwdLoginReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *PwdLoginReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *PwdLoginReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Password); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *PwdLoginReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("PwdLoginReq(%+v)", *p)
+}
+
 type Auth interface {
 	SendSms(ctx context.Context, req *SendSmsReq) (r *resp.StdResp, err error)
 
 	MobileRegister(ctx context.Context, req *MobileRegisterReq) (r *resp.StdResp, err error)
 
-	MobileLogin(ctx context.Context, req *MobileRegisterReq) (r *resp.StdResp, err error)
+	MobileLogin(ctx context.Context, req *MobileLoginReq) (r *resp.StdResp, err error)
 
-	MiniProgLogin(ctx context.Context, req *MobileRegisterReq) (r *resp.StdResp, err error)
+	MiniProgLogin(ctx context.Context, req *MiniProgLoginReq) (r *resp.StdResp, err error)
+
+	PwdLogin(ctx context.Context, req *PwdLoginReq) (r *resp.StdResp, err error)
 }
 
 type AuthClient struct {
@@ -848,7 +1046,7 @@ func (p *AuthClient) MobileRegister(ctx context.Context, req *MobileRegisterReq)
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AuthClient) MobileLogin(ctx context.Context, req *MobileRegisterReq) (r *resp.StdResp, err error) {
+func (p *AuthClient) MobileLogin(ctx context.Context, req *MobileLoginReq) (r *resp.StdResp, err error) {
 	var _args AuthMobileLoginArgs
 	_args.Req = req
 	var _result AuthMobileLoginResult
@@ -857,11 +1055,20 @@ func (p *AuthClient) MobileLogin(ctx context.Context, req *MobileRegisterReq) (r
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AuthClient) MiniProgLogin(ctx context.Context, req *MobileRegisterReq) (r *resp.StdResp, err error) {
+func (p *AuthClient) MiniProgLogin(ctx context.Context, req *MiniProgLoginReq) (r *resp.StdResp, err error) {
 	var _args AuthMiniProgLoginArgs
 	_args.Req = req
 	var _result AuthMiniProgLoginResult
 	if err = p.Client_().Call(ctx, "MiniProgLogin", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *AuthClient) PwdLogin(ctx context.Context, req *PwdLoginReq) (r *resp.StdResp, err error) {
+	var _args AuthPwdLoginArgs
+	_args.Req = req
+	var _result AuthPwdLoginResult
+	if err = p.Client_().Call(ctx, "PwdLogin", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -891,6 +1098,7 @@ func NewAuthProcessor(handler Auth) *AuthProcessor {
 	self.AddToProcessorMap("MobileRegister", &authProcessorMobileRegister{handler: handler})
 	self.AddToProcessorMap("MobileLogin", &authProcessorMobileLogin{handler: handler})
 	self.AddToProcessorMap("MiniProgLogin", &authProcessorMiniProgLogin{handler: handler})
+	self.AddToProcessorMap("PwdLogin", &authProcessorPwdLogin{handler: handler})
 	return self
 }
 func (p *AuthProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1086,6 +1294,54 @@ func (p *authProcessorMiniProgLogin) Process(ctx context.Context, seqId int32, i
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("MiniProgLogin", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type authProcessorPwdLogin struct {
+	handler Auth
+}
+
+func (p *authProcessorPwdLogin) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := AuthPwdLoginArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("PwdLogin", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := AuthPwdLoginResult{}
+	var retval *resp.StdResp
+	if retval, err2 = p.handler.PwdLogin(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing PwdLogin: "+err2.Error())
+		oprot.WriteMessageBegin("PwdLogin", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("PwdLogin", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1684,16 +1940,16 @@ func (p *AuthMobileRegisterResult) String() string {
 }
 
 type AuthMobileLoginArgs struct {
-	Req *MobileRegisterReq `thrift:"req,1"`
+	Req *MobileLoginReq `thrift:"req,1"`
 }
 
 func NewAuthMobileLoginArgs() *AuthMobileLoginArgs {
 	return &AuthMobileLoginArgs{}
 }
 
-var AuthMobileLoginArgs_Req_DEFAULT *MobileRegisterReq
+var AuthMobileLoginArgs_Req_DEFAULT *MobileLoginReq
 
-func (p *AuthMobileLoginArgs) GetReq() (v *MobileRegisterReq) {
+func (p *AuthMobileLoginArgs) GetReq() (v *MobileLoginReq) {
 	if !p.IsSetReq() {
 		return AuthMobileLoginArgs_Req_DEFAULT
 	}
@@ -1767,7 +2023,7 @@ ReadStructEndError:
 }
 
 func (p *AuthMobileLoginArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewMobileRegisterReq()
+	p.Req = NewMobileLoginReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1974,16 +2230,16 @@ func (p *AuthMobileLoginResult) String() string {
 }
 
 type AuthMiniProgLoginArgs struct {
-	Req *MobileRegisterReq `thrift:"req,1"`
+	Req *MiniProgLoginReq `thrift:"req,1"`
 }
 
 func NewAuthMiniProgLoginArgs() *AuthMiniProgLoginArgs {
 	return &AuthMiniProgLoginArgs{}
 }
 
-var AuthMiniProgLoginArgs_Req_DEFAULT *MobileRegisterReq
+var AuthMiniProgLoginArgs_Req_DEFAULT *MiniProgLoginReq
 
-func (p *AuthMiniProgLoginArgs) GetReq() (v *MobileRegisterReq) {
+func (p *AuthMiniProgLoginArgs) GetReq() (v *MiniProgLoginReq) {
 	if !p.IsSetReq() {
 		return AuthMiniProgLoginArgs_Req_DEFAULT
 	}
@@ -2057,7 +2313,7 @@ ReadStructEndError:
 }
 
 func (p *AuthMiniProgLoginArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewMobileRegisterReq()
+	p.Req = NewMiniProgLoginReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2261,4 +2517,294 @@ func (p *AuthMiniProgLoginResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("AuthMiniProgLoginResult(%+v)", *p)
+}
+
+type AuthPwdLoginArgs struct {
+	Req *PwdLoginReq `thrift:"req,1"`
+}
+
+func NewAuthPwdLoginArgs() *AuthPwdLoginArgs {
+	return &AuthPwdLoginArgs{}
+}
+
+var AuthPwdLoginArgs_Req_DEFAULT *PwdLoginReq
+
+func (p *AuthPwdLoginArgs) GetReq() (v *PwdLoginReq) {
+	if !p.IsSetReq() {
+		return AuthPwdLoginArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_AuthPwdLoginArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *AuthPwdLoginArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *AuthPwdLoginArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AuthPwdLoginArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *AuthPwdLoginArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewPwdLoginReq()
+
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *AuthPwdLoginArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("PwdLogin_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *AuthPwdLoginArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *AuthPwdLoginArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("AuthPwdLoginArgs(%+v)", *p)
+}
+
+type AuthPwdLoginResult struct {
+	Success *resp.StdResp `thrift:"success,0,optional"`
+}
+
+func NewAuthPwdLoginResult() *AuthPwdLoginResult {
+	return &AuthPwdLoginResult{}
+}
+
+var AuthPwdLoginResult_Success_DEFAULT *resp.StdResp
+
+func (p *AuthPwdLoginResult) GetSuccess() (v *resp.StdResp) {
+	if !p.IsSetSuccess() {
+		return AuthPwdLoginResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_AuthPwdLoginResult = map[int16]string{
+	0: "success",
+}
+
+func (p *AuthPwdLoginResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *AuthPwdLoginResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AuthPwdLoginResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *AuthPwdLoginResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = resp.NewStdResp()
+
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *AuthPwdLoginResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("PwdLogin_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *AuthPwdLoginResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *AuthPwdLoginResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("AuthPwdLoginResult(%+v)", *p)
 }

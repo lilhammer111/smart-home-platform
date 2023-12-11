@@ -2,7 +2,7 @@
 package users
 
 import (
-	users "git.zqbjj.top/pet/services/pet-feeder/cmd/rpc/users_srv/dto/kitex_gen/users"
+	users "git.zqbjj.top/pet/services/cmd/rpc/users_srv/dto/kitex_gen/users"
 	server "github.com/cloudwego/kitex/server"
 )
 

@@ -1,10 +1,10 @@
-namespace go resp
+namespace go std_resp
 
 struct StdResp {
     1: required bool Success;
     2: required i16 Code;
     3: required string Message;
-    4: optional DataUnion data;
+    4: optional DataUnion Data;
 }
 
 union DataUnion {

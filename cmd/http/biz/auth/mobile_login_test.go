@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	auth "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/auth"
-	resp "git.zqbjj.top/pet/services/pet-feeder/cmd/http/dto/hertz_gen/resp"
+	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	resp "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/resp"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )
@@ -15,7 +15,7 @@ func TestMobileLoginService_Run(t *testing.T) {
 	c := app.NewContext(1)
 	s := NewMobileLoginService(ctx, c)
 	// init req and assert value
-	req := &auth.MobileRegisterReq{}
+	req := &auth.MobileLoginReq{}
 	resp, err := s.Do(req)
 	assert.DeepEqual(t, nil, resp)
 	assert.DeepEqual(t, nil, err)

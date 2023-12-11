@@ -16,22 +16,27 @@ func _apiMw() []app.HandlerFunc {
 	return nil
 }
 
-func _usersMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _getuserdetailMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _updateuserinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
 
 func _deregisteruserMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _usersMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getuserlistMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getuserdetailMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
