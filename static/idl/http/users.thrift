@@ -3,7 +3,7 @@ include "std_resp.thrift"
 include "std_req.thrift"
 
 struct UsersFilter {
-    1: optional i8 Gender (api.body="gender", api.vd="in($, 0, 1, 2)");
+    1: optional i8 Gender (api.query="gender", api.vd="in($, 0, 1, 2)");
     2: optional i16 Page (api.query="page", api.vd="$>=0");
     3: optional i16 Limit (api.query="limit", api.vd="$>0");
     4: optional string Sort (api.query="sort", api.vd="regexp('^[a-zA-Z]+_(asc|desc)$')");
@@ -22,8 +22,8 @@ struct UserInfo {
 }
 
 service users {
-    std_resp.StdResp GetUserList(1: UsersFilter req) (api.get="/api/users");
+    std_resp.StdResp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
     std_resp.StdResp GetUserDetail(1: req.IdReq req) (api.get="/api/users/detail");
-    std_resp.StdResp UpdateUserInfo(1: UserInfo req) (api.put="/api/users");
-    std_resp.StdResp DeregisterUser(1: req.IdReq req) (api.delete="/api/users");
+    std_resp.StdResp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
+    std_resp.StdResp DeregisterUser(1: req.IdReq req) (api.delete="/api/users/deregister");
 }

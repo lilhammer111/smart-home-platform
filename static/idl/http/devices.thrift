@@ -24,9 +24,9 @@ struct DeviceInfo {
 }
 
 service devices {
-    std_std_resp.StdResp GetDeviceList(1: DevicesFilter req) (api.get="/api/devices");
+    std_std_resp.StdResp GetDeviceList(1: DevicesFilter req) (api.get="/api/devices/list");
     std_resp.StdResp GetDeviceDetail(1: req.IdReq req) (api.get="/api/devices/detail");
-    std_resp.StdResp UpdateDeviceInfo(1: DeviceInfo req) (api.put="/api/devices");
-    std_resp.StdResp BindDevice(1: DeviceInfo req) (api.post="/api/devices");
-    std_resp.StdResp UnbindDevice(1: req.IdReq req) (api.delete="/api/devices");
+    std_resp.StdResp UpdateDeviceInfo(1: DeviceInfo req) (api.put="/api/devices/update");
+    std_resp.StdResp BindDevice(1: DeviceInfo req) (api.post="/api/devices/bind");
+    std_resp.StdResp UnbindDevice(1: req.IdReq req) (api.delete="/api/devices/unbind");
 }
