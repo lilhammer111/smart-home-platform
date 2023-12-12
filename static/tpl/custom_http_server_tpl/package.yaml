@@ -55,7 +55,7 @@ layouts:
       - '{{'
       - '}}'
     body: |-
-      {{$excludedNamespace := "resp"}}
+      {{$excludedNamespace := "standard"}}
       {{$OutDirs := GetUniqueHandlerOutDir .Methods}}
       package {{.PackageName}}
       import (

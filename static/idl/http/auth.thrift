@@ -1,5 +1,5 @@
 namespace go auth
-include "std_resp.thrift"
+include "standard.thrift"
 
 struct SendSmsReq {
     1: required string Mobile (api.query="mobile", api.vd="regexp('^1[3-9]\\d{9}$)");
@@ -24,14 +24,15 @@ struct MiniProgLoginReq {
 
 struct PwdLoginReq {
     1: required string Username (api.body="username", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')");
-    2: required string Password (api.body="password", api.vd="regexp('.{4,16}')");
+    2: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+    3: required string Password (api.body="password", api.vd="regexp('.{4,16}')");
 }
 
 service auth {
-    std_resp.StdResp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
-    std_resp.StdResp MobileRegister(1: MobileRegisterReq req) (api.post="/api/auth/mobile_register");
-    std_resp.StdResp MobileLogin(1: MobileLoginReq req) (api.get="/api/auth/mobile_login");
-    std_resp.StdResp MiniProgLogin(1: MiniProgLoginReq req) (api.get="/api/auth/mini_prog_login");
-    std_resp.StdResp PwdLogin(1: PwdLoginReq req) (api.get="/api/auth/pwd_login");
+    standard.Resp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
+    standard.Resp MobileRegister(1: MobileRegisterReq req) (api.post="/api/auth/mobile_register");
+    standard.Resp MobileLogin(1: MobileLoginReq req) (api.get="/api/auth/mobile_login");
+    standard.Resp MiniProgLogin(1: MiniProgLoginReq req) (api.get="/api/auth/mini_prog_login");
+    standard.Resp PwdLogin(1: PwdLoginReq req) (api.get="/api/auth/pwd_login");
 }
 

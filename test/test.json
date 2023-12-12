@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "发送短信成功",
+  "data": {
+    "id": 83,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjpbeyJ0b29sdHQiOiJodHRwczovL3Rvb2x0dC5jb20ifV0sImlhdCI6MTcwMTQyMjEyOCwiZXhwIjoxNzAxOTY0Nzk5LCJhdWQiOiJkc2FkYSIsImlzcyI6ImFkYXMiLCJzdWIiOiJhc2RhcyJ9.3ZkvaAetRM199qJlD1q0DzUbfcWwGtto3aZTnjwaTW0",
+    "expired_at": 1701825855
+  }
+}
+

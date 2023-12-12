@@ -1,4 +1,4 @@
-namespace go users
+namespace go user
 
 struct AuthResp {
     1: required i32 Id;
@@ -7,7 +7,7 @@ struct AuthResp {
 }
 
 struct UserData {
-    1: optional i8 Gender;
+    1: optional i8 Gender (go.tag='json:"gender"');
     2: required i8 Age;
     3: required i32 Id;
     4: required string Mobile;
@@ -23,10 +23,10 @@ struct CredentialsReq {
 }
 
 struct UsersFilterReq {
-    1: optional string
+    1: optional i8 Page;
 }
 
-service Users {
+service user {
     UserData FindUserByID(1: i32 req);
     list<UserData> GetUsersByFilter(1: UsersFilterReq req)
     bool VerifyCredentials(1: CredentialsReq req);

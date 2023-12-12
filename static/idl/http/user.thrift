@@ -1,6 +1,5 @@
-namespace go users
-include "std_resp.thrift"
-include "std_req.thrift"
+namespace go user
+include "standard.thrift"
 
 struct UsersFilter {
     1: optional i8 Gender (api.query="gender", api.vd="in($, 0, 1, 2)");
@@ -23,9 +22,10 @@ struct UserInfo {
     8: required string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }
 
-service users {
-    std_resp.StdResp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
-    std_resp.StdResp GetUserDetail(1: req.IdReq req) (api.get="/api/users/detail");
-    std_resp.StdResp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
-    std_resp.StdResp DeregisterUser(1: req.IdReq req) (api.delete="/api/users/deregister");
+
+service user {
+    standard.Resp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
+    standard.Resp GetUserDetail(1: i32 req) (api.get="/api/users/detail");
+    standard.Resp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
+    standard.Resp DeregisterUser(1: i32 req) (api.delete="/api/users/deregister");
 }

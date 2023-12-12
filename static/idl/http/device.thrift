@@ -1,8 +1,8 @@
-namespace go devices
-include "std_resp.thrift"
-include "std_req.thrift"
+namespace go device
+include "standard.thrift"
 
-struct DevicesFilter {
+
+struct DeviceFilter {
     1: optional bool IsOnline (api.query="is_online");
     2: optional i16 Page (api.query="page", api.vd="$>=0");
     3: optional i16 Limit (api.query="limit", api.vd="$>0");
@@ -24,10 +24,10 @@ struct DeviceInfo {
     9: required string Desc (api.body="desc");
 }
 
-service devices {
-    std_std_resp.StdResp GetDeviceList(1: DevicesFilter req) (api.get="/api/devices/list");
-    std_resp.StdResp GetDeviceDetail(1: req.IdReq req) (api.get="/api/devices/detail");
-    std_resp.StdResp UpdateDeviceInfo(1: DeviceInfo req) (api.put="/api/devices/update");
-    std_resp.StdResp BindDevice(1: DeviceInfo req) (api.post="/api/devices/bind");
-    std_resp.StdResp UnbindDevice(1: req.IdReq req) (api.delete="/api/devices/unbind");
+service device {
+    standard.Resp GetDeviceList(1: DeviceFilter req) (api.get="/api/devices/list");
+    standard.Resp GetDeviceDetail(1: i32 req) (api.get="/api/devices/detail");
+    standard.Resp UpdateDeviceInfo(1: DeviceInfo req) (api.put="/api/devices/update");
+    standard.Resp BindDevice(1: DeviceInfo req) (api.post="/api/devices/bind");
+    standard.Resp UnbindDevice(1: i32 req) (api.delete="/api/devices/unbind");
 }

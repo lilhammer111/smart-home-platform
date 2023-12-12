@@ -472,7 +472,7 @@ layouts:
       /output
       *.local.yml
 
-  - path: biz/utils/resp.go
+  - path: biz/utils/responser.go
     delims:
       - "{{"
       - "}}"

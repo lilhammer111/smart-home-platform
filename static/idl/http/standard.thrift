@@ -6,4 +6,8 @@ struct Resp {
     3: required string Message;
 }
 
-typedef i32 IdReq
+
+
+
+
+
