@@ -14,13 +14,14 @@ struct DevicesFilter {
 
 struct DeviceInfo {
     1: optional i32 Id (api.body="id");
-    2: required string DeviceSerialNo (api.body="device_serial_no");
-    3: required string DeviceName (api.body="device_name", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')");
-    4: required string DeviceModel (api.body="device_model");
-    5: required string DeviceType (api.body="device_type");
+    2: required string SerialNo (api.body="serial_no");
+    3: required string Name (api.body="name", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')");
+    4: required string Model (api.body="model");
+    5: required string Type (api.body="type");
     6: required string Location (api.body="location");
     7: required string HardwareVersion (api.body="hardware_version");
     8: required string SoftwareVersion (api.body="software_version");
+    9: required string Desc (api.body="desc");
 }
 
 service devices {

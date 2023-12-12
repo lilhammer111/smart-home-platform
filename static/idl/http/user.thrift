@@ -19,6 +19,8 @@ struct UserInfo {
     4: required string Mobile (api.body="mobile", api.vd="regexp('^1[3-9]\\d{9}$')");
     5: required string Profile (api.body="profile", api.vd="regexp('^.{0,200}$')");
     6: required string Username (api.body="username", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')"); //匹配中文字母数字下划线
+    7: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+    8: required string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }
 
 service users {
