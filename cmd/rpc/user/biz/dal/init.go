@@ -1,8 +1,8 @@
 package dal
 
 import (
-	"git.zqbjj.top/pet/services/cmd/rpc/user_srv/biz/dal/mysql"
-	"git.zqbjj.top/pet/services/cmd/rpc/user_srv/biz/dal/redis"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/dal/mysql"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/dal/redis"
 )
 
 func Init() {

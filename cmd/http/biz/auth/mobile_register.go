@@ -4,7 +4,6 @@ import (
 	"context"
 
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +16,7 @@ func NewMobileRegisterService(Context context.Context, RequestContext *app.Reque
 	return &MobileRegisterService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *standard.Resp, err error) {
+func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.AuthInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

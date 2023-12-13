@@ -1,4 +1,4 @@
-namespace go feeding
+namespace go feeder_micro
 
 service Program {
 

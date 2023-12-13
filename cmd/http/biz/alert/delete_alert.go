@@ -16,7 +16,7 @@ func NewDeleteAlertService(Context context.Context, RequestContext *app.RequestC
 	return &DeleteAlertService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *DeleteAlertService) Do(req *int32) (resp *standard.Resp, err error) {
+func (h *DeleteAlertService) Do(req *standard.Req) (resp *standard.Resp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

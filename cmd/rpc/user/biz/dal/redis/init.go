@@ -3,7 +3,7 @@ package redis
 import (
 	"context"
 
-	"git.zqbjj.top/pet/services/cmd/rpc/user_srv/conf"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf"
 	"github.com/redis/go-redis/v9"
 )
 

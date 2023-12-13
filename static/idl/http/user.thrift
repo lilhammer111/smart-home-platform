@@ -1,5 +1,5 @@
 namespace go user
-include "standard.thrift"
+include "common_http.thrift"
 
 struct UsersFilter {
     1: optional i8 Gender (api.query="gender", api.vd="in($, 0, 1, 2)");
@@ -22,10 +22,22 @@ struct UserInfo {
     8: required string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }
 
+// response
+struct UserListResp {
+    1: required common_http.Resp Meta;
+    2: required list<i32> Data;
+}
+
+struct UserInfoResp {
+    1: required common_http.Resp Meta;
+    2: required UserInfo Data;
+}
+
+
 
 service user {
-    standard.Resp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
-    standard.Resp GetUserDetail(1: i32 req) (api.get="/api/users/detail");
-    standard.Resp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
-    standard.Resp DeregisterUser(1: i32 req) (api.delete="/api/users/deregister");
+    UserListResp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
+    UserInfoResp GetUserDetail(1: common_http.Req req) (api.get="/api/users/detail");
+    UserInfoResp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
+    common_http.Resp DeregisterUser(1: common_http.Req req) (api.delete="/api/users/deregister");
 }

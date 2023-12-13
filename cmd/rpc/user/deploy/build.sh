@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RUN_NAME="user_srv"
+RUN_NAME="user_micro"
 mkdir -p output/bin output/conf
 cp script/* output/
 cp -r ../conf/* output/conf

@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
 	"testing"
 )
 
@@ -11,7 +11,7 @@ func TestVerifyCredentials_Run(t *testing.T) {
 	s := NewVerifyCredentialsService(ctx)
 	// init req and assert value
 
-	req := &user.CredentialsReq{}
+	req := &user_micro.CredentialsReq{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

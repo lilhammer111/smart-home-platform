@@ -4,7 +4,8 @@ package user
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
@@ -19,11 +20,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "user"
 	handlerType := (*user.User)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"FindUserByID":       kitex.NewMethodInfo(findUserByIDHandler, newUserFindUserByIDArgs, newUserFindUserByIDResult, false),
-		"GetUsersByFilter":   kitex.NewMethodInfo(getUsersByFilterHandler, newUserGetUsersByFilterArgs, newUserGetUsersByFilterResult, false),
-		"VerifyCredentials":  kitex.NewMethodInfo(verifyCredentialsHandler, newUserVerifyCredentialsArgs, newUserVerifyCredentialsResult, false),
-		"CreateOrUpdateUser": kitex.NewMethodInfo(createOrUpdateUserHandler, newUserCreateOrUpdateUserArgs, newUserCreateOrUpdateUserResult, false),
-		"DeleteUser":         kitex.NewMethodInfo(deleteUserHandler, newUserDeleteUserArgs, newUserDeleteUserResult, false),
+		"GetUserList":    kitex.NewMethodInfo(getUserListHandler, newUserGetUserListArgs, newUserGetUserListResult, false),
+		"GetUserDetail":  kitex.NewMethodInfo(getUserDetailHandler, newUserGetUserDetailArgs, newUserGetUserDetailResult, false),
+		"UpdateUserInfo": kitex.NewMethodInfo(updateUserInfoHandler, newUserUpdateUserInfoArgs, newUserUpdateUserInfoResult, false),
+		"DeregisterUser": kitex.NewMethodInfo(deregisterUserHandler, newUserDeregisterUserArgs, newUserDeregisterUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -39,94 +39,76 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	return svcInfo
 }
 
-func findUserByIDHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserFindUserByIDArgs)
-	realResult := result.(*user.UserFindUserByIDResult)
-	success, err := handler.(user.User).FindUserByID(ctx, realArg.Req)
+func getUserListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserGetUserListArgs)
+	realResult := result.(*user.UserGetUserListResult)
+	success, err := handler.(user.User).GetUserList(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserFindUserByIDArgs() interface{} {
-	return user.NewUserFindUserByIDArgs()
+func newUserGetUserListArgs() interface{} {
+	return user.NewUserGetUserListArgs()
 }
 
-func newUserFindUserByIDResult() interface{} {
-	return user.NewUserFindUserByIDResult()
+func newUserGetUserListResult() interface{} {
+	return user.NewUserGetUserListResult()
 }
 
-func getUsersByFilterHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserGetUsersByFilterArgs)
-	realResult := result.(*user.UserGetUsersByFilterResult)
-	success, err := handler.(user.User).GetUsersByFilter(ctx, realArg.Req)
+func getUserDetailHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserGetUserDetailArgs)
+	realResult := result.(*user.UserGetUserDetailResult)
+	success, err := handler.(user.User).GetUserDetail(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserGetUsersByFilterArgs() interface{} {
-	return user.NewUserGetUsersByFilterArgs()
+func newUserGetUserDetailArgs() interface{} {
+	return user.NewUserGetUserDetailArgs()
 }
 
-func newUserGetUsersByFilterResult() interface{} {
-	return user.NewUserGetUsersByFilterResult()
+func newUserGetUserDetailResult() interface{} {
+	return user.NewUserGetUserDetailResult()
 }
 
-func verifyCredentialsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserVerifyCredentialsArgs)
-	realResult := result.(*user.UserVerifyCredentialsResult)
-	success, err := handler.(user.User).VerifyCredentials(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = &success
-	return nil
-}
-func newUserVerifyCredentialsArgs() interface{} {
-	return user.NewUserVerifyCredentialsArgs()
-}
-
-func newUserVerifyCredentialsResult() interface{} {
-	return user.NewUserVerifyCredentialsResult()
-}
-
-func createOrUpdateUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserCreateOrUpdateUserArgs)
-	realResult := result.(*user.UserCreateOrUpdateUserResult)
-	success, err := handler.(user.User).CreateOrUpdateUser(ctx, realArg.Req)
+func updateUserInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserUpdateUserInfoArgs)
+	realResult := result.(*user.UserUpdateUserInfoResult)
+	success, err := handler.(user.User).UpdateUserInfo(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserCreateOrUpdateUserArgs() interface{} {
-	return user.NewUserCreateOrUpdateUserArgs()
+func newUserUpdateUserInfoArgs() interface{} {
+	return user.NewUserUpdateUserInfoArgs()
 }
 
-func newUserCreateOrUpdateUserResult() interface{} {
-	return user.NewUserCreateOrUpdateUserResult()
+func newUserUpdateUserInfoResult() interface{} {
+	return user.NewUserUpdateUserInfoResult()
 }
 
-func deleteUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserDeleteUserArgs)
-	realResult := result.(*user.UserDeleteUserResult)
-	success, err := handler.(user.User).DeleteUser(ctx, realArg.Req)
+func deregisterUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserDeregisterUserArgs)
+	realResult := result.(*user.UserDeregisterUserResult)
+	success, err := handler.(user.User).DeregisterUser(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserDeleteUserArgs() interface{} {
-	return user.NewUserDeleteUserArgs()
+func newUserDeregisterUserArgs() interface{} {
+	return user.NewUserDeregisterUserArgs()
 }
 
-func newUserDeleteUserResult() interface{} {
-	return user.NewUserDeleteUserResult()
+func newUserDeregisterUserResult() interface{} {
+	return user.NewUserDeregisterUserResult()
 }
 
 type kClient struct {
@@ -139,51 +121,41 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) FindUserByID(ctx context.Context, req int32) (r *user.UserData, err error) {
-	var _args user.UserFindUserByIDArgs
+func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r *user.UserListResp, err error) {
+	var _args user.UserGetUserListArgs
 	_args.Req = req
-	var _result user.UserFindUserByIDResult
-	if err = p.c.Call(ctx, "FindUserByID", &_args, &_result); err != nil {
+	var _result user.UserGetUserListResult
+	if err = p.c.Call(ctx, "GetUserList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUsersByFilter(ctx context.Context, req *user.UsersFilterReq) (r []*user.UserData, err error) {
-	var _args user.UserGetUsersByFilterArgs
+func (p *kClient) GetUserDetail(ctx context.Context, req *standard.Req) (r *user.UserInfoResp, err error) {
+	var _args user.UserGetUserDetailArgs
 	_args.Req = req
-	var _result user.UserGetUsersByFilterResult
-	if err = p.c.Call(ctx, "GetUsersByFilter", &_args, &_result); err != nil {
+	var _result user.UserGetUserDetailResult
+	if err = p.c.Call(ctx, "GetUserDetail", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifyCredentials(ctx context.Context, req *user.CredentialsReq) (r bool, err error) {
-	var _args user.UserVerifyCredentialsArgs
+func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *user.UserInfoResp, err error) {
+	var _args user.UserUpdateUserInfoArgs
 	_args.Req = req
-	var _result user.UserVerifyCredentialsResult
-	if err = p.c.Call(ctx, "VerifyCredentials", &_args, &_result); err != nil {
+	var _result user.UserUpdateUserInfoResult
+	if err = p.c.Call(ctx, "UpdateUserInfo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) CreateOrUpdateUser(ctx context.Context, req *user.UserData) (r *user.UserData, err error) {
-	var _args user.UserCreateOrUpdateUserArgs
+func (p *kClient) DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+	var _args user.UserDeregisterUserArgs
 	_args.Req = req
-	var _result user.UserCreateOrUpdateUserResult
-	if err = p.c.Call(ctx, "CreateOrUpdateUser", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) DeleteUser(ctx context.Context, req int32) (r *user.UserData, err error) {
-	var _args user.UserDeleteUserArgs
-	_args.Req = req
-	var _result user.UserDeleteUserResult
-	if err = p.c.Call(ctx, "DeleteUser", &_args, &_result); err != nil {
+	var _result user.UserDeregisterUserResult
+	if err = p.c.Call(ctx, "DeregisterUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

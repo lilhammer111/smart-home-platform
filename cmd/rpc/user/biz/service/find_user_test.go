@@ -2,16 +2,17 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"testing"
 )
 
-func TestGetUsersByFilter_Run(t *testing.T) {
+func TestFindUser_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewGetUsersByFilterService(ctx)
+	s := NewFindUserService(ctx)
 	// init req and assert value
 
-	req := &user.UsersFilterReq{}
+	req := &standard.Req{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

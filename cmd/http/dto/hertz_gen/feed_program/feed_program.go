@@ -665,18 +665,456 @@ func (p *FeedNowReq) String() string {
 	return fmt.Sprintf("FeedNowReq(%+v)", *p)
 }
 
+// response
+type ProgramListResp struct {
+	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data []int32        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+}
+
+func NewProgramListResp() *ProgramListResp {
+	return &ProgramListResp{}
+}
+
+var ProgramListResp_Meta_DEFAULT *standard.Resp
+
+func (p *ProgramListResp) GetMeta() (v *standard.Resp) {
+	if !p.IsSetMeta() {
+		return ProgramListResp_Meta_DEFAULT
+	}
+	return p.Meta
+}
+
+func (p *ProgramListResp) GetData() (v []int32) {
+	return p.Data
+}
+
+var fieldIDToName_ProgramListResp = map[int16]string{
+	1: "Meta",
+	2: "Data",
+}
+
+func (p *ProgramListResp) IsSetMeta() bool {
+	return p.Meta != nil
+}
+
+func (p *ProgramListResp) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetMeta bool = false
+	var issetData bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetMeta = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetData = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetMeta {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetData {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ProgramListResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_ProgramListResp[fieldId]))
+}
+
+func (p *ProgramListResp) ReadField1(iprot thrift.TProtocol) error {
+	p.Meta = standard.NewResp()
+
+	if err := p.Meta.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+func (p *ProgramListResp) ReadField2(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Data = make([]int32, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem int32
+		if v, err := iprot.ReadI32(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		p.Data = append(p.Data, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProgramListResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ProgramListResp"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ProgramListResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Meta", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Meta.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *ProgramListResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Data", thrift.LIST, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.I32, len(p.Data)); err != nil {
+		return err
+	}
+	for _, v := range p.Data {
+		if err := oprot.WriteI32(v); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ProgramListResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProgramListResp(%+v)", *p)
+}
+
+type ProgramInfoResp struct {
+	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *ProgramInfo   `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+}
+
+func NewProgramInfoResp() *ProgramInfoResp {
+	return &ProgramInfoResp{}
+}
+
+var ProgramInfoResp_Meta_DEFAULT *standard.Resp
+
+func (p *ProgramInfoResp) GetMeta() (v *standard.Resp) {
+	if !p.IsSetMeta() {
+		return ProgramInfoResp_Meta_DEFAULT
+	}
+	return p.Meta
+}
+
+var ProgramInfoResp_Data_DEFAULT *ProgramInfo
+
+func (p *ProgramInfoResp) GetData() (v *ProgramInfo) {
+	if !p.IsSetData() {
+		return ProgramInfoResp_Data_DEFAULT
+	}
+	return p.Data
+}
+
+var fieldIDToName_ProgramInfoResp = map[int16]string{
+	1: "Meta",
+	2: "Data",
+}
+
+func (p *ProgramInfoResp) IsSetMeta() bool {
+	return p.Meta != nil
+}
+
+func (p *ProgramInfoResp) IsSetData() bool {
+	return p.Data != nil
+}
+
+func (p *ProgramInfoResp) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetMeta bool = false
+	var issetData bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetMeta = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetData = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetMeta {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetData {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ProgramInfoResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_ProgramInfoResp[fieldId]))
+}
+
+func (p *ProgramInfoResp) ReadField1(iprot thrift.TProtocol) error {
+	p.Meta = standard.NewResp()
+
+	if err := p.Meta.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+func (p *ProgramInfoResp) ReadField2(iprot thrift.TProtocol) error {
+	p.Data = NewProgramInfo()
+
+	if err := p.Data.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ProgramInfoResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ProgramInfoResp"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ProgramInfoResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Meta", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Meta.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *ProgramInfoResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Data", thrift.STRUCT, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Data.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ProgramInfoResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProgramInfoResp(%+v)", *p)
+}
+
 type FeedProgram interface {
-	GetSelfProgramList(ctx context.Context, req int32) (r *standard.Resp, err error)
+	GetSelfProgramList(ctx context.Context, req *standard.Req) (r *ProgramListResp, err error)
 
-	GetProgramDetail(ctx context.Context, req int32) (r *standard.Resp, err error)
+	GetProgramDetail(ctx context.Context, req *standard.Req) (r *ProgramInfoResp, err error)
 
-	UpdateProgramInfo(ctx context.Context, req *ProgramInfo) (r *standard.Resp, err error)
+	UpdateProgramInfo(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error)
 
-	CreateProgram(ctx context.Context, req *ProgramInfo) (r *standard.Resp, err error)
+	CreateProgram(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error)
 
 	FeedNow(ctx context.Context, req *FeedNowReq) (r *standard.Resp, err error)
 
-	DeleteProgram(ctx context.Context, req int32) (r *standard.Resp, err error)
+	DeleteProgram(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
 }
 
 type FeedProgramClient struct {
@@ -705,7 +1143,7 @@ func (p *FeedProgramClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req int32) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req *standard.Req) (r *ProgramListResp, err error) {
 	var _args FeedProgramGetSelfProgramListArgs
 	_args.Req = req
 	var _result FeedProgramGetSelfProgramListResult
@@ -714,7 +1152,7 @@ func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req int32) (
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) GetProgramDetail(ctx context.Context, req int32) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) GetProgramDetail(ctx context.Context, req *standard.Req) (r *ProgramInfoResp, err error) {
 	var _args FeedProgramGetProgramDetailArgs
 	_args.Req = req
 	var _result FeedProgramGetProgramDetailResult
@@ -723,7 +1161,7 @@ func (p *FeedProgramClient) GetProgramDetail(ctx context.Context, req int32) (r 
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) UpdateProgramInfo(ctx context.Context, req *ProgramInfo) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) UpdateProgramInfo(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error) {
 	var _args FeedProgramUpdateProgramInfoArgs
 	_args.Req = req
 	var _result FeedProgramUpdateProgramInfoResult
@@ -732,7 +1170,7 @@ func (p *FeedProgramClient) UpdateProgramInfo(ctx context.Context, req *ProgramI
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) CreateProgram(ctx context.Context, req *ProgramInfo) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) CreateProgram(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error) {
 	var _args FeedProgramCreateProgramArgs
 	_args.Req = req
 	var _result FeedProgramCreateProgramResult
@@ -750,7 +1188,7 @@ func (p *FeedProgramClient) FeedNow(ctx context.Context, req *FeedNowReq) (r *st
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) DeleteProgram(ctx context.Context, req int32) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) DeleteProgram(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
 	var _args FeedProgramDeleteProgramArgs
 	_args.Req = req
 	var _result FeedProgramDeleteProgramResult
@@ -825,7 +1263,7 @@ func (p *feedProgramProcessorGetSelfProgramList) Process(ctx context.Context, se
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramGetSelfProgramListResult{}
-	var retval *standard.Resp
+	var retval *ProgramListResp
 	if retval, err2 = p.handler.GetSelfProgramList(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetSelfProgramList: "+err2.Error())
 		oprot.WriteMessageBegin("GetSelfProgramList", thrift.EXCEPTION, seqId)
@@ -873,7 +1311,7 @@ func (p *feedProgramProcessorGetProgramDetail) Process(ctx context.Context, seqI
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramGetProgramDetailResult{}
-	var retval *standard.Resp
+	var retval *ProgramInfoResp
 	if retval, err2 = p.handler.GetProgramDetail(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetProgramDetail: "+err2.Error())
 		oprot.WriteMessageBegin("GetProgramDetail", thrift.EXCEPTION, seqId)
@@ -921,7 +1359,7 @@ func (p *feedProgramProcessorUpdateProgramInfo) Process(ctx context.Context, seq
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramUpdateProgramInfoResult{}
-	var retval *standard.Resp
+	var retval *ProgramInfoResp
 	if retval, err2 = p.handler.UpdateProgramInfo(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateProgramInfo: "+err2.Error())
 		oprot.WriteMessageBegin("UpdateProgramInfo", thrift.EXCEPTION, seqId)
@@ -969,7 +1407,7 @@ func (p *feedProgramProcessorCreateProgram) Process(ctx context.Context, seqId i
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramCreateProgramResult{}
-	var retval *standard.Resp
+	var retval *ProgramInfoResp
 	if retval, err2 = p.handler.CreateProgram(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateProgram: "+err2.Error())
 		oprot.WriteMessageBegin("CreateProgram", thrift.EXCEPTION, seqId)
@@ -1095,19 +1533,28 @@ func (p *feedProgramProcessorDeleteProgram) Process(ctx context.Context, seqId i
 }
 
 type FeedProgramGetSelfProgramListArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramGetSelfProgramListArgs() *FeedProgramGetSelfProgramListArgs {
 	return &FeedProgramGetSelfProgramListArgs{}
 }
 
-func (p *FeedProgramGetSelfProgramListArgs) GetReq() (v int32) {
+var FeedProgramGetSelfProgramListArgs_Req_DEFAULT *standard.Req
+
+func (p *FeedProgramGetSelfProgramListArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return FeedProgramGetSelfProgramListArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_FeedProgramGetSelfProgramListArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *FeedProgramGetSelfProgramListArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *FeedProgramGetSelfProgramListArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -1130,7 +1577,7 @@ func (p *FeedProgramGetSelfProgramListArgs) Read(iprot thrift.TProtocol) (err er
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1169,11 +1616,10 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetSelfProgramListArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -1207,10 +1653,10 @@ WriteStructEndError:
 }
 
 func (p *FeedProgramGetSelfProgramListArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1231,16 +1677,16 @@ func (p *FeedProgramGetSelfProgramListArgs) String() string {
 }
 
 type FeedProgramGetSelfProgramListResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *ProgramListResp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramGetSelfProgramListResult() *FeedProgramGetSelfProgramListResult {
 	return &FeedProgramGetSelfProgramListResult{}
 }
 
-var FeedProgramGetSelfProgramListResult_Success_DEFAULT *standard.Resp
+var FeedProgramGetSelfProgramListResult_Success_DEFAULT *ProgramListResp
 
-func (p *FeedProgramGetSelfProgramListResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramGetSelfProgramListResult) GetSuccess() (v *ProgramListResp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramGetSelfProgramListResult_Success_DEFAULT
 	}
@@ -1314,7 +1760,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetSelfProgramListResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewProgramListResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -1377,19 +1823,28 @@ func (p *FeedProgramGetSelfProgramListResult) String() string {
 }
 
 type FeedProgramGetProgramDetailArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramGetProgramDetailArgs() *FeedProgramGetProgramDetailArgs {
 	return &FeedProgramGetProgramDetailArgs{}
 }
 
-func (p *FeedProgramGetProgramDetailArgs) GetReq() (v int32) {
+var FeedProgramGetProgramDetailArgs_Req_DEFAULT *standard.Req
+
+func (p *FeedProgramGetProgramDetailArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return FeedProgramGetProgramDetailArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_FeedProgramGetProgramDetailArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *FeedProgramGetProgramDetailArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *FeedProgramGetProgramDetailArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -1412,7 +1867,7 @@ func (p *FeedProgramGetProgramDetailArgs) Read(iprot thrift.TProtocol) (err erro
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1451,11 +1906,10 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetProgramDetailArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -1489,10 +1943,10 @@ WriteStructEndError:
 }
 
 func (p *FeedProgramGetProgramDetailArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1513,16 +1967,16 @@ func (p *FeedProgramGetProgramDetailArgs) String() string {
 }
 
 type FeedProgramGetProgramDetailResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *ProgramInfoResp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramGetProgramDetailResult() *FeedProgramGetProgramDetailResult {
 	return &FeedProgramGetProgramDetailResult{}
 }
 
-var FeedProgramGetProgramDetailResult_Success_DEFAULT *standard.Resp
+var FeedProgramGetProgramDetailResult_Success_DEFAULT *ProgramInfoResp
 
-func (p *FeedProgramGetProgramDetailResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramGetProgramDetailResult) GetSuccess() (v *ProgramInfoResp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramGetProgramDetailResult_Success_DEFAULT
 	}
@@ -1596,7 +2050,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetProgramDetailResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewProgramInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -1803,16 +2257,16 @@ func (p *FeedProgramUpdateProgramInfoArgs) String() string {
 }
 
 type FeedProgramUpdateProgramInfoResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *ProgramInfoResp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramUpdateProgramInfoResult() *FeedProgramUpdateProgramInfoResult {
 	return &FeedProgramUpdateProgramInfoResult{}
 }
 
-var FeedProgramUpdateProgramInfoResult_Success_DEFAULT *standard.Resp
+var FeedProgramUpdateProgramInfoResult_Success_DEFAULT *ProgramInfoResp
 
-func (p *FeedProgramUpdateProgramInfoResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramUpdateProgramInfoResult) GetSuccess() (v *ProgramInfoResp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramUpdateProgramInfoResult_Success_DEFAULT
 	}
@@ -1886,7 +2340,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramUpdateProgramInfoResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewProgramInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2093,16 +2547,16 @@ func (p *FeedProgramCreateProgramArgs) String() string {
 }
 
 type FeedProgramCreateProgramResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *ProgramInfoResp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramCreateProgramResult() *FeedProgramCreateProgramResult {
 	return &FeedProgramCreateProgramResult{}
 }
 
-var FeedProgramCreateProgramResult_Success_DEFAULT *standard.Resp
+var FeedProgramCreateProgramResult_Success_DEFAULT *ProgramInfoResp
 
-func (p *FeedProgramCreateProgramResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramCreateProgramResult) GetSuccess() (v *ProgramInfoResp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramCreateProgramResult_Success_DEFAULT
 	}
@@ -2176,7 +2630,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramCreateProgramResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewProgramInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2529,19 +2983,28 @@ func (p *FeedProgramFeedNowResult) String() string {
 }
 
 type FeedProgramDeleteProgramArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramDeleteProgramArgs() *FeedProgramDeleteProgramArgs {
 	return &FeedProgramDeleteProgramArgs{}
 }
 
-func (p *FeedProgramDeleteProgramArgs) GetReq() (v int32) {
+var FeedProgramDeleteProgramArgs_Req_DEFAULT *standard.Req
+
+func (p *FeedProgramDeleteProgramArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return FeedProgramDeleteProgramArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_FeedProgramDeleteProgramArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *FeedProgramDeleteProgramArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *FeedProgramDeleteProgramArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -2564,7 +3027,7 @@ func (p *FeedProgramDeleteProgramArgs) Read(iprot thrift.TProtocol) (err error) 
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2603,11 +3066,10 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramDeleteProgramArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -2641,10 +3103,10 @@ WriteStructEndError:
 }
 
 func (p *FeedProgramDeleteProgramArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

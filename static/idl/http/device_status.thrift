@@ -1,5 +1,5 @@
 namespace go device_status
-include "standard.thrift"
+include "../common_http.thrift"
 
 struct RecentFeeding {
     1: required i8 Amount (api.body="feeding_amount");
@@ -19,8 +19,14 @@ struct DeviceStatusInfo {
     9: required RecentFeeding RecentFeeding (api.body="recent_feeding");
 }
 
+// response
+struct DeviceStatusInfoResp {
+    1: required common_http.Resp Meta;
+    2: required DeviceStatusInfo Data;
+}
+
 service device_status {
-    standard.Resp GetDeviceStatus(1: i32 req) (api.get="/api/devices/status/get");
-    standard.Resp InitDeviceStatus(1: DeviceStatusInfo req) (api.post="/api/devices/status/init");
-    standard.Resp UpdateDeviceStatus(1: DeviceStatusInfo req) (api.put="/api/devices/status/update");
+    DeviceStatusInfoResp GetDeviceStatus(1: common_http.Req req) (api.get="/api/devices/status/detail");
+    DeviceStatusInfoResp InitDeviceStatus(1: DeviceStatusInfo req) (api.post="/api/devices/status/init");
+    DeviceStatusInfoResp UpdateDeviceStatus(1: DeviceStatusInfo req) (api.put="/api/devices/status/update");
 }

@@ -1,35 +1,35 @@
-namespace go user
+namespace go micro_user
+include "../http/user.thrift"
+include "common_rpc.thrift"
 
-struct AuthResp {
-    1: required i32 Id;
-    2: required i32 ExpiredAt;
-    3: required string Token;
-}
-
-struct UserData {
-    1: optional i8 Gender (go.tag='json:"gender"');
-    2: required i8 Age;
-    3: required i32 Id;
-    4: required string Mobile;
-    5: required string Username;
-    6: required string Profile;
-}
-
-struct CredentialsReq {
+struct CredentialRpcReq {
     1: required string SmsCode;
     2: required string Mobile;
     3: optional string Password;
     4: optional string Username;
 }
 
-struct UsersFilterReq {
-    1: optional i8 Page;
+struct FreezeRpcReq {
+    1: optional string Username;
+    2: optional string Mobile;
+    3: optional string Email;
 }
 
-service user {
-    UserData FindUserByID(1: i32 req);
-    list<UserData> GetUsersByFilter(1: UsersFilterReq req)
-    bool VerifyCredentials(1: CredentialsReq req);
-    UserData CreateOrUpdateUser(1: UserData req);
-    UserData DeleteUser(1: i32 req);
+struct FreezeRpcResp {
+    9: required bool   IsFrozen (api.body="is_frozen");
+    10: optional string ThawedAt (api.body="thawed_at");
+}
+
+
+
+
+service micro_user {
+    FreezeRpcResp FreezePatrolBeforeAuth(1: FreezeRpcReq req);
+    FreezeRpcResp FreezePatrolAfterAuth(1: common_rpc.IdRpcReq req);
+    common_rpc.EmptyRpcResp VerifyCredentials(1: CredentialRpcReq req);
+
+    user.UserInfo FindUser (1: common_rpc.IdRpcReq req);
+    list<user.UserInfo> QueryUsersWithFilter(1: user.UsersFilter req)
+    user.UserInfo UpsertUser(1: user.UserInfo req);
+    common_rpc.EmptyRpcResp DeleteUser(1: common_rpc.IdRpcReq req);
 }

@@ -1,4 +1,4 @@
-path: /dto/rpc_client/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_init.go
+path: /utils/rpc_client/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_init.go
 update_behavior:
   type: skip
 body: |-

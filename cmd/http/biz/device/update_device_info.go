@@ -4,7 +4,6 @@ import (
 	"context"
 
 	device "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/device"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +16,7 @@ func NewUpdateDeviceInfoService(Context context.Context, RequestContext *app.Req
 	return &UpdateDeviceInfoService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *UpdateDeviceInfoService) Do(req *device.DeviceInfo) (resp *standard.Resp, err error) {
+func (h *UpdateDeviceInfoService) Do(req *device.DeviceInfo) (resp *device.DeviceInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

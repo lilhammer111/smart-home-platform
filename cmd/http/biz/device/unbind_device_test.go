@@ -14,7 +14,7 @@ func TestUnbindDeviceService_Run(t *testing.T) {
 	c := app.NewContext(1)
 	s := NewUnbindDeviceService(ctx, c)
 	// init req and assert value
-	req := &int32{}
+	req := &standard.Req{}
 	resp, err := s.Do(req)
 	assert.DeepEqual(t, nil, resp)
 	assert.DeepEqual(t, nil, err)

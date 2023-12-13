@@ -11,8 +11,8 @@ import (
 
 func TestGetDeviceStatus(t *testing.T) {
 	h := server.Default()
-	h.GET("/api/devices/status/get", GetDeviceStatus)
-	w := ut.PerformRequest(h.Engine, "GET", "/api/devices/status/get", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+	h.GET("/api/devices/status/detail", GetDeviceStatus)
+	w := ut.PerformRequest(h.Engine, "GET", "/api/devices/status/detail", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
 		ut.Header{})
 	resp := w.Result()
 	assert.DeepEqual(t, 201, resp.StatusCode())

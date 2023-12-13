@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/device"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
@@ -35,7 +36,7 @@ func GetDeviceList(ctx context.Context, c *app.RequestContext) {
 // @router /api/devices/detail [GET]
 func GetDeviceDetail(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req int32
+	var req standard.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -95,7 +96,7 @@ func BindDevice(ctx context.Context, c *app.RequestContext) {
 // @router /api/devices/unbind [DELETE]
 func UnbindDevice(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req int32
+	var req standard.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)

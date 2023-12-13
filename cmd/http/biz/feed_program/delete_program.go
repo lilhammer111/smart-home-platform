@@ -16,7 +16,7 @@ func NewDeleteProgramService(Context context.Context, RequestContext *app.Reques
 	return &DeleteProgramService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *DeleteProgramService) Do(req *int32) (resp *standard.Resp, err error) {
+func (h *DeleteProgramService) Do(req *standard.Req) (resp *standard.Resp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

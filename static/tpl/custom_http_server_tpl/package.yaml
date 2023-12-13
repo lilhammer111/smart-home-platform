@@ -63,9 +63,9 @@ layouts:
 
        "github.com/cloudwego/hertz/pkg/app"
        "github.com/cloudwego/hertz/pkg/protocol/consts"
-      {{- range $k, $v := .Imports}} {{- if ne $k $excludedNamespace }}
+      {{- range $k, $v := .Imports}} 
         "{{$v.Package}}"
-        {{- end}}{{- end}}
+        {{- end}}
       {{- range $_, $OutDir := $OutDirs}}
         {{if eq $OutDir "" -}}
         {{- if ne $.PackageName $excludedNamespace }}

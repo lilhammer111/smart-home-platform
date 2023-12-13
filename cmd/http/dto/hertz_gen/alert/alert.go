@@ -1289,13 +1289,13 @@ func (p *AlertInfoResp) String() string {
 type Alert interface {
 	GetAlertList(ctx context.Context, req *AlertFilter) (r *AlertListResp, err error)
 
-	GetAlertDetail(ctx context.Context, req int32) (r *AlertInfoResp, err error)
+	GetAlertDetail(ctx context.Context, req *standard.Req) (r *AlertInfoResp, err error)
 
 	UpdateAlertInfo(ctx context.Context, req *AlertInfo) (r *AlertInfoResp, err error)
 
 	UploadAlertInfo(ctx context.Context, req *AlertInfo) (r *AlertInfoResp, err error)
 
-	DeleteAlert(ctx context.Context, req int32) (r *standard.Resp, err error)
+	DeleteAlert(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
 }
 
 type AlertClient struct {
@@ -1333,7 +1333,7 @@ func (p *AlertClient) GetAlertList(ctx context.Context, req *AlertFilter) (r *Al
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AlertClient) GetAlertDetail(ctx context.Context, req int32) (r *AlertInfoResp, err error) {
+func (p *AlertClient) GetAlertDetail(ctx context.Context, req *standard.Req) (r *AlertInfoResp, err error) {
 	var _args AlertGetAlertDetailArgs
 	_args.Req = req
 	var _result AlertGetAlertDetailResult
@@ -1360,7 +1360,7 @@ func (p *AlertClient) UploadAlertInfo(ctx context.Context, req *AlertInfo) (r *A
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AlertClient) DeleteAlert(ctx context.Context, req int32) (r *standard.Resp, err error) {
+func (p *AlertClient) DeleteAlert(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
 	var _args AlertDeleteAlertArgs
 	_args.Req = req
 	var _result AlertDeleteAlertResult
@@ -1946,19 +1946,28 @@ func (p *AlertGetAlertListResult) String() string {
 }
 
 type AlertGetAlertDetailArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewAlertGetAlertDetailArgs() *AlertGetAlertDetailArgs {
 	return &AlertGetAlertDetailArgs{}
 }
 
-func (p *AlertGetAlertDetailArgs) GetReq() (v int32) {
+var AlertGetAlertDetailArgs_Req_DEFAULT *standard.Req
+
+func (p *AlertGetAlertDetailArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return AlertGetAlertDetailArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_AlertGetAlertDetailArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *AlertGetAlertDetailArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *AlertGetAlertDetailArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -1981,7 +1990,7 @@ func (p *AlertGetAlertDetailArgs) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2020,11 +2029,10 @@ ReadStructEndError:
 }
 
 func (p *AlertGetAlertDetailArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -2058,10 +2066,10 @@ WriteStructEndError:
 }
 
 func (p *AlertGetAlertDetailArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2808,19 +2816,28 @@ func (p *AlertUploadAlertInfoResult) String() string {
 }
 
 type AlertDeleteAlertArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewAlertDeleteAlertArgs() *AlertDeleteAlertArgs {
 	return &AlertDeleteAlertArgs{}
 }
 
-func (p *AlertDeleteAlertArgs) GetReq() (v int32) {
+var AlertDeleteAlertArgs_Req_DEFAULT *standard.Req
+
+func (p *AlertDeleteAlertArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return AlertDeleteAlertArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_AlertDeleteAlertArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *AlertDeleteAlertArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *AlertDeleteAlertArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -2843,7 +2860,7 @@ func (p *AlertDeleteAlertArgs) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2882,11 +2899,10 @@ ReadStructEndError:
 }
 
 func (p *AlertDeleteAlertArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -2920,10 +2936,10 @@ WriteStructEndError:
 }
 
 func (p *AlertDeleteAlertArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

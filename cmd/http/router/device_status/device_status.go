@@ -24,7 +24,7 @@ func Register(r *server.Hertz) {
 			_devices := _api.Group("/devices", _devicesMw()...)
 			{
 				_status := _devices.Group("/status", _statusMw()...)
-				_status.GET("/get", append(_getdevicestatusMw(), device_status.GetDeviceStatus)...)
+				_status.GET("/detail", append(_getdevicestatusMw(), device_status.GetDeviceStatus)...)
 				_status.POST("/init", append(_initdevicestatusMw(), device_status.InitDeviceStatus)...)
 				_status.PUT("/update", append(_updatedevicestatusMw(), device_status.UpdateDeviceStatus)...)
 			}

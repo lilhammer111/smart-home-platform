@@ -4,18 +4,18 @@ package user
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	FindUserByID(ctx context.Context, req int32, callOptions ...callopt.Option) (r *user.UserData, err error)
-	GetUsersByFilter(ctx context.Context, req *user.UsersFilterReq, callOptions ...callopt.Option) (r []*user.UserData, err error)
-	VerifyCredentials(ctx context.Context, req *user.CredentialsReq, callOptions ...callopt.Option) (r bool, err error)
-	CreateOrUpdateUser(ctx context.Context, req *user.UserData, callOptions ...callopt.Option) (r *user.UserData, err error)
-	DeleteUser(ctx context.Context, req int32, callOptions ...callopt.Option) (r *user.UserData, err error)
+	GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r *user.UserListResp, err error)
+	GetUserDetail(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
+	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
+	DeregisterUser(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *standard.Resp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -47,27 +47,22 @@ type kUserClient struct {
 	*kClient
 }
 
-func (p *kUserClient) FindUserByID(ctx context.Context, req int32, callOptions ...callopt.Option) (r *user.UserData, err error) {
+func (p *kUserClient) GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r *user.UserListResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.FindUserByID(ctx, req)
+	return p.kClient.GetUserList(ctx, req)
 }
 
-func (p *kUserClient) GetUsersByFilter(ctx context.Context, req *user.UsersFilterReq, callOptions ...callopt.Option) (r []*user.UserData, err error) {
+func (p *kUserClient) GetUserDetail(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUsersByFilter(ctx, req)
+	return p.kClient.GetUserDetail(ctx, req)
 }
 
-func (p *kUserClient) VerifyCredentials(ctx context.Context, req *user.CredentialsReq, callOptions ...callopt.Option) (r bool, err error) {
+func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VerifyCredentials(ctx, req)
+	return p.kClient.UpdateUserInfo(ctx, req)
 }
 
-func (p *kUserClient) CreateOrUpdateUser(ctx context.Context, req *user.UserData, callOptions ...callopt.Option) (r *user.UserData, err error) {
+func (p *kUserClient) DeregisterUser(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *standard.Resp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CreateOrUpdateUser(ctx, req)
-}
-
-func (p *kUserClient) DeleteUser(ctx context.Context, req int32, callOptions ...callopt.Option) (r *user.UserData, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DeleteUser(ctx, req)
+	return p.kClient.DeregisterUser(ctx, req)
 }

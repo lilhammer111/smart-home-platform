@@ -1,4 +1,4 @@
-module git.zqbjj.top/pet/services/cmd/rpc/user_srv
+module git.zqbjj.top/pet/services/cmd/rpc/user
 
 go 1.21.5
 

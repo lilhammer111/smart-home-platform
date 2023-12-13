@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	user "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"

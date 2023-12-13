@@ -830,12 +830,225 @@ func (p *DeviceStatusInfo) String() string {
 	return fmt.Sprintf("DeviceStatusInfo(%+v)", *p)
 }
 
+// response
+type DeviceStatusInfoResp struct {
+	Meta *standard.Resp    `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *DeviceStatusInfo `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+}
+
+func NewDeviceStatusInfoResp() *DeviceStatusInfoResp {
+	return &DeviceStatusInfoResp{}
+}
+
+var DeviceStatusInfoResp_Meta_DEFAULT *standard.Resp
+
+func (p *DeviceStatusInfoResp) GetMeta() (v *standard.Resp) {
+	if !p.IsSetMeta() {
+		return DeviceStatusInfoResp_Meta_DEFAULT
+	}
+	return p.Meta
+}
+
+var DeviceStatusInfoResp_Data_DEFAULT *DeviceStatusInfo
+
+func (p *DeviceStatusInfoResp) GetData() (v *DeviceStatusInfo) {
+	if !p.IsSetData() {
+		return DeviceStatusInfoResp_Data_DEFAULT
+	}
+	return p.Data
+}
+
+var fieldIDToName_DeviceStatusInfoResp = map[int16]string{
+	1: "Meta",
+	2: "Data",
+}
+
+func (p *DeviceStatusInfoResp) IsSetMeta() bool {
+	return p.Meta != nil
+}
+
+func (p *DeviceStatusInfoResp) IsSetData() bool {
+	return p.Data != nil
+}
+
+func (p *DeviceStatusInfoResp) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetMeta bool = false
+	var issetData bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetMeta = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetData = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetMeta {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetData {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeviceStatusInfoResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_DeviceStatusInfoResp[fieldId]))
+}
+
+func (p *DeviceStatusInfoResp) ReadField1(iprot thrift.TProtocol) error {
+	p.Meta = standard.NewResp()
+
+	if err := p.Meta.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+func (p *DeviceStatusInfoResp) ReadField2(iprot thrift.TProtocol) error {
+	p.Data = NewDeviceStatusInfo()
+
+	if err := p.Data.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *DeviceStatusInfoResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("DeviceStatusInfoResp"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *DeviceStatusInfoResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Meta", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Meta.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *DeviceStatusInfoResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Data", thrift.STRUCT, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Data.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *DeviceStatusInfoResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("DeviceStatusInfoResp(%+v)", *p)
+}
+
 type DeviceStatus interface {
-	GetDeviceStatus(ctx context.Context, req int32) (r *standard.Resp, err error)
+	GetDeviceStatus(ctx context.Context, req *standard.Req) (r *DeviceStatusInfoResp, err error)
 
-	InitDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *standard.Resp, err error)
+	InitDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *DeviceStatusInfoResp, err error)
 
-	UpdateDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *standard.Resp, err error)
+	UpdateDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *DeviceStatusInfoResp, err error)
 }
 
 type DeviceStatusClient struct {
@@ -864,7 +1077,7 @@ func (p *DeviceStatusClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *DeviceStatusClient) GetDeviceStatus(ctx context.Context, req int32) (r *standard.Resp, err error) {
+func (p *DeviceStatusClient) GetDeviceStatus(ctx context.Context, req *standard.Req) (r *DeviceStatusInfoResp, err error) {
 	var _args DeviceStatusGetDeviceStatusArgs
 	_args.Req = req
 	var _result DeviceStatusGetDeviceStatusResult
@@ -873,7 +1086,7 @@ func (p *DeviceStatusClient) GetDeviceStatus(ctx context.Context, req int32) (r 
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeviceStatusClient) InitDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *standard.Resp, err error) {
+func (p *DeviceStatusClient) InitDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *DeviceStatusInfoResp, err error) {
 	var _args DeviceStatusInitDeviceStatusArgs
 	_args.Req = req
 	var _result DeviceStatusInitDeviceStatusResult
@@ -882,7 +1095,7 @@ func (p *DeviceStatusClient) InitDeviceStatus(ctx context.Context, req *DeviceSt
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeviceStatusClient) UpdateDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *standard.Resp, err error) {
+func (p *DeviceStatusClient) UpdateDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *DeviceStatusInfoResp, err error) {
 	var _args DeviceStatusUpdateDeviceStatusArgs
 	_args.Req = req
 	var _result DeviceStatusUpdateDeviceStatusResult
@@ -954,7 +1167,7 @@ func (p *deviceStatusProcessorGetDeviceStatus) Process(ctx context.Context, seqI
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DeviceStatusGetDeviceStatusResult{}
-	var retval *standard.Resp
+	var retval *DeviceStatusInfoResp
 	if retval, err2 = p.handler.GetDeviceStatus(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetDeviceStatus: "+err2.Error())
 		oprot.WriteMessageBegin("GetDeviceStatus", thrift.EXCEPTION, seqId)
@@ -1002,7 +1215,7 @@ func (p *deviceStatusProcessorInitDeviceStatus) Process(ctx context.Context, seq
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DeviceStatusInitDeviceStatusResult{}
-	var retval *standard.Resp
+	var retval *DeviceStatusInfoResp
 	if retval, err2 = p.handler.InitDeviceStatus(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing InitDeviceStatus: "+err2.Error())
 		oprot.WriteMessageBegin("InitDeviceStatus", thrift.EXCEPTION, seqId)
@@ -1050,7 +1263,7 @@ func (p *deviceStatusProcessorUpdateDeviceStatus) Process(ctx context.Context, s
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DeviceStatusUpdateDeviceStatusResult{}
-	var retval *standard.Resp
+	var retval *DeviceStatusInfoResp
 	if retval, err2 = p.handler.UpdateDeviceStatus(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateDeviceStatus: "+err2.Error())
 		oprot.WriteMessageBegin("UpdateDeviceStatus", thrift.EXCEPTION, seqId)
@@ -1080,19 +1293,28 @@ func (p *deviceStatusProcessorUpdateDeviceStatus) Process(ctx context.Context, s
 }
 
 type DeviceStatusGetDeviceStatusArgs struct {
-	Req int32 `thrift:"req,1"`
+	Req *standard.Req `thrift:"req,1"`
 }
 
 func NewDeviceStatusGetDeviceStatusArgs() *DeviceStatusGetDeviceStatusArgs {
 	return &DeviceStatusGetDeviceStatusArgs{}
 }
 
-func (p *DeviceStatusGetDeviceStatusArgs) GetReq() (v int32) {
+var DeviceStatusGetDeviceStatusArgs_Req_DEFAULT *standard.Req
+
+func (p *DeviceStatusGetDeviceStatusArgs) GetReq() (v *standard.Req) {
+	if !p.IsSetReq() {
+		return DeviceStatusGetDeviceStatusArgs_Req_DEFAULT
+	}
 	return p.Req
 }
 
 var fieldIDToName_DeviceStatusGetDeviceStatusArgs = map[int16]string{
 	1: "req",
+}
+
+func (p *DeviceStatusGetDeviceStatusArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *DeviceStatusGetDeviceStatusArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -1115,7 +1337,7 @@ func (p *DeviceStatusGetDeviceStatusArgs) Read(iprot thrift.TProtocol) (err erro
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1154,11 +1376,10 @@ ReadStructEndError:
 }
 
 func (p *DeviceStatusGetDeviceStatusArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = standard.NewReq()
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Req = v
 	}
 	return nil
 }
@@ -1192,10 +1413,10 @@ WriteStructEndError:
 }
 
 func (p *DeviceStatusGetDeviceStatusArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Req); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1216,16 +1437,16 @@ func (p *DeviceStatusGetDeviceStatusArgs) String() string {
 }
 
 type DeviceStatusGetDeviceStatusResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *DeviceStatusInfoResp `thrift:"success,0,optional"`
 }
 
 func NewDeviceStatusGetDeviceStatusResult() *DeviceStatusGetDeviceStatusResult {
 	return &DeviceStatusGetDeviceStatusResult{}
 }
 
-var DeviceStatusGetDeviceStatusResult_Success_DEFAULT *standard.Resp
+var DeviceStatusGetDeviceStatusResult_Success_DEFAULT *DeviceStatusInfoResp
 
-func (p *DeviceStatusGetDeviceStatusResult) GetSuccess() (v *standard.Resp) {
+func (p *DeviceStatusGetDeviceStatusResult) GetSuccess() (v *DeviceStatusInfoResp) {
 	if !p.IsSetSuccess() {
 		return DeviceStatusGetDeviceStatusResult_Success_DEFAULT
 	}
@@ -1299,7 +1520,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceStatusGetDeviceStatusResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewDeviceStatusInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -1506,16 +1727,16 @@ func (p *DeviceStatusInitDeviceStatusArgs) String() string {
 }
 
 type DeviceStatusInitDeviceStatusResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *DeviceStatusInfoResp `thrift:"success,0,optional"`
 }
 
 func NewDeviceStatusInitDeviceStatusResult() *DeviceStatusInitDeviceStatusResult {
 	return &DeviceStatusInitDeviceStatusResult{}
 }
 
-var DeviceStatusInitDeviceStatusResult_Success_DEFAULT *standard.Resp
+var DeviceStatusInitDeviceStatusResult_Success_DEFAULT *DeviceStatusInfoResp
 
-func (p *DeviceStatusInitDeviceStatusResult) GetSuccess() (v *standard.Resp) {
+func (p *DeviceStatusInitDeviceStatusResult) GetSuccess() (v *DeviceStatusInfoResp) {
 	if !p.IsSetSuccess() {
 		return DeviceStatusInitDeviceStatusResult_Success_DEFAULT
 	}
@@ -1589,7 +1810,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceStatusInitDeviceStatusResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewDeviceStatusInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -1796,16 +2017,16 @@ func (p *DeviceStatusUpdateDeviceStatusArgs) String() string {
 }
 
 type DeviceStatusUpdateDeviceStatusResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *DeviceStatusInfoResp `thrift:"success,0,optional"`
 }
 
 func NewDeviceStatusUpdateDeviceStatusResult() *DeviceStatusUpdateDeviceStatusResult {
 	return &DeviceStatusUpdateDeviceStatusResult{}
 }
 
-var DeviceStatusUpdateDeviceStatusResult_Success_DEFAULT *standard.Resp
+var DeviceStatusUpdateDeviceStatusResult_Success_DEFAULT *DeviceStatusInfoResp
 
-func (p *DeviceStatusUpdateDeviceStatusResult) GetSuccess() (v *standard.Resp) {
+func (p *DeviceStatusUpdateDeviceStatusResult) GetSuccess() (v *DeviceStatusInfoResp) {
 	if !p.IsSetSuccess() {
 		return DeviceStatusUpdateDeviceStatusResult_Success_DEFAULT
 	}
@@ -1879,7 +2100,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceStatusUpdateDeviceStatusResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = NewDeviceStatusInfoResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

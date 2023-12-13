@@ -2,16 +2,16 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"testing"
 )
 
-func TestFindUserByID_Run(t *testing.T) {
+func TestUpsertUser_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewFindUserByIDService(ctx)
+	s := NewUpsertUserService(ctx)
 	// init req and assert value
 
-	req := &int32{}
+	req := &user.UserInfo{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

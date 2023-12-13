@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
 )
 
 type VerifyCredentialsService struct {
@@ -13,7 +13,7 @@ func NewVerifyCredentialsService(ctx context.Context) *VerifyCredentialsService 
 }
 
 // Run create note info
-func (s *VerifyCredentialsService) Run(req *user.CredentialsReq) (resp bool, err error) {
+func (s *VerifyCredentialsService) Run(req *user_micro.CredentialsReq) (resp *user_micro.EmptyResp, err error) {
 	// Finish your business logic.
 
 	return

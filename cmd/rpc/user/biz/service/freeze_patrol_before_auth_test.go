@@ -2,16 +2,16 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user"
+	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
 	"testing"
 )
 
-func TestCreateOrUpdateUser_Run(t *testing.T) {
+func TestFreezePatrolBeforeAuth_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewCreateOrUpdateUserService(ctx)
+	s := NewFreezePatrolBeforeAuthService(ctx)
 	// init req and assert value
 
-	req := &user.UserData{}
+	req := &user_micro.AuthQuery{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	feed_program "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/feed_program"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +16,7 @@ func NewUpdateProgramInfoService(Context context.Context, RequestContext *app.Re
 	return &UpdateProgramInfoService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *UpdateProgramInfoService) Do(req *feed_program.ProgramInfo) (resp *standard.Resp, err error) {
+func (h *UpdateProgramInfoService) Do(req *feed_program.ProgramInfo) (resp *feed_program.ProgramInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

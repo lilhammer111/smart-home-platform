@@ -1,5 +1,5 @@
 namespace go auth
-include "standard.thrift"
+include "../common_http.thrift"
 
 struct SendSmsReq {
     1: required string Mobile (api.query="mobile", api.vd="regexp('^1[3-9]\\d{9}$)");
@@ -28,11 +28,22 @@ struct PwdLoginReq {
     3: required string Password (api.body="password", api.vd="regexp('.{4,16}')");
 }
 
+struct AuthInfo {
+    1: required i32 Id;
+    2: required string Token;
+    3: required i32 ExpiredAt;
+}
+
+struct AuthInfoResp {
+    1: required common_http.Resp Meta;
+    2: required AuthInfo Data;
+}
+
 service auth {
-    standard.Resp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
-    standard.Resp MobileRegister(1: MobileRegisterReq req) (api.post="/api/auth/mobile_register");
-    standard.Resp MobileLogin(1: MobileLoginReq req) (api.get="/api/auth/mobile_login");
-    standard.Resp MiniProgLogin(1: MiniProgLoginReq req) (api.get="/api/auth/mini_prog_login");
-    standard.Resp PwdLogin(1: PwdLoginReq req) (api.get="/api/auth/pwd_login");
+    common_http.Resp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
+    AuthInfoResp MobileRegister(1: MobileRegisterReq req) (api.post="/api/auth/mobile_register");
+    AuthInfoResp MobileLogin(1: MobileLoginReq req) (api.get="/api/auth/mobile_login");
+    AuthInfoResp MiniProgLogin(1: MiniProgLoginReq req) (api.get="/api/auth/mini_prog_login");
+    AuthInfoResp PwdLogin(1: PwdLoginReq req) (api.get="/api/auth/pwd_login");
 }
 

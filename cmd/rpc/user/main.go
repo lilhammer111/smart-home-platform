@@ -3,8 +3,8 @@ package main
 import (
 	"net"
 
-	"git.zqbjj.top/pet/services/cmd/rpc/user_srv/conf"
-	"git.zqbjj.top/pet/services/cmd/rpc/user_srv/kitex_gen/user/user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro/user"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
