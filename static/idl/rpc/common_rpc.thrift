@@ -1,8 +1,8 @@
-namespace go common
+namespace go common_rpc
 
-struct EmptyRpcResp {
+struct RpcEmpty {
 }
 
-struct IdRpcReq {
+struct RpcId {
     1: required i32 Id;
 }

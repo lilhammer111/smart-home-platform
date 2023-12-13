@@ -24,3 +24,5 @@ cwgo server \
     --pass "--router_dir ./router/" \
     --pass "--model_dir ./dto/hertz_gen/" \
     --pass "--snake_tag"
+
+go mod tidy

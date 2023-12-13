@@ -5,7 +5,7 @@ package feed_program
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -667,17 +667,17 @@ func (p *FeedNowReq) String() string {
 
 // response
 type ProgramListResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data []int32        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data []int32           `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewProgramListResp() *ProgramListResp {
 	return &ProgramListResp{}
 }
 
-var ProgramListResp_Meta_DEFAULT *standard.Resp
+var ProgramListResp_Meta_DEFAULT *common_http.Resp
 
-func (p *ProgramListResp) GetMeta() (v *standard.Resp) {
+func (p *ProgramListResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return ProgramListResp_Meta_DEFAULT
 	}
@@ -781,7 +781,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *ProgramListResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -892,17 +892,17 @@ func (p *ProgramListResp) String() string {
 }
 
 type ProgramInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data *ProgramInfo   `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *ProgramInfo      `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewProgramInfoResp() *ProgramInfoResp {
 	return &ProgramInfoResp{}
 }
 
-var ProgramInfoResp_Meta_DEFAULT *standard.Resp
+var ProgramInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *ProgramInfoResp) GetMeta() (v *standard.Resp) {
+func (p *ProgramInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return ProgramInfoResp_Meta_DEFAULT
 	}
@@ -1015,7 +1015,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *ProgramInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1104,17 +1104,17 @@ func (p *ProgramInfoResp) String() string {
 }
 
 type FeedProgram interface {
-	GetSelfProgramList(ctx context.Context, req *standard.Req) (r *ProgramListResp, err error)
+	GetSelfProgramList(ctx context.Context, req *common_http.Req) (r *ProgramListResp, err error)
 
-	GetProgramDetail(ctx context.Context, req *standard.Req) (r *ProgramInfoResp, err error)
+	GetProgramDetail(ctx context.Context, req *common_http.Req) (r *ProgramInfoResp, err error)
 
 	UpdateProgramInfo(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error)
 
 	CreateProgram(ctx context.Context, req *ProgramInfo) (r *ProgramInfoResp, err error)
 
-	FeedNow(ctx context.Context, req *FeedNowReq) (r *standard.Resp, err error)
+	FeedNow(ctx context.Context, req *FeedNowReq) (r *common_http.Resp, err error)
 
-	DeleteProgram(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
+	DeleteProgram(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error)
 }
 
 type FeedProgramClient struct {
@@ -1143,7 +1143,7 @@ func (p *FeedProgramClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req *standard.Req) (r *ProgramListResp, err error) {
+func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req *common_http.Req) (r *ProgramListResp, err error) {
 	var _args FeedProgramGetSelfProgramListArgs
 	_args.Req = req
 	var _result FeedProgramGetSelfProgramListResult
@@ -1152,7 +1152,7 @@ func (p *FeedProgramClient) GetSelfProgramList(ctx context.Context, req *standar
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) GetProgramDetail(ctx context.Context, req *standard.Req) (r *ProgramInfoResp, err error) {
+func (p *FeedProgramClient) GetProgramDetail(ctx context.Context, req *common_http.Req) (r *ProgramInfoResp, err error) {
 	var _args FeedProgramGetProgramDetailArgs
 	_args.Req = req
 	var _result FeedProgramGetProgramDetailResult
@@ -1179,7 +1179,7 @@ func (p *FeedProgramClient) CreateProgram(ctx context.Context, req *ProgramInfo)
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) FeedNow(ctx context.Context, req *FeedNowReq) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) FeedNow(ctx context.Context, req *FeedNowReq) (r *common_http.Resp, err error) {
 	var _args FeedProgramFeedNowArgs
 	_args.Req = req
 	var _result FeedProgramFeedNowResult
@@ -1188,7 +1188,7 @@ func (p *FeedProgramClient) FeedNow(ctx context.Context, req *FeedNowReq) (r *st
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *FeedProgramClient) DeleteProgram(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *FeedProgramClient) DeleteProgram(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args FeedProgramDeleteProgramArgs
 	_args.Req = req
 	var _result FeedProgramDeleteProgramResult
@@ -1455,7 +1455,7 @@ func (p *feedProgramProcessorFeedNow) Process(ctx context.Context, seqId int32, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramFeedNowResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.FeedNow(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FeedNow: "+err2.Error())
 		oprot.WriteMessageBegin("FeedNow", thrift.EXCEPTION, seqId)
@@ -1503,7 +1503,7 @@ func (p *feedProgramProcessorDeleteProgram) Process(ctx context.Context, seqId i
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := FeedProgramDeleteProgramResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.DeleteProgram(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteProgram: "+err2.Error())
 		oprot.WriteMessageBegin("DeleteProgram", thrift.EXCEPTION, seqId)
@@ -1533,16 +1533,16 @@ func (p *feedProgramProcessorDeleteProgram) Process(ctx context.Context, seqId i
 }
 
 type FeedProgramGetSelfProgramListArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramGetSelfProgramListArgs() *FeedProgramGetSelfProgramListArgs {
 	return &FeedProgramGetSelfProgramListArgs{}
 }
 
-var FeedProgramGetSelfProgramListArgs_Req_DEFAULT *standard.Req
+var FeedProgramGetSelfProgramListArgs_Req_DEFAULT *common_http.Req
 
-func (p *FeedProgramGetSelfProgramListArgs) GetReq() (v *standard.Req) {
+func (p *FeedProgramGetSelfProgramListArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return FeedProgramGetSelfProgramListArgs_Req_DEFAULT
 	}
@@ -1616,7 +1616,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetSelfProgramListArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1823,16 +1823,16 @@ func (p *FeedProgramGetSelfProgramListResult) String() string {
 }
 
 type FeedProgramGetProgramDetailArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramGetProgramDetailArgs() *FeedProgramGetProgramDetailArgs {
 	return &FeedProgramGetProgramDetailArgs{}
 }
 
-var FeedProgramGetProgramDetailArgs_Req_DEFAULT *standard.Req
+var FeedProgramGetProgramDetailArgs_Req_DEFAULT *common_http.Req
 
-func (p *FeedProgramGetProgramDetailArgs) GetReq() (v *standard.Req) {
+func (p *FeedProgramGetProgramDetailArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return FeedProgramGetProgramDetailArgs_Req_DEFAULT
 	}
@@ -1906,7 +1906,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramGetProgramDetailArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2837,16 +2837,16 @@ func (p *FeedProgramFeedNowArgs) String() string {
 }
 
 type FeedProgramFeedNowResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramFeedNowResult() *FeedProgramFeedNowResult {
 	return &FeedProgramFeedNowResult{}
 }
 
-var FeedProgramFeedNowResult_Success_DEFAULT *standard.Resp
+var FeedProgramFeedNowResult_Success_DEFAULT *common_http.Resp
 
-func (p *FeedProgramFeedNowResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramFeedNowResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramFeedNowResult_Success_DEFAULT
 	}
@@ -2920,7 +2920,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramFeedNowResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2983,16 +2983,16 @@ func (p *FeedProgramFeedNowResult) String() string {
 }
 
 type FeedProgramDeleteProgramArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewFeedProgramDeleteProgramArgs() *FeedProgramDeleteProgramArgs {
 	return &FeedProgramDeleteProgramArgs{}
 }
 
-var FeedProgramDeleteProgramArgs_Req_DEFAULT *standard.Req
+var FeedProgramDeleteProgramArgs_Req_DEFAULT *common_http.Req
 
-func (p *FeedProgramDeleteProgramArgs) GetReq() (v *standard.Req) {
+func (p *FeedProgramDeleteProgramArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return FeedProgramDeleteProgramArgs_Req_DEFAULT
 	}
@@ -3066,7 +3066,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramDeleteProgramArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3127,16 +3127,16 @@ func (p *FeedProgramDeleteProgramArgs) String() string {
 }
 
 type FeedProgramDeleteProgramResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewFeedProgramDeleteProgramResult() *FeedProgramDeleteProgramResult {
 	return &FeedProgramDeleteProgramResult{}
 }
 
-var FeedProgramDeleteProgramResult_Success_DEFAULT *standard.Resp
+var FeedProgramDeleteProgramResult_Success_DEFAULT *common_http.Resp
 
-func (p *FeedProgramDeleteProgramResult) GetSuccess() (v *standard.Resp) {
+func (p *FeedProgramDeleteProgramResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return FeedProgramDeleteProgramResult_Success_DEFAULT
 	}
@@ -3210,7 +3210,7 @@ ReadStructEndError:
 }
 
 func (p *FeedProgramDeleteProgramResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

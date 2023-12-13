@@ -2,7 +2,8 @@ package service
 
 import (
 	"context"
-	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
+	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type VerifyCredentialsService struct {
@@ -13,7 +14,7 @@ func NewVerifyCredentialsService(ctx context.Context) *VerifyCredentialsService 
 }
 
 // Run create note info
-func (s *VerifyCredentialsService) Run(req *user_micro.CredentialsReq) (resp *user_micro.EmptyResp, err error) {
+func (s *VerifyCredentialsService) Run(req *micro_user.RpcCredentialReq) (resp *common_rpc.RpcEmpty, err error) {
 	// Finish your business logic.
 
 	return

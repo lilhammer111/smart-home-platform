@@ -5,7 +5,7 @@ package user
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -1003,17 +1003,17 @@ func (p *UserInfo) String() string {
 
 // response
 type UserListResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data []int32        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data []int32           `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewUserListResp() *UserListResp {
 	return &UserListResp{}
 }
 
-var UserListResp_Meta_DEFAULT *standard.Resp
+var UserListResp_Meta_DEFAULT *common_http.Resp
 
-func (p *UserListResp) GetMeta() (v *standard.Resp) {
+func (p *UserListResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return UserListResp_Meta_DEFAULT
 	}
@@ -1117,7 +1117,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *UserListResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1228,17 +1228,17 @@ func (p *UserListResp) String() string {
 }
 
 type UserInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data *UserInfo      `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *UserInfo         `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewUserInfoResp() *UserInfoResp {
 	return &UserInfoResp{}
 }
 
-var UserInfoResp_Meta_DEFAULT *standard.Resp
+var UserInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *UserInfoResp) GetMeta() (v *standard.Resp) {
+func (p *UserInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return UserInfoResp_Meta_DEFAULT
 	}
@@ -1351,7 +1351,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *UserInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1442,11 +1442,11 @@ func (p *UserInfoResp) String() string {
 type User interface {
 	GetUserList(ctx context.Context, req *UsersFilter) (r *UserListResp, err error)
 
-	GetUserDetail(ctx context.Context, req *standard.Req) (r *UserInfoResp, err error)
+	GetUserDetail(ctx context.Context, req *common_http.Req) (r *UserInfoResp, err error)
 
 	UpdateUserInfo(ctx context.Context, req *UserInfo) (r *UserInfoResp, err error)
 
-	DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
+	DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error)
 }
 
 type UserClient struct {
@@ -1484,7 +1484,7 @@ func (p *UserClient) GetUserList(ctx context.Context, req *UsersFilter) (r *User
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) GetUserDetail(ctx context.Context, req *standard.Req) (r *UserInfoResp, err error) {
+func (p *UserClient) GetUserDetail(ctx context.Context, req *common_http.Req) (r *UserInfoResp, err error) {
 	var _args UserGetUserDetailArgs
 	_args.Req = req
 	var _result UserGetUserDetailResult
@@ -1502,7 +1502,7 @@ func (p *UserClient) UpdateUserInfo(ctx context.Context, req *UserInfo) (r *User
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *UserClient) DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args UserDeregisterUserArgs
 	_args.Req = req
 	var _result UserDeregisterUserResult
@@ -1719,7 +1719,7 @@ func (p *userProcessorDeregisterUser) Process(ctx context.Context, seqId int32, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserDeregisterUserResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.DeregisterUser(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeregisterUser: "+err2.Error())
 		oprot.WriteMessageBegin("DeregisterUser", thrift.EXCEPTION, seqId)
@@ -2039,16 +2039,16 @@ func (p *UserGetUserListResult) String() string {
 }
 
 type UserGetUserDetailArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewUserGetUserDetailArgs() *UserGetUserDetailArgs {
 	return &UserGetUserDetailArgs{}
 }
 
-var UserGetUserDetailArgs_Req_DEFAULT *standard.Req
+var UserGetUserDetailArgs_Req_DEFAULT *common_http.Req
 
-func (p *UserGetUserDetailArgs) GetReq() (v *standard.Req) {
+func (p *UserGetUserDetailArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return UserGetUserDetailArgs_Req_DEFAULT
 	}
@@ -2122,7 +2122,7 @@ ReadStructEndError:
 }
 
 func (p *UserGetUserDetailArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2619,16 +2619,16 @@ func (p *UserUpdateUserInfoResult) String() string {
 }
 
 type UserDeregisterUserArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewUserDeregisterUserArgs() *UserDeregisterUserArgs {
 	return &UserDeregisterUserArgs{}
 }
 
-var UserDeregisterUserArgs_Req_DEFAULT *standard.Req
+var UserDeregisterUserArgs_Req_DEFAULT *common_http.Req
 
-func (p *UserDeregisterUserArgs) GetReq() (v *standard.Req) {
+func (p *UserDeregisterUserArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return UserDeregisterUserArgs_Req_DEFAULT
 	}
@@ -2702,7 +2702,7 @@ ReadStructEndError:
 }
 
 func (p *UserDeregisterUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2763,16 +2763,16 @@ func (p *UserDeregisterUserArgs) String() string {
 }
 
 type UserDeregisterUserResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewUserDeregisterUserResult() *UserDeregisterUserResult {
 	return &UserDeregisterUserResult{}
 }
 
-var UserDeregisterUserResult_Success_DEFAULT *standard.Resp
+var UserDeregisterUserResult_Success_DEFAULT *common_http.Resp
 
-func (p *UserDeregisterUserResult) GetSuccess() (v *standard.Resp) {
+func (p *UserDeregisterUserResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return UserDeregisterUserResult_Success_DEFAULT
 	}
@@ -2846,7 +2846,7 @@ ReadStructEndError:
 }
 
 func (p *UserDeregisterUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

@@ -5,7 +5,7 @@ package user
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 	"strings"
 )
@@ -1260,8 +1260,8 @@ func (p *UserInfo) Field8DeepEqual(src string) bool {
 }
 
 type UserListResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" frugal:"1,required,standard.Resp" json:"Meta"`
-	Data []int32        `thrift:"Data,2,required" frugal:"2,required,list<i32>" json:"Data"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" frugal:"1,required,common_http.Resp" json:"Meta"`
+	Data []int32           `thrift:"Data,2,required" frugal:"2,required,list<i32>" json:"Data"`
 }
 
 func NewUserListResp() *UserListResp {
@@ -1272,9 +1272,9 @@ func (p *UserListResp) InitDefault() {
 	*p = UserListResp{}
 }
 
-var UserListResp_Meta_DEFAULT *standard.Resp
+var UserListResp_Meta_DEFAULT *common_http.Resp
 
-func (p *UserListResp) GetMeta() (v *standard.Resp) {
+func (p *UserListResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return UserListResp_Meta_DEFAULT
 	}
@@ -1284,7 +1284,7 @@ func (p *UserListResp) GetMeta() (v *standard.Resp) {
 func (p *UserListResp) GetData() (v []int32) {
 	return p.Data
 }
-func (p *UserListResp) SetMeta(val *standard.Resp) {
+func (p *UserListResp) SetMeta(val *common_http.Resp) {
 	p.Meta = val
 }
 func (p *UserListResp) SetData(val []int32) {
@@ -1384,7 +1384,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *UserListResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1509,7 +1509,7 @@ func (p *UserListResp) DeepEqual(ano *UserListResp) bool {
 	return true
 }
 
-func (p *UserListResp) Field1DeepEqual(src *standard.Resp) bool {
+func (p *UserListResp) Field1DeepEqual(src *common_http.Resp) bool {
 
 	if !p.Meta.DeepEqual(src) {
 		return false
@@ -1531,8 +1531,8 @@ func (p *UserListResp) Field2DeepEqual(src []int32) bool {
 }
 
 type UserInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" frugal:"1,required,standard.Resp" json:"Meta"`
-	Data *UserInfo      `thrift:"Data,2,required" frugal:"2,required,UserInfo" json:"Data"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" frugal:"1,required,common_http.Resp" json:"Meta"`
+	Data *UserInfo         `thrift:"Data,2,required" frugal:"2,required,UserInfo" json:"Data"`
 }
 
 func NewUserInfoResp() *UserInfoResp {
@@ -1543,9 +1543,9 @@ func (p *UserInfoResp) InitDefault() {
 	*p = UserInfoResp{}
 }
 
-var UserInfoResp_Meta_DEFAULT *standard.Resp
+var UserInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *UserInfoResp) GetMeta() (v *standard.Resp) {
+func (p *UserInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return UserInfoResp_Meta_DEFAULT
 	}
@@ -1560,7 +1560,7 @@ func (p *UserInfoResp) GetData() (v *UserInfo) {
 	}
 	return p.Data
 }
-func (p *UserInfoResp) SetMeta(val *standard.Resp) {
+func (p *UserInfoResp) SetMeta(val *common_http.Resp) {
 	p.Meta = val
 }
 func (p *UserInfoResp) SetData(val *UserInfo) {
@@ -1664,7 +1664,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *UserInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1767,7 +1767,7 @@ func (p *UserInfoResp) DeepEqual(ano *UserInfoResp) bool {
 	return true
 }
 
-func (p *UserInfoResp) Field1DeepEqual(src *standard.Resp) bool {
+func (p *UserInfoResp) Field1DeepEqual(src *common_http.Resp) bool {
 
 	if !p.Meta.DeepEqual(src) {
 		return false
@@ -1785,11 +1785,11 @@ func (p *UserInfoResp) Field2DeepEqual(src *UserInfo) bool {
 type User interface {
 	GetUserList(ctx context.Context, req *UsersFilter) (r *UserListResp, err error)
 
-	GetUserDetail(ctx context.Context, req *standard.Req) (r *UserInfoResp, err error)
+	GetUserDetail(ctx context.Context, req *common_http.Req) (r *UserInfoResp, err error)
 
 	UpdateUserInfo(ctx context.Context, req *UserInfo) (r *UserInfoResp, err error)
 
-	DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
+	DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error)
 }
 
 type UserClient struct {
@@ -1827,7 +1827,7 @@ func (p *UserClient) GetUserList(ctx context.Context, req *UsersFilter) (r *User
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) GetUserDetail(ctx context.Context, req *standard.Req) (r *UserInfoResp, err error) {
+func (p *UserClient) GetUserDetail(ctx context.Context, req *common_http.Req) (r *UserInfoResp, err error) {
 	var _args UserGetUserDetailArgs
 	_args.Req = req
 	var _result UserGetUserDetailResult
@@ -1845,7 +1845,7 @@ func (p *UserClient) UpdateUserInfo(ctx context.Context, req *UserInfo) (r *User
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *UserClient) DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args UserDeregisterUserArgs
 	_args.Req = req
 	var _result UserDeregisterUserResult
@@ -2062,7 +2062,7 @@ func (p *userProcessorDeregisterUser) Process(ctx context.Context, seqId int32, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserDeregisterUserResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.DeregisterUser(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeregisterUser: "+err2.Error())
 		oprot.WriteMessageBegin("DeregisterUser", thrift.EXCEPTION, seqId)
@@ -2436,7 +2436,7 @@ func (p *UserGetUserListResult) Field0DeepEqual(src *UserListResp) bool {
 }
 
 type UserGetUserDetailArgs struct {
-	Req *standard.Req `thrift:"req,1" frugal:"1,default,standard.Req" json:"req"`
+	Req *common_http.Req `thrift:"req,1" frugal:"1,default,common_http.Req" json:"req"`
 }
 
 func NewUserGetUserDetailArgs() *UserGetUserDetailArgs {
@@ -2447,15 +2447,15 @@ func (p *UserGetUserDetailArgs) InitDefault() {
 	*p = UserGetUserDetailArgs{}
 }
 
-var UserGetUserDetailArgs_Req_DEFAULT *standard.Req
+var UserGetUserDetailArgs_Req_DEFAULT *common_http.Req
 
-func (p *UserGetUserDetailArgs) GetReq() (v *standard.Req) {
+func (p *UserGetUserDetailArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return UserGetUserDetailArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserGetUserDetailArgs) SetReq(val *standard.Req) {
+func (p *UserGetUserDetailArgs) SetReq(val *common_http.Req) {
 	p.Req = val
 }
 
@@ -2526,7 +2526,7 @@ ReadStructEndError:
 }
 
 func (p *UserGetUserDetailArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2598,7 +2598,7 @@ func (p *UserGetUserDetailArgs) DeepEqual(ano *UserGetUserDetailArgs) bool {
 	return true
 }
 
-func (p *UserGetUserDetailArgs) Field1DeepEqual(src *standard.Req) bool {
+func (p *UserGetUserDetailArgs) Field1DeepEqual(src *common_http.Req) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -3124,7 +3124,7 @@ func (p *UserUpdateUserInfoResult) Field0DeepEqual(src *UserInfoResp) bool {
 }
 
 type UserDeregisterUserArgs struct {
-	Req *standard.Req `thrift:"req,1" frugal:"1,default,standard.Req" json:"req"`
+	Req *common_http.Req `thrift:"req,1" frugal:"1,default,common_http.Req" json:"req"`
 }
 
 func NewUserDeregisterUserArgs() *UserDeregisterUserArgs {
@@ -3135,15 +3135,15 @@ func (p *UserDeregisterUserArgs) InitDefault() {
 	*p = UserDeregisterUserArgs{}
 }
 
-var UserDeregisterUserArgs_Req_DEFAULT *standard.Req
+var UserDeregisterUserArgs_Req_DEFAULT *common_http.Req
 
-func (p *UserDeregisterUserArgs) GetReq() (v *standard.Req) {
+func (p *UserDeregisterUserArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return UserDeregisterUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserDeregisterUserArgs) SetReq(val *standard.Req) {
+func (p *UserDeregisterUserArgs) SetReq(val *common_http.Req) {
 	p.Req = val
 }
 
@@ -3214,7 +3214,7 @@ ReadStructEndError:
 }
 
 func (p *UserDeregisterUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3286,7 +3286,7 @@ func (p *UserDeregisterUserArgs) DeepEqual(ano *UserDeregisterUserArgs) bool {
 	return true
 }
 
-func (p *UserDeregisterUserArgs) Field1DeepEqual(src *standard.Req) bool {
+func (p *UserDeregisterUserArgs) Field1DeepEqual(src *common_http.Req) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -3295,7 +3295,7 @@ func (p *UserDeregisterUserArgs) Field1DeepEqual(src *standard.Req) bool {
 }
 
 type UserDeregisterUserResult struct {
-	Success *standard.Resp `thrift:"success,0,optional" frugal:"0,optional,standard.Resp" json:"success,omitempty"`
+	Success *common_http.Resp `thrift:"success,0,optional" frugal:"0,optional,common_http.Resp" json:"success,omitempty"`
 }
 
 func NewUserDeregisterUserResult() *UserDeregisterUserResult {
@@ -3306,16 +3306,16 @@ func (p *UserDeregisterUserResult) InitDefault() {
 	*p = UserDeregisterUserResult{}
 }
 
-var UserDeregisterUserResult_Success_DEFAULT *standard.Resp
+var UserDeregisterUserResult_Success_DEFAULT *common_http.Resp
 
-func (p *UserDeregisterUserResult) GetSuccess() (v *standard.Resp) {
+func (p *UserDeregisterUserResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return UserDeregisterUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *UserDeregisterUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*standard.Resp)
+	p.Success = x.(*common_http.Resp)
 }
 
 var fieldIDToName_UserDeregisterUserResult = map[int16]string{
@@ -3385,7 +3385,7 @@ ReadStructEndError:
 }
 
 func (p *UserDeregisterUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -3459,7 +3459,7 @@ func (p *UserDeregisterUserResult) DeepEqual(ano *UserDeregisterUserResult) bool
 	return true
 }
 
-func (p *UserDeregisterUserResult) Field0DeepEqual(src *standard.Resp) bool {
+func (p *UserDeregisterUserResult) Field0DeepEqual(src *common_http.Resp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

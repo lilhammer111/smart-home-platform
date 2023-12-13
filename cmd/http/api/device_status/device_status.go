@@ -3,8 +3,8 @@ package device_status
 import (
 	"context"
 
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/device_status"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
@@ -16,7 +16,7 @@ import (
 // @router /api/devices/status/detail [GET]
 func GetDeviceStatus(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)

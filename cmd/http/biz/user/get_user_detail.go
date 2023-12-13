@@ -2,9 +2,9 @@ package user
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	user "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
-	std "git.zqbjj.top/pet/services/cmd/http/kitex_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
 	"git.zqbjj.top/pet/services/cmd/http/utils/rpc_client/user_micro"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -20,13 +20,13 @@ func NewGetUserDetailService(Context context.Context, RequestContext *app.Reques
 	return &GetUserDetailService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetUserDetailService) Do(req *standard.Req) (resp *user.UserInfoResp, err error) {
+func (h *GetUserDetailService) Do(req *common_http.Req) (resp *user.UserInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	rpcReq := &std.Req{Id: req.Id}
+	rpcReq := &common_rpc.IdRpcReq{Id: req.Id}
 
 	rpcResp, err := user_micro.DefaultClient().FindUser(h.Context, rpcReq)
 	if err != nil {
@@ -40,7 +40,7 @@ func (h *GetUserDetailService) Do(req *standard.Req) (resp *user.UserInfoResp, e
 		return nil, err
 	}
 	resp = &user.UserInfoResp{
-		Meta: &standard.Resp{
+		Meta: &common_http.Resp{
 			Success: true,
 			Code:    200,
 			Message: "OK",

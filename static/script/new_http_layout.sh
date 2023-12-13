@@ -49,7 +49,7 @@ do
     service_name=$(basename "$file" .thrift)
     echo "服务名： $service_name"
     # new server layout by cwgo
-    if [ "$service_name" != "idl-ref.yml" ] && [ "$service_name" != "standard" ]
+    if [ "$service_name" != "idl-ref.yml" ] && [ "$service_name" != "common_http" ]
     then
     cwgo server \
         --type HTTP --service "$service_name" \

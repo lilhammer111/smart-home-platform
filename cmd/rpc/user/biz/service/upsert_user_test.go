@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
 
@@ -11,7 +11,7 @@ func TestUpsertUser_Run(t *testing.T) {
 	s := NewUpsertUserService(ctx)
 	// init req and assert value
 
-	req := &user.UserInfo{}
+	req := &micro_user.RpcUser{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

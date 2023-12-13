@@ -1,5 +1,5 @@
 namespace go auth
-include "../common_http.thrift"
+include "common_http.thrift"
 
 struct SendSmsReq {
     1: required string Mobile (api.query="mobile", api.vd="regexp('^1[3-9]\\d{9}$)");

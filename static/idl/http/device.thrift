@@ -1,5 +1,5 @@
 namespace go device
-include "../common_http.thrift"
+include "common_http.thrift"
 
 
 struct DeviceFilter {

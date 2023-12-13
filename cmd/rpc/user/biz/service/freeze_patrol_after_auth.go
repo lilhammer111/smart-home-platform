@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
-	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
+	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type FreezePatrolAfterAuthService struct {
@@ -14,7 +14,7 @@ func NewFreezePatrolAfterAuthService(ctx context.Context) *FreezePatrolAfterAuth
 }
 
 // Run create note info
-func (s *FreezePatrolAfterAuthService) Run(req *standard.Req) (resp *user_micro.FreezeResp, err error) {
+func (s *FreezePatrolAfterAuthService) Run(req *common_rpc.RpcId) (resp *micro_user.RpcFreezeResp, err error) {
 	// Finish your business logic.
 
 	return

@@ -5,7 +5,7 @@ package device_status
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -832,7 +832,7 @@ func (p *DeviceStatusInfo) String() string {
 
 // response
 type DeviceStatusInfoResp struct {
-	Meta *standard.Resp    `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
 	Data *DeviceStatusInfo `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
@@ -840,9 +840,9 @@ func NewDeviceStatusInfoResp() *DeviceStatusInfoResp {
 	return &DeviceStatusInfoResp{}
 }
 
-var DeviceStatusInfoResp_Meta_DEFAULT *standard.Resp
+var DeviceStatusInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *DeviceStatusInfoResp) GetMeta() (v *standard.Resp) {
+func (p *DeviceStatusInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return DeviceStatusInfoResp_Meta_DEFAULT
 	}
@@ -955,7 +955,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *DeviceStatusInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1044,7 +1044,7 @@ func (p *DeviceStatusInfoResp) String() string {
 }
 
 type DeviceStatus interface {
-	GetDeviceStatus(ctx context.Context, req *standard.Req) (r *DeviceStatusInfoResp, err error)
+	GetDeviceStatus(ctx context.Context, req *common_http.Req) (r *DeviceStatusInfoResp, err error)
 
 	InitDeviceStatus(ctx context.Context, req *DeviceStatusInfo) (r *DeviceStatusInfoResp, err error)
 
@@ -1077,7 +1077,7 @@ func (p *DeviceStatusClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *DeviceStatusClient) GetDeviceStatus(ctx context.Context, req *standard.Req) (r *DeviceStatusInfoResp, err error) {
+func (p *DeviceStatusClient) GetDeviceStatus(ctx context.Context, req *common_http.Req) (r *DeviceStatusInfoResp, err error) {
 	var _args DeviceStatusGetDeviceStatusArgs
 	_args.Req = req
 	var _result DeviceStatusGetDeviceStatusResult
@@ -1293,16 +1293,16 @@ func (p *deviceStatusProcessorUpdateDeviceStatus) Process(ctx context.Context, s
 }
 
 type DeviceStatusGetDeviceStatusArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewDeviceStatusGetDeviceStatusArgs() *DeviceStatusGetDeviceStatusArgs {
 	return &DeviceStatusGetDeviceStatusArgs{}
 }
 
-var DeviceStatusGetDeviceStatusArgs_Req_DEFAULT *standard.Req
+var DeviceStatusGetDeviceStatusArgs_Req_DEFAULT *common_http.Req
 
-func (p *DeviceStatusGetDeviceStatusArgs) GetReq() (v *standard.Req) {
+func (p *DeviceStatusGetDeviceStatusArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return DeviceStatusGetDeviceStatusArgs_Req_DEFAULT
 	}
@@ -1376,7 +1376,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceStatusGetDeviceStatusArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err

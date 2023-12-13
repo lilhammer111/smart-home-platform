@@ -5,7 +5,7 @@ package auth
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -1291,17 +1291,17 @@ func (p *AuthInfo) String() string {
 }
 
 type AuthInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data *AuthInfo      `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *AuthInfo         `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewAuthInfoResp() *AuthInfoResp {
 	return &AuthInfoResp{}
 }
 
-var AuthInfoResp_Meta_DEFAULT *standard.Resp
+var AuthInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *AuthInfoResp) GetMeta() (v *standard.Resp) {
+func (p *AuthInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return AuthInfoResp_Meta_DEFAULT
 	}
@@ -1414,7 +1414,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *AuthInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1503,7 +1503,7 @@ func (p *AuthInfoResp) String() string {
 }
 
 type Auth interface {
-	SendSms(ctx context.Context, req *SendSmsReq) (r *standard.Resp, err error)
+	SendSms(ctx context.Context, req *SendSmsReq) (r *common_http.Resp, err error)
 
 	MobileRegister(ctx context.Context, req *MobileRegisterReq) (r *AuthInfoResp, err error)
 
@@ -1540,7 +1540,7 @@ func (p *AuthClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *AuthClient) SendSms(ctx context.Context, req *SendSmsReq) (r *standard.Resp, err error) {
+func (p *AuthClient) SendSms(ctx context.Context, req *SendSmsReq) (r *common_http.Resp, err error) {
 	var _args AuthSendSmsArgs
 	_args.Req = req
 	var _result AuthSendSmsResult
@@ -1650,7 +1650,7 @@ func (p *authProcessorSendSms) Process(ctx context.Context, seqId int32, iprot, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := AuthSendSmsResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.SendSms(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing SendSms: "+err2.Error())
 		oprot.WriteMessageBegin("SendSms", thrift.EXCEPTION, seqId)
@@ -2016,16 +2016,16 @@ func (p *AuthSendSmsArgs) String() string {
 }
 
 type AuthSendSmsResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewAuthSendSmsResult() *AuthSendSmsResult {
 	return &AuthSendSmsResult{}
 }
 
-var AuthSendSmsResult_Success_DEFAULT *standard.Resp
+var AuthSendSmsResult_Success_DEFAULT *common_http.Resp
 
-func (p *AuthSendSmsResult) GetSuccess() (v *standard.Resp) {
+func (p *AuthSendSmsResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return AuthSendSmsResult_Success_DEFAULT
 	}
@@ -2099,7 +2099,7 @@ ReadStructEndError:
 }
 
 func (p *AuthSendSmsResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

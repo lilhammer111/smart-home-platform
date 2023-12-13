@@ -1,5 +1,5 @@
 namespace go feed_program
-include "../common_http.thrift"
+include "common_http.thrift"
 
 
 struct ProgramInfo {

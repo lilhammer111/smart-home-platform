@@ -5,7 +5,7 @@ package alert
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -850,17 +850,17 @@ func (p *AlertInfo) String() string {
 
 // response
 type AlertListResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data []int32        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data []int32           `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewAlertListResp() *AlertListResp {
 	return &AlertListResp{}
 }
 
-var AlertListResp_Meta_DEFAULT *standard.Resp
+var AlertListResp_Meta_DEFAULT *common_http.Resp
 
-func (p *AlertListResp) GetMeta() (v *standard.Resp) {
+func (p *AlertListResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return AlertListResp_Meta_DEFAULT
 	}
@@ -964,7 +964,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *AlertListResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1075,17 +1075,17 @@ func (p *AlertListResp) String() string {
 }
 
 type AlertInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data *AlertInfo     `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *AlertInfo        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewAlertInfoResp() *AlertInfoResp {
 	return &AlertInfoResp{}
 }
 
-var AlertInfoResp_Meta_DEFAULT *standard.Resp
+var AlertInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *AlertInfoResp) GetMeta() (v *standard.Resp) {
+func (p *AlertInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return AlertInfoResp_Meta_DEFAULT
 	}
@@ -1198,7 +1198,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *AlertInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1289,13 +1289,13 @@ func (p *AlertInfoResp) String() string {
 type Alert interface {
 	GetAlertList(ctx context.Context, req *AlertFilter) (r *AlertListResp, err error)
 
-	GetAlertDetail(ctx context.Context, req *standard.Req) (r *AlertInfoResp, err error)
+	GetAlertDetail(ctx context.Context, req *common_http.Req) (r *AlertInfoResp, err error)
 
 	UpdateAlertInfo(ctx context.Context, req *AlertInfo) (r *AlertInfoResp, err error)
 
 	UploadAlertInfo(ctx context.Context, req *AlertInfo) (r *AlertInfoResp, err error)
 
-	DeleteAlert(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
+	DeleteAlert(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error)
 }
 
 type AlertClient struct {
@@ -1333,7 +1333,7 @@ func (p *AlertClient) GetAlertList(ctx context.Context, req *AlertFilter) (r *Al
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AlertClient) GetAlertDetail(ctx context.Context, req *standard.Req) (r *AlertInfoResp, err error) {
+func (p *AlertClient) GetAlertDetail(ctx context.Context, req *common_http.Req) (r *AlertInfoResp, err error) {
 	var _args AlertGetAlertDetailArgs
 	_args.Req = req
 	var _result AlertGetAlertDetailResult
@@ -1360,7 +1360,7 @@ func (p *AlertClient) UploadAlertInfo(ctx context.Context, req *AlertInfo) (r *A
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AlertClient) DeleteAlert(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *AlertClient) DeleteAlert(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args AlertDeleteAlertArgs
 	_args.Req = req
 	var _result AlertDeleteAlertResult
@@ -1626,7 +1626,7 @@ func (p *alertProcessorDeleteAlert) Process(ctx context.Context, seqId int32, ip
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := AlertDeleteAlertResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.DeleteAlert(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteAlert: "+err2.Error())
 		oprot.WriteMessageBegin("DeleteAlert", thrift.EXCEPTION, seqId)
@@ -1946,16 +1946,16 @@ func (p *AlertGetAlertListResult) String() string {
 }
 
 type AlertGetAlertDetailArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewAlertGetAlertDetailArgs() *AlertGetAlertDetailArgs {
 	return &AlertGetAlertDetailArgs{}
 }
 
-var AlertGetAlertDetailArgs_Req_DEFAULT *standard.Req
+var AlertGetAlertDetailArgs_Req_DEFAULT *common_http.Req
 
-func (p *AlertGetAlertDetailArgs) GetReq() (v *standard.Req) {
+func (p *AlertGetAlertDetailArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return AlertGetAlertDetailArgs_Req_DEFAULT
 	}
@@ -2029,7 +2029,7 @@ ReadStructEndError:
 }
 
 func (p *AlertGetAlertDetailArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2816,16 +2816,16 @@ func (p *AlertUploadAlertInfoResult) String() string {
 }
 
 type AlertDeleteAlertArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewAlertDeleteAlertArgs() *AlertDeleteAlertArgs {
 	return &AlertDeleteAlertArgs{}
 }
 
-var AlertDeleteAlertArgs_Req_DEFAULT *standard.Req
+var AlertDeleteAlertArgs_Req_DEFAULT *common_http.Req
 
-func (p *AlertDeleteAlertArgs) GetReq() (v *standard.Req) {
+func (p *AlertDeleteAlertArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return AlertDeleteAlertArgs_Req_DEFAULT
 	}
@@ -2899,7 +2899,7 @@ ReadStructEndError:
 }
 
 func (p *AlertDeleteAlertArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2960,16 +2960,16 @@ func (p *AlertDeleteAlertArgs) String() string {
 }
 
 type AlertDeleteAlertResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewAlertDeleteAlertResult() *AlertDeleteAlertResult {
 	return &AlertDeleteAlertResult{}
 }
 
-var AlertDeleteAlertResult_Success_DEFAULT *standard.Resp
+var AlertDeleteAlertResult_Success_DEFAULT *common_http.Resp
 
-func (p *AlertDeleteAlertResult) GetSuccess() (v *standard.Resp) {
+func (p *AlertDeleteAlertResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return AlertDeleteAlertResult_Success_DEFAULT
 	}
@@ -3043,7 +3043,7 @@ ReadStructEndError:
 }
 
 func (p *AlertDeleteAlertResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

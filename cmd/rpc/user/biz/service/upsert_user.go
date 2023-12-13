@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type UpsertUserService struct {
@@ -13,7 +13,7 @@ func NewUpsertUserService(ctx context.Context) *UpsertUserService {
 }
 
 // Run create note info
-func (s *UpsertUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err error) {
+func (s *UpsertUserService) Run(req *micro_user.RpcUser) (resp *micro_user.RpcUser, err error) {
 	// Finish your business logic.
 
 	return

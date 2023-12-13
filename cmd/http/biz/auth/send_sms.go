@@ -4,7 +4,7 @@ import (
 	"context"
 
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	common_http "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,7 +17,7 @@ func NewSendSmsService(Context context.Context, RequestContext *app.RequestConte
 	return &SendSmsService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *SendSmsService) Do(req *auth.SendSmsReq) (resp *standard.Resp, err error) {
+func (h *SendSmsService) Do(req *auth.SendSmsReq) (resp *common_http.Resp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

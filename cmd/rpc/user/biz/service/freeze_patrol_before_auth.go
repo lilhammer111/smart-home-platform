@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user_micro "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type FreezePatrolBeforeAuthService struct {
@@ -13,7 +13,7 @@ func NewFreezePatrolBeforeAuthService(ctx context.Context) *FreezePatrolBeforeAu
 }
 
 // Run create note info
-func (s *FreezePatrolBeforeAuthService) Run(req *user_micro.AuthQuery) (resp *user_micro.FreezeResp, err error) {
+func (s *FreezePatrolBeforeAuthService) Run(req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
 	// Finish your business logic.
 
 	return

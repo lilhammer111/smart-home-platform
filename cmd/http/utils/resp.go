@@ -3,36 +3,36 @@ package utils
 import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/alert"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"
 	"go/types"
 )
+
+// SendErrResponse  pack error response
+func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
+	// todo edit custom code
+	c.String(code, err.Error())
+}
+
+type StandardResp interface {
+	GetMeta() (v *common_http.Resp)
+}
+
+type ListResp interface {
+	GetMeta() (v *common_http.Resp)
+	GetData() (v []int32)
+}
+
+type AlertInfoResp interface {
+	GetMeta() (v *common_http.Resp)
+	GetData() (v *alert.AlertInfo)
+}
 
 type FormattedResp struct {
 	Success bool
 	Code    int16
 	Message string
 	Data    any
-}
-
-type StandardResp interface {
-	GetMeta() (v *standard.Resp)
-}
-
-type ListResp interface {
-	GetMeta() (v *standard.Resp)
-	GetData() (v []int32)
-}
-
-type AlertInfoResp interface {
-	GetMeta() (v *standard.Resp)
-	GetData() (v *alert.AlertInfo)
-}
-
-// SendErrResponse  pack error response
-func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
-	// todo edit custom code
-	c.String(code, err.Error())
 }
 
 // SendSuccessResponse  pack success response

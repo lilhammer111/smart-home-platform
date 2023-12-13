@@ -3,8 +3,8 @@ package feed_program
 import (
 	"context"
 
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/feed_program"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
@@ -16,7 +16,7 @@ import (
 // @router /api/programs/list [GET]
 func GetSelfProgramList(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -36,7 +36,7 @@ func GetSelfProgramList(ctx context.Context, c *app.RequestContext) {
 // @router /api/programs/detail [GET]
 func GetProgramDetail(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -116,7 +116,7 @@ func FeedNow(ctx context.Context, c *app.RequestContext) {
 // @router /api/programs/delete [DELETE]
 func DeleteProgram(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)

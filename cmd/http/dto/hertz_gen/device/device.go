@@ -5,7 +5,7 @@ package device
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -1058,17 +1058,17 @@ func (p *DeviceInfo) String() string {
 
 // response
 type DeviceListResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data []int32        `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data []int32           `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewDeviceListResp() *DeviceListResp {
 	return &DeviceListResp{}
 }
 
-var DeviceListResp_Meta_DEFAULT *standard.Resp
+var DeviceListResp_Meta_DEFAULT *common_http.Resp
 
-func (p *DeviceListResp) GetMeta() (v *standard.Resp) {
+func (p *DeviceListResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return DeviceListResp_Meta_DEFAULT
 	}
@@ -1172,7 +1172,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *DeviceListResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1283,17 +1283,17 @@ func (p *DeviceListResp) String() string {
 }
 
 type DeviceInfoResp struct {
-	Meta *standard.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
-	Data *DeviceInfo    `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
+	Meta *common_http.Resp `thrift:"Meta,1,required" form:"meta,required" json:"meta,required" query:"meta,required"`
+	Data *DeviceInfo       `thrift:"Data,2,required" form:"data,required" json:"data,required" query:"data,required"`
 }
 
 func NewDeviceInfoResp() *DeviceInfoResp {
 	return &DeviceInfoResp{}
 }
 
-var DeviceInfoResp_Meta_DEFAULT *standard.Resp
+var DeviceInfoResp_Meta_DEFAULT *common_http.Resp
 
-func (p *DeviceInfoResp) GetMeta() (v *standard.Resp) {
+func (p *DeviceInfoResp) GetMeta() (v *common_http.Resp) {
 	if !p.IsSetMeta() {
 		return DeviceInfoResp_Meta_DEFAULT
 	}
@@ -1406,7 +1406,7 @@ RequiredFieldNotSetError:
 }
 
 func (p *DeviceInfoResp) ReadField1(iprot thrift.TProtocol) error {
-	p.Meta = standard.NewResp()
+	p.Meta = common_http.NewResp()
 
 	if err := p.Meta.Read(iprot); err != nil {
 		return err
@@ -1497,13 +1497,13 @@ func (p *DeviceInfoResp) String() string {
 type Device interface {
 	GetDeviceList(ctx context.Context, req *DeviceFilter) (r *DeviceListResp, err error)
 
-	GetDeviceDetail(ctx context.Context, req *standard.Req) (r *DeviceInfoResp, err error)
+	GetDeviceDetail(ctx context.Context, req *common_http.Req) (r *DeviceInfoResp, err error)
 
 	UpdateDeviceInfo(ctx context.Context, req *DeviceInfo) (r *DeviceInfoResp, err error)
 
 	BindDevice(ctx context.Context, req *DeviceInfo) (r *DeviceInfoResp, err error)
 
-	UnbindDevice(ctx context.Context, req *standard.Req) (r *standard.Resp, err error)
+	UnbindDevice(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error)
 }
 
 type DeviceClient struct {
@@ -1541,7 +1541,7 @@ func (p *DeviceClient) GetDeviceList(ctx context.Context, req *DeviceFilter) (r 
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeviceClient) GetDeviceDetail(ctx context.Context, req *standard.Req) (r *DeviceInfoResp, err error) {
+func (p *DeviceClient) GetDeviceDetail(ctx context.Context, req *common_http.Req) (r *DeviceInfoResp, err error) {
 	var _args DeviceGetDeviceDetailArgs
 	_args.Req = req
 	var _result DeviceGetDeviceDetailResult
@@ -1568,7 +1568,7 @@ func (p *DeviceClient) BindDevice(ctx context.Context, req *DeviceInfo) (r *Devi
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *DeviceClient) UnbindDevice(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *DeviceClient) UnbindDevice(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args DeviceUnbindDeviceArgs
 	_args.Req = req
 	var _result DeviceUnbindDeviceResult
@@ -1834,7 +1834,7 @@ func (p *deviceProcessorUnbindDevice) Process(ctx context.Context, seqId int32, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := DeviceUnbindDeviceResult{}
-	var retval *standard.Resp
+	var retval *common_http.Resp
 	if retval, err2 = p.handler.UnbindDevice(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UnbindDevice: "+err2.Error())
 		oprot.WriteMessageBegin("UnbindDevice", thrift.EXCEPTION, seqId)
@@ -2154,16 +2154,16 @@ func (p *DeviceGetDeviceListResult) String() string {
 }
 
 type DeviceGetDeviceDetailArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewDeviceGetDeviceDetailArgs() *DeviceGetDeviceDetailArgs {
 	return &DeviceGetDeviceDetailArgs{}
 }
 
-var DeviceGetDeviceDetailArgs_Req_DEFAULT *standard.Req
+var DeviceGetDeviceDetailArgs_Req_DEFAULT *common_http.Req
 
-func (p *DeviceGetDeviceDetailArgs) GetReq() (v *standard.Req) {
+func (p *DeviceGetDeviceDetailArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return DeviceGetDeviceDetailArgs_Req_DEFAULT
 	}
@@ -2237,7 +2237,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceGetDeviceDetailArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3024,16 +3024,16 @@ func (p *DeviceBindDeviceResult) String() string {
 }
 
 type DeviceUnbindDeviceArgs struct {
-	Req *standard.Req `thrift:"req,1"`
+	Req *common_http.Req `thrift:"req,1"`
 }
 
 func NewDeviceUnbindDeviceArgs() *DeviceUnbindDeviceArgs {
 	return &DeviceUnbindDeviceArgs{}
 }
 
-var DeviceUnbindDeviceArgs_Req_DEFAULT *standard.Req
+var DeviceUnbindDeviceArgs_Req_DEFAULT *common_http.Req
 
-func (p *DeviceUnbindDeviceArgs) GetReq() (v *standard.Req) {
+func (p *DeviceUnbindDeviceArgs) GetReq() (v *common_http.Req) {
 	if !p.IsSetReq() {
 		return DeviceUnbindDeviceArgs_Req_DEFAULT
 	}
@@ -3107,7 +3107,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceUnbindDeviceArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = standard.NewReq()
+	p.Req = common_http.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3168,16 +3168,16 @@ func (p *DeviceUnbindDeviceArgs) String() string {
 }
 
 type DeviceUnbindDeviceResult struct {
-	Success *standard.Resp `thrift:"success,0,optional"`
+	Success *common_http.Resp `thrift:"success,0,optional"`
 }
 
 func NewDeviceUnbindDeviceResult() *DeviceUnbindDeviceResult {
 	return &DeviceUnbindDeviceResult{}
 }
 
-var DeviceUnbindDeviceResult_Success_DEFAULT *standard.Resp
+var DeviceUnbindDeviceResult_Success_DEFAULT *common_http.Resp
 
-func (p *DeviceUnbindDeviceResult) GetSuccess() (v *standard.Resp) {
+func (p *DeviceUnbindDeviceResult) GetSuccess() (v *common_http.Resp) {
 	if !p.IsSetSuccess() {
 		return DeviceUnbindDeviceResult_Success_DEFAULT
 	}
@@ -3251,7 +3251,7 @@ ReadStructEndError:
 }
 
 func (p *DeviceUnbindDeviceResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = standard.NewResp()
+	p.Success = common_http.NewResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err

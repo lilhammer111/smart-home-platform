@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/http/utils/rpc_client/user_micro"
+	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
 	"testing"
 )
 
@@ -12,7 +12,7 @@ func TestFindUser_Run(t *testing.T) {
 	s := NewFindUserService(ctx)
 	// init req and assert value
 
-	req := &standard.Req{}
+	req := &common_rpc.RpcId{Id: 1}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
@@ -21,5 +21,8 @@ func TestFindUser_Run(t *testing.T) {
 		t.Errorf("unexpected nil response")
 	}
 	// todo: edit your unit test
-
+	_, err = user_micro.DefaultClient().FindUser(ctx, req)
+	if err != nil {
+		t.Errorf("failed to get user detail: %s", err)
+	}
 }

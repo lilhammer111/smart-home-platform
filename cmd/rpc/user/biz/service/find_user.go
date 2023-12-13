@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type FindUserService struct {
@@ -14,7 +14,7 @@ func NewFindUserService(ctx context.Context) *FindUserService {
 }
 
 // Run create note info
-func (s *FindUserService) Run(req *standard.Req) (resp *user.UserInfo, err error) {
+func (s *FindUserService) Run(req *common_rpc.RpcId) (resp *micro_user.RpcUser, err error) {
 	// Finish your business logic.
 
 	return

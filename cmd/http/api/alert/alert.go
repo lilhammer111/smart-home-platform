@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/alert"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
@@ -36,7 +36,7 @@ func GetAlertList(ctx context.Context, c *app.RequestContext) {
 // @router /api/devices/alerts/detail [GET]
 func GetAlertDetail(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -96,7 +96,7 @@ func UploadAlertInfo(ctx context.Context, c *app.RequestContext) {
 // @router /api/devices/alerts/delete [DELETE]
 func DeleteAlert(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req standard.Req
+	var req common_http.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)

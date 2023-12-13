@@ -5,81 +5,80 @@ package micro_user
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
 	"github.com/apache/thrift/lib/go/thrift"
 	"strings"
 )
 
-type CredentialRpcReq struct {
+type RpcCredentialReq struct {
 	SmsCode  string  `thrift:"SmsCode,1,required" frugal:"1,required,string" json:"SmsCode"`
 	Mobile   string  `thrift:"Mobile,2,required" frugal:"2,required,string" json:"Mobile"`
 	Password *string `thrift:"Password,3,optional" frugal:"3,optional,string" json:"Password,omitempty"`
 	Username *string `thrift:"Username,4,optional" frugal:"4,optional,string" json:"Username,omitempty"`
 }
 
-func NewCredentialRpcReq() *CredentialRpcReq {
-	return &CredentialRpcReq{}
+func NewRpcCredentialReq() *RpcCredentialReq {
+	return &RpcCredentialReq{}
 }
 
-func (p *CredentialRpcReq) InitDefault() {
-	*p = CredentialRpcReq{}
+func (p *RpcCredentialReq) InitDefault() {
+	*p = RpcCredentialReq{}
 }
 
-func (p *CredentialRpcReq) GetSmsCode() (v string) {
+func (p *RpcCredentialReq) GetSmsCode() (v string) {
 	return p.SmsCode
 }
 
-func (p *CredentialRpcReq) GetMobile() (v string) {
+func (p *RpcCredentialReq) GetMobile() (v string) {
 	return p.Mobile
 }
 
-var CredentialRpcReq_Password_DEFAULT string
+var RpcCredentialReq_Password_DEFAULT string
 
-func (p *CredentialRpcReq) GetPassword() (v string) {
+func (p *RpcCredentialReq) GetPassword() (v string) {
 	if !p.IsSetPassword() {
-		return CredentialRpcReq_Password_DEFAULT
+		return RpcCredentialReq_Password_DEFAULT
 	}
 	return *p.Password
 }
 
-var CredentialRpcReq_Username_DEFAULT string
+var RpcCredentialReq_Username_DEFAULT string
 
-func (p *CredentialRpcReq) GetUsername() (v string) {
+func (p *RpcCredentialReq) GetUsername() (v string) {
 	if !p.IsSetUsername() {
-		return CredentialRpcReq_Username_DEFAULT
+		return RpcCredentialReq_Username_DEFAULT
 	}
 	return *p.Username
 }
-func (p *CredentialRpcReq) SetSmsCode(val string) {
+func (p *RpcCredentialReq) SetSmsCode(val string) {
 	p.SmsCode = val
 }
-func (p *CredentialRpcReq) SetMobile(val string) {
+func (p *RpcCredentialReq) SetMobile(val string) {
 	p.Mobile = val
 }
-func (p *CredentialRpcReq) SetPassword(val *string) {
+func (p *RpcCredentialReq) SetPassword(val *string) {
 	p.Password = val
 }
-func (p *CredentialRpcReq) SetUsername(val *string) {
+func (p *RpcCredentialReq) SetUsername(val *string) {
 	p.Username = val
 }
 
-var fieldIDToName_CredentialRpcReq = map[int16]string{
+var fieldIDToName_RpcCredentialReq = map[int16]string{
 	1: "SmsCode",
 	2: "Mobile",
 	3: "Password",
 	4: "Username",
 }
 
-func (p *CredentialRpcReq) IsSetPassword() bool {
+func (p *RpcCredentialReq) IsSetPassword() bool {
 	return p.Password != nil
 }
 
-func (p *CredentialRpcReq) IsSetUsername() bool {
+func (p *RpcCredentialReq) IsSetUsername() bool {
 	return p.Username != nil
 }
 
-func (p *CredentialRpcReq) Read(iprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -170,7 +169,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CredentialRpcReq[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RpcCredentialReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -179,10 +178,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_CredentialRpcReq[fieldId]))
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_RpcCredentialReq[fieldId]))
 }
 
-func (p *CredentialRpcReq) ReadField1(iprot thrift.TProtocol) error {
+func (p *RpcCredentialReq) ReadField1(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -191,7 +190,7 @@ func (p *CredentialRpcReq) ReadField1(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *CredentialRpcReq) ReadField2(iprot thrift.TProtocol) error {
+func (p *RpcCredentialReq) ReadField2(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -200,7 +199,7 @@ func (p *CredentialRpcReq) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *CredentialRpcReq) ReadField3(iprot thrift.TProtocol) error {
+func (p *RpcCredentialReq) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -209,7 +208,7 @@ func (p *CredentialRpcReq) ReadField3(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *CredentialRpcReq) ReadField4(iprot thrift.TProtocol) error {
+func (p *RpcCredentialReq) ReadField4(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -219,9 +218,9 @@ func (p *CredentialRpcReq) ReadField4(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CredentialRpcReq) Write(oprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CredentialRpcReq"); err != nil {
+	if err = oprot.WriteStructBegin("RpcCredentialReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -259,7 +258,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CredentialRpcReq) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("SmsCode", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -275,7 +274,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
-func (p *CredentialRpcReq) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Mobile", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -291,7 +290,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
-func (p *CredentialRpcReq) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPassword() {
 		if err = oprot.WriteFieldBegin("Password", thrift.STRING, 3); err != nil {
 			goto WriteFieldBeginError
@@ -309,7 +308,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
-func (p *CredentialRpcReq) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *RpcCredentialReq) writeField4(oprot thrift.TProtocol) (err error) {
 	if p.IsSetUsername() {
 		if err = oprot.WriteFieldBegin("Username", thrift.STRING, 4); err != nil {
 			goto WriteFieldBeginError
@@ -328,14 +327,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
-func (p *CredentialRpcReq) String() string {
+func (p *RpcCredentialReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CredentialRpcReq(%+v)", *p)
+	return fmt.Sprintf("RpcCredentialReq(%+v)", *p)
 }
 
-func (p *CredentialRpcReq) DeepEqual(ano *CredentialRpcReq) bool {
+func (p *RpcCredentialReq) DeepEqual(ano *RpcCredentialReq) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -356,21 +355,21 @@ func (p *CredentialRpcReq) DeepEqual(ano *CredentialRpcReq) bool {
 	return true
 }
 
-func (p *CredentialRpcReq) Field1DeepEqual(src string) bool {
+func (p *RpcCredentialReq) Field1DeepEqual(src string) bool {
 
 	if strings.Compare(p.SmsCode, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *CredentialRpcReq) Field2DeepEqual(src string) bool {
+func (p *RpcCredentialReq) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Mobile, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *CredentialRpcReq) Field3DeepEqual(src *string) bool {
+func (p *RpcCredentialReq) Field3DeepEqual(src *string) bool {
 
 	if p.Password == src {
 		return true
@@ -382,7 +381,7 @@ func (p *CredentialRpcReq) Field3DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *CredentialRpcReq) Field4DeepEqual(src *string) bool {
+func (p *RpcCredentialReq) Field4DeepEqual(src *string) bool {
 
 	if p.Username == src {
 		return true
@@ -395,75 +394,75 @@ func (p *CredentialRpcReq) Field4DeepEqual(src *string) bool {
 	return true
 }
 
-type FreezeRpcReq struct {
+type RpcFreezeReq struct {
 	Username *string `thrift:"Username,1,optional" frugal:"1,optional,string" json:"Username,omitempty"`
 	Mobile   *string `thrift:"Mobile,2,optional" frugal:"2,optional,string" json:"Mobile,omitempty"`
 	Email    *string `thrift:"Email,3,optional" frugal:"3,optional,string" json:"Email,omitempty"`
 }
 
-func NewFreezeRpcReq() *FreezeRpcReq {
-	return &FreezeRpcReq{}
+func NewRpcFreezeReq() *RpcFreezeReq {
+	return &RpcFreezeReq{}
 }
 
-func (p *FreezeRpcReq) InitDefault() {
-	*p = FreezeRpcReq{}
+func (p *RpcFreezeReq) InitDefault() {
+	*p = RpcFreezeReq{}
 }
 
-var FreezeRpcReq_Username_DEFAULT string
+var RpcFreezeReq_Username_DEFAULT string
 
-func (p *FreezeRpcReq) GetUsername() (v string) {
+func (p *RpcFreezeReq) GetUsername() (v string) {
 	if !p.IsSetUsername() {
-		return FreezeRpcReq_Username_DEFAULT
+		return RpcFreezeReq_Username_DEFAULT
 	}
 	return *p.Username
 }
 
-var FreezeRpcReq_Mobile_DEFAULT string
+var RpcFreezeReq_Mobile_DEFAULT string
 
-func (p *FreezeRpcReq) GetMobile() (v string) {
+func (p *RpcFreezeReq) GetMobile() (v string) {
 	if !p.IsSetMobile() {
-		return FreezeRpcReq_Mobile_DEFAULT
+		return RpcFreezeReq_Mobile_DEFAULT
 	}
 	return *p.Mobile
 }
 
-var FreezeRpcReq_Email_DEFAULT string
+var RpcFreezeReq_Email_DEFAULT string
 
-func (p *FreezeRpcReq) GetEmail() (v string) {
+func (p *RpcFreezeReq) GetEmail() (v string) {
 	if !p.IsSetEmail() {
-		return FreezeRpcReq_Email_DEFAULT
+		return RpcFreezeReq_Email_DEFAULT
 	}
 	return *p.Email
 }
-func (p *FreezeRpcReq) SetUsername(val *string) {
+func (p *RpcFreezeReq) SetUsername(val *string) {
 	p.Username = val
 }
-func (p *FreezeRpcReq) SetMobile(val *string) {
+func (p *RpcFreezeReq) SetMobile(val *string) {
 	p.Mobile = val
 }
-func (p *FreezeRpcReq) SetEmail(val *string) {
+func (p *RpcFreezeReq) SetEmail(val *string) {
 	p.Email = val
 }
 
-var fieldIDToName_FreezeRpcReq = map[int16]string{
+var fieldIDToName_RpcFreezeReq = map[int16]string{
 	1: "Username",
 	2: "Mobile",
 	3: "Email",
 }
 
-func (p *FreezeRpcReq) IsSetUsername() bool {
+func (p *RpcFreezeReq) IsSetUsername() bool {
 	return p.Username != nil
 }
 
-func (p *FreezeRpcReq) IsSetMobile() bool {
+func (p *RpcFreezeReq) IsSetMobile() bool {
 	return p.Mobile != nil
 }
 
-func (p *FreezeRpcReq) IsSetEmail() bool {
+func (p *RpcFreezeReq) IsSetEmail() bool {
 	return p.Email != nil
 }
 
-func (p *FreezeRpcReq) Read(iprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -531,7 +530,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FreezeRpcReq[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RpcFreezeReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -541,7 +540,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *FreezeRpcReq) ReadField1(iprot thrift.TProtocol) error {
+func (p *RpcFreezeReq) ReadField1(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -550,7 +549,7 @@ func (p *FreezeRpcReq) ReadField1(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *FreezeRpcReq) ReadField2(iprot thrift.TProtocol) error {
+func (p *RpcFreezeReq) ReadField2(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -559,7 +558,7 @@ func (p *FreezeRpcReq) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *FreezeRpcReq) ReadField3(iprot thrift.TProtocol) error {
+func (p *RpcFreezeReq) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -569,9 +568,9 @@ func (p *FreezeRpcReq) ReadField3(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *FreezeRpcReq) Write(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezeRpcReq"); err != nil {
+	if err = oprot.WriteStructBegin("RpcFreezeReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -605,7 +604,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *FreezeRpcReq) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if p.IsSetUsername() {
 		if err = oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
 			goto WriteFieldBeginError
@@ -623,7 +622,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
-func (p *FreezeRpcReq) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeReq) writeField2(oprot thrift.TProtocol) (err error) {
 	if p.IsSetMobile() {
 		if err = oprot.WriteFieldBegin("Mobile", thrift.STRING, 2); err != nil {
 			goto WriteFieldBeginError
@@ -641,7 +640,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
-func (p *FreezeRpcReq) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeReq) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetEmail() {
 		if err = oprot.WriteFieldBegin("Email", thrift.STRING, 3); err != nil {
 			goto WriteFieldBeginError
@@ -660,14 +659,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *FreezeRpcReq) String() string {
+func (p *RpcFreezeReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("FreezeRpcReq(%+v)", *p)
+	return fmt.Sprintf("RpcFreezeReq(%+v)", *p)
 }
 
-func (p *FreezeRpcReq) DeepEqual(ano *FreezeRpcReq) bool {
+func (p *RpcFreezeReq) DeepEqual(ano *RpcFreezeReq) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -685,7 +684,7 @@ func (p *FreezeRpcReq) DeepEqual(ano *FreezeRpcReq) bool {
 	return true
 }
 
-func (p *FreezeRpcReq) Field1DeepEqual(src *string) bool {
+func (p *RpcFreezeReq) Field1DeepEqual(src *string) bool {
 
 	if p.Username == src {
 		return true
@@ -697,7 +696,7 @@ func (p *FreezeRpcReq) Field1DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *FreezeRpcReq) Field2DeepEqual(src *string) bool {
+func (p *RpcFreezeReq) Field2DeepEqual(src *string) bool {
 
 	if p.Mobile == src {
 		return true
@@ -709,7 +708,7 @@ func (p *FreezeRpcReq) Field2DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *FreezeRpcReq) Field3DeepEqual(src *string) bool {
+func (p *RpcFreezeReq) Field3DeepEqual(src *string) bool {
 
 	if p.Email == src {
 		return true
@@ -722,48 +721,48 @@ func (p *FreezeRpcReq) Field3DeepEqual(src *string) bool {
 	return true
 }
 
-type FreezeRpcResp struct {
+type RpcFreezeResp struct {
 	IsFrozen bool    `thrift:"IsFrozen,9,required" frugal:"9,required,bool" json:"IsFrozen"`
 	ThawedAt *string `thrift:"ThawedAt,10,optional" frugal:"10,optional,string" json:"ThawedAt,omitempty"`
 }
 
-func NewFreezeRpcResp() *FreezeRpcResp {
-	return &FreezeRpcResp{}
+func NewRpcFreezeResp() *RpcFreezeResp {
+	return &RpcFreezeResp{}
 }
 
-func (p *FreezeRpcResp) InitDefault() {
-	*p = FreezeRpcResp{}
+func (p *RpcFreezeResp) InitDefault() {
+	*p = RpcFreezeResp{}
 }
 
-func (p *FreezeRpcResp) GetIsFrozen() (v bool) {
+func (p *RpcFreezeResp) GetIsFrozen() (v bool) {
 	return p.IsFrozen
 }
 
-var FreezeRpcResp_ThawedAt_DEFAULT string
+var RpcFreezeResp_ThawedAt_DEFAULT string
 
-func (p *FreezeRpcResp) GetThawedAt() (v string) {
+func (p *RpcFreezeResp) GetThawedAt() (v string) {
 	if !p.IsSetThawedAt() {
-		return FreezeRpcResp_ThawedAt_DEFAULT
+		return RpcFreezeResp_ThawedAt_DEFAULT
 	}
 	return *p.ThawedAt
 }
-func (p *FreezeRpcResp) SetIsFrozen(val bool) {
+func (p *RpcFreezeResp) SetIsFrozen(val bool) {
 	p.IsFrozen = val
 }
-func (p *FreezeRpcResp) SetThawedAt(val *string) {
+func (p *RpcFreezeResp) SetThawedAt(val *string) {
 	p.ThawedAt = val
 }
 
-var fieldIDToName_FreezeRpcResp = map[int16]string{
+var fieldIDToName_RpcFreezeResp = map[int16]string{
 	9:  "IsFrozen",
 	10: "ThawedAt",
 }
 
-func (p *FreezeRpcResp) IsSetThawedAt() bool {
+func (p *RpcFreezeResp) IsSetThawedAt() bool {
 	return p.ThawedAt != nil
 }
 
-func (p *FreezeRpcResp) Read(iprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeResp) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -827,7 +826,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FreezeRpcResp[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RpcFreezeResp[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -836,10 +835,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_FreezeRpcResp[fieldId]))
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_RpcFreezeResp[fieldId]))
 }
 
-func (p *FreezeRpcResp) ReadField9(iprot thrift.TProtocol) error {
+func (p *RpcFreezeResp) ReadField9(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadBool(); err != nil {
 		return err
@@ -848,7 +847,7 @@ func (p *FreezeRpcResp) ReadField9(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *FreezeRpcResp) ReadField10(iprot thrift.TProtocol) error {
+func (p *RpcFreezeResp) ReadField10(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -858,9 +857,9 @@ func (p *FreezeRpcResp) ReadField10(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *FreezeRpcResp) Write(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeResp) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezeRpcResp"); err != nil {
+	if err = oprot.WriteStructBegin("RpcFreezeResp"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -890,7 +889,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *FreezeRpcResp) writeField9(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeResp) writeField9(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("IsFrozen", thrift.BOOL, 9); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -906,7 +905,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
-func (p *FreezeRpcResp) writeField10(oprot thrift.TProtocol) (err error) {
+func (p *RpcFreezeResp) writeField10(oprot thrift.TProtocol) (err error) {
 	if p.IsSetThawedAt() {
 		if err = oprot.WriteFieldBegin("ThawedAt", thrift.STRING, 10); err != nil {
 			goto WriteFieldBeginError
@@ -925,14 +924,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
 }
 
-func (p *FreezeRpcResp) String() string {
+func (p *RpcFreezeResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("FreezeRpcResp(%+v)", *p)
+	return fmt.Sprintf("RpcFreezeResp(%+v)", *p)
 }
 
-func (p *FreezeRpcResp) DeepEqual(ano *FreezeRpcResp) bool {
+func (p *RpcFreezeResp) DeepEqual(ano *RpcFreezeResp) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -947,14 +946,14 @@ func (p *FreezeRpcResp) DeepEqual(ano *FreezeRpcResp) bool {
 	return true
 }
 
-func (p *FreezeRpcResp) Field9DeepEqual(src bool) bool {
+func (p *RpcFreezeResp) Field9DeepEqual(src bool) bool {
 
 	if p.IsFrozen != src {
 		return false
 	}
 	return true
 }
-func (p *FreezeRpcResp) Field10DeepEqual(src *string) bool {
+func (p *RpcFreezeResp) Field10DeepEqual(src *string) bool {
 
 	if p.ThawedAt == src {
 		return true
@@ -967,20 +966,1269 @@ func (p *FreezeRpcResp) Field10DeepEqual(src *string) bool {
 	return true
 }
 
+type RpcUsersFilterReq struct {
+	Gender    *int8   `thrift:"Gender,1,optional" frugal:"1,optional,i8" json:"Gender,omitempty"`
+	Page      *int16  `thrift:"Page,2,optional" frugal:"2,optional,i16" json:"Page,omitempty"`
+	Limit     *int16  `thrift:"Limit,3,optional" frugal:"3,optional,i16" json:"Limit,omitempty"`
+	Sort      *string `thrift:"Sort,4,optional" frugal:"4,optional,string" json:"Sort,omitempty"`
+	Search    *string `thrift:"Search,5,optional" frugal:"5,optional,string" json:"Search,omitempty"`
+	StartDate *string `thrift:"StartDate,6,optional" frugal:"6,optional,string" json:"StartDate,omitempty"`
+	EndDate   *string `thrift:"EndDate,7,optional" frugal:"7,optional,string" json:"EndDate,omitempty"`
+}
+
+func NewRpcUsersFilterReq() *RpcUsersFilterReq {
+	return &RpcUsersFilterReq{}
+}
+
+func (p *RpcUsersFilterReq) InitDefault() {
+	*p = RpcUsersFilterReq{}
+}
+
+var RpcUsersFilterReq_Gender_DEFAULT int8
+
+func (p *RpcUsersFilterReq) GetGender() (v int8) {
+	if !p.IsSetGender() {
+		return RpcUsersFilterReq_Gender_DEFAULT
+	}
+	return *p.Gender
+}
+
+var RpcUsersFilterReq_Page_DEFAULT int16
+
+func (p *RpcUsersFilterReq) GetPage() (v int16) {
+	if !p.IsSetPage() {
+		return RpcUsersFilterReq_Page_DEFAULT
+	}
+	return *p.Page
+}
+
+var RpcUsersFilterReq_Limit_DEFAULT int16
+
+func (p *RpcUsersFilterReq) GetLimit() (v int16) {
+	if !p.IsSetLimit() {
+		return RpcUsersFilterReq_Limit_DEFAULT
+	}
+	return *p.Limit
+}
+
+var RpcUsersFilterReq_Sort_DEFAULT string
+
+func (p *RpcUsersFilterReq) GetSort() (v string) {
+	if !p.IsSetSort() {
+		return RpcUsersFilterReq_Sort_DEFAULT
+	}
+	return *p.Sort
+}
+
+var RpcUsersFilterReq_Search_DEFAULT string
+
+func (p *RpcUsersFilterReq) GetSearch() (v string) {
+	if !p.IsSetSearch() {
+		return RpcUsersFilterReq_Search_DEFAULT
+	}
+	return *p.Search
+}
+
+var RpcUsersFilterReq_StartDate_DEFAULT string
+
+func (p *RpcUsersFilterReq) GetStartDate() (v string) {
+	if !p.IsSetStartDate() {
+		return RpcUsersFilterReq_StartDate_DEFAULT
+	}
+	return *p.StartDate
+}
+
+var RpcUsersFilterReq_EndDate_DEFAULT string
+
+func (p *RpcUsersFilterReq) GetEndDate() (v string) {
+	if !p.IsSetEndDate() {
+		return RpcUsersFilterReq_EndDate_DEFAULT
+	}
+	return *p.EndDate
+}
+func (p *RpcUsersFilterReq) SetGender(val *int8) {
+	p.Gender = val
+}
+func (p *RpcUsersFilterReq) SetPage(val *int16) {
+	p.Page = val
+}
+func (p *RpcUsersFilterReq) SetLimit(val *int16) {
+	p.Limit = val
+}
+func (p *RpcUsersFilterReq) SetSort(val *string) {
+	p.Sort = val
+}
+func (p *RpcUsersFilterReq) SetSearch(val *string) {
+	p.Search = val
+}
+func (p *RpcUsersFilterReq) SetStartDate(val *string) {
+	p.StartDate = val
+}
+func (p *RpcUsersFilterReq) SetEndDate(val *string) {
+	p.EndDate = val
+}
+
+var fieldIDToName_RpcUsersFilterReq = map[int16]string{
+	1: "Gender",
+	2: "Page",
+	3: "Limit",
+	4: "Sort",
+	5: "Search",
+	6: "StartDate",
+	7: "EndDate",
+}
+
+func (p *RpcUsersFilterReq) IsSetGender() bool {
+	return p.Gender != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetPage() bool {
+	return p.Page != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetLimit() bool {
+	return p.Limit != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetSort() bool {
+	return p.Sort != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetSearch() bool {
+	return p.Search != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetStartDate() bool {
+	return p.StartDate != nil
+}
+
+func (p *RpcUsersFilterReq) IsSetEndDate() bool {
+	return p.EndDate != nil
+}
+
+func (p *RpcUsersFilterReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.BYTE {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.I16 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.I16 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RpcUsersFilterReq[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *RpcUsersFilterReq) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadByte(); err != nil {
+		return err
+	} else {
+		p.Gender = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI16(); err != nil {
+		return err
+	} else {
+		p.Page = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField3(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI16(); err != nil {
+		return err
+	} else {
+		p.Limit = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField4(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Sort = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField5(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Search = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField6(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.StartDate = &v
+	}
+	return nil
+}
+func (p *RpcUsersFilterReq) ReadField7(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.EndDate = &v
+	}
+	return nil
+}
+
+func (p *RpcUsersFilterReq) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("RpcUsersFilterReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *RpcUsersFilterReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetGender() {
+		if err = oprot.WriteFieldBegin("Gender", thrift.BYTE, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteByte(*p.Gender); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPage() {
+		if err = oprot.WriteFieldBegin("Page", thrift.I16, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI16(*p.Page); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetLimit() {
+		if err = oprot.WriteFieldBegin("Limit", thrift.I16, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI16(*p.Limit); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSort() {
+		if err = oprot.WriteFieldBegin("Sort", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Sort); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSearch() {
+		if err = oprot.WriteFieldBegin("Search", thrift.STRING, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Search); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetStartDate() {
+		if err = oprot.WriteFieldBegin("StartDate", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.StartDate); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+func (p *RpcUsersFilterReq) writeField7(oprot thrift.TProtocol) (err error) {
+	if p.IsSetEndDate() {
+		if err = oprot.WriteFieldBegin("EndDate", thrift.STRING, 7); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.EndDate); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *RpcUsersFilterReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("RpcUsersFilterReq(%+v)", *p)
+}
+
+func (p *RpcUsersFilterReq) DeepEqual(ano *RpcUsersFilterReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Gender) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Page) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Limit) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Sort) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Search) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.StartDate) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.EndDate) {
+		return false
+	}
+	return true
+}
+
+func (p *RpcUsersFilterReq) Field1DeepEqual(src *int8) bool {
+
+	if p.Gender == src {
+		return true
+	} else if p.Gender == nil || src == nil {
+		return false
+	}
+	if *p.Gender != *src {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field2DeepEqual(src *int16) bool {
+
+	if p.Page == src {
+		return true
+	} else if p.Page == nil || src == nil {
+		return false
+	}
+	if *p.Page != *src {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field3DeepEqual(src *int16) bool {
+
+	if p.Limit == src {
+		return true
+	} else if p.Limit == nil || src == nil {
+		return false
+	}
+	if *p.Limit != *src {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field4DeepEqual(src *string) bool {
+
+	if p.Sort == src {
+		return true
+	} else if p.Sort == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Sort, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field5DeepEqual(src *string) bool {
+
+	if p.Search == src {
+		return true
+	} else if p.Search == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Search, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field6DeepEqual(src *string) bool {
+
+	if p.StartDate == src {
+		return true
+	} else if p.StartDate == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.StartDate, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUsersFilterReq) Field7DeepEqual(src *string) bool {
+
+	if p.EndDate == src {
+		return true
+	} else if p.EndDate == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.EndDate, *src) != 0 {
+		return false
+	}
+	return true
+}
+
+type RpcUser struct {
+	Id       int32  `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Age      int8   `thrift:"Age,2,required" frugal:"2,required,i8" json:"Age"`
+	Gender   int8   `thrift:"Gender,3,required" frugal:"3,required,i8" json:"Gender"`
+	Mobile   string `thrift:"Mobile,4,required" frugal:"4,required,string" json:"Mobile"`
+	Profile  string `thrift:"Profile,5,required" frugal:"5,required,string" json:"Profile"`
+	Username string `thrift:"Username,6,required" frugal:"6,required,string" json:"Username"`
+	Email    string `thrift:"Email,7,required" frugal:"7,required,string" json:"Email"`
+	Avatar   string `thrift:"Avatar,8,required" frugal:"8,required,string" json:"Avatar"`
+}
+
+func NewRpcUser() *RpcUser {
+	return &RpcUser{}
+}
+
+func (p *RpcUser) InitDefault() {
+	*p = RpcUser{}
+}
+
+func (p *RpcUser) GetId() (v int32) {
+	return p.Id
+}
+
+func (p *RpcUser) GetAge() (v int8) {
+	return p.Age
+}
+
+func (p *RpcUser) GetGender() (v int8) {
+	return p.Gender
+}
+
+func (p *RpcUser) GetMobile() (v string) {
+	return p.Mobile
+}
+
+func (p *RpcUser) GetProfile() (v string) {
+	return p.Profile
+}
+
+func (p *RpcUser) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *RpcUser) GetEmail() (v string) {
+	return p.Email
+}
+
+func (p *RpcUser) GetAvatar() (v string) {
+	return p.Avatar
+}
+func (p *RpcUser) SetId(val int32) {
+	p.Id = val
+}
+func (p *RpcUser) SetAge(val int8) {
+	p.Age = val
+}
+func (p *RpcUser) SetGender(val int8) {
+	p.Gender = val
+}
+func (p *RpcUser) SetMobile(val string) {
+	p.Mobile = val
+}
+func (p *RpcUser) SetProfile(val string) {
+	p.Profile = val
+}
+func (p *RpcUser) SetUsername(val string) {
+	p.Username = val
+}
+func (p *RpcUser) SetEmail(val string) {
+	p.Email = val
+}
+func (p *RpcUser) SetAvatar(val string) {
+	p.Avatar = val
+}
+
+var fieldIDToName_RpcUser = map[int16]string{
+	1: "Id",
+	2: "Age",
+	3: "Gender",
+	4: "Mobile",
+	5: "Profile",
+	6: "Username",
+	7: "Email",
+	8: "Avatar",
+}
+
+func (p *RpcUser) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetId bool = false
+	var issetAge bool = false
+	var issetGender bool = false
+	var issetMobile bool = false
+	var issetProfile bool = false
+	var issetUsername bool = false
+	var issetEmail bool = false
+	var issetAvatar bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetId = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.BYTE {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetAge = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.BYTE {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetGender = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetMobile = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetProfile = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetUsername = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetEmail = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetAvatar = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetId {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetAge {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetGender {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetMobile {
+		fieldId = 4
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetProfile {
+		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetUsername {
+		fieldId = 6
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetEmail {
+		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetAvatar {
+		fieldId = 8
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RpcUser[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_RpcUser[fieldId]))
+}
+
+func (p *RpcUser) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadByte(); err != nil {
+		return err
+	} else {
+		p.Age = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField3(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadByte(); err != nil {
+		return err
+	} else {
+		p.Gender = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField4(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Mobile = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField5(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Profile = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField6(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Username = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField7(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Email = v
+	}
+	return nil
+}
+func (p *RpcUser) ReadField8(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Avatar = v
+	}
+	return nil
+}
+
+func (p *RpcUser) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("RpcUser"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *RpcUser) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *RpcUser) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Age", thrift.BYTE, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteByte(p.Age); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+func (p *RpcUser) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Gender", thrift.BYTE, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteByte(p.Gender); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+func (p *RpcUser) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Mobile", thrift.STRING, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Mobile); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+func (p *RpcUser) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Profile", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Profile); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+func (p *RpcUser) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+func (p *RpcUser) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Email", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Email); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+func (p *RpcUser) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Avatar", thrift.STRING, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Avatar); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *RpcUser) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("RpcUser(%+v)", *p)
+}
+
+func (p *RpcUser) DeepEqual(ano *RpcUser) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Age) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Gender) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Mobile) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Profile) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.Avatar) {
+		return false
+	}
+	return true
+}
+
+func (p *RpcUser) Field1DeepEqual(src int32) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field2DeepEqual(src int8) bool {
+
+	if p.Age != src {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field3DeepEqual(src int8) bool {
+
+	if p.Gender != src {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field4DeepEqual(src string) bool {
+
+	if strings.Compare(p.Mobile, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Profile, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field7DeepEqual(src string) bool {
+
+	if strings.Compare(p.Email, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RpcUser) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.Avatar, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type MicroUser interface {
-	FreezePatrolBeforeAuth(ctx context.Context, req *FreezeRpcReq) (r *FreezeRpcResp, err error)
+	FreezePatrolBeforeAuth(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error)
 
-	FreezePatrolAfterAuth(ctx context.Context, req *common.IdRpcReq) (r *FreezeRpcResp, err error)
+	FreezePatrolAfterAuth(ctx context.Context, req *common_rpc.RpcId) (r *RpcFreezeResp, err error)
 
-	VerifyCredentials(ctx context.Context, req *CredentialRpcReq) (r *common.EmptyRpcResp, err error)
+	VerifyCredentials(ctx context.Context, req *RpcCredentialReq) (r *common_rpc.RpcEmpty, err error)
 
-	FindUser(ctx context.Context, req *common.IdRpcReq) (r *user.UserInfo, err error)
+	FindUser(ctx context.Context, req *common_rpc.RpcId) (r *RpcUser, err error)
 
-	QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error)
+	QueryUsersWithFilter(ctx context.Context, req *RpcUsersFilterReq) (r []*RpcUser, err error)
 
-	UpsertUser(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error)
+	UpsertUser(ctx context.Context, req *RpcUser) (r *RpcUser, err error)
 
-	DeleteUser(ctx context.Context, req *common.IdRpcReq) (r *common.EmptyRpcResp, err error)
+	DeleteUser(ctx context.Context, req *common_rpc.RpcId) (r *common_rpc.RpcEmpty, err error)
 }
 
 type MicroUserClient struct {
@@ -1009,7 +2257,7 @@ func (p *MicroUserClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *MicroUserClient) FreezePatrolBeforeAuth(ctx context.Context, req *FreezeRpcReq) (r *FreezeRpcResp, err error) {
+func (p *MicroUserClient) FreezePatrolBeforeAuth(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error) {
 	var _args MicroUserFreezePatrolBeforeAuthArgs
 	_args.Req = req
 	var _result MicroUserFreezePatrolBeforeAuthResult
@@ -1018,7 +2266,7 @@ func (p *MicroUserClient) FreezePatrolBeforeAuth(ctx context.Context, req *Freez
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) FreezePatrolAfterAuth(ctx context.Context, req *common.IdRpcReq) (r *FreezeRpcResp, err error) {
+func (p *MicroUserClient) FreezePatrolAfterAuth(ctx context.Context, req *common_rpc.RpcId) (r *RpcFreezeResp, err error) {
 	var _args MicroUserFreezePatrolAfterAuthArgs
 	_args.Req = req
 	var _result MicroUserFreezePatrolAfterAuthResult
@@ -1027,7 +2275,7 @@ func (p *MicroUserClient) FreezePatrolAfterAuth(ctx context.Context, req *common
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) VerifyCredentials(ctx context.Context, req *CredentialRpcReq) (r *common.EmptyRpcResp, err error) {
+func (p *MicroUserClient) VerifyCredentials(ctx context.Context, req *RpcCredentialReq) (r *common_rpc.RpcEmpty, err error) {
 	var _args MicroUserVerifyCredentialsArgs
 	_args.Req = req
 	var _result MicroUserVerifyCredentialsResult
@@ -1036,7 +2284,7 @@ func (p *MicroUserClient) VerifyCredentials(ctx context.Context, req *Credential
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) FindUser(ctx context.Context, req *common.IdRpcReq) (r *user.UserInfo, err error) {
+func (p *MicroUserClient) FindUser(ctx context.Context, req *common_rpc.RpcId) (r *RpcUser, err error) {
 	var _args MicroUserFindUserArgs
 	_args.Req = req
 	var _result MicroUserFindUserResult
@@ -1045,7 +2293,7 @@ func (p *MicroUserClient) FindUser(ctx context.Context, req *common.IdRpcReq) (r
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error) {
+func (p *MicroUserClient) QueryUsersWithFilter(ctx context.Context, req *RpcUsersFilterReq) (r []*RpcUser, err error) {
 	var _args MicroUserQueryUsersWithFilterArgs
 	_args.Req = req
 	var _result MicroUserQueryUsersWithFilterResult
@@ -1054,7 +2302,7 @@ func (p *MicroUserClient) QueryUsersWithFilter(ctx context.Context, req *user.Us
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) UpsertUser(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
+func (p *MicroUserClient) UpsertUser(ctx context.Context, req *RpcUser) (r *RpcUser, err error) {
 	var _args MicroUserUpsertUserArgs
 	_args.Req = req
 	var _result MicroUserUpsertUserResult
@@ -1063,7 +2311,7 @@ func (p *MicroUserClient) UpsertUser(ctx context.Context, req *user.UserInfo) (r
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) DeleteUser(ctx context.Context, req *common.IdRpcReq) (r *common.EmptyRpcResp, err error) {
+func (p *MicroUserClient) DeleteUser(ctx context.Context, req *common_rpc.RpcId) (r *common_rpc.RpcEmpty, err error) {
 	var _args MicroUserDeleteUserArgs
 	_args.Req = req
 	var _result MicroUserDeleteUserResult
@@ -1139,7 +2387,7 @@ func (p *microUserProcessorFreezePatrolBeforeAuth) Process(ctx context.Context, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserFreezePatrolBeforeAuthResult{}
-	var retval *FreezeRpcResp
+	var retval *RpcFreezeResp
 	if retval, err2 = p.handler.FreezePatrolBeforeAuth(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolBeforeAuth: "+err2.Error())
 		oprot.WriteMessageBegin("FreezePatrolBeforeAuth", thrift.EXCEPTION, seqId)
@@ -1187,7 +2435,7 @@ func (p *microUserProcessorFreezePatrolAfterAuth) Process(ctx context.Context, s
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserFreezePatrolAfterAuthResult{}
-	var retval *FreezeRpcResp
+	var retval *RpcFreezeResp
 	if retval, err2 = p.handler.FreezePatrolAfterAuth(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolAfterAuth: "+err2.Error())
 		oprot.WriteMessageBegin("FreezePatrolAfterAuth", thrift.EXCEPTION, seqId)
@@ -1235,7 +2483,7 @@ func (p *microUserProcessorVerifyCredentials) Process(ctx context.Context, seqId
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserVerifyCredentialsResult{}
-	var retval *common.EmptyRpcResp
+	var retval *common_rpc.RpcEmpty
 	if retval, err2 = p.handler.VerifyCredentials(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing VerifyCredentials: "+err2.Error())
 		oprot.WriteMessageBegin("VerifyCredentials", thrift.EXCEPTION, seqId)
@@ -1283,7 +2531,7 @@ func (p *microUserProcessorFindUser) Process(ctx context.Context, seqId int32, i
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserFindUserResult{}
-	var retval *user.UserInfo
+	var retval *RpcUser
 	if retval, err2 = p.handler.FindUser(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FindUser: "+err2.Error())
 		oprot.WriteMessageBegin("FindUser", thrift.EXCEPTION, seqId)
@@ -1331,7 +2579,7 @@ func (p *microUserProcessorQueryUsersWithFilter) Process(ctx context.Context, se
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserQueryUsersWithFilterResult{}
-	var retval []*user.UserInfo
+	var retval []*RpcUser
 	if retval, err2 = p.handler.QueryUsersWithFilter(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing QueryUsersWithFilter: "+err2.Error())
 		oprot.WriteMessageBegin("QueryUsersWithFilter", thrift.EXCEPTION, seqId)
@@ -1379,7 +2627,7 @@ func (p *microUserProcessorUpsertUser) Process(ctx context.Context, seqId int32,
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserUpsertUserResult{}
-	var retval *user.UserInfo
+	var retval *RpcUser
 	if retval, err2 = p.handler.UpsertUser(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpsertUser: "+err2.Error())
 		oprot.WriteMessageBegin("UpsertUser", thrift.EXCEPTION, seqId)
@@ -1427,7 +2675,7 @@ func (p *microUserProcessorDeleteUser) Process(ctx context.Context, seqId int32,
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := MicroUserDeleteUserResult{}
-	var retval *common.EmptyRpcResp
+	var retval *common_rpc.RpcEmpty
 	if retval, err2 = p.handler.DeleteUser(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteUser: "+err2.Error())
 		oprot.WriteMessageBegin("DeleteUser", thrift.EXCEPTION, seqId)
@@ -1457,7 +2705,7 @@ func (p *microUserProcessorDeleteUser) Process(ctx context.Context, seqId int32,
 }
 
 type MicroUserFreezePatrolBeforeAuthArgs struct {
-	Req *FreezeRpcReq `thrift:"req,1" frugal:"1,default,FreezeRpcReq" json:"req"`
+	Req *RpcFreezeReq `thrift:"req,1" frugal:"1,default,RpcFreezeReq" json:"req"`
 }
 
 func NewMicroUserFreezePatrolBeforeAuthArgs() *MicroUserFreezePatrolBeforeAuthArgs {
@@ -1468,15 +2716,15 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) InitDefault() {
 	*p = MicroUserFreezePatrolBeforeAuthArgs{}
 }
 
-var MicroUserFreezePatrolBeforeAuthArgs_Req_DEFAULT *FreezeRpcReq
+var MicroUserFreezePatrolBeforeAuthArgs_Req_DEFAULT *RpcFreezeReq
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) GetReq() (v *FreezeRpcReq) {
+func (p *MicroUserFreezePatrolBeforeAuthArgs) GetReq() (v *RpcFreezeReq) {
 	if !p.IsSetReq() {
 		return MicroUserFreezePatrolBeforeAuthArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserFreezePatrolBeforeAuthArgs) SetReq(val *FreezeRpcReq) {
+func (p *MicroUserFreezePatrolBeforeAuthArgs) SetReq(val *RpcFreezeReq) {
 	p.Req = val
 }
 
@@ -1547,7 +2795,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFreezePatrolBeforeAuthArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewFreezeRpcReq()
+	p.Req = NewRpcFreezeReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1619,7 +2867,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) DeepEqual(ano *MicroUserFreezePatr
 	return true
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) Field1DeepEqual(src *FreezeRpcReq) bool {
+func (p *MicroUserFreezePatrolBeforeAuthArgs) Field1DeepEqual(src *RpcFreezeReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1628,7 +2876,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) Field1DeepEqual(src *FreezeRpcReq)
 }
 
 type MicroUserFreezePatrolBeforeAuthResult struct {
-	Success *FreezeRpcResp `thrift:"success,0,optional" frugal:"0,optional,FreezeRpcResp" json:"success,omitempty"`
+	Success *RpcFreezeResp `thrift:"success,0,optional" frugal:"0,optional,RpcFreezeResp" json:"success,omitempty"`
 }
 
 func NewMicroUserFreezePatrolBeforeAuthResult() *MicroUserFreezePatrolBeforeAuthResult {
@@ -1639,16 +2887,16 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) InitDefault() {
 	*p = MicroUserFreezePatrolBeforeAuthResult{}
 }
 
-var MicroUserFreezePatrolBeforeAuthResult_Success_DEFAULT *FreezeRpcResp
+var MicroUserFreezePatrolBeforeAuthResult_Success_DEFAULT *RpcFreezeResp
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) GetSuccess() (v *FreezeRpcResp) {
+func (p *MicroUserFreezePatrolBeforeAuthResult) GetSuccess() (v *RpcFreezeResp) {
 	if !p.IsSetSuccess() {
 		return MicroUserFreezePatrolBeforeAuthResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserFreezePatrolBeforeAuthResult) SetSuccess(x interface{}) {
-	p.Success = x.(*FreezeRpcResp)
+	p.Success = x.(*RpcFreezeResp)
 }
 
 var fieldIDToName_MicroUserFreezePatrolBeforeAuthResult = map[int16]string{
@@ -1718,7 +2966,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFreezePatrolBeforeAuthResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewFreezeRpcResp()
+	p.Success = NewRpcFreezeResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -1792,7 +3040,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) DeepEqual(ano *MicroUserFreezePa
 	return true
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) Field0DeepEqual(src *FreezeRpcResp) bool {
+func (p *MicroUserFreezePatrolBeforeAuthResult) Field0DeepEqual(src *RpcFreezeResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -1801,7 +3049,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) Field0DeepEqual(src *FreezeRpcRe
 }
 
 type MicroUserFreezePatrolAfterAuthArgs struct {
-	Req *common.IdRpcReq `thrift:"req,1" frugal:"1,default,common.IdRpcReq" json:"req"`
+	Req *common_rpc.RpcId `thrift:"req,1" frugal:"1,default,common_rpc.RpcId" json:"req"`
 }
 
 func NewMicroUserFreezePatrolAfterAuthArgs() *MicroUserFreezePatrolAfterAuthArgs {
@@ -1812,15 +3060,15 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) InitDefault() {
 	*p = MicroUserFreezePatrolAfterAuthArgs{}
 }
 
-var MicroUserFreezePatrolAfterAuthArgs_Req_DEFAULT *common.IdRpcReq
+var MicroUserFreezePatrolAfterAuthArgs_Req_DEFAULT *common_rpc.RpcId
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) GetReq() (v *common.IdRpcReq) {
+func (p *MicroUserFreezePatrolAfterAuthArgs) GetReq() (v *common_rpc.RpcId) {
 	if !p.IsSetReq() {
 		return MicroUserFreezePatrolAfterAuthArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserFreezePatrolAfterAuthArgs) SetReq(val *common.IdRpcReq) {
+func (p *MicroUserFreezePatrolAfterAuthArgs) SetReq(val *common_rpc.RpcId) {
 	p.Req = val
 }
 
@@ -1891,7 +3139,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFreezePatrolAfterAuthArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = common.NewIdRpcReq()
+	p.Req = common_rpc.NewRpcId()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1963,7 +3211,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) DeepEqual(ano *MicroUserFreezePatro
 	return true
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) Field1DeepEqual(src *common.IdRpcReq) bool {
+func (p *MicroUserFreezePatrolAfterAuthArgs) Field1DeepEqual(src *common_rpc.RpcId) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1972,7 +3220,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) Field1DeepEqual(src *common.IdRpcRe
 }
 
 type MicroUserFreezePatrolAfterAuthResult struct {
-	Success *FreezeRpcResp `thrift:"success,0,optional" frugal:"0,optional,FreezeRpcResp" json:"success,omitempty"`
+	Success *RpcFreezeResp `thrift:"success,0,optional" frugal:"0,optional,RpcFreezeResp" json:"success,omitempty"`
 }
 
 func NewMicroUserFreezePatrolAfterAuthResult() *MicroUserFreezePatrolAfterAuthResult {
@@ -1983,16 +3231,16 @@ func (p *MicroUserFreezePatrolAfterAuthResult) InitDefault() {
 	*p = MicroUserFreezePatrolAfterAuthResult{}
 }
 
-var MicroUserFreezePatrolAfterAuthResult_Success_DEFAULT *FreezeRpcResp
+var MicroUserFreezePatrolAfterAuthResult_Success_DEFAULT *RpcFreezeResp
 
-func (p *MicroUserFreezePatrolAfterAuthResult) GetSuccess() (v *FreezeRpcResp) {
+func (p *MicroUserFreezePatrolAfterAuthResult) GetSuccess() (v *RpcFreezeResp) {
 	if !p.IsSetSuccess() {
 		return MicroUserFreezePatrolAfterAuthResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserFreezePatrolAfterAuthResult) SetSuccess(x interface{}) {
-	p.Success = x.(*FreezeRpcResp)
+	p.Success = x.(*RpcFreezeResp)
 }
 
 var fieldIDToName_MicroUserFreezePatrolAfterAuthResult = map[int16]string{
@@ -2062,7 +3310,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFreezePatrolAfterAuthResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewFreezeRpcResp()
+	p.Success = NewRpcFreezeResp()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2136,7 +3384,7 @@ func (p *MicroUserFreezePatrolAfterAuthResult) DeepEqual(ano *MicroUserFreezePat
 	return true
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) Field0DeepEqual(src *FreezeRpcResp) bool {
+func (p *MicroUserFreezePatrolAfterAuthResult) Field0DeepEqual(src *RpcFreezeResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -2145,7 +3393,7 @@ func (p *MicroUserFreezePatrolAfterAuthResult) Field0DeepEqual(src *FreezeRpcRes
 }
 
 type MicroUserVerifyCredentialsArgs struct {
-	Req *CredentialRpcReq `thrift:"req,1" frugal:"1,default,CredentialRpcReq" json:"req"`
+	Req *RpcCredentialReq `thrift:"req,1" frugal:"1,default,RpcCredentialReq" json:"req"`
 }
 
 func NewMicroUserVerifyCredentialsArgs() *MicroUserVerifyCredentialsArgs {
@@ -2156,15 +3404,15 @@ func (p *MicroUserVerifyCredentialsArgs) InitDefault() {
 	*p = MicroUserVerifyCredentialsArgs{}
 }
 
-var MicroUserVerifyCredentialsArgs_Req_DEFAULT *CredentialRpcReq
+var MicroUserVerifyCredentialsArgs_Req_DEFAULT *RpcCredentialReq
 
-func (p *MicroUserVerifyCredentialsArgs) GetReq() (v *CredentialRpcReq) {
+func (p *MicroUserVerifyCredentialsArgs) GetReq() (v *RpcCredentialReq) {
 	if !p.IsSetReq() {
 		return MicroUserVerifyCredentialsArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserVerifyCredentialsArgs) SetReq(val *CredentialRpcReq) {
+func (p *MicroUserVerifyCredentialsArgs) SetReq(val *RpcCredentialReq) {
 	p.Req = val
 }
 
@@ -2235,7 +3483,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserVerifyCredentialsArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCredentialRpcReq()
+	p.Req = NewRpcCredentialReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2307,7 +3555,7 @@ func (p *MicroUserVerifyCredentialsArgs) DeepEqual(ano *MicroUserVerifyCredentia
 	return true
 }
 
-func (p *MicroUserVerifyCredentialsArgs) Field1DeepEqual(src *CredentialRpcReq) bool {
+func (p *MicroUserVerifyCredentialsArgs) Field1DeepEqual(src *RpcCredentialReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -2316,7 +3564,7 @@ func (p *MicroUserVerifyCredentialsArgs) Field1DeepEqual(src *CredentialRpcReq) 
 }
 
 type MicroUserVerifyCredentialsResult struct {
-	Success *common.EmptyRpcResp `thrift:"success,0,optional" frugal:"0,optional,common.EmptyRpcResp" json:"success,omitempty"`
+	Success *common_rpc.RpcEmpty `thrift:"success,0,optional" frugal:"0,optional,common_rpc.RpcEmpty" json:"success,omitempty"`
 }
 
 func NewMicroUserVerifyCredentialsResult() *MicroUserVerifyCredentialsResult {
@@ -2327,16 +3575,16 @@ func (p *MicroUserVerifyCredentialsResult) InitDefault() {
 	*p = MicroUserVerifyCredentialsResult{}
 }
 
-var MicroUserVerifyCredentialsResult_Success_DEFAULT *common.EmptyRpcResp
+var MicroUserVerifyCredentialsResult_Success_DEFAULT *common_rpc.RpcEmpty
 
-func (p *MicroUserVerifyCredentialsResult) GetSuccess() (v *common.EmptyRpcResp) {
+func (p *MicroUserVerifyCredentialsResult) GetSuccess() (v *common_rpc.RpcEmpty) {
 	if !p.IsSetSuccess() {
 		return MicroUserVerifyCredentialsResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserVerifyCredentialsResult) SetSuccess(x interface{}) {
-	p.Success = x.(*common.EmptyRpcResp)
+	p.Success = x.(*common_rpc.RpcEmpty)
 }
 
 var fieldIDToName_MicroUserVerifyCredentialsResult = map[int16]string{
@@ -2406,7 +3654,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserVerifyCredentialsResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = common.NewEmptyRpcResp()
+	p.Success = common_rpc.NewRpcEmpty()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2480,7 +3728,7 @@ func (p *MicroUserVerifyCredentialsResult) DeepEqual(ano *MicroUserVerifyCredent
 	return true
 }
 
-func (p *MicroUserVerifyCredentialsResult) Field0DeepEqual(src *common.EmptyRpcResp) bool {
+func (p *MicroUserVerifyCredentialsResult) Field0DeepEqual(src *common_rpc.RpcEmpty) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -2489,7 +3737,7 @@ func (p *MicroUserVerifyCredentialsResult) Field0DeepEqual(src *common.EmptyRpcR
 }
 
 type MicroUserFindUserArgs struct {
-	Req *common.IdRpcReq `thrift:"req,1" frugal:"1,default,common.IdRpcReq" json:"req"`
+	Req *common_rpc.RpcId `thrift:"req,1" frugal:"1,default,common_rpc.RpcId" json:"req"`
 }
 
 func NewMicroUserFindUserArgs() *MicroUserFindUserArgs {
@@ -2500,15 +3748,15 @@ func (p *MicroUserFindUserArgs) InitDefault() {
 	*p = MicroUserFindUserArgs{}
 }
 
-var MicroUserFindUserArgs_Req_DEFAULT *common.IdRpcReq
+var MicroUserFindUserArgs_Req_DEFAULT *common_rpc.RpcId
 
-func (p *MicroUserFindUserArgs) GetReq() (v *common.IdRpcReq) {
+func (p *MicroUserFindUserArgs) GetReq() (v *common_rpc.RpcId) {
 	if !p.IsSetReq() {
 		return MicroUserFindUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserFindUserArgs) SetReq(val *common.IdRpcReq) {
+func (p *MicroUserFindUserArgs) SetReq(val *common_rpc.RpcId) {
 	p.Req = val
 }
 
@@ -2579,7 +3827,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFindUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = common.NewIdRpcReq()
+	p.Req = common_rpc.NewRpcId()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2651,7 +3899,7 @@ func (p *MicroUserFindUserArgs) DeepEqual(ano *MicroUserFindUserArgs) bool {
 	return true
 }
 
-func (p *MicroUserFindUserArgs) Field1DeepEqual(src *common.IdRpcReq) bool {
+func (p *MicroUserFindUserArgs) Field1DeepEqual(src *common_rpc.RpcId) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -2660,7 +3908,7 @@ func (p *MicroUserFindUserArgs) Field1DeepEqual(src *common.IdRpcReq) bool {
 }
 
 type MicroUserFindUserResult struct {
-	Success *user.UserInfo `thrift:"success,0,optional" frugal:"0,optional,user.UserInfo" json:"success,omitempty"`
+	Success *RpcUser `thrift:"success,0,optional" frugal:"0,optional,RpcUser" json:"success,omitempty"`
 }
 
 func NewMicroUserFindUserResult() *MicroUserFindUserResult {
@@ -2671,16 +3919,16 @@ func (p *MicroUserFindUserResult) InitDefault() {
 	*p = MicroUserFindUserResult{}
 }
 
-var MicroUserFindUserResult_Success_DEFAULT *user.UserInfo
+var MicroUserFindUserResult_Success_DEFAULT *RpcUser
 
-func (p *MicroUserFindUserResult) GetSuccess() (v *user.UserInfo) {
+func (p *MicroUserFindUserResult) GetSuccess() (v *RpcUser) {
 	if !p.IsSetSuccess() {
 		return MicroUserFindUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserFindUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*user.UserInfo)
+	p.Success = x.(*RpcUser)
 }
 
 var fieldIDToName_MicroUserFindUserResult = map[int16]string{
@@ -2750,7 +3998,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFindUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = user.NewUserInfo()
+	p.Success = NewRpcUser()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -2824,7 +4072,7 @@ func (p *MicroUserFindUserResult) DeepEqual(ano *MicroUserFindUserResult) bool {
 	return true
 }
 
-func (p *MicroUserFindUserResult) Field0DeepEqual(src *user.UserInfo) bool {
+func (p *MicroUserFindUserResult) Field0DeepEqual(src *RpcUser) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -2833,7 +4081,7 @@ func (p *MicroUserFindUserResult) Field0DeepEqual(src *user.UserInfo) bool {
 }
 
 type MicroUserQueryUsersWithFilterArgs struct {
-	Req *user.UsersFilter `thrift:"req,1" frugal:"1,default,user.UsersFilter" json:"req"`
+	Req *RpcUsersFilterReq `thrift:"req,1" frugal:"1,default,RpcUsersFilterReq" json:"req"`
 }
 
 func NewMicroUserQueryUsersWithFilterArgs() *MicroUserQueryUsersWithFilterArgs {
@@ -2844,15 +4092,15 @@ func (p *MicroUserQueryUsersWithFilterArgs) InitDefault() {
 	*p = MicroUserQueryUsersWithFilterArgs{}
 }
 
-var MicroUserQueryUsersWithFilterArgs_Req_DEFAULT *user.UsersFilter
+var MicroUserQueryUsersWithFilterArgs_Req_DEFAULT *RpcUsersFilterReq
 
-func (p *MicroUserQueryUsersWithFilterArgs) GetReq() (v *user.UsersFilter) {
+func (p *MicroUserQueryUsersWithFilterArgs) GetReq() (v *RpcUsersFilterReq) {
 	if !p.IsSetReq() {
 		return MicroUserQueryUsersWithFilterArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserQueryUsersWithFilterArgs) SetReq(val *user.UsersFilter) {
+func (p *MicroUserQueryUsersWithFilterArgs) SetReq(val *RpcUsersFilterReq) {
 	p.Req = val
 }
 
@@ -2923,7 +4171,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserQueryUsersWithFilterArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = user.NewUsersFilter()
+	p.Req = NewRpcUsersFilterReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -2995,7 +4243,7 @@ func (p *MicroUserQueryUsersWithFilterArgs) DeepEqual(ano *MicroUserQueryUsersWi
 	return true
 }
 
-func (p *MicroUserQueryUsersWithFilterArgs) Field1DeepEqual(src *user.UsersFilter) bool {
+func (p *MicroUserQueryUsersWithFilterArgs) Field1DeepEqual(src *RpcUsersFilterReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -3004,7 +4252,7 @@ func (p *MicroUserQueryUsersWithFilterArgs) Field1DeepEqual(src *user.UsersFilte
 }
 
 type MicroUserQueryUsersWithFilterResult struct {
-	Success []*user.UserInfo `thrift:"success,0,optional" frugal:"0,optional,list<user.UserInfo>" json:"success,omitempty"`
+	Success []*RpcUser `thrift:"success,0,optional" frugal:"0,optional,list<RpcUser>" json:"success,omitempty"`
 }
 
 func NewMicroUserQueryUsersWithFilterResult() *MicroUserQueryUsersWithFilterResult {
@@ -3015,16 +4263,16 @@ func (p *MicroUserQueryUsersWithFilterResult) InitDefault() {
 	*p = MicroUserQueryUsersWithFilterResult{}
 }
 
-var MicroUserQueryUsersWithFilterResult_Success_DEFAULT []*user.UserInfo
+var MicroUserQueryUsersWithFilterResult_Success_DEFAULT []*RpcUser
 
-func (p *MicroUserQueryUsersWithFilterResult) GetSuccess() (v []*user.UserInfo) {
+func (p *MicroUserQueryUsersWithFilterResult) GetSuccess() (v []*RpcUser) {
 	if !p.IsSetSuccess() {
 		return MicroUserQueryUsersWithFilterResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserQueryUsersWithFilterResult) SetSuccess(x interface{}) {
-	p.Success = x.([]*user.UserInfo)
+	p.Success = x.([]*RpcUser)
 }
 
 var fieldIDToName_MicroUserQueryUsersWithFilterResult = map[int16]string{
@@ -3098,9 +4346,9 @@ func (p *MicroUserQueryUsersWithFilterResult) ReadField0(iprot thrift.TProtocol)
 	if err != nil {
 		return err
 	}
-	p.Success = make([]*user.UserInfo, 0, size)
+	p.Success = make([]*RpcUser, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := user.NewUserInfo()
+		_elem := NewRpcUser()
 
 		if err := _elem.Read(iprot); err != nil {
 			return err
@@ -3188,7 +4436,7 @@ func (p *MicroUserQueryUsersWithFilterResult) DeepEqual(ano *MicroUserQueryUsers
 	return true
 }
 
-func (p *MicroUserQueryUsersWithFilterResult) Field0DeepEqual(src []*user.UserInfo) bool {
+func (p *MicroUserQueryUsersWithFilterResult) Field0DeepEqual(src []*RpcUser) bool {
 
 	if len(p.Success) != len(src) {
 		return false
@@ -3203,7 +4451,7 @@ func (p *MicroUserQueryUsersWithFilterResult) Field0DeepEqual(src []*user.UserIn
 }
 
 type MicroUserUpsertUserArgs struct {
-	Req *user.UserInfo `thrift:"req,1" frugal:"1,default,user.UserInfo" json:"req"`
+	Req *RpcUser `thrift:"req,1" frugal:"1,default,RpcUser" json:"req"`
 }
 
 func NewMicroUserUpsertUserArgs() *MicroUserUpsertUserArgs {
@@ -3214,15 +4462,15 @@ func (p *MicroUserUpsertUserArgs) InitDefault() {
 	*p = MicroUserUpsertUserArgs{}
 }
 
-var MicroUserUpsertUserArgs_Req_DEFAULT *user.UserInfo
+var MicroUserUpsertUserArgs_Req_DEFAULT *RpcUser
 
-func (p *MicroUserUpsertUserArgs) GetReq() (v *user.UserInfo) {
+func (p *MicroUserUpsertUserArgs) GetReq() (v *RpcUser) {
 	if !p.IsSetReq() {
 		return MicroUserUpsertUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserUpsertUserArgs) SetReq(val *user.UserInfo) {
+func (p *MicroUserUpsertUserArgs) SetReq(val *RpcUser) {
 	p.Req = val
 }
 
@@ -3293,7 +4541,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserUpsertUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = user.NewUserInfo()
+	p.Req = NewRpcUser()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3365,7 +4613,7 @@ func (p *MicroUserUpsertUserArgs) DeepEqual(ano *MicroUserUpsertUserArgs) bool {
 	return true
 }
 
-func (p *MicroUserUpsertUserArgs) Field1DeepEqual(src *user.UserInfo) bool {
+func (p *MicroUserUpsertUserArgs) Field1DeepEqual(src *RpcUser) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -3374,7 +4622,7 @@ func (p *MicroUserUpsertUserArgs) Field1DeepEqual(src *user.UserInfo) bool {
 }
 
 type MicroUserUpsertUserResult struct {
-	Success *user.UserInfo `thrift:"success,0,optional" frugal:"0,optional,user.UserInfo" json:"success,omitempty"`
+	Success *RpcUser `thrift:"success,0,optional" frugal:"0,optional,RpcUser" json:"success,omitempty"`
 }
 
 func NewMicroUserUpsertUserResult() *MicroUserUpsertUserResult {
@@ -3385,16 +4633,16 @@ func (p *MicroUserUpsertUserResult) InitDefault() {
 	*p = MicroUserUpsertUserResult{}
 }
 
-var MicroUserUpsertUserResult_Success_DEFAULT *user.UserInfo
+var MicroUserUpsertUserResult_Success_DEFAULT *RpcUser
 
-func (p *MicroUserUpsertUserResult) GetSuccess() (v *user.UserInfo) {
+func (p *MicroUserUpsertUserResult) GetSuccess() (v *RpcUser) {
 	if !p.IsSetSuccess() {
 		return MicroUserUpsertUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserUpsertUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*user.UserInfo)
+	p.Success = x.(*RpcUser)
 }
 
 var fieldIDToName_MicroUserUpsertUserResult = map[int16]string{
@@ -3464,7 +4712,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserUpsertUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = user.NewUserInfo()
+	p.Success = NewRpcUser()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -3538,7 +4786,7 @@ func (p *MicroUserUpsertUserResult) DeepEqual(ano *MicroUserUpsertUserResult) bo
 	return true
 }
 
-func (p *MicroUserUpsertUserResult) Field0DeepEqual(src *user.UserInfo) bool {
+func (p *MicroUserUpsertUserResult) Field0DeepEqual(src *RpcUser) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -3547,7 +4795,7 @@ func (p *MicroUserUpsertUserResult) Field0DeepEqual(src *user.UserInfo) bool {
 }
 
 type MicroUserDeleteUserArgs struct {
-	Req *common.IdRpcReq `thrift:"req,1" frugal:"1,default,common.IdRpcReq" json:"req"`
+	Req *common_rpc.RpcId `thrift:"req,1" frugal:"1,default,common_rpc.RpcId" json:"req"`
 }
 
 func NewMicroUserDeleteUserArgs() *MicroUserDeleteUserArgs {
@@ -3558,15 +4806,15 @@ func (p *MicroUserDeleteUserArgs) InitDefault() {
 	*p = MicroUserDeleteUserArgs{}
 }
 
-var MicroUserDeleteUserArgs_Req_DEFAULT *common.IdRpcReq
+var MicroUserDeleteUserArgs_Req_DEFAULT *common_rpc.RpcId
 
-func (p *MicroUserDeleteUserArgs) GetReq() (v *common.IdRpcReq) {
+func (p *MicroUserDeleteUserArgs) GetReq() (v *common_rpc.RpcId) {
 	if !p.IsSetReq() {
 		return MicroUserDeleteUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserDeleteUserArgs) SetReq(val *common.IdRpcReq) {
+func (p *MicroUserDeleteUserArgs) SetReq(val *common_rpc.RpcId) {
 	p.Req = val
 }
 
@@ -3637,7 +4885,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserDeleteUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = common.NewIdRpcReq()
+	p.Req = common_rpc.NewRpcId()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -3709,7 +4957,7 @@ func (p *MicroUserDeleteUserArgs) DeepEqual(ano *MicroUserDeleteUserArgs) bool {
 	return true
 }
 
-func (p *MicroUserDeleteUserArgs) Field1DeepEqual(src *common.IdRpcReq) bool {
+func (p *MicroUserDeleteUserArgs) Field1DeepEqual(src *common_rpc.RpcId) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -3718,7 +4966,7 @@ func (p *MicroUserDeleteUserArgs) Field1DeepEqual(src *common.IdRpcReq) bool {
 }
 
 type MicroUserDeleteUserResult struct {
-	Success *common.EmptyRpcResp `thrift:"success,0,optional" frugal:"0,optional,common.EmptyRpcResp" json:"success,omitempty"`
+	Success *common_rpc.RpcEmpty `thrift:"success,0,optional" frugal:"0,optional,common_rpc.RpcEmpty" json:"success,omitempty"`
 }
 
 func NewMicroUserDeleteUserResult() *MicroUserDeleteUserResult {
@@ -3729,16 +4977,16 @@ func (p *MicroUserDeleteUserResult) InitDefault() {
 	*p = MicroUserDeleteUserResult{}
 }
 
-var MicroUserDeleteUserResult_Success_DEFAULT *common.EmptyRpcResp
+var MicroUserDeleteUserResult_Success_DEFAULT *common_rpc.RpcEmpty
 
-func (p *MicroUserDeleteUserResult) GetSuccess() (v *common.EmptyRpcResp) {
+func (p *MicroUserDeleteUserResult) GetSuccess() (v *common_rpc.RpcEmpty) {
 	if !p.IsSetSuccess() {
 		return MicroUserDeleteUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *MicroUserDeleteUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*common.EmptyRpcResp)
+	p.Success = x.(*common_rpc.RpcEmpty)
 }
 
 var fieldIDToName_MicroUserDeleteUserResult = map[int16]string{
@@ -3808,7 +5056,7 @@ ReadStructEndError:
 }
 
 func (p *MicroUserDeleteUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = common.NewEmptyRpcResp()
+	p.Success = common_rpc.NewRpcEmpty()
 
 	if err := p.Success.Read(iprot); err != nil {
 		return err
@@ -3882,7 +5130,7 @@ func (p *MicroUserDeleteUserResult) DeepEqual(ano *MicroUserDeleteUserResult) bo
 	return true
 }
 
-func (p *MicroUserDeleteUserResult) Field0DeepEqual(src *common.EmptyRpcResp) bool {
+func (p *MicroUserDeleteUserResult) Field0DeepEqual(src *common_rpc.RpcEmpty) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

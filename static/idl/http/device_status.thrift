@@ -1,5 +1,5 @@
 namespace go device_status
-include "../common_http.thrift"
+include "common_http.thrift"
 
 struct RecentFeeding {
     1: required i8 Amount (api.body="feeding_amount");

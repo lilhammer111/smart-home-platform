@@ -4,7 +4,7 @@ package user
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	common_http "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_http"
 	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
@@ -13,9 +13,9 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r *user.UserListResp, err error)
-	GetUserDetail(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
+	GetUserDetail(ctx context.Context, req *common_http.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
 	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
-	DeregisterUser(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *standard.Resp, err error)
+	DeregisterUser(ctx context.Context, req *common_http.Req, callOptions ...callopt.Option) (r *common_http.Resp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -52,7 +52,7 @@ func (p *kUserClient) GetUserList(ctx context.Context, req *user.UsersFilter, ca
 	return p.kClient.GetUserList(ctx, req)
 }
 
-func (p *kUserClient) GetUserDetail(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
+func (p *kUserClient) GetUserDetail(ctx context.Context, req *common_http.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserDetail(ctx, req)
 }
@@ -62,7 +62,7 @@ func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, ca
 	return p.kClient.UpdateUserInfo(ctx, req)
 }
 
-func (p *kUserClient) DeregisterUser(ctx context.Context, req *standard.Req, callOptions ...callopt.Option) (r *standard.Resp, err error) {
+func (p *kUserClient) DeregisterUser(ctx context.Context, req *common_http.Req, callOptions ...callopt.Option) (r *common_http.Resp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeregisterUser(ctx, req)
 }

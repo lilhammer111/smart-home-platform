@@ -4,9 +4,8 @@ package microuser
 
 import (
 	"context"
-	common "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	common_rpc "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
 	micro_user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
-	user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
@@ -179,7 +178,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.FreezeRpcReq) (r *micro_user.FreezeRpcResp, err error) {
+func (p *kClient) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
 	var _args micro_user.MicroUserFreezePatrolBeforeAuthArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFreezePatrolBeforeAuthResult
@@ -189,7 +188,7 @@ func (p *kClient) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.Fr
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *common.IdRpcReq) (r *micro_user.FreezeRpcResp, err error) {
+func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *common_rpc.RpcId) (r *micro_user.RpcFreezeResp, err error) {
 	var _args micro_user.MicroUserFreezePatrolAfterAuthArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFreezePatrolAfterAuthResult
@@ -199,7 +198,7 @@ func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *common.IdRpcRe
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifyCredentials(ctx context.Context, req *micro_user.CredentialRpcReq) (r *common.EmptyRpcResp, err error) {
+func (p *kClient) VerifyCredentials(ctx context.Context, req *micro_user.RpcCredentialReq) (r *common_rpc.RpcEmpty, err error) {
 	var _args micro_user.MicroUserVerifyCredentialsArgs
 	_args.Req = req
 	var _result micro_user.MicroUserVerifyCredentialsResult
@@ -209,7 +208,7 @@ func (p *kClient) VerifyCredentials(ctx context.Context, req *micro_user.Credent
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FindUser(ctx context.Context, req *common.IdRpcReq) (r *user.UserInfo, err error) {
+func (p *kClient) FindUser(ctx context.Context, req *common_rpc.RpcId) (r *micro_user.RpcUser, err error) {
 	var _args micro_user.MicroUserFindUserArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFindUserResult
@@ -219,7 +218,7 @@ func (p *kClient) FindUser(ctx context.Context, req *common.IdRpcReq) (r *user.U
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error) {
+func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq) (r []*micro_user.RpcUser, err error) {
 	var _args micro_user.MicroUserQueryUsersWithFilterArgs
 	_args.Req = req
 	var _result micro_user.MicroUserQueryUsersWithFilterResult
@@ -229,7 +228,7 @@ func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilte
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpsertUser(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
+func (p *kClient) UpsertUser(ctx context.Context, req *micro_user.RpcUser) (r *micro_user.RpcUser, err error) {
 	var _args micro_user.MicroUserUpsertUserArgs
 	_args.Req = req
 	var _result micro_user.MicroUserUpsertUserResult
@@ -239,7 +238,7 @@ func (p *kClient) UpsertUser(ctx context.Context, req *user.UserInfo) (r *user.U
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DeleteUser(ctx context.Context, req *common.IdRpcReq) (r *common.EmptyRpcResp, err error) {
+func (p *kClient) DeleteUser(ctx context.Context, req *common_rpc.RpcId) (r *common_rpc.RpcEmpty, err error) {
 	var _args micro_user.MicroUserDeleteUserArgs
 	_args.Req = req
 	var _result micro_user.MicroUserDeleteUserResult

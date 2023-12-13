@@ -4,7 +4,7 @@ import (
 	"net"
 
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user_micro/user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user/microuser"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
@@ -16,7 +16,7 @@ import (
 func main() {
 	opts := kitexInit()
 
-	svr := user.NewServer(new(UserImpl), opts...)
+	svr := microuser.NewServer(new(MicroUserImpl), opts...)
 
 	err := svr.Run()
 	if err != nil {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 
-	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_http"
 	"github.com/cloudwego/kitex/pkg/protocol/bthrift"
 )
 
@@ -22,7 +22,7 @@ var (
 	_ = reflect.Type(nil)
 	_ = thrift.TProtocol(nil)
 	_ = bthrift.BinaryWriter(nil)
-	_ = standard.KitexUnusedProtection
+	_ = common_http.KitexUnusedProtection
 )
 
 func (p *UsersFilter) FastRead(buf []byte) (int, error) {
@@ -1090,7 +1090,7 @@ RequiredFieldNotSetError:
 func (p *UserListResp) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := standard.NewResp()
+	tmp := common_http.NewResp()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -1306,7 +1306,7 @@ RequiredFieldNotSetError:
 func (p *UserInfoResp) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := standard.NewResp()
+	tmp := common_http.NewResp()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -1722,7 +1722,7 @@ ReadStructEndError:
 func (p *UserGetUserDetailArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := standard.NewReq()
+	tmp := common_http.NewReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2238,7 +2238,7 @@ ReadStructEndError:
 func (p *UserDeregisterUserArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := standard.NewReq()
+	tmp := common_http.NewReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2365,7 +2365,7 @@ ReadStructEndError:
 func (p *UserDeregisterUserResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := standard.NewResp()
+	tmp := common_http.NewResp()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

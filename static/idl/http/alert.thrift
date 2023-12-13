@@ -1,5 +1,5 @@
 namespace go alert
-include "../common_http.thrift"
+include "common_http.thrift"
 
 struct AlertFilter {
     1: optional i16 Limit (api.query="limit", api.vd="$>0");

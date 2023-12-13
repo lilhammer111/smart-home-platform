@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	standard "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	common_http "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/standard"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 

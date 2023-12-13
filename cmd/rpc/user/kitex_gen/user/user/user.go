@@ -4,7 +4,7 @@ package user
 
 import (
 	"context"
-	standard "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/standard"
+	common_http "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_http"
 	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
@@ -131,7 +131,7 @@ func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r *us
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserDetail(ctx context.Context, req *standard.Req) (r *user.UserInfoResp, err error) {
+func (p *kClient) GetUserDetail(ctx context.Context, req *common_http.Req) (r *user.UserInfoResp, err error) {
 	var _args user.UserGetUserDetailArgs
 	_args.Req = req
 	var _result user.UserGetUserDetailResult
@@ -151,7 +151,7 @@ func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *us
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DeregisterUser(ctx context.Context, req *standard.Req) (r *standard.Resp, err error) {
+func (p *kClient) DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
 	var _args user.UserDeregisterUserArgs
 	_args.Req = req
 	var _result user.UserDeregisterUserResult
