@@ -19,6 +19,8 @@ cwgo client --type RPC \
             --idl "../../static/idl/rpc/$file" \
             --template ../../static/tpl/custom_rpc_client_tpl/ \
             --service $service_name \
-            --module git.zqbjj.top/pet/services/cmd/http
+            --module git.zqbjj.top/pet/services/cmd/http \
+            --pass "--thrift code_ref"
+
 
 go mod tidy

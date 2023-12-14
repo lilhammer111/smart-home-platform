@@ -19,7 +19,7 @@ cwgo server --type RPC \
             --idl ../../../static/idl/rpc/$file \
             --module git.zqbjj.top/pet/services/cmd/rpc/$dir \
             --service $service_name \
-            --template ../../../static/tpl/custom_rpc_server_tpl/
+            --template ../../../static/tpl/custom_rpc_server_tpl/ \
+            --pass "--thrift code_ref"
 
 go mod tidy
-

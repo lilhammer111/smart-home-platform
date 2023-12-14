@@ -5,7 +5,7 @@ go 1.21.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/apache/thrift v0.13.0
+	git.zqbjj.top/pet/public-repo v0.0.0-20231214023919-4c99e48d41af
 	github.com/cloudwego/kitex v0.8.0
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20231211030816-1f9e0f7bcee3
 	github.com/kr/pretty v0.3.1
@@ -18,6 +18,7 @@ require (
 )
 
 require (
+	github.com/apache/thrift v0.13.0 // indirect
 	github.com/bytedance/gopkg v0.0.0-20230728082804-614d0af6619b // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

@@ -1,6 +1,5 @@
 .idea/
 go.work
 go.work/go.work.sum
-test/
 note/
 go.work.sum
