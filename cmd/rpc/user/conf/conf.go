@@ -18,41 +18,17 @@ var (
 )
 
 type Config struct {
-	Env      string
-	Kitex    Kitex    `yaml:"kitex"`
-	MySQL    MySQL    `yaml:"mysql"`
-	Redis    Redis    `yaml:"redis"`
-	Registry Registry `yaml:"registry"`
+	Nacos Nacos `yaml:"nacos"`
 }
 
-type MySQL struct {
-	DSN string `yaml:"dsn"`
-}
-
-type Redis struct {
-	Address  string `yaml:"address"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	DB       int    `yaml:"db"`
-}
-
-type Kitex struct {
-	Service         string `yaml:"service"`
-	Address         string `yaml:"address"`
-	EnablePprof     bool   `yaml:"enable_pprof"`
-	EnableGzip      bool   `yaml:"enable_gzip"`
-	EnableAccessLog bool   `yaml:"enable_access_log"`
-	LogLevel        string `yaml:"log_level"`
-	LogFileName     string `yaml:"log_file_name"`
-	LogMaxSize      int    `yaml:"log_max_size"`
-	LogMaxBackups   int    `yaml:"log_max_backups"`
-	LogMaxAge       int    `yaml:"log_max_age"`
-}
-
-type Registry struct {
-	RegistryAddress []string `yaml:"registry_address"`
-	Username        string   `yaml:"username"`
-	Password        string   `yaml:"password"`
+type Nacos struct {
+	IP        string `yaml:"ip"`
+	Port      int    `yaml:"port"`
+	Username  string `yaml:"username"`
+	Password  string `yaml:"password"`
+	Namespace string `yaml:"namespace"`
+	DataId    string `yaml:"data_id"`
+	Group     string `yaml:"group"`
 }
 
 // GetConf gets configuration instance
@@ -111,3 +87,41 @@ func LogLevel() klog.Level {
 		return klog.LevelInfo
 	}
 }
+
+//	type Config struct {
+//		Env      string
+//		Kitex    Kitex    `yaml:"kitex"`
+//		MySQL    MySQL    `yaml:"mysql"`
+//		Redis    Redis    `yaml:"redis"`
+//		Registry Registry `yaml:"registry"`
+//	}
+
+//type MySQL struct {
+//	DSN string `yaml:"dsn"`
+//}
+//
+//type Redis struct {
+//	Address  string `yaml:"address"`
+//	Username string `yaml:"username"`
+//	Password string `yaml:"password"`
+//	DB       int    `yaml:"db"`
+//}
+//
+//type Kitex struct {
+//	Service         string `yaml:"service"`
+//	Address         string `yaml:"address"`
+//	EnablePprof     bool   `yaml:"enable_pprof"`
+//	EnableGzip      bool   `yaml:"enable_gzip"`
+//	EnableAccessLog bool   `yaml:"enable_access_log"`
+//	LogLevel        string `yaml:"log_level"`
+//	LogFileName     string `yaml:"log_file_name"`
+//	LogMaxSize      int    `yaml:"log_max_size"`
+//	LogMaxBackups   int    `yaml:"log_max_backups"`
+//	LogMaxAge       int    `yaml:"log_max_age"`
+//}
+//
+//type Registry struct {
+//	RegistryAddress []string `yaml:"registry_address"`
+//	Username        string   `yaml:"username"`
+//	Password        string   `yaml:"password"`
+//}

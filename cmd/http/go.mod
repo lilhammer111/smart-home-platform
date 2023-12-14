@@ -5,6 +5,7 @@ go 1.21.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
+	git.zqbjj.top/pet/public-repo v0.0.0-20231214023919-4c99e48d41af
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.7.3
 	github.com/cloudwego/kitex v0.8.0
@@ -13,7 +14,6 @@ require (
 	github.com/hertz-contrib/logger/accesslog v0.0.0-20231211035138-acc7b4e2984b
 	github.com/hertz-contrib/logger/logrus v1.0.0
 	github.com/hertz-contrib/pprof v0.1.1
-	github.com/jinzhu/copier v0.4.0
 	github.com/kr/pretty v0.3.1
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/validator.v2 v2.0.1
