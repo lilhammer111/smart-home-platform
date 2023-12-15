@@ -215,7 +215,7 @@ layouts:
       }
 
 
-  - path: conf/dev/conf.yaml
+  - path: conf/dev/pro_conf.yaml
     delims:
       - ""
       - ""
@@ -240,7 +240,7 @@ layouts:
         password: ""
         db: 0
 
-  - path: conf/online/conf.yaml
+  - path: conf/online/pro_conf.yaml
     delims:
       - ""
       - ""
@@ -265,7 +265,7 @@ layouts:
         password: ""
         db: 0
 
-  - path: conf/test/conf.yaml
+  - path: conf/test/pro_conf.yaml
     delims:
       - ""
       - ""

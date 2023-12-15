@@ -1,0 +1,19 @@
+microservice:
+    name: micro_user
+    ip: 127.0.0.1
+log:
+    log_level: info
+    log_file_name: "log/user.log"
+    log_max_size: 10
+    log_max_age: 3
+    log_max_backups: 50
+mysql:
+    addr: "127.0.0.1:3306"
+    username: root
+    password: root
+    db: pet_feeder
+redis:
+    addr: "127.0.0.1:6379"
+    username: ""
+    password: ""
+    db: 0

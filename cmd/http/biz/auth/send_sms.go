@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	common_http "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
 	"github.com/cloudwego/hertz/pkg/app"

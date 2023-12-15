@@ -37,7 +37,7 @@ type LocationEnum struct {
 }
 
 type DeviceAlert struct {
-	BaseModel
+	model.BaseModel
 	DeviceId   int32     `gorm:"type:int unsigned;not null" json:"device_id"`
 	FirstAlarm time.Time `gorm:"type:datetime;not null;comment:初次报警时间" json:"first_alarm"`
 	LastAlarm  time.Time `gorm:"type:datetime;not null;comment:最后报警时间" json:"last_alarm"`

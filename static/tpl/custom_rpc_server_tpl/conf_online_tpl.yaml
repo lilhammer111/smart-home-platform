@@ -1,4 +1,4 @@
-path: conf/online/conf.yaml
+path: conf/online/pro_conf.yaml
 update_behavior:
   type: skip
 body: |-

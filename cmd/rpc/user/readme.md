@@ -11,7 +11,7 @@
 
 |  catalog   | introduce  |
 |  ----  | ----  |
-| conf  | Configuration files |
+| localConf  | Configuration files |
 | main.go  | Startup file |
 | handler.go  | Used for request processing return of response. |
 | kitex_gen  | kitex generated code |

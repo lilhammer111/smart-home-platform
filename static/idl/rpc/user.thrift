@@ -40,8 +40,12 @@ struct RpcUser {
     8: required string Avatar;
 }
 
+struct RpcSmsReq {
+    1: required string Mobile;
+}
 
 service micro_user {
+    common_rpc.RpcEmpty SendSMSViaAliyun(1: RpcSmsReq req);
     RpcFreezeResp FreezePatrolBeforeAuth(1: RpcFreezeReq req);
     RpcFreezeResp FreezePatrolAfterAuth(1: common_rpc.RpcId req);
     common_rpc.RpcEmpty VerifyCredentials(1: RpcCredentialReq req);

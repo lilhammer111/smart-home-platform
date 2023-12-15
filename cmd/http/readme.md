@@ -12,7 +12,7 @@
 
 |  catalog   | introduce  |
 |  ----  | ----  |
-| conf  | Configuration files |
+| localConf  | Configuration files |
 | main.go  | Startup file |
 | hertz_gen  | Hertz generated model |
 | api  | Used for request processing, validation and return of response. |
