@@ -15,8 +15,7 @@
 | main.go  | Startup file |
 | handler.go  | Used for request processing return of response. |
 | kitex_gen  | kitex generated code |
-| biz/service  | The actual business logic. |
-| biz/dal  | Logic for operating the storage layer |
+| biz/service  | The actual business logic. | 
 
 ## How to run
 

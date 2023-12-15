@@ -1,3 +1,0 @@
-ref:
-  ../../../static/idl/rpc/common_rpc.thrift: "git.zqbjj.top/pet/public-repo/ref/kitex_gen/common_rpc"
-  ../../../static/idl/rpc/user.thrift: "git.zqbjj.top/pet/public-repo/ref/kitex_gen/micro_user"

@@ -9,14 +9,14 @@ import (
 )
 
 var (
-	DB  *gorm.DB
-	err error
+	GormDB *gorm.DB
+	err    error
 )
 
 func GetMysql() *gorm.DB {
 	// here once is from redis.go
 	once.Do(initMysql)
-	return DB
+	return GormDB
 }
 
 func initMysql() {
@@ -26,7 +26,7 @@ func initMysql() {
 		binding.GetRemoteConf().Mysql.Addr,
 		binding.GetRemoteConf().Mysql.DB,
 	)
-	DB, err = gorm.Open(mysql.Open(DSN),
+	GormDB, err = gorm.Open(mysql.Open(DSN),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
@@ -37,7 +37,7 @@ func initMysql() {
 	}
 	// the underlying sqlDB object
 	var sqlDB *sql.DB
-	sqlDB, err = DB.DB()
+	sqlDB, err = GormDB.DB()
 	if err != nil {
 		panic(err)
 	}

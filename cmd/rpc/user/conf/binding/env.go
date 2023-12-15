@@ -7,6 +7,8 @@ import (
 	"sync"
 )
 
+var instance *ReadOnlyEnv
+
 type EnvVar map[string]string
 
 type ReadOnlyEnv struct {
@@ -15,7 +17,7 @@ type ReadOnlyEnv struct {
 	env    string
 }
 
-func newReadOnly(envVar EnvVar, env string) *ReadOnlyEnv {
+func newReadOnlyEnv(envVar EnvVar, env string) *ReadOnlyEnv {
 	return &ReadOnlyEnv{
 		envVar: envVar,
 		env:    env,
@@ -37,11 +39,14 @@ func (r *ReadOnlyEnv) GetEnv() string {
 }
 
 func LoadEnv() *ReadOnlyEnv {
-	envVar, err := godotenv.Read(".env")
-	if err != nil {
-		log.Panicf("failed to read envVar from .envVar file: %s", err)
-		// omit here: return nil, err
-	}
-	env := os.Getenv("PET_SERVICE_ENV")
-	return newReadOnly(envVar, env)
+	once.Do(func() {
+		envVar, err := godotenv.Read(".env")
+		if err != nil {
+			log.Panicf("failed to read envVar from .envVar file: %s", err)
+			// omit here: return nil, err
+		}
+		env := os.Getenv("PET_SERVICE_ENV")
+		instance = newReadOnlyEnv(envVar, env)
+	})
+	return instance
 }

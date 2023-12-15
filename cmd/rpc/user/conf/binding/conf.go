@@ -68,18 +68,21 @@ type DBConfig struct {
 	DB       string `yaml:"db"`
 }
 
-// GetLocalConf gets configuration instance
+// GetLocalConf gets a local config instance
 func GetLocalConf() *LocalConfig {
 	once.Do(initLocalConf)
 	return localConf
 }
 
-// GetRemoteConf gets configuration instance
+// GetRemoteConf gets a remote config instance
 func GetRemoteConf() *RemoteConfig {
 	once.Do(loadConfigFromNacos)
 	return remoteConf
 }
 
+// initLocalConf deserializes the local yaml configuration file
+// and binds it to the structure LocalConfig via yaml tag.
+// That is why the package is named by 'binding'.
 func initLocalConf() {
 	var confFileRelPath string
 	switch LoadEnv().GetEnv() {
@@ -107,7 +110,7 @@ func initLocalConf() {
 }
 
 // loadConfigFromNacos loads configs including mysql, redis, consul configs and so on
-// from nacos config center
+// from nacos config center, and also binds it to the structure RemoteConfig via yaml tags.
 func loadConfigFromNacos() {
 	clientConfig := *constant.NewClientConfig(
 		constant.WithNamespaceId(GetLocalConf().Nacos.Namespace),
@@ -151,41 +154,3 @@ func loadConfigFromNacos() {
 	}
 	// todo validate yaml
 }
-
-//	type LocalConfig struct {
-//		envVar      string
-//		Kitex    Kitex    `yaml:"kitex"`
-//		MySQL    MySQL    `yaml:"mysql"`
-//		Redis    Redis    `yaml:"redis"`
-//		Registry Registry `yaml:"registry"`
-//	}
-
-//type MySQL struct {
-//	DSN string `yaml:"dsn"`
-//}
-//
-//type Redis struct {
-//	Address  string `yaml:"address"`
-//	Username string `yaml:"username"`
-//	Password string `yaml:"password"`
-//	DB       int    `yaml:"db"`
-//}
-//
-//type Kitex struct {
-//	Service         string `yaml:"service"`
-//	Address         string `yaml:"address"`
-//	EnablePprof     bool   `yaml:"enable_pprof"`
-//	EnableGzip      bool   `yaml:"enable_gzip"`
-//	EnableAccessLog bool   `yaml:"enable_access_log"`
-//	LogLevel        string `yaml:"log_level"`
-//	LogFileName     string `yaml:"log_file_name"`
-//	LogMaxSize      int    `yaml:"log_max_size"`
-//	LogMaxBackups   int    `yaml:"log_max_backups"`
-//	LogMaxAge       int    `yaml:"log_max_age"`
-//}
-//
-//type Registry struct {
-//	RegistryAddress []string `yaml:"registry_address"`
-//	Username        string   `yaml:"username"`
-//	Password        string   `yaml:"password"`
-//}
