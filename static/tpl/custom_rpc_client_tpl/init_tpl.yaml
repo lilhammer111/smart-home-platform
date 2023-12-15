@@ -1,8 +1,8 @@
-path: /utils/rpc_client/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_init.go
+path: /utils/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_cli/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_init.go
 update_behavior:
   type: skip
 body: |-
-  package {{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}
+  package {{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_cli
   import (
      "sync"
   

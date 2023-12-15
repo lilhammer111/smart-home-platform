@@ -4,8 +4,8 @@ package microuser
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	common_rpc "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
+	micro_user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )

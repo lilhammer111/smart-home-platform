@@ -1,8 +1,8 @@
-path: /utils/rpc_client/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_default.go
+path: /utils/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_cli/{{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_default.go
 update_behavior:
   type: cover
 body: |-
-  package {{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}
+  package {{ ReplaceString (ReplaceString .RealServiceName "." "_" -1) "/" "_" -1 }}_cli
   import (
       {{- range $path, $aliases := .Imports}}
       	{{- if not $aliases }}

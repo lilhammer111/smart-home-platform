@@ -5,7 +5,6 @@ go 1.21.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	git.zqbjj.top/pet/public-repo v0.0.0-20231214023919-4c99e48d41af
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.7.3
 	github.com/cloudwego/kitex v0.8.0

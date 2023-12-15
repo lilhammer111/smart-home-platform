@@ -52,6 +52,10 @@ type RpcUser = micro_user.RpcUser
 
 var NewRpcUser = micro_user.NewRpcUser
 
+type RpcSmsReq = micro_user.RpcSmsReq
+
+var NewRpcSmsReq = micro_user.NewRpcSmsReq
+
 type MicroUser = micro_user.MicroUser
 type MicroUserClient = micro_user.MicroUserClient
 
@@ -64,6 +68,18 @@ var NewMicroUserClient = micro_user.NewMicroUserClient
 type MicroUserProcessor = micro_user.MicroUserProcessor
 
 var NewMicroUserProcessor = micro_user.NewMicroUserProcessor
+
+type MicroUserSendSMSViaAliyunArgs = micro_user.MicroUserSendSMSViaAliyunArgs
+
+var NewMicroUserSendSMSViaAliyunArgs = micro_user.NewMicroUserSendSMSViaAliyunArgs
+
+var MicroUserSendSMSViaAliyunArgs_Req_DEFAULT = micro_user.MicroUserSendSMSViaAliyunArgs_Req_DEFAULT
+
+type MicroUserSendSMSViaAliyunResult = micro_user.MicroUserSendSMSViaAliyunResult
+
+var NewMicroUserSendSMSViaAliyunResult = micro_user.NewMicroUserSendSMSViaAliyunResult
+
+var MicroUserSendSMSViaAliyunResult_Success_DEFAULT = micro_user.MicroUserSendSMSViaAliyunResult_Success_DEFAULT
 
 type MicroUserFreezePatrolBeforeAuthArgs = micro_user.MicroUserFreezePatrolBeforeAuthArgs
 

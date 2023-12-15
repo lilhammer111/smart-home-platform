@@ -58,3 +58,10 @@ func (s *MicroUserImpl) DeleteUser(ctx context.Context, req *common_rpc.RpcId) (
 
 	return resp, err
 }
+
+// SendSMSViaAliyun implements the MicroUserImpl interface.
+func (s *MicroUserImpl) SendSMSViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq) (resp *common_rpc.RpcEmpty, err error) {
+	resp, err = service.NewSendSMSViaAliyunService(ctx).Run(req)
+
+	return resp, err
+}
