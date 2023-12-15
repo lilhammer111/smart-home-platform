@@ -14,9 +14,10 @@ import (
 )
 
 const (
-	devConfFile = "dev_conf.yaml"
-	proConfFile = "pro_conf.yaml"
-	relPath     = "conf/file" // config yaml files' dir name
+	nacosPASSWORD = "NACOS_PASSWORD"
+	devConfFile   = "dev_conf.yaml"
+	proConfFile   = "pro_conf.yaml"
+	relPath       = "conf/file" // config yaml files' dir name
 )
 
 var (
@@ -118,7 +119,7 @@ func loadConfigFromNacos() {
 		constant.WithCacheDir(GetLocalConf().Nacos.CacheDir),
 		constant.WithUpdateCacheWhenEmpty(true),
 		constant.WithUsername(GetLocalConf().Nacos.Username),
-		constant.WithPassword(LoadEnv().GetEnvVar("nacos_password")),
+		constant.WithPassword(LoadEnv().GetEnvVar(nacosPASSWORD)),
 	)
 
 	serverConfig := []constant.ServerConfig{

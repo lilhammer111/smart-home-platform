@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	accessKeyId     = "access_key_id"
-	accessKeySecret = "access_key_secret"
+	accessKeyId     = "ACCESS_KEY_ID"
+	accessKeySecret = "ACCESS_KEY_SECRET"
 	endPoint        = "dysmsapi.aliyuncs.com"
 	signName        = "阿里云短信测试"
 	templateCode    = "SMS_154950909"
@@ -42,13 +42,13 @@ func (s *SendSMSViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_r
 	smsCode := generateSmsCode(6)
 
 	smsSender := &SmsSender{}
-	err = smsSender.getSmsClient(req.Mobile, smsCode)
+	err = smsSender.initSmsAssistant(req.Mobile, smsCode)
 	if err != nil {
 		klog.Errorf("failed to get sms client: %s", err)
 		return
 	}
 
-	smsResp, err := smsSender.client.SendSms(smsSender.request)
+	smsResp, err := smsSender.smsAssistant.SendSms(smsSender.request)
 	if err != nil || *smsResp.StatusCode != http.StatusOK {
 		klog.Errorf("failed to send sms: %s", err)
 		return
@@ -77,11 +77,11 @@ func generateSmsCode(length int) string {
 }
 
 type SmsSender struct {
-	client  *dysmsapi.Client
-	request *dysmsapi.SendSmsRequest
+	smsAssistant *dysmsapi.Client
+	request      *dysmsapi.SendSmsRequest
 }
 
-func (ss *SmsSender) getSmsClient(mobile, smsCode string) (err error) {
+func (ss *SmsSender) initSmsAssistant(mobile, smsCode string) (err error) {
 	config := &openapi.Config{
 		AccessKeyId:     tea.String(binding.LoadEnv().GetEnvVar(accessKeyId)),
 		AccessKeySecret: tea.String(binding.LoadEnv().GetEnvVar(accessKeySecret)),
@@ -92,6 +92,6 @@ func (ss *SmsSender) getSmsClient(mobile, smsCode string) (err error) {
 	request.SetSignName(signName)
 	request.SetTemplateCode(templateCode)
 	request.SetTemplateParam(fmt.Sprintf("{\"code\":%s}", smsCode))
-	ss.client, err = dysmsapi.NewClient(config)
+	ss.smsAssistant, err = dysmsapi.NewClient(config)
 	return
 }
