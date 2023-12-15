@@ -2,6 +2,6 @@ path: kitex_info.yaml
 update_behavior:
   type: cover
 body: |-
-  kitexinfo:
+  kitex_info:
     ServiceName: '{{.RealServiceName}}'
     ToolVersion: '{{.Version}}'
