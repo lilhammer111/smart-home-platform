@@ -12,12 +12,12 @@ struct UsersFilter {
 }
 
 struct UserInfo {
-    1: required i32 Id (api.body="id");
+    1: optional i32 Id (api.body="id");
     2: required i8 Age (api.body="age", api.vd="$>=0 && $ <=200>");
     3: required i8 Gender (api.body="gender", api.vd="in($,0,1,2)");
     4: required string Mobile (api.body="mobile", api.vd="regexp('^1[3-9]\\d{9}$')");
     5: required string Profile (api.body="profile", api.vd="regexp('^.{0,200}$')");
-    6: required string Username (api.body="username", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')"); //匹配中文字母数字下划线
+    6: required string Username (api.body="username", api.vd="regexp('^[a-z0-9_]{1,30}$')"); // Only lowercase letters, numbers and underscores are allowed
     7: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
     8: required string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }

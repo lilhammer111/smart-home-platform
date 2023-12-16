@@ -1,12 +1,11 @@
 package model
 
 import (
-	"git.zqbjj.top/pet/public-repo/model"
 	"time"
 )
 
 type User struct {
-	model.BaseModel
+	BaseModel
 	Username string    `gorm:"type:varchar(30);index" json:"username"`
 	Password string    `gorm:"type:varchar(255)" json:"password"`
 	Openid   string    `gorm:"type:varchar(50)" json:"openid"` // current length is 28

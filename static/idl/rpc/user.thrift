@@ -1,5 +1,7 @@
 namespace go micro_user
 include "common_rpc.thrift"
+include "../http/user.thrift"
+include "../http/auth.thrift"
 
 struct RpcCredentialReq {
     1: required string SmsCode;
@@ -29,19 +31,23 @@ struct RpcUsersFilterReq {
     7: optional string EndDate;
 }
 
-struct RpcUser {
-    1: optional i32 Id;
-    2: required i8 Age;
-    3: required i8 Gender;
-    4: required string Mobile;
-    5: required string Profile;
-    6: required string Username; //匹配中文字母数字下划线
-    7: required string Email;
-    8: required string Avatar;
-}
+//struct RpcUser {
+//    1: optional i32 Id;
+//    2: required i8 Age;
+//    3: required i8 Gender;
+//    4: required string Mobile;
+//    5: required string Profile;
+//    6: required string Username; //匹配中文字母数字下划线
+//    7: required string Email;
+//    8: required string Avatar;
+//}
 
 struct RpcSmsReq {
     1: required string Mobile;
+}
+
+struct RpcOpenIdReq {
+    1: required string OpenId;
 }
 
 service micro_user {
@@ -50,8 +56,10 @@ service micro_user {
     RpcFreezeResp FreezePatrolAfterAuth(1: common_rpc.RpcId req);
     common_rpc.RpcEmpty VerifyCredentials(1: RpcCredentialReq req);
 
-    RpcUser FindUser (1: common_rpc.RpcId req);
-    list<RpcUser> QueryUsersWithFilter(1: RpcUsersFilterReq req)
-    RpcUser UpsertUser(1: RpcUser req);
+    user.UserInfo FindUser (1: common_rpc.RpcId req);
+    list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req)
+    user.UserInfo UpdateUser(1: user.UserInfo req);
+    user.UserInfo CreateUserByMobile(1: auth.MobileRegisterReq req);
+    user.UserInfo CreateUserByMiniProg(1: RpcOpenIdReq req)
     common_rpc.RpcEmpty DeleteUser(1: common_rpc.RpcId req);
 }
