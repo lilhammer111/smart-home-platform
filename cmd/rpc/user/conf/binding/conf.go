@@ -21,9 +21,10 @@ const (
 )
 
 var (
-	localConf  *LocalConfig
-	remoteConf *RemoteConfig
-	once       sync.Once
+	localConf      *LocalConfig
+	remoteConf     *RemoteConfig
+	locaConfOnce   sync.Once
+	remoteConfOnce sync.Once
 )
 
 // LocalConfig below
@@ -71,13 +72,15 @@ type DBConfig struct {
 
 // GetLocalConf gets a local config instance
 func GetLocalConf() *LocalConfig {
-	once.Do(initLocalConf)
+	//klog.Debugf("entry GetLocalConf()")
+	locaConfOnce.Do(initLocalConf)
 	return localConf
 }
 
 // GetRemoteConf gets a remote config instance
 func GetRemoteConf() *RemoteConfig {
-	once.Do(loadConfigFromNacos)
+	//klog.Debugf("entry GetRemoteConf()")
+	remoteConfOnce.Do(loadConfigFromNacos)
 	return remoteConf
 }
 
@@ -87,32 +90,36 @@ func GetRemoteConf() *RemoteConfig {
 func initLocalConf() {
 	var confFileRelPath string
 	switch LoadEnv().GetEnv() {
-	case "dev":
+	case DevelopmentEnv:
 		confFileRelPath = filepath.Join(relPath, devConfFile)
-	case "pro":
+	case ProductionEnv:
 		confFileRelPath = filepath.Join(relPath, proConfFile)
 	}
-
+	//absPath, err := filepath.Abs(confFileRelPath)
 	content, err := os.ReadFile(confFileRelPath)
 
+	//klog.Debugf("local config file content: %s", content)
+
 	if err != nil {
-		klog.Fatalf("failed to read local file: %s", err)
+		klog.Fatalf("failed to read local file with relPath %s : %s", confFileRelPath, err)
 	}
 
 	err = yaml.Unmarshal(content, &localConf)
 	if err != nil {
 		klog.Fatalf("parse yaml error - %v", err)
-		panic(err)
 	}
 	if err = validator.Validate(localConf); err != nil {
 		klog.Fatalf("validate config error - %v", err)
-		panic(err)
 	}
+
+	klog.Debugf("local config: %+v:", localConf)
 }
 
 // loadConfigFromNacos loads configs including mysql, redis, consul configs and so on
 // from nacos config center, and also binds it to the structure RemoteConfig via yaml tags.
 func loadConfigFromNacos() {
+	klog.Debugf("entry loadConfigFromNacos()")
+
 	clientConfig := *constant.NewClientConfig(
 		constant.WithNamespaceId(GetLocalConf().Nacos.Namespace),
 		constant.WithLogDir(GetLocalConf().Nacos.LogDir),
@@ -154,4 +161,7 @@ func loadConfigFromNacos() {
 		klog.Fatalf("failed to unmarshal remote config: %s", err)
 	}
 	// todo validate yaml
+
+	klog.Debugf("remote config: %+v:", remoteConf)
+
 }

@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-
 	user "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -22,6 +21,5 @@ func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfoResp,
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-
 	return
 }

@@ -1189,7 +1189,6 @@ func (p *RpcUser) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetId bool = false
 	var issetAge bool = false
 	var issetGender bool = false
 	var issetMobile bool = false
@@ -1220,7 +1219,6 @@ func (p *RpcUser) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1353,11 +1351,6 @@ func (p *RpcUser) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetId {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
 	if !issetAge {
 		fieldId = 2
 		goto RequiredFieldNotSetError
@@ -1416,8 +1409,7 @@ func (p *RpcUser) FastReadField1(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.Id = v
+		p.Id = &v
 
 	}
 	return offset, nil
@@ -1564,10 +1556,12 @@ func (p *RpcUser) BLength() int {
 
 func (p *RpcUser) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
+	if p.IsSetId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
+		offset += bthrift.Binary.WriteI32(buf[offset:], *p.Id)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -1636,10 +1630,12 @@ func (p *RpcUser) fastWriteField8(buf []byte, binaryWriter bthrift.BinaryWriter)
 
 func (p *RpcUser) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.Id)
+	if p.IsSetId() {
+		l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
+		l += bthrift.Binary.I32Length(*p.Id)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 

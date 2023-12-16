@@ -6,17 +6,19 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"sync"
 )
 
 var (
-	GormDB *gorm.DB
-	err    error
+	gormDB    *gorm.DB
+	err       error
+	mysqlOnce sync.Once
 )
 
 func GetMysql() *gorm.DB {
 	// here once is from redis.go
-	once.Do(initMysql)
-	return GormDB
+	mysqlOnce.Do(initMysql)
+	return gormDB
 }
 
 func initMysql() {
@@ -26,7 +28,7 @@ func initMysql() {
 		binding.GetRemoteConf().Mysql.Addr,
 		binding.GetRemoteConf().Mysql.DB,
 	)
-	GormDB, err = gorm.Open(mysql.Open(DSN),
+	gormDB, err = gorm.Open(mysql.Open(DSN),
 		&gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
@@ -37,7 +39,7 @@ func initMysql() {
 	}
 	// the underlying sqlDB object
 	var sqlDB *sql.DB
-	sqlDB, err = GormDB.DB()
+	sqlDB, err = gormDB.DB()
 	if err != nil {
 		panic(err)
 	}

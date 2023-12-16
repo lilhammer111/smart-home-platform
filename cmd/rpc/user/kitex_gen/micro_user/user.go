@@ -1590,7 +1590,7 @@ func (p *RpcUsersFilterReq) Field7DeepEqual(src *string) bool {
 }
 
 type RpcUser struct {
-	Id       int32  `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Id       *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" json:"Id,omitempty"`
 	Age      int8   `thrift:"Age,2,required" frugal:"2,required,i8" json:"Age"`
 	Gender   int8   `thrift:"Gender,3,required" frugal:"3,required,i8" json:"Gender"`
 	Mobile   string `thrift:"Mobile,4,required" frugal:"4,required,string" json:"Mobile"`
@@ -1608,8 +1608,13 @@ func (p *RpcUser) InitDefault() {
 	*p = RpcUser{}
 }
 
+var RpcUser_Id_DEFAULT int32
+
 func (p *RpcUser) GetId() (v int32) {
-	return p.Id
+	if !p.IsSetId() {
+		return RpcUser_Id_DEFAULT
+	}
+	return *p.Id
 }
 
 func (p *RpcUser) GetAge() (v int8) {
@@ -1639,7 +1644,7 @@ func (p *RpcUser) GetEmail() (v string) {
 func (p *RpcUser) GetAvatar() (v string) {
 	return p.Avatar
 }
-func (p *RpcUser) SetId(val int32) {
+func (p *RpcUser) SetId(val *int32) {
 	p.Id = val
 }
 func (p *RpcUser) SetAge(val int8) {
@@ -1675,11 +1680,14 @@ var fieldIDToName_RpcUser = map[int16]string{
 	8: "Avatar",
 }
 
+func (p *RpcUser) IsSetId() bool {
+	return p.Id != nil
+}
+
 func (p *RpcUser) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetId bool = false
 	var issetAge bool = false
 	var issetGender bool = false
 	var issetMobile bool = false
@@ -1707,7 +1715,6 @@ func (p *RpcUser) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetId = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1803,11 +1810,6 @@ func (p *RpcUser) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetId {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
 	if !issetAge {
 		fieldId = 2
 		goto RequiredFieldNotSetError
@@ -1865,7 +1867,7 @@ func (p *RpcUser) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.Id = v
+		p.Id = &v
 	}
 	return nil
 }
@@ -1990,14 +1992,16 @@ WriteStructEndError:
 }
 
 func (p *RpcUser) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI32(p.Id); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetId() {
+		if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI32(*p.Id); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2158,9 +2162,14 @@ func (p *RpcUser) DeepEqual(ano *RpcUser) bool {
 	return true
 }
 
-func (p *RpcUser) Field1DeepEqual(src int32) bool {
+func (p *RpcUser) Field1DeepEqual(src *int32) bool {
 
-	if p.Id != src {
+	if p.Id == src {
+		return true
+	} else if p.Id == nil || src == nil {
+		return false
+	}
+	if *p.Id != *src {
 		return false
 	}
 	return true

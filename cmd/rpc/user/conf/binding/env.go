@@ -7,7 +7,15 @@ import (
 	"sync"
 )
 
-var instance *ReadOnlyEnv
+const (
+	DevelopmentEnv = "dev"
+	ProductionEnv  = "pro"
+)
+
+var (
+	instance *ReadOnlyEnv
+	envOnce  sync.Once
+)
 
 type EnvVar map[string]string
 
@@ -39,10 +47,10 @@ func (r *ReadOnlyEnv) GetEnv() string {
 }
 
 func LoadEnv() *ReadOnlyEnv {
-	once.Do(func() {
+	envOnce.Do(func() {
 		envVar, err := godotenv.Read(".env")
 		if err != nil {
-			log.Panicf("failed to read envVar from .envVar file: %s", err)
+			log.Panicf("failed to read envVar from .env file: %s", err)
 			// omit here: return nil, err
 		}
 		env := os.Getenv("PET_SERVICE_ENV")

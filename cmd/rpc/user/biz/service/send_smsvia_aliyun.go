@@ -38,7 +38,6 @@ func NewSendSMSViaAliyunService(ctx context.Context) *SendSMSViaAliyunService {
 
 // Run create note info
 func (s *SendSMSViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_rpc.RpcEmpty, err error) {
-	// Finish your business logic.
 	smsCode := generateSmsCode(6)
 
 	smsSender := &SmsSender{}

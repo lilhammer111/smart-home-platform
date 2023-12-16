@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	redisCli *redis.Client
-	once     sync.Once
+	redisCli  *redis.Client
+	redisOnce sync.Once
 )
 
 func GetRedis() *redis.Client {
-	once.Do(initRedis)
+	redisOnce.Do(initRedis)
 	return redisCli
 }
 

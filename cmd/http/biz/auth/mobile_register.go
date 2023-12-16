@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -22,6 +21,6 @@ func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.Auth
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-
+	//user_micro_cli.DefaultClient().UpsertUser()
 	return
 }

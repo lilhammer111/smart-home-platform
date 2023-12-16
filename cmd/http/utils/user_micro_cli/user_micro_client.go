@@ -2,8 +2,8 @@ package user_micro_cli
 
 import (
 	"context"
-	common_rpcSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
-	micro_userSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user/microuser"
 	"github.com/cloudwego/kitex/client"

@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
+	"github.com/pkg/errors"
 	"net"
 
 	"git.zqbjj.top/pet/public-repo/utils"
@@ -25,6 +26,11 @@ func (bs *BasicSuite) Options() []server.Option {
 	// Set kitex log
 	log.InitKitexLog()
 
+	if binding.GetRemoteConf() == nil {
+		klog.Fatalf("GetRemoteConf() returns a nil value: %s",
+			errors.New("runtime error: invalid memory address or nil pointer dereference"),
+		)
+	}
 	// Service info
 	endpointBasicInfo := rpcinfo.EndpointBasicInfo{
 		ServiceName: binding.GetRemoteConf().Microservice.Name,

@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	klog.Info("klog debugf works")
 	svr := microuser.NewServer(
 		new(MicroUserImpl),
 		server.WithSuite(&suite.BasicSuite{
