@@ -15,8 +15,8 @@ struct RpcFreezeReq {
 }
 
 struct RpcFreezeResp {
-    9: required bool   IsFrozen (api.body="is_frozen");
-    10: optional string ThawedAt (api.body="thawed_at");
+    9: required bool   IsFrozen;
+    10: optional string ThawedAt;
 }
 
 struct RpcUsersFilterReq {
@@ -30,7 +30,7 @@ struct RpcUsersFilterReq {
 }
 
 struct RpcUser {
-    1: required i32 Id;
+    1: optional i32 Id;
     2: required i8 Age;
     3: required i8 Gender;
     4: required string Mobile;
