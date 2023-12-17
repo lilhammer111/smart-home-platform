@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -21,6 +22,13 @@ func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.Auth
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	//user_micro_cli.DefaultClient().UpsertUser()
+	// check sms code
+	isCorrect, err := micro_user_cli.DefaultClient().VerifySmsCode(h.Context, req.Mobile, req.SmsCode)
+	if err != nil {
+		return nil, err
+	}
+	// create user
+	userInfo, err := micro_user_cli.CreateUser(h.Context, req)
+	resp = auth.AuthInfoResp{}
 	return
 }

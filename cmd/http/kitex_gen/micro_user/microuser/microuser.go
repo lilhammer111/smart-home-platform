@@ -6,6 +6,7 @@ import (
 	"context"
 	common_rpc "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_rpc"
 	micro_user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
@@ -20,13 +21,16 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "micro_user"
 	handlerType := (*micro_user.MicroUser)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"SendSMSViaAliyun":       kitex.NewMethodInfo(sendSMSViaAliyunHandler, newMicroUserSendSMSViaAliyunArgs, newMicroUserSendSMSViaAliyunResult, false),
+		"SendSmsViaAliyun":       kitex.NewMethodInfo(sendSmsViaAliyunHandler, newMicroUserSendSmsViaAliyunArgs, newMicroUserSendSmsViaAliyunResult, false),
 		"FreezePatrolBeforeAuth": kitex.NewMethodInfo(freezePatrolBeforeAuthHandler, newMicroUserFreezePatrolBeforeAuthArgs, newMicroUserFreezePatrolBeforeAuthResult, false),
 		"FreezePatrolAfterAuth":  kitex.NewMethodInfo(freezePatrolAfterAuthHandler, newMicroUserFreezePatrolAfterAuthArgs, newMicroUserFreezePatrolAfterAuthResult, false),
-		"VerifyCredentials":      kitex.NewMethodInfo(verifyCredentialsHandler, newMicroUserVerifyCredentialsArgs, newMicroUserVerifyCredentialsResult, false),
+		"VerifySmsCode":          kitex.NewMethodInfo(verifySmsCodeHandler, newMicroUserVerifySmsCodeArgs, newMicroUserVerifySmsCodeResult, false),
+		"VerifyUsernamePwd":      kitex.NewMethodInfo(verifyUsernamePwdHandler, newMicroUserVerifyUsernamePwdArgs, newMicroUserVerifyUsernamePwdResult, false),
+		"VerifyEmailPwd":         kitex.NewMethodInfo(verifyEmailPwdHandler, newMicroUserVerifyEmailPwdArgs, newMicroUserVerifyEmailPwdResult, false),
 		"FindUser":               kitex.NewMethodInfo(findUserHandler, newMicroUserFindUserArgs, newMicroUserFindUserResult, false),
 		"QueryUsersWithFilter":   kitex.NewMethodInfo(queryUsersWithFilterHandler, newMicroUserQueryUsersWithFilterArgs, newMicroUserQueryUsersWithFilterResult, false),
-		"UpsertUser":             kitex.NewMethodInfo(upsertUserHandler, newMicroUserUpsertUserArgs, newMicroUserUpsertUserResult, false),
+		"UpdateUser":             kitex.NewMethodInfo(updateUserHandler, newMicroUserUpdateUserArgs, newMicroUserUpdateUserResult, false),
+		"CreateUser":             kitex.NewMethodInfo(createUserHandler, newMicroUserCreateUserArgs, newMicroUserCreateUserResult, false),
 		"DeleteUser":             kitex.NewMethodInfo(deleteUserHandler, newMicroUserDeleteUserArgs, newMicroUserDeleteUserResult, false),
 	}
 	extra := map[string]interface{}{
@@ -43,22 +47,22 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	return svcInfo
 }
 
-func sendSMSViaAliyunHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*micro_user.MicroUserSendSMSViaAliyunArgs)
-	realResult := result.(*micro_user.MicroUserSendSMSViaAliyunResult)
-	success, err := handler.(micro_user.MicroUser).SendSMSViaAliyun(ctx, realArg.Req)
+func sendSmsViaAliyunHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserSendSmsViaAliyunArgs)
+	realResult := result.(*micro_user.MicroUserSendSmsViaAliyunResult)
+	success, err := handler.(micro_user.MicroUser).SendSmsViaAliyun(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newMicroUserSendSMSViaAliyunArgs() interface{} {
-	return micro_user.NewMicroUserSendSMSViaAliyunArgs()
+func newMicroUserSendSmsViaAliyunArgs() interface{} {
+	return micro_user.NewMicroUserSendSmsViaAliyunArgs()
 }
 
-func newMicroUserSendSMSViaAliyunResult() interface{} {
-	return micro_user.NewMicroUserSendSMSViaAliyunResult()
+func newMicroUserSendSmsViaAliyunResult() interface{} {
+	return micro_user.NewMicroUserSendSmsViaAliyunResult()
 }
 
 func freezePatrolBeforeAuthHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -82,7 +86,7 @@ func newMicroUserFreezePatrolBeforeAuthResult() interface{} {
 func freezePatrolAfterAuthHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*micro_user.MicroUserFreezePatrolAfterAuthArgs)
 	realResult := result.(*micro_user.MicroUserFreezePatrolAfterAuthResult)
-	success, err := handler.(micro_user.MicroUser).FreezePatrolAfterAuth(ctx, realArg.Req)
+	success, err := handler.(micro_user.MicroUser).FreezePatrolAfterAuth(ctx, realArg.Id)
 	if err != nil {
 		return err
 	}
@@ -97,22 +101,58 @@ func newMicroUserFreezePatrolAfterAuthResult() interface{} {
 	return micro_user.NewMicroUserFreezePatrolAfterAuthResult()
 }
 
-func verifyCredentialsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*micro_user.MicroUserVerifyCredentialsArgs)
-	realResult := result.(*micro_user.MicroUserVerifyCredentialsResult)
-	success, err := handler.(micro_user.MicroUser).VerifyCredentials(ctx, realArg.Req)
+func verifySmsCodeHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserVerifySmsCodeArgs)
+	realResult := result.(*micro_user.MicroUserVerifySmsCodeResult)
+	success, err := handler.(micro_user.MicroUser).VerifySmsCode(ctx, realArg.Mobile, realArg.SmsCode)
 	if err != nil {
 		return err
 	}
-	realResult.Success = success
+	realResult.Success = &success
 	return nil
 }
-func newMicroUserVerifyCredentialsArgs() interface{} {
-	return micro_user.NewMicroUserVerifyCredentialsArgs()
+func newMicroUserVerifySmsCodeArgs() interface{} {
+	return micro_user.NewMicroUserVerifySmsCodeArgs()
 }
 
-func newMicroUserVerifyCredentialsResult() interface{} {
-	return micro_user.NewMicroUserVerifyCredentialsResult()
+func newMicroUserVerifySmsCodeResult() interface{} {
+	return micro_user.NewMicroUserVerifySmsCodeResult()
+}
+
+func verifyUsernamePwdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserVerifyUsernamePwdArgs)
+	realResult := result.(*micro_user.MicroUserVerifyUsernamePwdResult)
+	success, err := handler.(micro_user.MicroUser).VerifyUsernamePwd(ctx, realArg.Username, realArg.EntryPwd)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newMicroUserVerifyUsernamePwdArgs() interface{} {
+	return micro_user.NewMicroUserVerifyUsernamePwdArgs()
+}
+
+func newMicroUserVerifyUsernamePwdResult() interface{} {
+	return micro_user.NewMicroUserVerifyUsernamePwdResult()
+}
+
+func verifyEmailPwdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserVerifyEmailPwdArgs)
+	realResult := result.(*micro_user.MicroUserVerifyEmailPwdResult)
+	success, err := handler.(micro_user.MicroUser).VerifyEmailPwd(ctx, realArg.Email, realArg.EntryPwd)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newMicroUserVerifyEmailPwdArgs() interface{} {
+	return micro_user.NewMicroUserVerifyEmailPwdArgs()
+}
+
+func newMicroUserVerifyEmailPwdResult() interface{} {
+	return micro_user.NewMicroUserVerifyEmailPwdResult()
 }
 
 func findUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -151,22 +191,40 @@ func newMicroUserQueryUsersWithFilterResult() interface{} {
 	return micro_user.NewMicroUserQueryUsersWithFilterResult()
 }
 
-func upsertUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*micro_user.MicroUserUpsertUserArgs)
-	realResult := result.(*micro_user.MicroUserUpsertUserResult)
-	success, err := handler.(micro_user.MicroUser).UpsertUser(ctx, realArg.Req)
+func updateUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserUpdateUserArgs)
+	realResult := result.(*micro_user.MicroUserUpdateUserResult)
+	success, err := handler.(micro_user.MicroUser).UpdateUser(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newMicroUserUpsertUserArgs() interface{} {
-	return micro_user.NewMicroUserUpsertUserArgs()
+func newMicroUserUpdateUserArgs() interface{} {
+	return micro_user.NewMicroUserUpdateUserArgs()
 }
 
-func newMicroUserUpsertUserResult() interface{} {
-	return micro_user.NewMicroUserUpsertUserResult()
+func newMicroUserUpdateUserResult() interface{} {
+	return micro_user.NewMicroUserUpdateUserResult()
+}
+
+func createUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserCreateUserArgs)
+	realResult := result.(*micro_user.MicroUserCreateUserResult)
+	success, err := handler.(micro_user.MicroUser).CreateUser(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newMicroUserCreateUserArgs() interface{} {
+	return micro_user.NewMicroUserCreateUserArgs()
+}
+
+func newMicroUserCreateUserResult() interface{} {
+	return micro_user.NewMicroUserCreateUserResult()
 }
 
 func deleteUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -197,11 +255,11 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) SendSMSViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq) (r *common_rpc.RpcEmpty, err error) {
-	var _args micro_user.MicroUserSendSMSViaAliyunArgs
+func (p *kClient) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq) (r *common_rpc.RpcEmpty, err error) {
+	var _args micro_user.MicroUserSendSmsViaAliyunArgs
 	_args.Req = req
-	var _result micro_user.MicroUserSendSMSViaAliyunResult
-	if err = p.c.Call(ctx, "SendSMSViaAliyun", &_args, &_result); err != nil {
+	var _result micro_user.MicroUserSendSmsViaAliyunResult
+	if err = p.c.Call(ctx, "SendSmsViaAliyun", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -217,9 +275,9 @@ func (p *kClient) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.Rp
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *common_rpc.RpcId) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, id *common_rpc.RpcId) (r *micro_user.RpcFreezeResp, err error) {
 	var _args micro_user.MicroUserFreezePatrolAfterAuthArgs
-	_args.Req = req
+	_args.Id = id
 	var _result micro_user.MicroUserFreezePatrolAfterAuthResult
 	if err = p.c.Call(ctx, "FreezePatrolAfterAuth", &_args, &_result); err != nil {
 		return
@@ -227,17 +285,40 @@ func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *common_rpc.Rpc
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifyCredentials(ctx context.Context, req *micro_user.RpcCredentialReq) (r *common_rpc.RpcEmpty, err error) {
-	var _args micro_user.MicroUserVerifyCredentialsArgs
-	_args.Req = req
-	var _result micro_user.MicroUserVerifyCredentialsResult
-	if err = p.c.Call(ctx, "VerifyCredentials", &_args, &_result); err != nil {
+func (p *kClient) VerifySmsCode(ctx context.Context, mobile string, smsCode string) (r bool, err error) {
+	var _args micro_user.MicroUserVerifySmsCodeArgs
+	_args.Mobile = mobile
+	_args.SmsCode = smsCode
+	var _result micro_user.MicroUserVerifySmsCodeResult
+	if err = p.c.Call(ctx, "VerifySmsCode", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FindUser(ctx context.Context, req *common_rpc.RpcId) (r *micro_user.RpcUser, err error) {
+func (p *kClient) VerifyUsernamePwd(ctx context.Context, username string, entryPwd string) (r bool, err error) {
+	var _args micro_user.MicroUserVerifyUsernamePwdArgs
+	_args.Username = username
+	_args.EntryPwd = entryPwd
+	var _result micro_user.MicroUserVerifyUsernamePwdResult
+	if err = p.c.Call(ctx, "VerifyUsernamePwd", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) VerifyEmailPwd(ctx context.Context, email string, entryPwd string) (r bool, err error) {
+	var _args micro_user.MicroUserVerifyEmailPwdArgs
+	_args.Email = email
+	_args.EntryPwd = entryPwd
+	var _result micro_user.MicroUserVerifyEmailPwdResult
+	if err = p.c.Call(ctx, "VerifyEmailPwd", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FindUser(ctx context.Context, req *common_rpc.RpcId) (r *user.UserInfo, err error) {
 	var _args micro_user.MicroUserFindUserArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFindUserResult
@@ -247,7 +328,7 @@ func (p *kClient) FindUser(ctx context.Context, req *common_rpc.RpcId) (r *micro
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq) (r []*micro_user.RpcUser, err error) {
+func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq) (r []*user.UserInfo, err error) {
 	var _args micro_user.MicroUserQueryUsersWithFilterArgs
 	_args.Req = req
 	var _result micro_user.MicroUserQueryUsersWithFilterResult
@@ -257,11 +338,21 @@ func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcU
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpsertUser(ctx context.Context, req *micro_user.RpcUser) (r *micro_user.RpcUser, err error) {
-	var _args micro_user.MicroUserUpsertUserArgs
+func (p *kClient) UpdateUser(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
+	var _args micro_user.MicroUserUpdateUserArgs
 	_args.Req = req
-	var _result micro_user.MicroUserUpsertUserResult
-	if err = p.c.Call(ctx, "UpsertUser", &_args, &_result); err != nil {
+	var _result micro_user.MicroUserUpdateUserResult
+	if err = p.c.Call(ctx, "UpdateUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreateUser(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
+	var _args micro_user.MicroUserCreateUserArgs
+	_args.Req = req
+	var _result micro_user.MicroUserCreateUserResult
+	if err = p.c.Call(ctx, "CreateUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

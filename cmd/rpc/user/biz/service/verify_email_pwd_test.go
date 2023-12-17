@@ -2,17 +2,18 @@ package service
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
 
-func TestSendSMSViaAliyun_Run(t *testing.T) {
+func TestVerifyEmailPwd_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewSendSMSViaAliyunService(ctx)
+	s := NewVerifyEmailPwdService(ctx)
 	// init req and assert value
 
-	req := &micro_user.RpcSmsReq{}
-	resp, err := s.Run(req)
+	email := &string{}
+
+	entryPwd := &string{}
+	resp, err := s.Run(emailentryPwd)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}

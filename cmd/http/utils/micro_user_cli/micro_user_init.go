@@ -1,4 +1,4 @@
-package user_micro_cli
+package micro_user_cli
 
 import (
 	"sync"
@@ -11,7 +11,7 @@ import (
 var (
 	// todo edit custom config
 	defaultClient     RPCClient
-	defaultDstService = "user_micro"
+	defaultDstService = "micro_user"
 	defaultClientOpts = []client.Option{
 		client.WithHostPorts("127.0.0.1:8888"),
 		client.WithMetaHandler(transmeta.ClientTTHeaderHandler),

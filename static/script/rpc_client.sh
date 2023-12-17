@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-service_name="user_micro"
+service_name="micro_user"
 file="user.thrift"
 
 

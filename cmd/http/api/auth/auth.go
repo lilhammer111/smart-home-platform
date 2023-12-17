@@ -48,6 +48,8 @@ func MobileRegister(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	c.Set(utils.SuccessMessage, "success to register")
+
 	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
@@ -27,41 +28,39 @@ const (
 	smsTTL = 5 * time.Minute
 )
 
-type SendSMSViaAliyunService struct {
+type SendSmsViaAliyunService struct {
 	ctx context.Context
-}
-
-// NewSendSMSViaAliyunService new SendSMSViaAliyunService
-func NewSendSMSViaAliyunService(ctx context.Context) *SendSMSViaAliyunService {
-	return &SendSMSViaAliyunService{ctx: ctx}
+} // NewSendSmsViaAliyunService new SendSmsViaAliyunService
+func NewSendSmsViaAliyunService(ctx context.Context) *SendSmsViaAliyunService {
+	return &SendSmsViaAliyunService{ctx: ctx}
 }
 
 // Run create note info
-func (s *SendSMSViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_rpc.RpcEmpty, err error) {
+func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_rpc.RpcEmpty, err error) {
 	smsCode := generateSmsCode(6)
 
 	smsSender := &SmsSender{}
 	err = smsSender.initSmsAssistant(req.Mobile, smsCode)
 	if err != nil {
 		klog.Errorf("failed to get sms client: %s", err)
-		return
+		return nil, bizerr.NewThirdPartyErr(err)
 	}
 
 	smsResp, err := smsSender.smsAssistant.SendSms(smsSender.request)
 	if err != nil || *smsResp.StatusCode != http.StatusOK {
 		klog.Errorf("failed to send sms: %s", err)
-		return
+		return nil, bizerr.NewThirdPartyErr(err)
 	}
 
 	_, err = db.GetRedis().Set(s.ctx, req.Mobile, smsCode, smsTTL).Result()
 	if err != nil {
-		klog.Errorf("failed to set sms code in redis for mobile %s: %s", req.Mobile, err)
-		return
+		klog.Errorf("failed to set sms bizerr in redis for mobile %s: %s", req.Mobile, err)
+		return nil, bizerr.NewRedisErr(err)
 	}
-	return &common_rpc.RpcEmpty{}, err
+	return &common_rpc.RpcEmpty{}, nil
 }
 
-// GenerateSmsCode helps to generate an SMS verification code with specified length.
+// GenerateSmsCode helps to generate an SMS verification bizerr with specified length.
 func generateSmsCode(length int) string {
 	numeric := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	r := len(numeric)
@@ -90,7 +89,7 @@ func (ss *SmsSender) initSmsAssistant(mobile, smsCode string) (err error) {
 	request.SetPhoneNumbers(mobile)
 	request.SetSignName(signName)
 	request.SetTemplateCode(templateCode)
-	request.SetTemplateParam(fmt.Sprintf("{\"code\":%s}", smsCode))
+	request.SetTemplateParam(fmt.Sprintf("{\"bizerr\":%s}", smsCode))
 	ss.smsAssistant, err = dysmsapi.NewClient(config)
 	return
 }

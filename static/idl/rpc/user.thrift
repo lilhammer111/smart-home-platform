@@ -3,12 +3,6 @@ include "common_rpc.thrift"
 include "../http/user.thrift"
 include "../http/auth.thrift"
 
-struct RpcCredentialReq {
-    1: required string SmsCode;
-    2: required string Mobile;
-    3: optional string Password;
-    4: optional string Username;
-}
 
 struct RpcFreezeReq {
     1: optional string Username;
@@ -50,16 +44,30 @@ struct RpcOpenIdReq {
     1: required string OpenId;
 }
 
+struct RpcMobileReq {
+    1: required string Mobile;
+}
+
+struct RpcUsernameReq {
+    1: required string Username;
+}
+
+struct RpcEmailReq {
+    1: required string Email;
+}
+
+
 service micro_user {
-    common_rpc.RpcEmpty SendSMSViaAliyun(1: RpcSmsReq req);
+    common_rpc.RpcEmpty SendSmsViaAliyun(1: RpcSmsReq req);
     RpcFreezeResp FreezePatrolBeforeAuth(1: RpcFreezeReq req);
-    RpcFreezeResp FreezePatrolAfterAuth(1: common_rpc.RpcId req);
-    common_rpc.RpcEmpty VerifyCredentials(1: RpcCredentialReq req);
+    RpcFreezeResp FreezePatrolAfterAuth(1: common_rpc.RpcId id);
+    bool VerifySmsCode(1: string mobile; 2: string smsCode);
+    bool VerifyUsernamePwd(1: string username; 2: string entryPwd);
+    bool VerifyEmailPwd(1: string email; 2: string entryPwd);
 
     user.UserInfo FindUser (1: common_rpc.RpcId req);
     list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req)
     user.UserInfo UpdateUser(1: user.UserInfo req);
-    user.UserInfo CreateUserByMobile(1: auth.MobileRegisterReq req);
-    user.UserInfo CreateUserByMiniProg(1: RpcOpenIdReq req)
+    user.UserInfo CreateUser(1: user.UserInfo req);
     common_rpc.RpcEmpty DeleteUser(1: common_rpc.RpcId req);
 }

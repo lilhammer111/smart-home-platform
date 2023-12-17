@@ -2,17 +2,16 @@ package service
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"testing"
 )
 
-func TestVerifyCredentials_Run(t *testing.T) {
+func TestUpdateUser_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewVerifyCredentialsService(ctx)
+	s := NewUpdateUserService(ctx)
 	// init req and assert value
 
-	req := &micro_user.RpcCredentialReq{}
+	req := &user.UserInfo{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
