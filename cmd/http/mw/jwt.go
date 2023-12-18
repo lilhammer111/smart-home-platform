@@ -26,6 +26,12 @@ var (
 )
 
 const (
+	MsgLoginSuccess   = "login success"
+	MsgLogoutSuccess  = "logout success"
+	MsgRefreshSuccess = "refresh token success"
+)
+
+const (
 	IdentityKey        = "identity"
 	PathMobileLogin    = "/api/auth/mobile_login"
 	PathPwdLogin       = "/api/auth/pwd_login"
@@ -61,10 +67,28 @@ func InitJwt() {
 			c.JSON(http.StatusOK, utils.H{
 				"success": true,
 				"code":    code,
-				"message": "login success",
+				"message": MsgLoginSuccess,
 				"data": utils.H{
-					"token":  token,
-					"expire": expire.Format(time.RFC3339),
+					"token":      token,
+					"expired_at": expire.Format(time.RFC3339),
+				},
+			})
+		},
+		LogoutResponse: func(ctx context.Context, c *app.RequestContext, code int) {
+			c.JSON(http.StatusOK, utils.H{
+				"success": true,
+				"code":    http.StatusOK,
+				"message": MsgLogoutSuccess,
+			})
+		},
+		RefreshResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
+			c.JSON(http.StatusOK, utils.H{
+				"success": true,
+				"code":    http.StatusOK,
+				"message": MsgRefreshSuccess,
+				"data": utils.H{
+					"token":      token,
+					"expired_at": expire.Format(time.RFC3339),
 				},
 			})
 		},
