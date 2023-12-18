@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
 
@@ -10,10 +12,8 @@ func TestVerifySmsCode_Run(t *testing.T) {
 	s := NewVerifySmsCodeService(ctx)
 	// init req and assert value
 
-	mobile := &string{}
-
-	smsCode := &string{}
-	resp, err := s.Run(mobilesmsCode)
+	req := &micro_user.RpcVerifyCodeReq{}
+	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}

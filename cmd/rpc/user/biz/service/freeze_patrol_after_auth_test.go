@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
@@ -12,7 +11,7 @@ func TestFreezePatrolAfterAuth_Run(t *testing.T) {
 	s := NewFreezePatrolAfterAuthService(ctx)
 	// init req and assert value
 
-	req := &common_rpc.RpcId{}
+	req := &micro_user.RpcUserId{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

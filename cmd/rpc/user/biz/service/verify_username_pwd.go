@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type VerifyUsernamePwdService struct {
@@ -12,7 +14,7 @@ func NewVerifyUsernamePwdService(ctx context.Context) *VerifyUsernamePwdService 
 }
 
 // Run create note info
-func (s *VerifyUsernamePwdService) Run(username string, entryPwd string) (resp bool, err error) {
+func (s *VerifyUsernamePwdService) Run(req *micro_user.RpcVerifyUsernamePwdReq) (resp *common.Empty, err error) {
 	// Finish your business logic.
 
 	return

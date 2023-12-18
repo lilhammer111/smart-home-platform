@@ -18,8 +18,10 @@ struct UserInfo {
     4: optional string Mobile (api.body="mobile", api.vd="regexp('^1[3-9]\\d{9}$')");
     5: optional string Profile (api.body="profile", api.vd="regexp('^.{0,200}$')");
     6: optional string Username (api.body="username", api.vd="regexp('^[a-z0-9_]{1,30}$')"); // Only lowercase letters, numbers and underscores are allowed
-    7: optional string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
-    8: optional string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
+    7: optional string Password (api.body="password", api.vd="regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,12}$
+')");
+    8: optional string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+    9: optional string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }
 
 

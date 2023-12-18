@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -36,7 +36,7 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 // @router /api/users/detail [GET]
 func GetUserDetail(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req common_http.Req
+	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -76,7 +76,7 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 // @router /api/users/deregister [DELETE]
 func DeregisterUser(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req common_http.Req
+	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)

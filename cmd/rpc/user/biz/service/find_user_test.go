@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"testing"
 )
 
@@ -12,7 +12,7 @@ func TestFindUser_Run(t *testing.T) {
 	s := NewFindUserService(ctx)
 	// init req and assert value
 
-	req := &common_rpc.RpcId{}
+	req := &micro_user.RpcFindUserReq{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

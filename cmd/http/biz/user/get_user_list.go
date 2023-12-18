@@ -16,7 +16,7 @@ func NewGetUserListService(Context context.Context, RequestContext *app.RequestC
 	return &GetUserListService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetUserListService) Do(req *user.UsersFilter) (resp *user.UserListResp, err error) {
+func (h *GetUserListService) Do(req *user.UsersFilter) (resp *[]*user.UserInfo, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 )
 
 type QueryUsersWithFilterService struct {
@@ -13,7 +14,7 @@ func NewQueryUsersWithFilterService(ctx context.Context) *QueryUsersWithFilterSe
 }
 
 // Run create note info
-func (s *QueryUsersWithFilterService) Run(req *micro_user.RpcUsersFilterReq) (resp []*micro_user.RpcUser, err error) {
+func (s *QueryUsersWithFilterService) Run(req *micro_user.RpcUsersFilterReq) (resp []*user.UserInfo, err error) {
 	// Finish your business logic.
 
 	return

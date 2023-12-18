@@ -2,8 +2,7 @@ package auth
 
 import (
 	"context"
-	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -16,20 +15,12 @@ func NewMobileRegisterService(Context context.Context, RequestContext *app.Reque
 	return &MobileRegisterService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.AuthInfoResp, err error) {
+func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.AuthInfo, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
 	// check sms code
-	isCorrect, err := micro_user_cli.VerifySmsCode(h.Context, req.Mobile, req.SmsCode)
-	if err != nil || !isCorrect {
-		return nil, err
-	}
-
-	// create user
-	userInfo, err := micro_user_cli.CreateUser(h.Context, req.Mobile)
-	resp = auth.AuthInfoResp{}
-	return
+	return nil, nil
 }

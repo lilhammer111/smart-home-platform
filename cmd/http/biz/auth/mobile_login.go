@@ -16,7 +16,7 @@ func NewMobileLoginService(Context context.Context, RequestContext *app.RequestC
 	return &MobileLoginService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *MobileLoginService) Do(req *auth.MobileLoginReq) (resp *auth.AuthInfoResp, err error) {
+func (h *MobileLoginService) Do(req *auth.MobileLoginReq) (resp *auth.AuthInfo, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

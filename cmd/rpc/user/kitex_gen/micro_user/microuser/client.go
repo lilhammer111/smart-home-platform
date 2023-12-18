@@ -4,7 +4,7 @@ package microuser
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
@@ -13,17 +13,20 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOptions ...callopt.Option) (r *common_rpc.RpcEmpty, err error)
+	SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 	FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error)
-	FreezePatrolAfterAuth(ctx context.Context, id *common_rpc.RpcId, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error)
-	VerifySmsCode(ctx context.Context, mobile string, smsCode string, callOptions ...callopt.Option) (r bool, err error)
-	VerifyUsernamePwd(ctx context.Context, username string, entryPwd string, callOptions ...callopt.Option) (r bool, err error)
-	VerifyEmailPwd(ctx context.Context, email string, entryPwd string, callOptions ...callopt.Option) (r bool, err error)
-	FindUser(ctx context.Context, req *common_rpc.RpcId, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	FreezePatrolAfterAuth(ctx context.Context, req *micro_user.RpcUserId, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error)
+	VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	FindUser(ctx context.Context, req *micro_user.RpcFindUserReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	FindUserByUsername(ctx context.Context, username *micro_user.RpcFindUserByUsernameReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
 	UpdateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	CreateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
-	DeleteUser(ctx context.Context, req *common_rpc.RpcId, callOptions ...callopt.Option) (r *common_rpc.RpcEmpty, err error)
+	DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -55,7 +58,7 @@ type kMicroUserClient struct {
 	*kClient
 }
 
-func (p *kMicroUserClient) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOptions ...callopt.Option) (r *common_rpc.RpcEmpty, err error) {
+func (p *kMicroUserClient) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SendSmsViaAliyun(ctx, req)
 }
@@ -65,29 +68,44 @@ func (p *kMicroUserClient) FreezePatrolBeforeAuth(ctx context.Context, req *micr
 	return p.kClient.FreezePatrolBeforeAuth(ctx, req)
 }
 
-func (p *kMicroUserClient) FreezePatrolAfterAuth(ctx context.Context, id *common_rpc.RpcId, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kMicroUserClient) FreezePatrolAfterAuth(ctx context.Context, req *micro_user.RpcUserId, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.FreezePatrolAfterAuth(ctx, id)
+	return p.kClient.FreezePatrolAfterAuth(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifySmsCode(ctx context.Context, mobile string, smsCode string, callOptions ...callopt.Option) (r bool, err error) {
+func (p *kMicroUserClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VerifySmsCode(ctx, mobile, smsCode)
+	return p.kClient.VerifySmsCode(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifyUsernamePwd(ctx context.Context, username string, entryPwd string, callOptions ...callopt.Option) (r bool, err error) {
+func (p *kMicroUserClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VerifyUsernamePwd(ctx, username, entryPwd)
+	return p.kClient.VerifyUsernamePwd(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifyEmailPwd(ctx context.Context, email string, entryPwd string, callOptions ...callopt.Option) (r bool, err error) {
+func (p *kMicroUserClient) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VerifyEmailPwd(ctx, email, entryPwd)
+	return p.kClient.VerifyEmailPwd(ctx, req)
 }
 
-func (p *kMicroUserClient) FindUser(ctx context.Context, req *common_rpc.RpcId, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+func (p *kMicroUserClient) FindUser(ctx context.Context, req *micro_user.RpcFindUserReq, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FindUser(ctx, req)
+}
+
+func (p *kMicroUserClient) FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FindUserByOpenid(ctx, req)
+}
+
+func (p *kMicroUserClient) FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FindUserByMobile(ctx, req)
+}
+
+func (p *kMicroUserClient) FindUserByUsername(ctx context.Context, username *micro_user.RpcFindUserByUsernameReq, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FindUserByUsername(ctx, username)
 }
 
 func (p *kMicroUserClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
@@ -105,7 +123,7 @@ func (p *kMicroUserClient) CreateUser(ctx context.Context, req *user.UserInfo, c
 	return p.kClient.CreateUser(ctx, req)
 }
 
-func (p *kMicroUserClient) DeleteUser(ctx context.Context, req *common_rpc.RpcId, callOptions ...callopt.Option) (r *common_rpc.RpcEmpty, err error) {
+func (p *kMicroUserClient) DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DeleteUser(ctx, req)
+	return p.kClient.DeleteUser(ctx, userId)
 }

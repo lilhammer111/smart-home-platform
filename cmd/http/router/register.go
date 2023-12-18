@@ -3,11 +3,9 @@
 package router
 
 import (
-	alert "git.zqbjj.top/pet/services/cmd/http/router/alert"
-	auth "git.zqbjj.top/pet/services/cmd/http/router/auth"
-	device_status "git.zqbjj.top/pet/services/cmd/http/router/device_status"
-	feed_program "git.zqbjj.top/pet/services/cmd/http/router/feed_program"
-	user "git.zqbjj.top/pet/services/cmd/http/router/user"
+	 "git.zqbjj.top/pet/services/cmd/http/router/auth"
+
+	 "git.zqbjj.top/pet/services/cmd/http/router/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -16,11 +14,8 @@ func GeneratedRegister(r *server.Hertz) {
 	//INSERT_POINT: DO NOT DELETE THIS LINE!
 	user.Register(r)
 
-	feed_program.Register(r)
 
-	device_status.Register(r)
 
 	auth.Register(r)
 
-	alert.Register(r)
 }

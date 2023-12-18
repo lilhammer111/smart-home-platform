@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	common_rpc "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 )
 
 type DeleteUserService struct {
@@ -13,7 +13,7 @@ func NewDeleteUserService(ctx context.Context) *DeleteUserService {
 }
 
 // Run create note info
-func (s *DeleteUserService) Run(req *common_rpc.RpcId) (resp *common_rpc.RpcEmpty, err error) {
+func (s *DeleteUserService) Run(userId int32) (resp *common.Empty, err error) {
 	// Finish your business logic.
 
 	return

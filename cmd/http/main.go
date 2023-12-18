@@ -4,6 +4,7 @@ package main
 
 import (
 	"git.zqbjj.top/pet/services/cmd/http/conf"
+	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"git.zqbjj.top/pet/services/cmd/http/router"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -19,6 +20,9 @@ import (
 func main() {
 	// init dal
 	// dal.Init()
+	// init jwt
+	mw.InitJwt()
+
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 

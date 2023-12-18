@@ -6,7 +6,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common_rpc"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	dysmsapi "github.com/alibabacloud-go/dysmsapi-20170525/v3/client"
@@ -36,7 +36,7 @@ func NewSendSmsViaAliyunService(ctx context.Context) *SendSmsViaAliyunService {
 }
 
 // Run create note info
-func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_rpc.RpcEmpty, err error) {
+func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common.Empty, err error) {
 	smsCode := generateSmsCode(6)
 
 	smsSender := &SmsSender{}
@@ -57,7 +57,7 @@ func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common_r
 		klog.Errorf("failed to set sms bizerr in redis for mobile %s: %s", req.Mobile, err)
 		return nil, bizerr.NewRedisErr(err)
 	}
-	return &common_rpc.RpcEmpty{}, nil
+	return &common.Empty{}, nil
 }
 
 // GenerateSmsCode helps to generate an SMS verification bizerr with specified length.

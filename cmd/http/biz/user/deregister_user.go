@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	common_http "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common_http"
+	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -16,7 +16,7 @@ func NewDeregisterUserService(Context context.Context, RequestContext *app.Reque
 	return &DeregisterUserService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *DeregisterUserService) Do(req *common_http.Req) (resp *common_http.Resp, err error) {
+func (h *DeregisterUserService) Do(req *common.Req) (resp *common.Empty, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

@@ -4,7 +4,7 @@ package user
 
 import (
 	"context"
-	common_http "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_http"
+	common "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
@@ -121,7 +121,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r *user.UserListResp, err error) {
+func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error) {
 	var _args user.UserGetUserListArgs
 	_args.Req = req
 	var _result user.UserGetUserListResult
@@ -131,7 +131,7 @@ func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r *us
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserDetail(ctx context.Context, req *common_http.Req) (r *user.UserInfoResp, err error) {
+func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r []*user.UserInfo, err error) {
 	var _args user.UserGetUserDetailArgs
 	_args.Req = req
 	var _result user.UserGetUserDetailResult
@@ -141,7 +141,7 @@ func (p *kClient) GetUserDetail(ctx context.Context, req *common_http.Req) (r *u
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *user.UserInfoResp, err error) {
+func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r []*user.UserInfo, err error) {
 	var _args user.UserUpdateUserInfoArgs
 	_args.Req = req
 	var _result user.UserUpdateUserInfoResult
@@ -151,7 +151,7 @@ func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *us
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DeregisterUser(ctx context.Context, req *common_http.Req) (r *common_http.Resp, err error) {
+func (p *kClient) DeregisterUser(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
 	var _args user.UserDeregisterUserArgs
 	_args.Req = req
 	var _result user.UserDeregisterUserResult

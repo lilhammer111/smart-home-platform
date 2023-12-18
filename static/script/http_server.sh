@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-service_name="user_api"
-file="user.thrift"
+service_name="pet_api"
+file="auth.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path

@@ -5,18 +5,18 @@ package auth
 import (
 	"context"
 	auth "git.zqbjj.top/pet/services/cmd/http/kitex_gen/auth"
-	common_http "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_http"
+	common "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	SendSms(ctx context.Context, req *auth.SendSmsReq, callOptions ...callopt.Option) (r *common_http.Resp, err error)
-	MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error)
-	MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error)
-	MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error)
-	PwdLogin(ctx context.Context, req *auth.PwdLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error)
+	SendSms(ctx context.Context, req *auth.SendSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
+	MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
+	MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
+	PwdLogin(ctx context.Context, req *auth.PwdLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -48,27 +48,27 @@ type kAuthClient struct {
 	*kClient
 }
 
-func (p *kAuthClient) SendSms(ctx context.Context, req *auth.SendSmsReq, callOptions ...callopt.Option) (r *common_http.Resp, err error) {
+func (p *kAuthClient) SendSms(ctx context.Context, req *auth.SendSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SendSms(ctx, req)
 }
 
-func (p *kAuthClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error) {
+func (p *kAuthClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MobileRegister(ctx, req)
 }
 
-func (p *kAuthClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error) {
+func (p *kAuthClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MobileLogin(ctx, req)
 }
 
-func (p *kAuthClient) MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error) {
+func (p *kAuthClient) MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MiniProgLogin(ctx, req)
 }
 
-func (p *kAuthClient) PwdLogin(ctx context.Context, req *auth.PwdLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfoResp, err error) {
+func (p *kAuthClient) PwdLogin(ctx context.Context, req *auth.PwdLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.PwdLogin(ctx, req)
 }

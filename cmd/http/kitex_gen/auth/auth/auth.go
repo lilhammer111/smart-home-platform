@@ -5,7 +5,7 @@ package auth
 import (
 	"context"
 	auth "git.zqbjj.top/pet/services/cmd/http/kitex_gen/auth"
-	common_http "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_http"
+	common "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
@@ -140,7 +140,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) SendSms(ctx context.Context, req *auth.SendSmsReq) (r *common_http.Resp, err error) {
+func (p *kClient) SendSms(ctx context.Context, req *auth.SendSmsReq) (r *common.Empty, err error) {
 	var _args auth.AuthSendSmsArgs
 	_args.Req = req
 	var _result auth.AuthSendSmsResult
@@ -150,7 +150,7 @@ func (p *kClient) SendSms(ctx context.Context, req *auth.SendSmsReq) (r *common_
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterReq) (r *auth.AuthInfoResp, err error) {
+func (p *kClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterReq) (r *auth.AuthInfo, err error) {
 	var _args auth.AuthMobileRegisterArgs
 	_args.Req = req
 	var _result auth.AuthMobileRegisterResult
@@ -160,7 +160,7 @@ func (p *kClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterRe
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq) (r *auth.AuthInfoResp, err error) {
+func (p *kClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq) (r *auth.AuthInfo, err error) {
 	var _args auth.AuthMobileLoginArgs
 	_args.Req = req
 	var _result auth.AuthMobileLoginResult
@@ -170,7 +170,7 @@ func (p *kClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq) (r 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq) (r *auth.AuthInfoResp, err error) {
+func (p *kClient) MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq) (r *auth.AuthInfo, err error) {
 	var _args auth.AuthMiniProgLoginArgs
 	_args.Req = req
 	var _result auth.AuthMiniProgLoginResult
@@ -180,7 +180,7 @@ func (p *kClient) MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq)
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) PwdLogin(ctx context.Context, req *auth.PwdLoginReq) (r *auth.AuthInfoResp, err error) {
+func (p *kClient) PwdLogin(ctx context.Context, req *auth.PwdLoginReq) (r *auth.AuthInfo, err error) {
 	var _args auth.AuthPwdLoginArgs
 	_args.Req = req
 	var _result auth.AuthPwdLoginResult

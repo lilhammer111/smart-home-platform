@@ -23,6 +23,12 @@ type Config struct {
 	Hertz Hertz `yaml:"hertz"`
 	MySQL MySQL `yaml:"mysql"`
 	Redis Redis `yaml:"redis"`
+	Wx    Wx    `yaml:"wx"`
+}
+
+type Wx struct {
+	Appid  string `yaml:"appid"`
+	Secret string `yaml:"secret"`
 }
 
 type MySQL struct {

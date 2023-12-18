@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
 type VerifySmsCodeService struct {
@@ -14,12 +14,8 @@ func NewVerifySmsCodeService(ctx context.Context) *VerifySmsCodeService {
 }
 
 // Run create note info
-func (s *VerifySmsCodeService) Run(mobile string, smsCode string) (resp bool, err error) {
+func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *common.Empty, err error) {
 	// Finish your business logic.
-	res, err := db.GetRedis().Get(context.Background(), mobile).Result()
-	if err != nil {
-		return false, bizerr.NewMysqlErr(err)
-	}
 
-	return res == smsCode, nil
+	return
 }

@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
 
@@ -10,10 +12,8 @@ func TestVerifyUsernamePwd_Run(t *testing.T) {
 	s := NewVerifyUsernamePwdService(ctx)
 	// init req and assert value
 
-	username := &string{}
-
-	entryPwd := &string{}
-	resp, err := s.Run(usernameentryPwd)
+	req := &micro_user.RpcVerifyUsernamePwdReq{}
+	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}

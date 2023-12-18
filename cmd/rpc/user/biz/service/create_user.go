@@ -15,5 +15,6 @@ func NewCreateUserService(ctx context.Context) *CreateUserService {
 // Run create note info
 func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err error) {
 	// Finish your business logic.
+
 	return
 }

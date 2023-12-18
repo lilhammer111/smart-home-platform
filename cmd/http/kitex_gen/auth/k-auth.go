@@ -10,7 +10,7 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common_http"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"github.com/cloudwego/kitex/pkg/protocol/bthrift"
 )
 
@@ -22,7 +22,7 @@ var (
 	_ = reflect.Type(nil)
 	_ = thrift.TProtocol(nil)
 	_ = bthrift.BinaryWriter(nil)
-	_ = common_http.KitexUnusedProtection
+	_ = common.KitexUnusedProtection
 )
 
 func (p *SendSmsReq) FastRead(buf []byte) (int, error) {
@@ -1293,193 +1293,6 @@ func (p *AuthInfo) field3Length() int {
 	return l
 }
 
-func (p *AuthInfoResp) FastRead(buf []byte) (int, error) {
-	var err error
-	var offset int
-	var l int
-	var fieldTypeId thrift.TType
-	var fieldId int16
-	var issetMeta bool = false
-	var issetData bool = false
-	_, l, err = bthrift.Binary.ReadStructBegin(buf)
-	offset += l
-	if err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, l, err = bthrift.Binary.ReadFieldBegin(buf[offset:])
-		offset += l
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				l, err = p.FastReadField1(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-				issetMeta = true
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 2:
-			if fieldTypeId == thrift.STRUCT {
-				l, err = p.FastReadField2(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-				issetData = true
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
-		default:
-			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-			offset += l
-			if err != nil {
-				goto SkipFieldError
-			}
-		}
-
-		l, err = bthrift.Binary.ReadFieldEnd(buf[offset:])
-		offset += l
-		if err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	l, err = bthrift.Binary.ReadStructEnd(buf[offset:])
-	offset += l
-	if err != nil {
-		goto ReadStructEndError
-	}
-
-	if !issetMeta {
-		fieldId = 1
-		goto RequiredFieldNotSetError
-	}
-
-	if !issetData {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-	return offset, nil
-ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AuthInfoResp[fieldId]), err)
-SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-RequiredFieldNotSetError:
-	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_AuthInfoResp[fieldId]))
-}
-
-func (p *AuthInfoResp) FastReadField1(buf []byte) (int, error) {
-	offset := 0
-
-	tmp := common_http.NewResp()
-	if l, err := tmp.FastRead(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-	}
-	p.Meta = tmp
-	return offset, nil
-}
-
-func (p *AuthInfoResp) FastReadField2(buf []byte) (int, error) {
-	offset := 0
-
-	tmp := NewAuthInfo()
-	if l, err := tmp.FastRead(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-	}
-	p.Data = tmp
-	return offset, nil
-}
-
-// for compatibility
-func (p *AuthInfoResp) FastWrite(buf []byte) int {
-	return 0
-}
-
-func (p *AuthInfoResp) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "AuthInfoResp")
-	if p != nil {
-		offset += p.fastWriteField1(buf[offset:], binaryWriter)
-		offset += p.fastWriteField2(buf[offset:], binaryWriter)
-	}
-	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
-	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
-	return offset
-}
-
-func (p *AuthInfoResp) BLength() int {
-	l := 0
-	l += bthrift.Binary.StructBeginLength("AuthInfoResp")
-	if p != nil {
-		l += p.field1Length()
-		l += p.field2Length()
-	}
-	l += bthrift.Binary.FieldStopLength()
-	l += bthrift.Binary.StructEndLength()
-	return l
-}
-
-func (p *AuthInfoResp) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Meta", thrift.STRUCT, 1)
-	offset += p.Meta.FastWriteNocopy(buf[offset:], binaryWriter)
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	return offset
-}
-
-func (p *AuthInfoResp) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Data", thrift.STRUCT, 2)
-	offset += p.Data.FastWriteNocopy(buf[offset:], binaryWriter)
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	return offset
-}
-
-func (p *AuthInfoResp) field1Length() int {
-	l := 0
-	l += bthrift.Binary.FieldBeginLength("Meta", thrift.STRUCT, 1)
-	l += p.Meta.BLength()
-	l += bthrift.Binary.FieldEndLength()
-	return l
-}
-
-func (p *AuthInfoResp) field2Length() int {
-	l := 0
-	l += bthrift.Binary.FieldBeginLength("Data", thrift.STRUCT, 2)
-	l += p.Data.BLength()
-	l += bthrift.Binary.FieldEndLength()
-	return l
-}
-
 func (p *AuthSendSmsArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
@@ -1681,7 +1494,7 @@ ReadStructEndError:
 func (p *AuthSendSmsResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := common_http.NewResp()
+	tmp := common.NewEmpty()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -1939,7 +1752,7 @@ ReadStructEndError:
 func (p *AuthMobileRegisterResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAuthInfoResp()
+	tmp := NewAuthInfo()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2197,7 +2010,7 @@ ReadStructEndError:
 func (p *AuthMobileLoginResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAuthInfoResp()
+	tmp := NewAuthInfo()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2455,7 +2268,7 @@ ReadStructEndError:
 func (p *AuthMiniProgLoginResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAuthInfoResp()
+	tmp := NewAuthInfo()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2713,7 +2526,7 @@ ReadStructEndError:
 func (p *AuthPwdLoginResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAuthInfoResp()
+	tmp := NewAuthInfo()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

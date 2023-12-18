@@ -1,5 +1,5 @@
 namespace go micro_user
-include "../common.thrift"
+include "../http/common.thrift"
 include "../http/user.thrift"
 include "../http/auth.thrift"
 
@@ -40,22 +40,53 @@ struct RpcSmsReq {
     1: required string Mobile;
 }
 
-struct RpcOpenIdReq {
-    1: required string OpenId;
+struct RpcUserId {
+    1: required i32 UserId;
 }
 
+struct RpcVerifyCodeReq {
+    1: required string Mobile;
+    2: required string SmsCode;
+}
 
+struct RpcVerifyUsernamePwdReq {
+    1: required string Username;
+    2: required string EntryPwd;
+}
+
+struct RpcVerifyEmailPwdReq {
+    1: required string Email;
+    2: required string EntryPwd;
+}
+
+struct RpcFindUserReq {
+    1: required i32 UserId;
+}
+
+struct RpcFindUserByMobileReq {
+    1: required string Mobile;
+}
+
+struct RpcFindUserByUsernameReq {
+    1: required string Username;
+}
+
+struct RpcFindUserByOpenidReq {
+    1: required string Openid;
+}
 
 service micro_user {
     common.Empty SendSmsViaAliyun(1: RpcSmsReq req);
     RpcFreezeResp FreezePatrolBeforeAuth(1: RpcFreezeReq req);
-    RpcFreezeResp FreezePatrolAfterAuth(1: i32 UserId);
-    common.Empty VerifySmsCode(1: string mobile; 2: string smsCode);
-    common.Empty VerifyUsernamePwd(1: string username; 2: string entryPwd);
-    common.Empty VerifyEmailPwd(1: string email; 2: string entryPwd);
-
-    user.UserInfo FindUser (1: i32 UserId);
-    list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req)
+    RpcFreezeResp FreezePatrolAfterAuth(1: RpcUserId req);
+    common.Empty VerifySmsCode(1: RpcVerifyCodeReq req);
+    common.Empty VerifyUsernamePwd(1: RpcVerifyUsernamePwdReq req);
+    common.Empty VerifyEmailPwd(1: RpcVerifyEmailPwdReq req);
+    user.UserInfo FindUser (1: RpcFindUserReq req);
+    user.UserInfo FindUserByOpenid (1:RpcFindUserByOpenidReq req);
+    user.UserInfo FindUserByMobile (1: RpcFindUserByMobileReq req);
+    user.UserInfo FindUserByUsername (1: RpcFindUserByUsernameReq Username);
+    list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req);
     user.UserInfo UpdateUser(1: user.UserInfo req);
     user.UserInfo CreateUser(1: user.UserInfo req);
     common.Empty DeleteUser(1: i32 UserId);

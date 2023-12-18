@@ -16,7 +16,7 @@ func NewMiniProgLoginService(Context context.Context, RequestContext *app.Reques
 	return &MiniProgLoginService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *MiniProgLoginService) Do(req *auth.MiniProgLoginReq) (resp *auth.AuthInfoResp, err error) {
+func (h *MiniProgLoginService) Do(req *auth.MiniProgLoginReq) (resp *auth.AuthInfo, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

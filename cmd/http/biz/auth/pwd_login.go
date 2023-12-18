@@ -16,7 +16,7 @@ func NewPwdLoginService(Context context.Context, RequestContext *app.RequestCont
 	return &PwdLoginService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *PwdLoginService) Do(req *auth.PwdLoginReq) (resp *auth.AuthInfoResp, err error) {
+func (h *PwdLoginService) Do(req *auth.PwdLoginReq) (resp *auth.AuthInfo, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
