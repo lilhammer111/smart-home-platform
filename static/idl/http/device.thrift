@@ -1,5 +1,5 @@
 namespace go device
-include "common_http.thrift"
+include "common.thrift"
 
 
 struct DeviceFilter {
@@ -26,20 +26,20 @@ struct DeviceInfo {
 
 // response
 struct DeviceListResp {
-    1: required common_http.Resp Meta;
+    1: required common.Resp Meta;
     2: required list<i32> Data;
 }
 
 struct DeviceInfoResp {
-    1: required common_http.Resp Meta;
+    1: required common.Resp Meta;
     2: required DeviceInfo Data;
 }
 
 
 service device {
     DeviceListResp GetDeviceList(1: DeviceFilter req) (api.get="/api/devices/list");
-    DeviceInfoResp GetDeviceDetail(1: common_http.Req req) (api.get="/api/devices/detail");
+    DeviceInfoResp GetDeviceDetail(1: common.Req req) (api.get="/api/devices/detail");
     DeviceInfoResp UpdateDeviceInfo(1: DeviceInfo req) (api.put="/api/devices/update");
     DeviceInfoResp BindDevice(1: DeviceInfo req) (api.post="/api/devices/bind");
-    common_http.Resp UnbindDevice(1: common_http.Req req) (api.delete="/api/devices/unbind");
+    common.Resp UnbindDevice(1: common.Req req) (api.delete="/api/devices/unbind");
 }

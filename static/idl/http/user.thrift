@@ -1,5 +1,5 @@
 namespace go user
-include "common_http.thrift"
+include "common.thrift"
 
 struct UsersFilter {
     1: optional i8 Gender (api.query="gender", api.vd="in($, 0, 1, 2)");
@@ -13,31 +13,19 @@ struct UsersFilter {
 
 struct UserInfo {
     1: optional i32 Id (api.body="id");
-    2: required i8 Age (api.body="age", api.vd="$>=0 && $ <=200>");
-    3: required i8 Gender (api.body="gender", api.vd="in($,0,1,2)");
-    4: required string Mobile (api.body="mobile", api.vd="regexp('^1[3-9]\\d{9}$')");
-    5: required string Profile (api.body="profile", api.vd="regexp('^.{0,200}$')");
-    6: required string Username (api.body="username", api.vd="regexp('^[a-z0-9_]{1,30}$')"); // Only lowercase letters, numbers and underscores are allowed
-    7: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
-    8: required string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
+    2: optional i8 Age (api.body="age", api.vd="$>=0 && $ <=200>");
+    3: optional i8 Gender (api.body="gender", api.vd="in($,0,1,2)");
+    4: optional string Mobile (api.body="mobile", api.vd="regexp('^1[3-9]\\d{9}$')");
+    5: optional string Profile (api.body="profile", api.vd="regexp('^.{0,200}$')");
+    6: optional string Username (api.body="username", api.vd="regexp('^[a-z0-9_]{1,30}$')"); // Only lowercase letters, numbers and underscores are allowed
+    7: optional string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+    8: optional string Avatar (api.body="avatar", api.vd="regexp('^.{0,200}$')");
 }
-
-// response
-struct UserListResp {
-    1: required common_http.Resp Meta;
-    2: required list<i32> Data;
-}
-
-struct UserInfoResp {
-    1: required common_http.Resp Meta;
-    2: required UserInfo Data;
-}
-
 
 
 service user {
-    UserListResp GetUserList(1: UsersFilter req) (api.get="/api/users/list");
-    UserInfoResp GetUserDetail(1: common_http.Req req) (api.get="/api/users/detail");
-    UserInfoResp UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
-    common_http.Resp DeregisterUser(1: common_http.Req req) (api.delete="/api/users/deregister");
+    list<UserInfo> GetUserList(1: UsersFilter req) (api.get="/api/users/list");
+    list<UserInfo> GetUserDetail(1: common.Req req) (api.get="/api/users/detail");
+    list<UserInfo> UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
+    common.Empty DeregisterUser(1: common.Req req) (api.delete="/api/users/deregister");
 }

@@ -23,12 +23,13 @@ func (h *MobileRegisterService) Do(req *auth.MobileRegisterReq) (resp *auth.Auth
 	//}()
 	// todo edit your code
 	// check sms code
-	isCorrect, err := micro_user_cli.DefaultClient().VerifySmsCode(h.Context, req.Mobile, req.SmsCode)
-	if err != nil {
+	isCorrect, err := micro_user_cli.VerifySmsCode(h.Context, req.Mobile, req.SmsCode)
+	if err != nil || !isCorrect {
 		return nil, err
 	}
+
 	// create user
-	userInfo, err := micro_user_cli.CreateUser(h.Context, req)
+	userInfo, err := micro_user_cli.CreateUser(h.Context, req.Mobile)
 	resp = auth.AuthInfoResp{}
 	return
 }

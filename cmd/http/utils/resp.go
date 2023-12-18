@@ -10,14 +10,24 @@ import (
 	"net/http"
 )
 
-const SuccessMessage = "message"
+const (
+	SuccessMessage = "message"
+	FailureMessage = "failureMessage"
+	FailureCode    = "code"
+)
 
 // SendErrResponse  pack error response
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
 	// todo edit custom code
+	resp := &FormattedResp{}
 	bizErr, isBizErr := kerrors.FromBizStatusError(err)
-	if isBizErr {
+	if !isBizErr {
+		resp.Code = http.StatusInternalServerError
+		resp.Message = http.StatusText(http.StatusInternalServerError)
+		c.JSON(code, resp)
+	} else {
 		switch bizErr.BizStatusCode() {
+		case :
 
 		}
 	}
@@ -41,7 +51,7 @@ type AlertInfoResp interface {
 
 type FormattedResp struct {
 	Success bool
-	Code    int16
+	Code    int32
 	Message string
 	Data    any
 }

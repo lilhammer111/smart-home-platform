@@ -1,5 +1,5 @@
 namespace go micro_user
-include "common_rpc.thrift"
+include "../common.thrift"
 include "../http/user.thrift"
 include "../http/auth.thrift"
 
@@ -44,30 +44,19 @@ struct RpcOpenIdReq {
     1: required string OpenId;
 }
 
-struct RpcMobileReq {
-    1: required string Mobile;
-}
-
-struct RpcUsernameReq {
-    1: required string Username;
-}
-
-struct RpcEmailReq {
-    1: required string Email;
-}
 
 
 service micro_user {
-    common_rpc.RpcEmpty SendSmsViaAliyun(1: RpcSmsReq req);
+    common.Empty SendSmsViaAliyun(1: RpcSmsReq req);
     RpcFreezeResp FreezePatrolBeforeAuth(1: RpcFreezeReq req);
-    RpcFreezeResp FreezePatrolAfterAuth(1: common_rpc.RpcId id);
-    bool VerifySmsCode(1: string mobile; 2: string smsCode);
-    bool VerifyUsernamePwd(1: string username; 2: string entryPwd);
-    bool VerifyEmailPwd(1: string email; 2: string entryPwd);
+    RpcFreezeResp FreezePatrolAfterAuth(1: i32 UserId);
+    common.Empty VerifySmsCode(1: string mobile; 2: string smsCode);
+    common.Empty VerifyUsernamePwd(1: string username; 2: string entryPwd);
+    common.Empty VerifyEmailPwd(1: string email; 2: string entryPwd);
 
-    user.UserInfo FindUser (1: common_rpc.RpcId req);
+    user.UserInfo FindUser (1: i32 UserId);
     list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req)
     user.UserInfo UpdateUser(1: user.UserInfo req);
     user.UserInfo CreateUser(1: user.UserInfo req);
-    common_rpc.RpcEmpty DeleteUser(1: common_rpc.RpcId req);
+    common.Empty DeleteUser(1: i32 UserId);
 }

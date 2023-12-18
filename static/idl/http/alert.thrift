@@ -1,5 +1,5 @@
 namespace go alert
-include "common_http.thrift"
+include "common.thrift"
 
 struct AlertFilter {
     1: optional i16 Limit (api.query="limit", api.vd="$>0");
@@ -21,20 +21,20 @@ struct AlertInfo {
 
 // response
 struct AlertListResp {
-    1: required common_http.Resp Meta;
+    1: required common.Resp Meta;
     2: required list<i32> Data;
 }
 
 struct AlertInfoResp {
-    1: required common_http.Resp Meta;
+    1: required common.Resp Meta;
     2: required AlertInfo Data;
 }
 
 
 service alert {
     AlertListResp GetAlertList(1: AlertFilter req) (api.get="/api/devices/alerts/list");
-    AlertInfoResp GetAlertDetail(1: common_http.Req req) (api.get="/api/devices/alerts/detail");
+    AlertInfoResp GetAlertDetail(1: common.Req req) (api.get="/api/devices/alerts/detail");
     AlertInfoResp UpdateAlertInfo(1: AlertInfo req) (api.put="/api/devices/alerts/update");
     AlertInfoResp UploadAlertInfo(1: AlertInfo req) (api.post="/api/devices/alerts/upload");
-    common_http.Resp DeleteAlert(1: common_http.Req req) (api.delete="/api/devices/alerts/delete");
+    common.Resp DeleteAlert(1: common.Req req) (api.delete="/api/devices/alerts/delete");
 }

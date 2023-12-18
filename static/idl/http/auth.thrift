@@ -1,5 +1,5 @@
 namespace go auth
-include "common_http.thrift"
+include "common.thrift"
 
 struct SendSmsReq {
     1: required string Mobile (api.query="mobile", api.vd="regexp('^1[3-9]\\d{9}$)");
@@ -35,12 +35,12 @@ struct AuthInfo {
 }
 
 struct AuthInfoResp {
-    1: required common_http.Resp Meta;
+    1: required common.Resp Meta;
     2: required AuthInfo Data;
 }
 
 service auth {
-    common_http.Resp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
+    common.Resp SendSms(1: SendSmsReq req) (api.get="/api/auth/send_sms");
     AuthInfoResp MobileRegister(1: MobileRegisterReq req) (api.post="/api/auth/mobile_register");
     AuthInfoResp MobileLogin(1: MobileLoginReq req) (api.get="/api/auth/mobile_login");
     AuthInfoResp MiniProgLogin(1: MiniProgLoginReq req) (api.get="/api/auth/mini_prog_login");

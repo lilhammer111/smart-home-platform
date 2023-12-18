@@ -40,7 +40,7 @@ func VerifySmsCode(ctx context.Context, mobile string, smsCode string, callOptio
 	resp, err = defaultClient.VerifySmsCode(ctx, mobile, smsCode, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifySmsCode call failed,err =%+v", err)
-		return nil, err
+		return false, err
 	}
 	return resp, nil
 }
@@ -49,7 +49,7 @@ func VerifyUsernamePwd(ctx context.Context, username string, entryPwd string, ca
 	resp, err = defaultClient.VerifyUsernamePwd(ctx, username, entryPwd, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifyUsernamePwd call failed,err =%+v", err)
-		return nil, err
+		return false, err
 	}
 	return resp, nil
 }
@@ -58,7 +58,7 @@ func VerifyEmailPwd(ctx context.Context, email string, entryPwd string, callOpti
 	resp, err = defaultClient.VerifyEmailPwd(ctx, email, entryPwd, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifyEmailPwd call failed,err =%+v", err)
-		return nil, err
+		return false, err
 	}
 	return resp, nil
 }
