@@ -28,10 +28,11 @@ func (s *VerifyUsernamePwdService) Run(req *micro_user.RpcVerifyUsernamePwdReq) 
 		return nil, bizerr.NewInternalError(err)
 	}
 
+	resp = &micro_user.RpcVerifyResp{}
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(req.EntryPwd))
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return nil, bizerr.NewAuthenticationError(err)
+			return resp, bizerr.NewAuthenticationError(err)
 		}
 		return nil, bizerr.NewInternalError(err)
 	}
