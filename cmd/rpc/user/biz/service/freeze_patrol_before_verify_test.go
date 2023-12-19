@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestFreezePatrolBeforeAuth_Run(t *testing.T) {
+func TestFreezePatrolBeforeVerify_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewFreezePatrolBeforeAuthService(ctx)
+	s := NewFreezePatrolBeforeVerifyService(ctx)
 	// init req and assert value
 
 	req := &micro_user.RpcFreezeReq{}

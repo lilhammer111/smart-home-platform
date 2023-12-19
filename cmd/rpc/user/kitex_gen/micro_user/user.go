@@ -2943,9 +2943,9 @@ func (p *RpcFindUserByOpenidReq) Field1DeepEqual(src string) bool {
 type MicroUser interface {
 	SendSmsViaAliyun(ctx context.Context, req *RpcSmsReq) (r *common.Empty, err error)
 
-	FreezePatrolBeforeAuth(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error)
+	FreezePatrolBeforeVerify(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error)
 
-	FreezePatrolAfterAuth(ctx context.Context, req *RpcUserId) (r *RpcFreezeResp, err error)
+	FreezePatrolAfterVerify(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error)
 
 	VerifySmsCode(ctx context.Context, req *RpcVerifyCodeReq) (r *common.Empty, err error)
 
@@ -2959,7 +2959,7 @@ type MicroUser interface {
 
 	FindUserByMobile(ctx context.Context, req *RpcFindUserByMobileReq) (r *user.UserInfo, err error)
 
-	FindUserByUsername(ctx context.Context, username *RpcFindUserByUsernameReq) (r *user.UserInfo, err error)
+	FindUserByUsername(ctx context.Context, req *RpcFindUserByUsernameReq) (r *user.UserInfo, err error)
 
 	QueryUsersWithFilter(ctx context.Context, req *RpcUsersFilterReq) (r []*user.UserInfo, err error)
 
@@ -3005,20 +3005,20 @@ func (p *MicroUserClient) SendSmsViaAliyun(ctx context.Context, req *RpcSmsReq) 
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) FreezePatrolBeforeAuth(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error) {
-	var _args MicroUserFreezePatrolBeforeAuthArgs
+func (p *MicroUserClient) FreezePatrolBeforeVerify(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error) {
+	var _args MicroUserFreezePatrolBeforeVerifyArgs
 	_args.Req = req
-	var _result MicroUserFreezePatrolBeforeAuthResult
-	if err = p.Client_().Call(ctx, "FreezePatrolBeforeAuth", &_args, &_result); err != nil {
+	var _result MicroUserFreezePatrolBeforeVerifyResult
+	if err = p.Client_().Call(ctx, "FreezePatrolBeforeVerify", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) FreezePatrolAfterAuth(ctx context.Context, req *RpcUserId) (r *RpcFreezeResp, err error) {
-	var _args MicroUserFreezePatrolAfterAuthArgs
+func (p *MicroUserClient) FreezePatrolAfterVerify(ctx context.Context, req *RpcFreezeReq) (r *RpcFreezeResp, err error) {
+	var _args MicroUserFreezePatrolAfterVerifyArgs
 	_args.Req = req
-	var _result MicroUserFreezePatrolAfterAuthResult
-	if err = p.Client_().Call(ctx, "FreezePatrolAfterAuth", &_args, &_result); err != nil {
+	var _result MicroUserFreezePatrolAfterVerifyResult
+	if err = p.Client_().Call(ctx, "FreezePatrolAfterVerify", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -3077,9 +3077,9 @@ func (p *MicroUserClient) FindUserByMobile(ctx context.Context, req *RpcFindUser
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroUserClient) FindUserByUsername(ctx context.Context, username *RpcFindUserByUsernameReq) (r *user.UserInfo, err error) {
+func (p *MicroUserClient) FindUserByUsername(ctx context.Context, req *RpcFindUserByUsernameReq) (r *user.UserInfo, err error) {
 	var _args MicroUserFindUserByUsernameArgs
-	_args.Username = username
+	_args.Req = req
 	var _result MicroUserFindUserByUsernameResult
 	if err = p.Client_().Call(ctx, "FindUserByUsername", &_args, &_result); err != nil {
 		return
@@ -3144,8 +3144,8 @@ func (p *MicroUserProcessor) ProcessorMap() map[string]thrift.TProcessorFunction
 func NewMicroUserProcessor(handler MicroUser) *MicroUserProcessor {
 	self := &MicroUserProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("SendSmsViaAliyun", &microUserProcessorSendSmsViaAliyun{handler: handler})
-	self.AddToProcessorMap("FreezePatrolBeforeAuth", &microUserProcessorFreezePatrolBeforeAuth{handler: handler})
-	self.AddToProcessorMap("FreezePatrolAfterAuth", &microUserProcessorFreezePatrolAfterAuth{handler: handler})
+	self.AddToProcessorMap("FreezePatrolBeforeVerify", &microUserProcessorFreezePatrolBeforeVerify{handler: handler})
+	self.AddToProcessorMap("FreezePatrolAfterVerify", &microUserProcessorFreezePatrolAfterVerify{handler: handler})
 	self.AddToProcessorMap("VerifySmsCode", &microUserProcessorVerifySmsCode{handler: handler})
 	self.AddToProcessorMap("VerifyUsernamePwd", &microUserProcessorVerifyUsernamePwd{handler: handler})
 	self.AddToProcessorMap("VerifyEmailPwd", &microUserProcessorVerifyEmailPwd{handler: handler})
@@ -3225,16 +3225,16 @@ func (p *microUserProcessorSendSmsViaAliyun) Process(ctx context.Context, seqId 
 	return true, err
 }
 
-type microUserProcessorFreezePatrolBeforeAuth struct {
+type microUserProcessorFreezePatrolBeforeVerify struct {
 	handler MicroUser
 }
 
-func (p *microUserProcessorFreezePatrolBeforeAuth) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := MicroUserFreezePatrolBeforeAuthArgs{}
+func (p *microUserProcessorFreezePatrolBeforeVerify) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := MicroUserFreezePatrolBeforeVerifyArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("FreezePatrolBeforeAuth", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("FreezePatrolBeforeVerify", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3243,11 +3243,11 @@ func (p *microUserProcessorFreezePatrolBeforeAuth) Process(ctx context.Context, 
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := MicroUserFreezePatrolBeforeAuthResult{}
+	result := MicroUserFreezePatrolBeforeVerifyResult{}
 	var retval *RpcFreezeResp
-	if retval, err2 = p.handler.FreezePatrolBeforeAuth(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolBeforeAuth: "+err2.Error())
-		oprot.WriteMessageBegin("FreezePatrolBeforeAuth", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.FreezePatrolBeforeVerify(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolBeforeVerify: "+err2.Error())
+		oprot.WriteMessageBegin("FreezePatrolBeforeVerify", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3255,7 +3255,7 @@ func (p *microUserProcessorFreezePatrolBeforeAuth) Process(ctx context.Context, 
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("FreezePatrolBeforeAuth", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("FreezePatrolBeforeVerify", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3273,16 +3273,16 @@ func (p *microUserProcessorFreezePatrolBeforeAuth) Process(ctx context.Context, 
 	return true, err
 }
 
-type microUserProcessorFreezePatrolAfterAuth struct {
+type microUserProcessorFreezePatrolAfterVerify struct {
 	handler MicroUser
 }
 
-func (p *microUserProcessorFreezePatrolAfterAuth) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := MicroUserFreezePatrolAfterAuthArgs{}
+func (p *microUserProcessorFreezePatrolAfterVerify) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := MicroUserFreezePatrolAfterVerifyArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("FreezePatrolAfterAuth", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("FreezePatrolAfterVerify", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3291,11 +3291,11 @@ func (p *microUserProcessorFreezePatrolAfterAuth) Process(ctx context.Context, s
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := MicroUserFreezePatrolAfterAuthResult{}
+	result := MicroUserFreezePatrolAfterVerifyResult{}
 	var retval *RpcFreezeResp
-	if retval, err2 = p.handler.FreezePatrolAfterAuth(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolAfterAuth: "+err2.Error())
-		oprot.WriteMessageBegin("FreezePatrolAfterAuth", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.FreezePatrolAfterVerify(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FreezePatrolAfterVerify: "+err2.Error())
+		oprot.WriteMessageBegin("FreezePatrolAfterVerify", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -3303,7 +3303,7 @@ func (p *microUserProcessorFreezePatrolAfterAuth) Process(ctx context.Context, s
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("FreezePatrolAfterAuth", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("FreezePatrolAfterVerify", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3629,7 +3629,7 @@ func (p *microUserProcessorFindUserByUsername) Process(ctx context.Context, seqI
 	var err2 error
 	result := MicroUserFindUserByUsernameResult{}
 	var retval *user.UserInfo
-	if retval, err2 = p.handler.FindUserByUsername(ctx, args.Username); err2 != nil {
+	if retval, err2 = p.handler.FindUserByUsername(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing FindUserByUsername: "+err2.Error())
 		oprot.WriteMessageBegin("FindUserByUsername", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
@@ -4193,39 +4193,39 @@ func (p *MicroUserSendSmsViaAliyunResult) Field0DeepEqual(src *common.Empty) boo
 	return true
 }
 
-type MicroUserFreezePatrolBeforeAuthArgs struct {
+type MicroUserFreezePatrolBeforeVerifyArgs struct {
 	Req *RpcFreezeReq `thrift:"req,1" frugal:"1,default,RpcFreezeReq" json:"req"`
 }
 
-func NewMicroUserFreezePatrolBeforeAuthArgs() *MicroUserFreezePatrolBeforeAuthArgs {
-	return &MicroUserFreezePatrolBeforeAuthArgs{}
+func NewMicroUserFreezePatrolBeforeVerifyArgs() *MicroUserFreezePatrolBeforeVerifyArgs {
+	return &MicroUserFreezePatrolBeforeVerifyArgs{}
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) InitDefault() {
-	*p = MicroUserFreezePatrolBeforeAuthArgs{}
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) InitDefault() {
+	*p = MicroUserFreezePatrolBeforeVerifyArgs{}
 }
 
-var MicroUserFreezePatrolBeforeAuthArgs_Req_DEFAULT *RpcFreezeReq
+var MicroUserFreezePatrolBeforeVerifyArgs_Req_DEFAULT *RpcFreezeReq
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) GetReq() (v *RpcFreezeReq) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) GetReq() (v *RpcFreezeReq) {
 	if !p.IsSetReq() {
-		return MicroUserFreezePatrolBeforeAuthArgs_Req_DEFAULT
+		return MicroUserFreezePatrolBeforeVerifyArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserFreezePatrolBeforeAuthArgs) SetReq(val *RpcFreezeReq) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) SetReq(val *RpcFreezeReq) {
 	p.Req = val
 }
 
-var fieldIDToName_MicroUserFreezePatrolBeforeAuthArgs = map[int16]string{
+var fieldIDToName_MicroUserFreezePatrolBeforeVerifyArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) IsSetReq() bool {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4273,7 +4273,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeAuthArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeVerifyArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4283,7 +4283,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) ReadField1(iprot thrift.TProtocol) error {
 	p.Req = NewRpcFreezeReq()
 
 	if err := p.Req.Read(iprot); err != nil {
@@ -4292,9 +4292,9 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) ReadField1(iprot thrift.TProtocol)
 	return nil
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezePatrolBeforeAuth_args"); err != nil {
+	if err = oprot.WriteStructBegin("FreezePatrolBeforeVerify_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4320,7 +4320,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4337,14 +4337,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) String() string {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("MicroUserFreezePatrolBeforeAuthArgs(%+v)", *p)
+	return fmt.Sprintf("MicroUserFreezePatrolBeforeVerifyArgs(%+v)", *p)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) DeepEqual(ano *MicroUserFreezePatrolBeforeAuthArgs) bool {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) DeepEqual(ano *MicroUserFreezePatrolBeforeVerifyArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4356,7 +4356,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) DeepEqual(ano *MicroUserFreezePatr
 	return true
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) Field1DeepEqual(src *RpcFreezeReq) bool {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) Field1DeepEqual(src *RpcFreezeReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -4364,39 +4364,39 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) Field1DeepEqual(src *RpcFreezeReq)
 	return true
 }
 
-type MicroUserFreezePatrolBeforeAuthResult struct {
+type MicroUserFreezePatrolBeforeVerifyResult struct {
 	Success *RpcFreezeResp `thrift:"success,0,optional" frugal:"0,optional,RpcFreezeResp" json:"success,omitempty"`
 }
 
-func NewMicroUserFreezePatrolBeforeAuthResult() *MicroUserFreezePatrolBeforeAuthResult {
-	return &MicroUserFreezePatrolBeforeAuthResult{}
+func NewMicroUserFreezePatrolBeforeVerifyResult() *MicroUserFreezePatrolBeforeVerifyResult {
+	return &MicroUserFreezePatrolBeforeVerifyResult{}
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) InitDefault() {
-	*p = MicroUserFreezePatrolBeforeAuthResult{}
+func (p *MicroUserFreezePatrolBeforeVerifyResult) InitDefault() {
+	*p = MicroUserFreezePatrolBeforeVerifyResult{}
 }
 
-var MicroUserFreezePatrolBeforeAuthResult_Success_DEFAULT *RpcFreezeResp
+var MicroUserFreezePatrolBeforeVerifyResult_Success_DEFAULT *RpcFreezeResp
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) GetSuccess() (v *RpcFreezeResp) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) GetSuccess() (v *RpcFreezeResp) {
 	if !p.IsSetSuccess() {
-		return MicroUserFreezePatrolBeforeAuthResult_Success_DEFAULT
+		return MicroUserFreezePatrolBeforeVerifyResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *MicroUserFreezePatrolBeforeAuthResult) SetSuccess(x interface{}) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) SetSuccess(x interface{}) {
 	p.Success = x.(*RpcFreezeResp)
 }
 
-var fieldIDToName_MicroUserFreezePatrolBeforeAuthResult = map[int16]string{
+var fieldIDToName_MicroUserFreezePatrolBeforeVerifyResult = map[int16]string{
 	0: "success",
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) IsSetSuccess() bool {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4444,7 +4444,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeAuthResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeVerifyResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4454,7 +4454,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) ReadField0(iprot thrift.TProtocol) error {
 	p.Success = NewRpcFreezeResp()
 
 	if err := p.Success.Read(iprot); err != nil {
@@ -4463,9 +4463,9 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) ReadField0(iprot thrift.TProtoco
 	return nil
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezePatrolBeforeAuth_result"); err != nil {
+	if err = oprot.WriteStructBegin("FreezePatrolBeforeVerify_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4491,7 +4491,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4510,14 +4510,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) String() string {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("MicroUserFreezePatrolBeforeAuthResult(%+v)", *p)
+	return fmt.Sprintf("MicroUserFreezePatrolBeforeVerifyResult(%+v)", *p)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) DeepEqual(ano *MicroUserFreezePatrolBeforeAuthResult) bool {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) DeepEqual(ano *MicroUserFreezePatrolBeforeVerifyResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4529,7 +4529,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) DeepEqual(ano *MicroUserFreezePa
 	return true
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) Field0DeepEqual(src *RpcFreezeResp) bool {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) Field0DeepEqual(src *RpcFreezeResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -4537,39 +4537,39 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) Field0DeepEqual(src *RpcFreezeRe
 	return true
 }
 
-type MicroUserFreezePatrolAfterAuthArgs struct {
-	Req *RpcUserId `thrift:"req,1" frugal:"1,default,RpcUserId" json:"req"`
+type MicroUserFreezePatrolAfterVerifyArgs struct {
+	Req *RpcFreezeReq `thrift:"req,1" frugal:"1,default,RpcFreezeReq" json:"req"`
 }
 
-func NewMicroUserFreezePatrolAfterAuthArgs() *MicroUserFreezePatrolAfterAuthArgs {
-	return &MicroUserFreezePatrolAfterAuthArgs{}
+func NewMicroUserFreezePatrolAfterVerifyArgs() *MicroUserFreezePatrolAfterVerifyArgs {
+	return &MicroUserFreezePatrolAfterVerifyArgs{}
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) InitDefault() {
-	*p = MicroUserFreezePatrolAfterAuthArgs{}
+func (p *MicroUserFreezePatrolAfterVerifyArgs) InitDefault() {
+	*p = MicroUserFreezePatrolAfterVerifyArgs{}
 }
 
-var MicroUserFreezePatrolAfterAuthArgs_Req_DEFAULT *RpcUserId
+var MicroUserFreezePatrolAfterVerifyArgs_Req_DEFAULT *RpcFreezeReq
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) GetReq() (v *RpcUserId) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) GetReq() (v *RpcFreezeReq) {
 	if !p.IsSetReq() {
-		return MicroUserFreezePatrolAfterAuthArgs_Req_DEFAULT
+		return MicroUserFreezePatrolAfterVerifyArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroUserFreezePatrolAfterAuthArgs) SetReq(val *RpcUserId) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) SetReq(val *RpcFreezeReq) {
 	p.Req = val
 }
 
-var fieldIDToName_MicroUserFreezePatrolAfterAuthArgs = map[int16]string{
+var fieldIDToName_MicroUserFreezePatrolAfterVerifyArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) IsSetReq() bool {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4617,7 +4617,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterAuthArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterVerifyArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4627,8 +4627,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewRpcUserId()
+func (p *MicroUserFreezePatrolAfterVerifyArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewRpcFreezeReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -4636,9 +4636,9 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) ReadField1(iprot thrift.TProtocol) 
 	return nil
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezePatrolAfterAuth_args"); err != nil {
+	if err = oprot.WriteStructBegin("FreezePatrolAfterVerify_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4664,7 +4664,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -4681,14 +4681,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) String() string {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("MicroUserFreezePatrolAfterAuthArgs(%+v)", *p)
+	return fmt.Sprintf("MicroUserFreezePatrolAfterVerifyArgs(%+v)", *p)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) DeepEqual(ano *MicroUserFreezePatrolAfterAuthArgs) bool {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) DeepEqual(ano *MicroUserFreezePatrolAfterVerifyArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4700,7 +4700,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) DeepEqual(ano *MicroUserFreezePatro
 	return true
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) Field1DeepEqual(src *RpcUserId) bool {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) Field1DeepEqual(src *RpcFreezeReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -4708,39 +4708,39 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) Field1DeepEqual(src *RpcUserId) boo
 	return true
 }
 
-type MicroUserFreezePatrolAfterAuthResult struct {
+type MicroUserFreezePatrolAfterVerifyResult struct {
 	Success *RpcFreezeResp `thrift:"success,0,optional" frugal:"0,optional,RpcFreezeResp" json:"success,omitempty"`
 }
 
-func NewMicroUserFreezePatrolAfterAuthResult() *MicroUserFreezePatrolAfterAuthResult {
-	return &MicroUserFreezePatrolAfterAuthResult{}
+func NewMicroUserFreezePatrolAfterVerifyResult() *MicroUserFreezePatrolAfterVerifyResult {
+	return &MicroUserFreezePatrolAfterVerifyResult{}
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) InitDefault() {
-	*p = MicroUserFreezePatrolAfterAuthResult{}
+func (p *MicroUserFreezePatrolAfterVerifyResult) InitDefault() {
+	*p = MicroUserFreezePatrolAfterVerifyResult{}
 }
 
-var MicroUserFreezePatrolAfterAuthResult_Success_DEFAULT *RpcFreezeResp
+var MicroUserFreezePatrolAfterVerifyResult_Success_DEFAULT *RpcFreezeResp
 
-func (p *MicroUserFreezePatrolAfterAuthResult) GetSuccess() (v *RpcFreezeResp) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) GetSuccess() (v *RpcFreezeResp) {
 	if !p.IsSetSuccess() {
-		return MicroUserFreezePatrolAfterAuthResult_Success_DEFAULT
+		return MicroUserFreezePatrolAfterVerifyResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *MicroUserFreezePatrolAfterAuthResult) SetSuccess(x interface{}) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) SetSuccess(x interface{}) {
 	p.Success = x.(*RpcFreezeResp)
 }
 
-var fieldIDToName_MicroUserFreezePatrolAfterAuthResult = map[int16]string{
+var fieldIDToName_MicroUserFreezePatrolAfterVerifyResult = map[int16]string{
 	0: "success",
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) IsSetSuccess() bool {
+func (p *MicroUserFreezePatrolAfterVerifyResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -4788,7 +4788,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterAuthResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterVerifyResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -4798,7 +4798,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *MicroUserFreezePatrolAfterVerifyResult) ReadField0(iprot thrift.TProtocol) error {
 	p.Success = NewRpcFreezeResp()
 
 	if err := p.Success.Read(iprot); err != nil {
@@ -4807,9 +4807,9 @@ func (p *MicroUserFreezePatrolAfterAuthResult) ReadField0(iprot thrift.TProtocol
 	return nil
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("FreezePatrolAfterAuth_result"); err != nil {
+	if err = oprot.WriteStructBegin("FreezePatrolAfterVerify_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -4835,7 +4835,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -4854,14 +4854,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) String() string {
+func (p *MicroUserFreezePatrolAfterVerifyResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("MicroUserFreezePatrolAfterAuthResult(%+v)", *p)
+	return fmt.Sprintf("MicroUserFreezePatrolAfterVerifyResult(%+v)", *p)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) DeepEqual(ano *MicroUserFreezePatrolAfterAuthResult) bool {
+func (p *MicroUserFreezePatrolAfterVerifyResult) DeepEqual(ano *MicroUserFreezePatrolAfterVerifyResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -4873,7 +4873,7 @@ func (p *MicroUserFreezePatrolAfterAuthResult) DeepEqual(ano *MicroUserFreezePat
 	return true
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) Field0DeepEqual(src *RpcFreezeResp) bool {
+func (p *MicroUserFreezePatrolAfterVerifyResult) Field0DeepEqual(src *RpcFreezeResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -6946,7 +6946,7 @@ func (p *MicroUserFindUserByMobileResult) Field0DeepEqual(src *user.UserInfo) bo
 }
 
 type MicroUserFindUserByUsernameArgs struct {
-	Username *RpcFindUserByUsernameReq `thrift:"Username,1" frugal:"1,default,RpcFindUserByUsernameReq" json:"Username"`
+	Req *RpcFindUserByUsernameReq `thrift:"req,1" frugal:"1,default,RpcFindUserByUsernameReq" json:"req"`
 }
 
 func NewMicroUserFindUserByUsernameArgs() *MicroUserFindUserByUsernameArgs {
@@ -6957,24 +6957,24 @@ func (p *MicroUserFindUserByUsernameArgs) InitDefault() {
 	*p = MicroUserFindUserByUsernameArgs{}
 }
 
-var MicroUserFindUserByUsernameArgs_Username_DEFAULT *RpcFindUserByUsernameReq
+var MicroUserFindUserByUsernameArgs_Req_DEFAULT *RpcFindUserByUsernameReq
 
-func (p *MicroUserFindUserByUsernameArgs) GetUsername() (v *RpcFindUserByUsernameReq) {
-	if !p.IsSetUsername() {
-		return MicroUserFindUserByUsernameArgs_Username_DEFAULT
+func (p *MicroUserFindUserByUsernameArgs) GetReq() (v *RpcFindUserByUsernameReq) {
+	if !p.IsSetReq() {
+		return MicroUserFindUserByUsernameArgs_Req_DEFAULT
 	}
-	return p.Username
+	return p.Req
 }
-func (p *MicroUserFindUserByUsernameArgs) SetUsername(val *RpcFindUserByUsernameReq) {
-	p.Username = val
+func (p *MicroUserFindUserByUsernameArgs) SetReq(val *RpcFindUserByUsernameReq) {
+	p.Req = val
 }
 
 var fieldIDToName_MicroUserFindUserByUsernameArgs = map[int16]string{
-	1: "Username",
+	1: "req",
 }
 
-func (p *MicroUserFindUserByUsernameArgs) IsSetUsername() bool {
-	return p.Username != nil
+func (p *MicroUserFindUserByUsernameArgs) IsSetReq() bool {
+	return p.Req != nil
 }
 
 func (p *MicroUserFindUserByUsernameArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -7036,9 +7036,9 @@ ReadStructEndError:
 }
 
 func (p *MicroUserFindUserByUsernameArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Username = NewRpcFindUserByUsernameReq()
+	p.Req = NewRpcFindUserByUsernameReq()
 
-	if err := p.Username.Read(iprot); err != nil {
+	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
 	return nil
@@ -7073,10 +7073,10 @@ WriteStructEndError:
 }
 
 func (p *MicroUserFindUserByUsernameArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Username", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.Username.Write(oprot); err != nil {
+	if err := p.Req.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -7102,7 +7102,7 @@ func (p *MicroUserFindUserByUsernameArgs) DeepEqual(ano *MicroUserFindUserByUser
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Username) {
+	if !p.Field1DeepEqual(ano.Req) {
 		return false
 	}
 	return true
@@ -7110,7 +7110,7 @@ func (p *MicroUserFindUserByUsernameArgs) DeepEqual(ano *MicroUserFindUserByUser
 
 func (p *MicroUserFindUserByUsernameArgs) Field1DeepEqual(src *RpcFindUserByUsernameReq) bool {
 
-	if !p.Username.DeepEqual(src) {
+	if !p.Req.DeepEqual(src) {
 		return false
 	}
 	return true

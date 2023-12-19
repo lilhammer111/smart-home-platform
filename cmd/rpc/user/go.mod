@@ -11,6 +11,7 @@ require (
 	github.com/alibabacloud-go/tea v1.2.1
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.8.0
+	github.com/jinzhu/copier v0.4.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20231211030816-1f9e0f7bcee3
 	github.com/nacos-group/nacos-sdk-go v1.1.4

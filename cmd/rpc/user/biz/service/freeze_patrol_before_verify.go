@@ -1,0 +1,19 @@
+package service
+
+import (
+	"context"
+	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+)
+
+type FreezePatrolBeforeVerifyService struct {
+	ctx context.Context
+} // NewFreezePatrolBeforeVerifyService new FreezePatrolBeforeVerifyService
+func NewFreezePatrolBeforeVerifyService(ctx context.Context) *FreezePatrolBeforeVerifyService {
+	return &FreezePatrolBeforeVerifyService{ctx: ctx}
+}
+
+// Run create note info
+func (s *FreezePatrolBeforeVerifyService) Run(req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
+
+	return
+}

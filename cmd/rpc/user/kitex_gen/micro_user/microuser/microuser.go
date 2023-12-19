@@ -21,20 +21,20 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "micro_user"
 	handlerType := (*micro_user.MicroUser)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"SendSmsViaAliyun":       kitex.NewMethodInfo(sendSmsViaAliyunHandler, newMicroUserSendSmsViaAliyunArgs, newMicroUserSendSmsViaAliyunResult, false),
-		"FreezePatrolBeforeAuth": kitex.NewMethodInfo(freezePatrolBeforeAuthHandler, newMicroUserFreezePatrolBeforeAuthArgs, newMicroUserFreezePatrolBeforeAuthResult, false),
-		"FreezePatrolAfterAuth":  kitex.NewMethodInfo(freezePatrolAfterAuthHandler, newMicroUserFreezePatrolAfterAuthArgs, newMicroUserFreezePatrolAfterAuthResult, false),
-		"VerifySmsCode":          kitex.NewMethodInfo(verifySmsCodeHandler, newMicroUserVerifySmsCodeArgs, newMicroUserVerifySmsCodeResult, false),
-		"VerifyUsernamePwd":      kitex.NewMethodInfo(verifyUsernamePwdHandler, newMicroUserVerifyUsernamePwdArgs, newMicroUserVerifyUsernamePwdResult, false),
-		"VerifyEmailPwd":         kitex.NewMethodInfo(verifyEmailPwdHandler, newMicroUserVerifyEmailPwdArgs, newMicroUserVerifyEmailPwdResult, false),
-		"FindUser":               kitex.NewMethodInfo(findUserHandler, newMicroUserFindUserArgs, newMicroUserFindUserResult, false),
-		"FindUserByOpenid":       kitex.NewMethodInfo(findUserByOpenidHandler, newMicroUserFindUserByOpenidArgs, newMicroUserFindUserByOpenidResult, false),
-		"FindUserByMobile":       kitex.NewMethodInfo(findUserByMobileHandler, newMicroUserFindUserByMobileArgs, newMicroUserFindUserByMobileResult, false),
-		"FindUserByUsername":     kitex.NewMethodInfo(findUserByUsernameHandler, newMicroUserFindUserByUsernameArgs, newMicroUserFindUserByUsernameResult, false),
-		"QueryUsersWithFilter":   kitex.NewMethodInfo(queryUsersWithFilterHandler, newMicroUserQueryUsersWithFilterArgs, newMicroUserQueryUsersWithFilterResult, false),
-		"UpdateUser":             kitex.NewMethodInfo(updateUserHandler, newMicroUserUpdateUserArgs, newMicroUserUpdateUserResult, false),
-		"CreateUser":             kitex.NewMethodInfo(createUserHandler, newMicroUserCreateUserArgs, newMicroUserCreateUserResult, false),
-		"DeleteUser":             kitex.NewMethodInfo(deleteUserHandler, newMicroUserDeleteUserArgs, newMicroUserDeleteUserResult, false),
+		"SendSmsViaAliyun":         kitex.NewMethodInfo(sendSmsViaAliyunHandler, newMicroUserSendSmsViaAliyunArgs, newMicroUserSendSmsViaAliyunResult, false),
+		"FreezePatrolBeforeVerify": kitex.NewMethodInfo(freezePatrolBeforeVerifyHandler, newMicroUserFreezePatrolBeforeVerifyArgs, newMicroUserFreezePatrolBeforeVerifyResult, false),
+		"FreezePatrolAfterVerify":  kitex.NewMethodInfo(freezePatrolAfterVerifyHandler, newMicroUserFreezePatrolAfterVerifyArgs, newMicroUserFreezePatrolAfterVerifyResult, false),
+		"VerifySmsCode":            kitex.NewMethodInfo(verifySmsCodeHandler, newMicroUserVerifySmsCodeArgs, newMicroUserVerifySmsCodeResult, false),
+		"VerifyUsernamePwd":        kitex.NewMethodInfo(verifyUsernamePwdHandler, newMicroUserVerifyUsernamePwdArgs, newMicroUserVerifyUsernamePwdResult, false),
+		"VerifyEmailPwd":           kitex.NewMethodInfo(verifyEmailPwdHandler, newMicroUserVerifyEmailPwdArgs, newMicroUserVerifyEmailPwdResult, false),
+		"FindUser":                 kitex.NewMethodInfo(findUserHandler, newMicroUserFindUserArgs, newMicroUserFindUserResult, false),
+		"FindUserByOpenid":         kitex.NewMethodInfo(findUserByOpenidHandler, newMicroUserFindUserByOpenidArgs, newMicroUserFindUserByOpenidResult, false),
+		"FindUserByMobile":         kitex.NewMethodInfo(findUserByMobileHandler, newMicroUserFindUserByMobileArgs, newMicroUserFindUserByMobileResult, false),
+		"FindUserByUsername":       kitex.NewMethodInfo(findUserByUsernameHandler, newMicroUserFindUserByUsernameArgs, newMicroUserFindUserByUsernameResult, false),
+		"QueryUsersWithFilter":     kitex.NewMethodInfo(queryUsersWithFilterHandler, newMicroUserQueryUsersWithFilterArgs, newMicroUserQueryUsersWithFilterResult, false),
+		"UpdateUser":               kitex.NewMethodInfo(updateUserHandler, newMicroUserUpdateUserArgs, newMicroUserUpdateUserResult, false),
+		"CreateUser":               kitex.NewMethodInfo(createUserHandler, newMicroUserCreateUserArgs, newMicroUserCreateUserResult, false),
+		"DeleteUser":               kitex.NewMethodInfo(deleteUserHandler, newMicroUserDeleteUserArgs, newMicroUserDeleteUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "micro_user",
@@ -68,40 +68,40 @@ func newMicroUserSendSmsViaAliyunResult() interface{} {
 	return micro_user.NewMicroUserSendSmsViaAliyunResult()
 }
 
-func freezePatrolBeforeAuthHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*micro_user.MicroUserFreezePatrolBeforeAuthArgs)
-	realResult := result.(*micro_user.MicroUserFreezePatrolBeforeAuthResult)
-	success, err := handler.(micro_user.MicroUser).FreezePatrolBeforeAuth(ctx, realArg.Req)
+func freezePatrolBeforeVerifyHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserFreezePatrolBeforeVerifyArgs)
+	realResult := result.(*micro_user.MicroUserFreezePatrolBeforeVerifyResult)
+	success, err := handler.(micro_user.MicroUser).FreezePatrolBeforeVerify(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newMicroUserFreezePatrolBeforeAuthArgs() interface{} {
-	return micro_user.NewMicroUserFreezePatrolBeforeAuthArgs()
+func newMicroUserFreezePatrolBeforeVerifyArgs() interface{} {
+	return micro_user.NewMicroUserFreezePatrolBeforeVerifyArgs()
 }
 
-func newMicroUserFreezePatrolBeforeAuthResult() interface{} {
-	return micro_user.NewMicroUserFreezePatrolBeforeAuthResult()
+func newMicroUserFreezePatrolBeforeVerifyResult() interface{} {
+	return micro_user.NewMicroUserFreezePatrolBeforeVerifyResult()
 }
 
-func freezePatrolAfterAuthHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*micro_user.MicroUserFreezePatrolAfterAuthArgs)
-	realResult := result.(*micro_user.MicroUserFreezePatrolAfterAuthResult)
-	success, err := handler.(micro_user.MicroUser).FreezePatrolAfterAuth(ctx, realArg.Req)
+func freezePatrolAfterVerifyHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserFreezePatrolAfterVerifyArgs)
+	realResult := result.(*micro_user.MicroUserFreezePatrolAfterVerifyResult)
+	success, err := handler.(micro_user.MicroUser).FreezePatrolAfterVerify(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newMicroUserFreezePatrolAfterAuthArgs() interface{} {
-	return micro_user.NewMicroUserFreezePatrolAfterAuthArgs()
+func newMicroUserFreezePatrolAfterVerifyArgs() interface{} {
+	return micro_user.NewMicroUserFreezePatrolAfterVerifyArgs()
 }
 
-func newMicroUserFreezePatrolAfterAuthResult() interface{} {
-	return micro_user.NewMicroUserFreezePatrolAfterAuthResult()
+func newMicroUserFreezePatrolAfterVerifyResult() interface{} {
+	return micro_user.NewMicroUserFreezePatrolAfterVerifyResult()
 }
 
 func verifySmsCodeHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -215,7 +215,7 @@ func newMicroUserFindUserByMobileResult() interface{} {
 func findUserByUsernameHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*micro_user.MicroUserFindUserByUsernameArgs)
 	realResult := result.(*micro_user.MicroUserFindUserByUsernameResult)
-	success, err := handler.(micro_user.MicroUser).FindUserByUsername(ctx, realArg.Username)
+	success, err := handler.(micro_user.MicroUser).FindUserByUsername(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
@@ -322,21 +322,21 @@ func (p *kClient) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsRe
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
-	var _args micro_user.MicroUserFreezePatrolBeforeAuthArgs
+func (p *kClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
+	var _args micro_user.MicroUserFreezePatrolBeforeVerifyArgs
 	_args.Req = req
-	var _result micro_user.MicroUserFreezePatrolBeforeAuthResult
-	if err = p.c.Call(ctx, "FreezePatrolBeforeAuth", &_args, &_result); err != nil {
+	var _result micro_user.MicroUserFreezePatrolBeforeVerifyResult
+	if err = p.c.Call(ctx, "FreezePatrolBeforeVerify", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolAfterAuth(ctx context.Context, req *micro_user.RpcUserId) (r *micro_user.RpcFreezeResp, err error) {
-	var _args micro_user.MicroUserFreezePatrolAfterAuthArgs
+func (p *kClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
+	var _args micro_user.MicroUserFreezePatrolAfterVerifyArgs
 	_args.Req = req
-	var _result micro_user.MicroUserFreezePatrolAfterAuthResult
-	if err = p.c.Call(ctx, "FreezePatrolAfterAuth", &_args, &_result); err != nil {
+	var _result micro_user.MicroUserFreezePatrolAfterVerifyResult
+	if err = p.c.Call(ctx, "FreezePatrolAfterVerify", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -402,9 +402,9 @@ func (p *kClient) FindUserByMobile(ctx context.Context, req *micro_user.RpcFindU
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FindUserByUsername(ctx context.Context, username *micro_user.RpcFindUserByUsernameReq) (r *user.UserInfo, err error) {
+func (p *kClient) FindUserByUsername(ctx context.Context, req *micro_user.RpcFindUserByUsernameReq) (r *user.UserInfo, err error) {
 	var _args micro_user.MicroUserFindUserByUsernameArgs
-	_args.Username = username
+	_args.Req = req
 	var _result micro_user.MicroUserFindUserByUsernameResult
 	if err = p.c.Call(ctx, "FindUserByUsername", &_args, &_result); err != nil {
 		return

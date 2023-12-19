@@ -6,22 +6,18 @@ import (
 )
 
 const (
-	unknownErrCode       = 1000
-	businessLogicErrCode = 1001
-	internalErrCode      = 1002
-	thirdPartyErrCode    = 1003
-
-	redisDBErrCode = 2001
-	mysqlDBErrCode = 2001
+	CodeUnknown = iota + 1
+	CodeNotFound
+	CodeBadRequest
+	CodeAlreadyExists
+	CodeInternal
+	CodeBadGateway
 )
 
 const (
-	unknownErr           = "unknown error"
-	thirdPartyServiceErr = "third party service error"
-	internalErr          = "internal error"
-
-	redisDBErr = "operate redis error"
-	mysqlDBErr = "operate mysql error"
+	MsgUnknown  = "rpc unknown error"
+	MsgNotFound = "rpc resource not found"
+	MsgInternal = "rpc internal error"
 )
 
 type RpcErr struct {
@@ -43,14 +39,14 @@ func (e *RpcErr) BizExtra() map[string]string {
 }
 
 func (e *RpcErr) Error() string {
-	return fmt.Sprintf("rpc biz error: { code: %d, msg: { %s } }", e.code, e.msg)
+	return fmt.Sprintf("rpc error: { code: %d, msg: { %s } }", e.code, e.msg)
 }
 
 func newRpcError(code int32, msg string, err error) *RpcErr {
 	if err == nil {
 		return &RpcErr{
-			code: unknownErrCode,
-			msg:  unknownErr,
+			code: CodeUnknown,
+			msg:  MsgUnknown,
 		}
 	}
 
@@ -60,23 +56,11 @@ func newRpcError(code int32, msg string, err error) *RpcErr {
 	}
 }
 
-func NewThirdPartyErr(err error) kerrors.BizStatusErrorIface {
-	return newRpcError(thirdPartyErrCode, thirdPartyServiceErr, err)
-}
-
 func NewInternalErr(err error) kerrors.BizStatusErrorIface {
-	return newRpcError(internalErrCode, internalErr, err)
+	return newRpcError(CodeInternal, MsgInternal, err)
 
 }
 
-func NewRedisErr(err error) kerrors.BizStatusErrorIface {
-	return newRpcError(redisDBErrCode, redisDBErr, err)
-}
-
-func NewMysqlErr(err error) kerrors.BizStatusErrorIface {
-	return newRpcError(mysqlDBErrCode, mysqlDBErr, err)
-}
-
-func NewBusinessLogicErr(err error, msg string) kerrors.BizStatusErrorIface {
-	return newRpcError(businessLogicErrCode, msg, err)
+func NewNotFoundError(err error) kerrors.BizStatusErrorIface {
+	return newRpcError(CodeNotFound, MsgNotFound, err)
 }

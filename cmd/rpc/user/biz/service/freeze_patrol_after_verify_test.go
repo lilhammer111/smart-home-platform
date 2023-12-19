@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
-func TestFreezePatrolAfterAuth_Run(t *testing.T) {
+func TestFreezePatrolAfterVerify_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewFreezePatrolAfterAuthService(ctx)
+	s := NewFreezePatrolAfterVerifyService(ctx)
 	// init req and assert value
 
-	req := &micro_user.RpcUserId{}
+	req := &micro_user.RpcFreezeReq{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

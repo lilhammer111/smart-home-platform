@@ -12,8 +12,8 @@ func TestFindUserByUsername_Run(t *testing.T) {
 	s := NewFindUserByUsernameService(ctx)
 	// init req and assert value
 
-	username := &micro_user.RpcFindUserByUsernameReq{}
-	resp, err := s.Run(username)
+	req := &micro_user.RpcFindUserByUsernameReq{}
+	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}

@@ -108,3 +108,17 @@ func (s *MicroUserImpl) FindUserByOpenid(ctx context.Context, req *micro_user.Rp
 
 	return resp, err
 }
+
+// FreezePatrolBeforeVerify implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
+	resp, err = service.NewFreezePatrolBeforeVerifyService(ctx).Run(req)
+
+	return resp, err
+}
+
+// FreezePatrolAfterVerify implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
+	resp, err = service.NewFreezePatrolAfterVerifyService(ctx).Run(req)
+
+	return resp, err
+}

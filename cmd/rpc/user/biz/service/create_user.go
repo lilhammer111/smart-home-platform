@@ -2,7 +2,11 @@ package service
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"github.com/jinzhu/copier"
 )
 
 type CreateUserService struct {
@@ -14,7 +18,13 @@ func NewCreateUserService(ctx context.Context) *CreateUserService {
 
 // Run create note info
 func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err error) {
-	// Finish your business logic.
-
+	userInfo := model.User{}
+	if err = db.GetMysql().Create(&userInfo).Error; err != nil {
+		return nil, bizerr.NewInternalErr(err)
+	}
+	err = copier.Copy(resp, &userInfo)
+	if err != nil {
+		return nil, bizerr.NewInternalErr(err)
+	}
 	return
 }

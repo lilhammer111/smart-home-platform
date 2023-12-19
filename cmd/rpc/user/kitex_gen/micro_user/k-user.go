@@ -2557,7 +2557,7 @@ func (p *MicroUserSendSmsViaAliyunResult) field0Length() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) FastRead(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -2619,7 +2619,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeAuthArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeVerifyArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -2628,7 +2628,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) FastReadField1(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := NewRpcFreezeReq()
@@ -2642,13 +2642,13 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) FastReadField1(buf []byte) (int, e
 }
 
 // for compatibility
-func (p *MicroUserFreezePatrolBeforeAuthArgs) FastWrite(buf []byte) int {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolBeforeAuth_args")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolBeforeVerify_args")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -2657,9 +2657,9 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) FastWriteNocopy(buf []byte, binary
 	return offset
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) BLength() int {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("FreezePatrolBeforeAuth_args")
+	l += bthrift.Binary.StructBeginLength("FreezePatrolBeforeVerify_args")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -2668,7 +2668,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) BLength() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -2676,7 +2676,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) fastWriteField1(buf []byte, binary
 	return offset
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) field1Length() int {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
 	l += p.Req.BLength()
@@ -2684,7 +2684,7 @@ func (p *MicroUserFreezePatrolBeforeAuthArgs) field1Length() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) FastRead(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -2746,7 +2746,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeAuthResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolBeforeVerifyResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -2755,7 +2755,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) FastReadField0(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := NewRpcFreezeResp()
@@ -2769,13 +2769,13 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) FastReadField0(buf []byte) (int,
 }
 
 // for compatibility
-func (p *MicroUserFreezePatrolBeforeAuthResult) FastWrite(buf []byte) int {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolBeforeAuth_result")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolBeforeVerify_result")
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], binaryWriter)
 	}
@@ -2784,9 +2784,9 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) FastWriteNocopy(buf []byte, bina
 	return offset
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) BLength() int {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("FreezePatrolBeforeAuth_result")
+	l += bthrift.Binary.StructBeginLength("FreezePatrolBeforeVerify_result")
 	if p != nil {
 		l += p.field0Length()
 	}
@@ -2795,7 +2795,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) BLength() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.STRUCT, 0)
@@ -2805,7 +2805,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) fastWriteField0(buf []byte, bina
 	return offset
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) field0Length() int {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += bthrift.Binary.FieldBeginLength("success", thrift.STRUCT, 0)
@@ -2815,7 +2815,7 @@ func (p *MicroUserFreezePatrolBeforeAuthResult) field0Length() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) FastRead(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -2877,7 +2877,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterAuthArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterVerifyArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -2886,10 +2886,10 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) FastReadField1(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewRpcUserId()
+	tmp := NewRpcFreezeReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -2900,13 +2900,13 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) FastReadField1(buf []byte) (int, er
 }
 
 // for compatibility
-func (p *MicroUserFreezePatrolAfterAuthArgs) FastWrite(buf []byte) int {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolAfterAuth_args")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolAfterVerify_args")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -2915,9 +2915,9 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) FastWriteNocopy(buf []byte, binaryW
 	return offset
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) BLength() int {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("FreezePatrolAfterAuth_args")
+	l += bthrift.Binary.StructBeginLength("FreezePatrolAfterVerify_args")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -2926,7 +2926,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) BLength() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -2934,7 +2934,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) fastWriteField1(buf []byte, binaryW
 	return offset
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) field1Length() int {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
 	l += p.Req.BLength()
@@ -2942,7 +2942,7 @@ func (p *MicroUserFreezePatrolAfterAuthArgs) field1Length() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) FastRead(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -3004,7 +3004,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterAuthResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MicroUserFreezePatrolAfterVerifyResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -3013,7 +3013,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) FastReadField0(buf []byte) (int, error) {
+func (p *MicroUserFreezePatrolAfterVerifyResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := NewRpcFreezeResp()
@@ -3027,13 +3027,13 @@ func (p *MicroUserFreezePatrolAfterAuthResult) FastReadField0(buf []byte) (int, 
 }
 
 // for compatibility
-func (p *MicroUserFreezePatrolAfterAuthResult) FastWrite(buf []byte) int {
+func (p *MicroUserFreezePatrolAfterVerifyResult) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolAfterVerifyResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolAfterAuth_result")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "FreezePatrolAfterVerify_result")
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], binaryWriter)
 	}
@@ -3042,9 +3042,9 @@ func (p *MicroUserFreezePatrolAfterAuthResult) FastWriteNocopy(buf []byte, binar
 	return offset
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) BLength() int {
+func (p *MicroUserFreezePatrolAfterVerifyResult) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("FreezePatrolAfterAuth_result")
+	l += bthrift.Binary.StructBeginLength("FreezePatrolAfterVerify_result")
 	if p != nil {
 		l += p.field0Length()
 	}
@@ -3053,7 +3053,7 @@ func (p *MicroUserFreezePatrolAfterAuthResult) BLength() int {
 	return l
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *MicroUserFreezePatrolAfterVerifyResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.STRUCT, 0)
@@ -3063,7 +3063,7 @@ func (p *MicroUserFreezePatrolAfterAuthResult) fastWriteField0(buf []byte, binar
 	return offset
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) field0Length() int {
+func (p *MicroUserFreezePatrolAfterVerifyResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += bthrift.Binary.FieldBeginLength("success", thrift.STRUCT, 0)
@@ -4701,7 +4701,7 @@ func (p *MicroUserFindUserByUsernameArgs) FastReadField1(buf []byte) (int, error
 	} else {
 		offset += l
 	}
-	p.Username = tmp
+	p.Req = tmp
 	return offset, nil
 }
 
@@ -4734,16 +4734,16 @@ func (p *MicroUserFindUserByUsernameArgs) BLength() int {
 
 func (p *MicroUserFindUserByUsernameArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Username", thrift.STRUCT, 1)
-	offset += p.Username.FastWriteNocopy(buf[offset:], binaryWriter)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
+	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
 
 func (p *MicroUserFindUserByUsernameArgs) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Username", thrift.STRUCT, 1)
-	l += p.Username.BLength()
+	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
+	l += p.Req.BLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
@@ -5948,19 +5948,19 @@ func (p *MicroUserSendSmsViaAliyunResult) GetResult() interface{} {
 	return p.Success
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthArgs) GetFirstArgument() interface{} {
+func (p *MicroUserFreezePatrolBeforeVerifyArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *MicroUserFreezePatrolBeforeAuthResult) GetResult() interface{} {
+func (p *MicroUserFreezePatrolBeforeVerifyResult) GetResult() interface{} {
 	return p.Success
 }
 
-func (p *MicroUserFreezePatrolAfterAuthArgs) GetFirstArgument() interface{} {
+func (p *MicroUserFreezePatrolAfterVerifyArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *MicroUserFreezePatrolAfterAuthResult) GetResult() interface{} {
+func (p *MicroUserFreezePatrolAfterVerifyResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -6013,7 +6013,7 @@ func (p *MicroUserFindUserByMobileResult) GetResult() interface{} {
 }
 
 func (p *MicroUserFindUserByUsernameArgs) GetFirstArgument() interface{} {
-	return p.Username
+	return p.Req
 }
 
 func (p *MicroUserFindUserByUsernameResult) GetResult() interface{} {
