@@ -27,7 +27,7 @@ struct UserInfo {
 
 service user {
     list<UserInfo> GetUserList(1: UsersFilter req) (api.get="/api/users/list");
-    list<UserInfo> GetUserDetail(1: common.Req req) (api.get="/api/users/detail");
-    list<UserInfo> UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
+    UserInfo GetUserDetail(1: common.Req req) (api.get="/api/users/detail");
+    UserInfo UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");
     common.Empty DeregisterUser(1: common.Req req) (api.delete="/api/users/deregister");
 }

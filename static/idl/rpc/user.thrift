@@ -77,15 +77,15 @@ struct RpcFindUserByOpenidReq {
 
 service micro_user {
     common.Empty SendSmsViaAliyun(1: RpcSmsReq req);
-    RpcFreezeResp FreezePatrolBeforeAuth(1: RpcFreezeReq req);
-    RpcFreezeResp FreezePatrolAfterAuth(1: RpcUserId req);
+    RpcFreezeResp FreezePatrolBeforeVerify(1: RpcFreezeReq req);
+    RpcFreezeResp FreezePatrolAfterVerify(1: RpcFreezeReq req);
     common.Empty VerifySmsCode(1: RpcVerifyCodeReq req);
     common.Empty VerifyUsernamePwd(1: RpcVerifyUsernamePwdReq req);
     common.Empty VerifyEmailPwd(1: RpcVerifyEmailPwdReq req);
     user.UserInfo FindUser (1: RpcFindUserReq req);
     user.UserInfo FindUserByOpenid (1:RpcFindUserByOpenidReq req);
     user.UserInfo FindUserByMobile (1: RpcFindUserByMobileReq req);
-    user.UserInfo FindUserByUsername (1: RpcFindUserByUsernameReq Username);
+    user.UserInfo FindUserByUsername (1: RpcFindUserByUsernameReq req);
     list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req);
     user.UserInfo UpdateUser(1: user.UserInfo req);
     user.UserInfo CreateUser(1: user.UserInfo req);

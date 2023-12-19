@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 )
 
@@ -14,6 +15,6 @@ func NewFreezePatrolBeforeVerifyService(ctx context.Context) *FreezePatrolBefore
 
 // Run create note info
 func (s *FreezePatrolBeforeVerifyService) Run(req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
-
+	if err = db.GetMysql().Select()
 	return
 }

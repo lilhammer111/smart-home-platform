@@ -2,8 +2,8 @@ package user
 
 import (
 	"context"
-
 	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -22,6 +22,6 @@ func (h *DeregisterUserService) Do(req *common.Req) (resp *common.Empty, err err
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-
-	return
+	_, err = micro_user_cli.DeleteUser(h.Context, req.Id)
+	return &common.Empty{}, err
 }

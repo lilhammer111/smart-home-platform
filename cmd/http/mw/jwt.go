@@ -46,6 +46,7 @@ var (
 	ErrWrongSmsCode        = errors.New("wrong sms code")
 	ErrInternalError       = errors.New("internal error")
 	ErrMiniProgLoginFailed = errors.New("mini program login failed")
+	ErrAccountFrozen       = errors.New("account frozen")
 )
 
 type JwtUserInfo struct {
@@ -97,11 +98,21 @@ func InitJwt() {
 			return e.Error()
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			c.JSON(http.StatusOK, utils.H{
+			resp := utils.H{
 				"success": false,
 				"code":    code,
 				"message": message,
-			})
+			}
+
+			// if account was frozen
+			if c.GetBool("is_frozen") {
+				resp["data"] = utils.H{
+					"is_frozen": true,
+					"thawed_at": c.GetString("thawed_at"),
+				}
+			}
+
+			c.JSON(http.StatusOK, resp)
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			switch string(c.Path()) {
@@ -155,11 +166,26 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 	if err != nil {
 		return nil, jwt.ErrMissingLoginValues
 	}
+
+	// check if the account was frozen
+	freezeResp := &micro_user.RpcFreezeResp{}
+	freezeResp, err = micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
+	if err != nil {
+		return nil, ErrInternalError
+	}
+	if freezeResp.IsFrozen {
+		c.Set("is_frozen", freezeResp.IsFrozen)
+		c.Set("thawed_at", *freezeResp.ThawedAt)
+		return nil, ErrAccountFrozen
+	}
+
 	_, err = micro_user_cli.VerifySmsCode(ctx, &micro_user.RpcVerifyCodeReq{
 		Mobile:  req.Mobile,
 		SmsCode: req.SmsCode,
 	})
+	// if validation failed, add calculate the account unfreezing time
 	if err != nil {
+		micro_user_cli.FreezePatrolAfterVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
 		return nil, ErrWrongSmsCode
 	}
 

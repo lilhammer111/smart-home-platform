@@ -18,8 +18,6 @@ import (
 )
 
 func main() {
-	// init dal
-	// dal.Init()
 	// init jwt
 	mw.InitJwt()
 

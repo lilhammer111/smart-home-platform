@@ -5,22 +5,27 @@ package user
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"github.com/apache/thrift/lib/go/thrift"
+	"strings"
 )
 
 type UsersFilter struct {
-	Gender    *int8   `thrift:"Gender,1,optional" json:"gender,omitempty" query:"gender" vd:"in($, 0, 1, 2)"`
-	Page      *int16  `thrift:"Page,2,optional" json:"page,omitempty" query:"page" vd:"$>=0"`
-	Limit     *int16  `thrift:"Limit,3,optional" json:"limit,omitempty" query:"limit" vd:"$>0"`
-	Sort      *string `thrift:"Sort,4,optional" json:"sort,omitempty" query:"sort" vd:"regexp('^[a-zA-Z]+_(asc|desc)$')"`
-	Search    *string `thrift:"Search,5,optional" json:"search,omitempty" query:"search" vd:"regexp('^[\p{L}\p{N}\p{Lo}]+$')"`
-	StartDate *string `thrift:"StartDate,6,optional" json:"start_date,omitempty" query:"start_date" vd:"regexp('^\d{4}_\d{2}_\d{2}$')"`
-	EndDate   *string `thrift:"EndDate,7,optional" json:"end_date,omitempty" query:"end_date" vd:"regexp('^\d{4}_\d{2}_\d{2}$')"`
+	Gender    *int8   `thrift:"Gender,1,optional" frugal:"1,optional,i8" json:"Gender,omitempty"`
+	Page      *int16  `thrift:"Page,2,optional" frugal:"2,optional,i16" json:"Page,omitempty"`
+	Limit     *int16  `thrift:"Limit,3,optional" frugal:"3,optional,i16" json:"Limit,omitempty"`
+	Sort      *string `thrift:"Sort,4,optional" frugal:"4,optional,string" json:"Sort,omitempty"`
+	Search    *string `thrift:"Search,5,optional" frugal:"5,optional,string" json:"Search,omitempty"`
+	StartDate *string `thrift:"StartDate,6,optional" frugal:"6,optional,string" json:"StartDate,omitempty"`
+	EndDate   *string `thrift:"EndDate,7,optional" frugal:"7,optional,string" json:"EndDate,omitempty"`
 }
 
 func NewUsersFilter() *UsersFilter {
 	return &UsersFilter{}
+}
+
+func (p *UsersFilter) InitDefault() {
+	*p = UsersFilter{}
 }
 
 var UsersFilter_Gender_DEFAULT int8
@@ -84,6 +89,27 @@ func (p *UsersFilter) GetEndDate() (v string) {
 		return UsersFilter_EndDate_DEFAULT
 	}
 	return *p.EndDate
+}
+func (p *UsersFilter) SetGender(val *int8) {
+	p.Gender = val
+}
+func (p *UsersFilter) SetPage(val *int16) {
+	p.Page = val
+}
+func (p *UsersFilter) SetLimit(val *int16) {
+	p.Limit = val
+}
+func (p *UsersFilter) SetSort(val *string) {
+	p.Sort = val
+}
+func (p *UsersFilter) SetSearch(val *string) {
+	p.Search = val
+}
+func (p *UsersFilter) SetStartDate(val *string) {
+	p.StartDate = val
+}
+func (p *UsersFilter) SetEndDate(val *string) {
+	p.EndDate = val
 }
 
 var fieldIDToName_UsersFilter = map[int16]string{
@@ -492,22 +518,139 @@ func (p *UsersFilter) String() string {
 	return fmt.Sprintf("UsersFilter(%+v)", *p)
 }
 
+func (p *UsersFilter) DeepEqual(ano *UsersFilter) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Gender) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Page) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Limit) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Sort) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Search) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.StartDate) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.EndDate) {
+		return false
+	}
+	return true
+}
+
+func (p *UsersFilter) Field1DeepEqual(src *int8) bool {
+
+	if p.Gender == src {
+		return true
+	} else if p.Gender == nil || src == nil {
+		return false
+	}
+	if *p.Gender != *src {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field2DeepEqual(src *int16) bool {
+
+	if p.Page == src {
+		return true
+	} else if p.Page == nil || src == nil {
+		return false
+	}
+	if *p.Page != *src {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field3DeepEqual(src *int16) bool {
+
+	if p.Limit == src {
+		return true
+	} else if p.Limit == nil || src == nil {
+		return false
+	}
+	if *p.Limit != *src {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field4DeepEqual(src *string) bool {
+
+	if p.Sort == src {
+		return true
+	} else if p.Sort == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Sort, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field5DeepEqual(src *string) bool {
+
+	if p.Search == src {
+		return true
+	} else if p.Search == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Search, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field6DeepEqual(src *string) bool {
+
+	if p.StartDate == src {
+		return true
+	} else if p.StartDate == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.StartDate, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UsersFilter) Field7DeepEqual(src *string) bool {
+
+	if p.EndDate == src {
+		return true
+	} else if p.EndDate == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.EndDate, *src) != 0 {
+		return false
+	}
+	return true
+}
+
 type UserInfo struct {
-	Id      *int32  `thrift:"Id,1,optional" form:"id" json:"id,omitempty"`
-	Age     *int8   `thrift:"Age,2,optional" form:"age" json:"age,omitempty" vd:"$>=0 && $ <=200>"`
-	Gender  *int8   `thrift:"Gender,3,optional" form:"gender" json:"gender,omitempty" vd:"in($,0,1,2)"`
-	Mobile  *string `thrift:"Mobile,4,optional" form:"mobile" json:"mobile,omitempty" vd:"regexp('^1[3-9]\\d{9}$')"`
-	Profile *string `thrift:"Profile,5,optional" form:"profile" json:"profile,omitempty" vd:"regexp('^.{0,200}$')"`
-	// Only lowercase letters, numbers and underscores are allowed
-	Username *string `thrift:"Username,6,optional" form:"username" json:"username,omitempty" vd:"regexp('^[a-z0-9_]{1,30}$')"`
-	Password *string `thrift:"Password,7,optional" form:"password" json:"password,omitempty" vd:"regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,12}$
-')"`
-	Email  *string `thrift:"Email,8,optional" form:"email" json:"email,omitempty" vd:"regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')"`
-	Avatar *string `thrift:"Avatar,9,optional" form:"avatar" json:"avatar,omitempty" vd:"regexp('^.{0,200}$')"`
+	Id       *int32  `thrift:"Id,1,optional" frugal:"1,optional,i32" json:"Id,omitempty"`
+	Age      *int8   `thrift:"Age,2,optional" frugal:"2,optional,i8" json:"Age,omitempty"`
+	Gender   *int8   `thrift:"Gender,3,optional" frugal:"3,optional,i8" json:"Gender,omitempty"`
+	Mobile   *string `thrift:"Mobile,4,optional" frugal:"4,optional,string" json:"Mobile,omitempty"`
+	Profile  *string `thrift:"Profile,5,optional" frugal:"5,optional,string" json:"Profile,omitempty"`
+	Username *string `thrift:"Username,6,optional" frugal:"6,optional,string" json:"Username,omitempty"`
+	Password *string `thrift:"Password,7,optional" frugal:"7,optional,string" json:"Password,omitempty"`
+	Email    *string `thrift:"Email,8,optional" frugal:"8,optional,string" json:"Email,omitempty"`
+	Avatar   *string `thrift:"Avatar,9,optional" frugal:"9,optional,string" json:"Avatar,omitempty"`
 }
 
 func NewUserInfo() *UserInfo {
 	return &UserInfo{}
+}
+
+func (p *UserInfo) InitDefault() {
+	*p = UserInfo{}
 }
 
 var UserInfo_Id_DEFAULT int32
@@ -589,6 +732,33 @@ func (p *UserInfo) GetAvatar() (v string) {
 		return UserInfo_Avatar_DEFAULT
 	}
 	return *p.Avatar
+}
+func (p *UserInfo) SetId(val *int32) {
+	p.Id = val
+}
+func (p *UserInfo) SetAge(val *int8) {
+	p.Age = val
+}
+func (p *UserInfo) SetGender(val *int8) {
+	p.Gender = val
+}
+func (p *UserInfo) SetMobile(val *string) {
+	p.Mobile = val
+}
+func (p *UserInfo) SetProfile(val *string) {
+	p.Profile = val
+}
+func (p *UserInfo) SetUsername(val *string) {
+	p.Username = val
+}
+func (p *UserInfo) SetPassword(val *string) {
+	p.Password = val
+}
+func (p *UserInfo) SetEmail(val *string) {
+	p.Email = val
+}
+func (p *UserInfo) SetAvatar(val *string) {
+	p.Avatar = val
 }
 
 var fieldIDToName_UserInfo = map[int16]string{
@@ -1089,12 +1259,157 @@ func (p *UserInfo) String() string {
 	return fmt.Sprintf("UserInfo(%+v)", *p)
 }
 
+func (p *UserInfo) DeepEqual(ano *UserInfo) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Age) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Gender) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Mobile) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Profile) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.Password) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.Avatar) {
+		return false
+	}
+	return true
+}
+
+func (p *UserInfo) Field1DeepEqual(src *int32) bool {
+
+	if p.Id == src {
+		return true
+	} else if p.Id == nil || src == nil {
+		return false
+	}
+	if *p.Id != *src {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field2DeepEqual(src *int8) bool {
+
+	if p.Age == src {
+		return true
+	} else if p.Age == nil || src == nil {
+		return false
+	}
+	if *p.Age != *src {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field3DeepEqual(src *int8) bool {
+
+	if p.Gender == src {
+		return true
+	} else if p.Gender == nil || src == nil {
+		return false
+	}
+	if *p.Gender != *src {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field4DeepEqual(src *string) bool {
+
+	if p.Mobile == src {
+		return true
+	} else if p.Mobile == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Mobile, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field5DeepEqual(src *string) bool {
+
+	if p.Profile == src {
+		return true
+	} else if p.Profile == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Profile, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field6DeepEqual(src *string) bool {
+
+	if p.Username == src {
+		return true
+	} else if p.Username == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Username, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field7DeepEqual(src *string) bool {
+
+	if p.Password == src {
+		return true
+	} else if p.Password == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Password, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field8DeepEqual(src *string) bool {
+
+	if p.Email == src {
+		return true
+	} else if p.Email == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Email, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserInfo) Field9DeepEqual(src *string) bool {
+
+	if p.Avatar == src {
+		return true
+	} else if p.Avatar == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Avatar, *src) != 0 {
+		return false
+	}
+	return true
+}
+
 type User interface {
 	GetUserList(ctx context.Context, req *UsersFilter) (r []*UserInfo, err error)
 
-	GetUserDetail(ctx context.Context, req *common.Req) (r *UserInfo, err error)
+	GetUserDetail(ctx context.Context, req *common.Req) (r []*UserInfo, err error)
 
-	UpdateUserInfo(ctx context.Context, req *UserInfo) (r *UserInfo, err error)
+	UpdateUserInfo(ctx context.Context, req *UserInfo) (r []*UserInfo, err error)
 
 	DeregisterUser(ctx context.Context, req *common.Req) (r *common.Empty, err error)
 }
@@ -1134,7 +1449,7 @@ func (p *UserClient) GetUserList(ctx context.Context, req *UsersFilter) (r []*Us
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) GetUserDetail(ctx context.Context, req *common.Req) (r *UserInfo, err error) {
+func (p *UserClient) GetUserDetail(ctx context.Context, req *common.Req) (r []*UserInfo, err error) {
 	var _args UserGetUserDetailArgs
 	_args.Req = req
 	var _result UserGetUserDetailResult
@@ -1143,7 +1458,7 @@ func (p *UserClient) GetUserDetail(ctx context.Context, req *common.Req) (r *Use
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserClient) UpdateUserInfo(ctx context.Context, req *UserInfo) (r *UserInfo, err error) {
+func (p *UserClient) UpdateUserInfo(ctx context.Context, req *UserInfo) (r []*UserInfo, err error) {
 	var _args UserUpdateUserInfoArgs
 	_args.Req = req
 	var _result UserUpdateUserInfoResult
@@ -1273,7 +1588,7 @@ func (p *userProcessorGetUserDetail) Process(ctx context.Context, seqId int32, i
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserGetUserDetailResult{}
-	var retval *UserInfo
+	var retval []*UserInfo
 	if retval, err2 = p.handler.GetUserDetail(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetUserDetail: "+err2.Error())
 		oprot.WriteMessageBegin("GetUserDetail", thrift.EXCEPTION, seqId)
@@ -1321,7 +1636,7 @@ func (p *userProcessorUpdateUserInfo) Process(ctx context.Context, seqId int32, 
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserUpdateUserInfoResult{}
-	var retval *UserInfo
+	var retval []*UserInfo
 	if retval, err2 = p.handler.UpdateUserInfo(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateUserInfo: "+err2.Error())
 		oprot.WriteMessageBegin("UpdateUserInfo", thrift.EXCEPTION, seqId)
@@ -1399,11 +1714,15 @@ func (p *userProcessorDeregisterUser) Process(ctx context.Context, seqId int32, 
 }
 
 type UserGetUserListArgs struct {
-	Req *UsersFilter `thrift:"req,1"`
+	Req *UsersFilter `thrift:"req,1" frugal:"1,default,UsersFilter" json:"req"`
 }
 
 func NewUserGetUserListArgs() *UserGetUserListArgs {
 	return &UserGetUserListArgs{}
+}
+
+func (p *UserGetUserListArgs) InitDefault() {
+	*p = UserGetUserListArgs{}
 }
 
 var UserGetUserListArgs_Req_DEFAULT *UsersFilter
@@ -1413,6 +1732,9 @@ func (p *UserGetUserListArgs) GetReq() (v *UsersFilter) {
 		return UserGetUserListArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *UserGetUserListArgs) SetReq(val *UsersFilter) {
+	p.Req = val
 }
 
 var fieldIDToName_UserGetUserListArgs = map[int16]string{
@@ -1542,12 +1864,36 @@ func (p *UserGetUserListArgs) String() string {
 	return fmt.Sprintf("UserGetUserListArgs(%+v)", *p)
 }
 
+func (p *UserGetUserListArgs) DeepEqual(ano *UserGetUserListArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *UserGetUserListArgs) Field1DeepEqual(src *UsersFilter) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type UserGetUserListResult struct {
-	Success []*UserInfo `thrift:"success,0,optional"`
+	Success []*UserInfo `thrift:"success,0,optional" frugal:"0,optional,list<UserInfo>" json:"success,omitempty"`
 }
 
 func NewUserGetUserListResult() *UserGetUserListResult {
 	return &UserGetUserListResult{}
+}
+
+func (p *UserGetUserListResult) InitDefault() {
+	*p = UserGetUserListResult{}
 }
 
 var UserGetUserListResult_Success_DEFAULT []*UserInfo
@@ -1557,6 +1903,9 @@ func (p *UserGetUserListResult) GetSuccess() (v []*UserInfo) {
 		return UserGetUserListResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *UserGetUserListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]*UserInfo)
 }
 
 var fieldIDToName_UserGetUserListResult = map[int16]string{
@@ -1708,12 +2057,42 @@ func (p *UserGetUserListResult) String() string {
 	return fmt.Sprintf("UserGetUserListResult(%+v)", *p)
 }
 
+func (p *UserGetUserListResult) DeepEqual(ano *UserGetUserListResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserGetUserListResult) Field0DeepEqual(src []*UserInfo) bool {
+
+	if len(p.Success) != len(src) {
+		return false
+	}
+	for i, v := range p.Success {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+
 type UserGetUserDetailArgs struct {
-	Req *common.Req `thrift:"req,1"`
+	Req *common.Req `thrift:"req,1" frugal:"1,default,common.Req" json:"req"`
 }
 
 func NewUserGetUserDetailArgs() *UserGetUserDetailArgs {
 	return &UserGetUserDetailArgs{}
+}
+
+func (p *UserGetUserDetailArgs) InitDefault() {
+	*p = UserGetUserDetailArgs{}
 }
 
 var UserGetUserDetailArgs_Req_DEFAULT *common.Req
@@ -1723,6 +2102,9 @@ func (p *UserGetUserDetailArgs) GetReq() (v *common.Req) {
 		return UserGetUserDetailArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *UserGetUserDetailArgs) SetReq(val *common.Req) {
+	p.Req = val
 }
 
 var fieldIDToName_UserGetUserDetailArgs = map[int16]string{
@@ -1852,21 +2234,48 @@ func (p *UserGetUserDetailArgs) String() string {
 	return fmt.Sprintf("UserGetUserDetailArgs(%+v)", *p)
 }
 
+func (p *UserGetUserDetailArgs) DeepEqual(ano *UserGetUserDetailArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *UserGetUserDetailArgs) Field1DeepEqual(src *common.Req) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type UserGetUserDetailResult struct {
-	Success *UserInfo `thrift:"success,0,optional"`
+	Success []*UserInfo `thrift:"success,0,optional" frugal:"0,optional,list<UserInfo>" json:"success,omitempty"`
 }
 
 func NewUserGetUserDetailResult() *UserGetUserDetailResult {
 	return &UserGetUserDetailResult{}
 }
 
-var UserGetUserDetailResult_Success_DEFAULT *UserInfo
+func (p *UserGetUserDetailResult) InitDefault() {
+	*p = UserGetUserDetailResult{}
+}
 
-func (p *UserGetUserDetailResult) GetSuccess() (v *UserInfo) {
+var UserGetUserDetailResult_Success_DEFAULT []*UserInfo
+
+func (p *UserGetUserDetailResult) GetSuccess() (v []*UserInfo) {
 	if !p.IsSetSuccess() {
 		return UserGetUserDetailResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *UserGetUserDetailResult) SetSuccess(x interface{}) {
+	p.Success = x.([]*UserInfo)
 }
 
 var fieldIDToName_UserGetUserDetailResult = map[int16]string{
@@ -1897,7 +2306,7 @@ func (p *UserGetUserDetailResult) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 0:
-			if fieldTypeId == thrift.STRUCT {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField0(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1936,9 +2345,21 @@ ReadStructEndError:
 }
 
 func (p *UserGetUserDetailResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewUserInfo()
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Success = make([]*UserInfo, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewUserInfo()
 
-	if err := p.Success.Read(iprot); err != nil {
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Success = append(p.Success, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
 		return err
 	}
 	return nil
@@ -1974,10 +2395,18 @@ WriteStructEndError:
 
 func (p *UserGetUserDetailResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+		if err = oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := p.Success.Write(oprot); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+			return err
+		}
+		for _, v := range p.Success {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -1998,12 +2427,42 @@ func (p *UserGetUserDetailResult) String() string {
 	return fmt.Sprintf("UserGetUserDetailResult(%+v)", *p)
 }
 
+func (p *UserGetUserDetailResult) DeepEqual(ano *UserGetUserDetailResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserGetUserDetailResult) Field0DeepEqual(src []*UserInfo) bool {
+
+	if len(p.Success) != len(src) {
+		return false
+	}
+	for i, v := range p.Success {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+
 type UserUpdateUserInfoArgs struct {
-	Req *UserInfo `thrift:"req,1"`
+	Req *UserInfo `thrift:"req,1" frugal:"1,default,UserInfo" json:"req"`
 }
 
 func NewUserUpdateUserInfoArgs() *UserUpdateUserInfoArgs {
 	return &UserUpdateUserInfoArgs{}
+}
+
+func (p *UserUpdateUserInfoArgs) InitDefault() {
+	*p = UserUpdateUserInfoArgs{}
 }
 
 var UserUpdateUserInfoArgs_Req_DEFAULT *UserInfo
@@ -2013,6 +2472,9 @@ func (p *UserUpdateUserInfoArgs) GetReq() (v *UserInfo) {
 		return UserUpdateUserInfoArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *UserUpdateUserInfoArgs) SetReq(val *UserInfo) {
+	p.Req = val
 }
 
 var fieldIDToName_UserUpdateUserInfoArgs = map[int16]string{
@@ -2142,21 +2604,48 @@ func (p *UserUpdateUserInfoArgs) String() string {
 	return fmt.Sprintf("UserUpdateUserInfoArgs(%+v)", *p)
 }
 
+func (p *UserUpdateUserInfoArgs) DeepEqual(ano *UserUpdateUserInfoArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *UserUpdateUserInfoArgs) Field1DeepEqual(src *UserInfo) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type UserUpdateUserInfoResult struct {
-	Success *UserInfo `thrift:"success,0,optional"`
+	Success []*UserInfo `thrift:"success,0,optional" frugal:"0,optional,list<UserInfo>" json:"success,omitempty"`
 }
 
 func NewUserUpdateUserInfoResult() *UserUpdateUserInfoResult {
 	return &UserUpdateUserInfoResult{}
 }
 
-var UserUpdateUserInfoResult_Success_DEFAULT *UserInfo
+func (p *UserUpdateUserInfoResult) InitDefault() {
+	*p = UserUpdateUserInfoResult{}
+}
 
-func (p *UserUpdateUserInfoResult) GetSuccess() (v *UserInfo) {
+var UserUpdateUserInfoResult_Success_DEFAULT []*UserInfo
+
+func (p *UserUpdateUserInfoResult) GetSuccess() (v []*UserInfo) {
 	if !p.IsSetSuccess() {
 		return UserUpdateUserInfoResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *UserUpdateUserInfoResult) SetSuccess(x interface{}) {
+	p.Success = x.([]*UserInfo)
 }
 
 var fieldIDToName_UserUpdateUserInfoResult = map[int16]string{
@@ -2187,7 +2676,7 @@ func (p *UserUpdateUserInfoResult) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 0:
-			if fieldTypeId == thrift.STRUCT {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField0(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2226,9 +2715,21 @@ ReadStructEndError:
 }
 
 func (p *UserUpdateUserInfoResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewUserInfo()
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Success = make([]*UserInfo, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewUserInfo()
 
-	if err := p.Success.Read(iprot); err != nil {
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Success = append(p.Success, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
 		return err
 	}
 	return nil
@@ -2264,10 +2765,18 @@ WriteStructEndError:
 
 func (p *UserUpdateUserInfoResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+		if err = oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := p.Success.Write(oprot); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+			return err
+		}
+		for _, v := range p.Success {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2288,12 +2797,42 @@ func (p *UserUpdateUserInfoResult) String() string {
 	return fmt.Sprintf("UserUpdateUserInfoResult(%+v)", *p)
 }
 
+func (p *UserUpdateUserInfoResult) DeepEqual(ano *UserUpdateUserInfoResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserUpdateUserInfoResult) Field0DeepEqual(src []*UserInfo) bool {
+
+	if len(p.Success) != len(src) {
+		return false
+	}
+	for i, v := range p.Success {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+
 type UserDeregisterUserArgs struct {
-	Req *common.Req `thrift:"req,1"`
+	Req *common.Req `thrift:"req,1" frugal:"1,default,common.Req" json:"req"`
 }
 
 func NewUserDeregisterUserArgs() *UserDeregisterUserArgs {
 	return &UserDeregisterUserArgs{}
+}
+
+func (p *UserDeregisterUserArgs) InitDefault() {
+	*p = UserDeregisterUserArgs{}
 }
 
 var UserDeregisterUserArgs_Req_DEFAULT *common.Req
@@ -2303,6 +2842,9 @@ func (p *UserDeregisterUserArgs) GetReq() (v *common.Req) {
 		return UserDeregisterUserArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *UserDeregisterUserArgs) SetReq(val *common.Req) {
+	p.Req = val
 }
 
 var fieldIDToName_UserDeregisterUserArgs = map[int16]string{
@@ -2432,12 +2974,36 @@ func (p *UserDeregisterUserArgs) String() string {
 	return fmt.Sprintf("UserDeregisterUserArgs(%+v)", *p)
 }
 
+func (p *UserDeregisterUserArgs) DeepEqual(ano *UserDeregisterUserArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *UserDeregisterUserArgs) Field1DeepEqual(src *common.Req) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type UserDeregisterUserResult struct {
-	Success *common.Empty `thrift:"success,0,optional"`
+	Success *common.Empty `thrift:"success,0,optional" frugal:"0,optional,common.Empty" json:"success,omitempty"`
 }
 
 func NewUserDeregisterUserResult() *UserDeregisterUserResult {
 	return &UserDeregisterUserResult{}
+}
+
+func (p *UserDeregisterUserResult) InitDefault() {
+	*p = UserDeregisterUserResult{}
 }
 
 var UserDeregisterUserResult_Success_DEFAULT *common.Empty
@@ -2447,6 +3013,9 @@ func (p *UserDeregisterUserResult) GetSuccess() (v *common.Empty) {
 		return UserDeregisterUserResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *UserDeregisterUserResult) SetSuccess(x interface{}) {
+	p.Success = x.(*common.Empty)
 }
 
 var fieldIDToName_UserDeregisterUserResult = map[int16]string{
@@ -2576,4 +3145,24 @@ func (p *UserDeregisterUserResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("UserDeregisterUserResult(%+v)", *p)
+}
+
+func (p *UserDeregisterUserResult) DeepEqual(ano *UserDeregisterUserResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserDeregisterUserResult) Field0DeepEqual(src *common.Empty) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
 }

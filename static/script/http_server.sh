@@ -2,7 +2,7 @@
 
 # specify the service you need to update and the idl file
 service_name="pet_api"
-file="auth.thrift"
+file="user.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path

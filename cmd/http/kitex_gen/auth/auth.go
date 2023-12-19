@@ -5,20 +5,28 @@ package auth
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"github.com/apache/thrift/lib/go/thrift"
+	"strings"
 )
 
 type SendSmsReq struct {
-	Mobile string `thrift:"Mobile,1,required" json:"mobile,required" query:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$)"`
+	Mobile string `thrift:"Mobile,1,required" frugal:"1,required,string" json:"Mobile"`
 }
 
 func NewSendSmsReq() *SendSmsReq {
 	return &SendSmsReq{}
 }
 
+func (p *SendSmsReq) InitDefault() {
+	*p = SendSmsReq{}
+}
+
 func (p *SendSmsReq) GetMobile() (v string) {
 	return p.Mobile
+}
+func (p *SendSmsReq) SetMobile(val string) {
+	p.Mobile = val
 }
 
 var fieldIDToName_SendSmsReq = map[int16]string{
@@ -153,16 +161,39 @@ func (p *SendSmsReq) String() string {
 	return fmt.Sprintf("SendSmsReq(%+v)", *p)
 }
 
+func (p *SendSmsReq) DeepEqual(ano *SendSmsReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Mobile) {
+		return false
+	}
+	return true
+}
+
+func (p *SendSmsReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Mobile, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type MobileRegisterReq struct {
-	Mobile   string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
-	SmsCode  string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
-	Username string `thrift:"Username,3,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
-	// 4: required string Password (api.body="password", api.vd="regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,16}$')");
-	Password string `thrift:"Password,4,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')"`
+	Mobile   string `thrift:"Mobile,1,required" frugal:"1,required,string" json:"Mobile"`
+	SmsCode  string `thrift:"SmsCode,2,required" frugal:"2,required,string" json:"SmsCode"`
+	Username string `thrift:"Username,3,required" frugal:"3,required,string" json:"Username"`
+	Password string `thrift:"Password,4,required" frugal:"4,required,string" json:"Password"`
 }
 
 func NewMobileRegisterReq() *MobileRegisterReq {
 	return &MobileRegisterReq{}
+}
+
+func (p *MobileRegisterReq) InitDefault() {
+	*p = MobileRegisterReq{}
 }
 
 func (p *MobileRegisterReq) GetMobile() (v string) {
@@ -179,6 +210,18 @@ func (p *MobileRegisterReq) GetUsername() (v string) {
 
 func (p *MobileRegisterReq) GetPassword() (v string) {
 	return p.Password
+}
+func (p *MobileRegisterReq) SetMobile(val string) {
+	p.Mobile = val
+}
+func (p *MobileRegisterReq) SetSmsCode(val string) {
+	p.SmsCode = val
+}
+func (p *MobileRegisterReq) SetUsername(val string) {
+	p.Username = val
+}
+func (p *MobileRegisterReq) SetPassword(val string) {
+	p.Password = val
 }
 
 var fieldIDToName_MobileRegisterReq = map[int16]string{
@@ -454,13 +497,67 @@ func (p *MobileRegisterReq) String() string {
 	return fmt.Sprintf("MobileRegisterReq(%+v)", *p)
 }
 
+func (p *MobileRegisterReq) DeepEqual(ano *MobileRegisterReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Mobile) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.SmsCode) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Password) {
+		return false
+	}
+	return true
+}
+
+func (p *MobileRegisterReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Mobile, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *MobileRegisterReq) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.SmsCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *MobileRegisterReq) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *MobileRegisterReq) Field4DeepEqual(src string) bool {
+
+	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type MobileLoginReq struct {
-	Mobile  string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
-	SmsCode string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
+	Mobile  string `thrift:"Mobile,1,required" frugal:"1,required,string" json:"Mobile"`
+	SmsCode string `thrift:"SmsCode,2,required" frugal:"2,required,string" json:"SmsCode"`
 }
 
 func NewMobileLoginReq() *MobileLoginReq {
 	return &MobileLoginReq{}
+}
+
+func (p *MobileLoginReq) InitDefault() {
+	*p = MobileLoginReq{}
 }
 
 func (p *MobileLoginReq) GetMobile() (v string) {
@@ -469,6 +566,12 @@ func (p *MobileLoginReq) GetMobile() (v string) {
 
 func (p *MobileLoginReq) GetSmsCode() (v string) {
 	return p.SmsCode
+}
+func (p *MobileLoginReq) SetMobile(val string) {
+	p.Mobile = val
+}
+func (p *MobileLoginReq) SetSmsCode(val string) {
+	p.SmsCode = val
 }
 
 var fieldIDToName_MobileLoginReq = map[int16]string{
@@ -650,16 +753,53 @@ func (p *MobileLoginReq) String() string {
 	return fmt.Sprintf("MobileLoginReq(%+v)", *p)
 }
 
+func (p *MobileLoginReq) DeepEqual(ano *MobileLoginReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Mobile) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.SmsCode) {
+		return false
+	}
+	return true
+}
+
+func (p *MobileLoginReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Mobile, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *MobileLoginReq) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.SmsCode, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type MiniProgLoginReq struct {
-	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required" query:"wx_code,required"`
+	WxCode string `thrift:"WxCode,1,required" frugal:"1,required,string" json:"WxCode"`
 }
 
 func NewMiniProgLoginReq() *MiniProgLoginReq {
 	return &MiniProgLoginReq{}
 }
 
+func (p *MiniProgLoginReq) InitDefault() {
+	*p = MiniProgLoginReq{}
+}
+
 func (p *MiniProgLoginReq) GetWxCode() (v string) {
 	return p.WxCode
+}
+func (p *MiniProgLoginReq) SetWxCode(val string) {
+	p.WxCode = val
 }
 
 var fieldIDToName_MiniProgLoginReq = map[int16]string{
@@ -794,14 +934,38 @@ func (p *MiniProgLoginReq) String() string {
 	return fmt.Sprintf("MiniProgLoginReq(%+v)", *p)
 }
 
+func (p *MiniProgLoginReq) DeepEqual(ano *MiniProgLoginReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.WxCode) {
+		return false
+	}
+	return true
+}
+
+func (p *MiniProgLoginReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.WxCode, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type PwdLoginReq struct {
-	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
-	Email    string `thrift:"Email,2,required" form:"email,required" json:"email,required" vd:"regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')"`
-	Password string `thrift:"Password,3,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')"`
+	Username string `thrift:"Username,1,required" frugal:"1,required,string" json:"Username"`
+	Email    string `thrift:"Email,2,required" frugal:"2,required,string" json:"Email"`
+	Password string `thrift:"Password,3,required" frugal:"3,required,string" json:"Password"`
 }
 
 func NewPwdLoginReq() *PwdLoginReq {
 	return &PwdLoginReq{}
+}
+
+func (p *PwdLoginReq) InitDefault() {
+	*p = PwdLoginReq{}
 }
 
 func (p *PwdLoginReq) GetUsername() (v string) {
@@ -814,6 +978,15 @@ func (p *PwdLoginReq) GetEmail() (v string) {
 
 func (p *PwdLoginReq) GetPassword() (v string) {
 	return p.Password
+}
+func (p *PwdLoginReq) SetUsername(val string) {
+	p.Username = val
+}
+func (p *PwdLoginReq) SetEmail(val string) {
+	p.Email = val
+}
+func (p *PwdLoginReq) SetPassword(val string) {
+	p.Password = val
 }
 
 var fieldIDToName_PwdLoginReq = map[int16]string{
@@ -1042,14 +1215,58 @@ func (p *PwdLoginReq) String() string {
 	return fmt.Sprintf("PwdLoginReq(%+v)", *p)
 }
 
+func (p *PwdLoginReq) DeepEqual(ano *PwdLoginReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Password) {
+		return false
+	}
+	return true
+}
+
+func (p *PwdLoginReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *PwdLoginReq) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Email, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *PwdLoginReq) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type AuthInfo struct {
-	Id        int32  `thrift:"Id,1,required" form:"id,required" json:"id,required" query:"id,required"`
-	Token     string `thrift:"Token,2,required" form:"token,required" json:"token,required" query:"token,required"`
-	ExpiredAt int32  `thrift:"ExpiredAt,3,required" form:"expired_at,required" json:"expired_at,required" query:"expired_at,required"`
+	Id        int32  `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Token     string `thrift:"Token,2,required" frugal:"2,required,string" json:"Token"`
+	ExpiredAt int32  `thrift:"ExpiredAt,3,required" frugal:"3,required,i32" json:"ExpiredAt"`
 }
 
 func NewAuthInfo() *AuthInfo {
 	return &AuthInfo{}
+}
+
+func (p *AuthInfo) InitDefault() {
+	*p = AuthInfo{}
 }
 
 func (p *AuthInfo) GetId() (v int32) {
@@ -1062,6 +1279,15 @@ func (p *AuthInfo) GetToken() (v string) {
 
 func (p *AuthInfo) GetExpiredAt() (v int32) {
 	return p.ExpiredAt
+}
+func (p *AuthInfo) SetId(val int32) {
+	p.Id = val
+}
+func (p *AuthInfo) SetToken(val string) {
+	p.Token = val
+}
+func (p *AuthInfo) SetExpiredAt(val int32) {
+	p.ExpiredAt = val
 }
 
 var fieldIDToName_AuthInfo = map[int16]string{
@@ -1288,6 +1514,46 @@ func (p *AuthInfo) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("AuthInfo(%+v)", *p)
+}
+
+func (p *AuthInfo) DeepEqual(ano *AuthInfo) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Token) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.ExpiredAt) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthInfo) Field1DeepEqual(src int32) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *AuthInfo) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Token, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *AuthInfo) Field3DeepEqual(src int32) bool {
+
+	if p.ExpiredAt != src {
+		return false
+	}
+	return true
 }
 
 type Auth interface {
@@ -1660,11 +1926,15 @@ func (p *authProcessorPwdLogin) Process(ctx context.Context, seqId int32, iprot,
 }
 
 type AuthSendSmsArgs struct {
-	Req *SendSmsReq `thrift:"req,1"`
+	Req *SendSmsReq `thrift:"req,1" frugal:"1,default,SendSmsReq" json:"req"`
 }
 
 func NewAuthSendSmsArgs() *AuthSendSmsArgs {
 	return &AuthSendSmsArgs{}
+}
+
+func (p *AuthSendSmsArgs) InitDefault() {
+	*p = AuthSendSmsArgs{}
 }
 
 var AuthSendSmsArgs_Req_DEFAULT *SendSmsReq
@@ -1674,6 +1944,9 @@ func (p *AuthSendSmsArgs) GetReq() (v *SendSmsReq) {
 		return AuthSendSmsArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *AuthSendSmsArgs) SetReq(val *SendSmsReq) {
+	p.Req = val
 }
 
 var fieldIDToName_AuthSendSmsArgs = map[int16]string{
@@ -1803,12 +2076,36 @@ func (p *AuthSendSmsArgs) String() string {
 	return fmt.Sprintf("AuthSendSmsArgs(%+v)", *p)
 }
 
+func (p *AuthSendSmsArgs) DeepEqual(ano *AuthSendSmsArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthSendSmsArgs) Field1DeepEqual(src *SendSmsReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthSendSmsResult struct {
-	Success *common.Empty `thrift:"success,0,optional"`
+	Success *common.Empty `thrift:"success,0,optional" frugal:"0,optional,common.Empty" json:"success,omitempty"`
 }
 
 func NewAuthSendSmsResult() *AuthSendSmsResult {
 	return &AuthSendSmsResult{}
+}
+
+func (p *AuthSendSmsResult) InitDefault() {
+	*p = AuthSendSmsResult{}
 }
 
 var AuthSendSmsResult_Success_DEFAULT *common.Empty
@@ -1818,6 +2115,9 @@ func (p *AuthSendSmsResult) GetSuccess() (v *common.Empty) {
 		return AuthSendSmsResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *AuthSendSmsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*common.Empty)
 }
 
 var fieldIDToName_AuthSendSmsResult = map[int16]string{
@@ -1949,12 +2249,36 @@ func (p *AuthSendSmsResult) String() string {
 	return fmt.Sprintf("AuthSendSmsResult(%+v)", *p)
 }
 
+func (p *AuthSendSmsResult) DeepEqual(ano *AuthSendSmsResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthSendSmsResult) Field0DeepEqual(src *common.Empty) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMobileRegisterArgs struct {
-	Req *MobileRegisterReq `thrift:"req,1"`
+	Req *MobileRegisterReq `thrift:"req,1" frugal:"1,default,MobileRegisterReq" json:"req"`
 }
 
 func NewAuthMobileRegisterArgs() *AuthMobileRegisterArgs {
 	return &AuthMobileRegisterArgs{}
+}
+
+func (p *AuthMobileRegisterArgs) InitDefault() {
+	*p = AuthMobileRegisterArgs{}
 }
 
 var AuthMobileRegisterArgs_Req_DEFAULT *MobileRegisterReq
@@ -1964,6 +2288,9 @@ func (p *AuthMobileRegisterArgs) GetReq() (v *MobileRegisterReq) {
 		return AuthMobileRegisterArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *AuthMobileRegisterArgs) SetReq(val *MobileRegisterReq) {
+	p.Req = val
 }
 
 var fieldIDToName_AuthMobileRegisterArgs = map[int16]string{
@@ -2093,12 +2420,36 @@ func (p *AuthMobileRegisterArgs) String() string {
 	return fmt.Sprintf("AuthMobileRegisterArgs(%+v)", *p)
 }
 
+func (p *AuthMobileRegisterArgs) DeepEqual(ano *AuthMobileRegisterArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMobileRegisterArgs) Field1DeepEqual(src *MobileRegisterReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMobileRegisterResult struct {
-	Success *AuthInfo `thrift:"success,0,optional"`
+	Success *AuthInfo `thrift:"success,0,optional" frugal:"0,optional,AuthInfo" json:"success,omitempty"`
 }
 
 func NewAuthMobileRegisterResult() *AuthMobileRegisterResult {
 	return &AuthMobileRegisterResult{}
+}
+
+func (p *AuthMobileRegisterResult) InitDefault() {
+	*p = AuthMobileRegisterResult{}
 }
 
 var AuthMobileRegisterResult_Success_DEFAULT *AuthInfo
@@ -2108,6 +2459,9 @@ func (p *AuthMobileRegisterResult) GetSuccess() (v *AuthInfo) {
 		return AuthMobileRegisterResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *AuthMobileRegisterResult) SetSuccess(x interface{}) {
+	p.Success = x.(*AuthInfo)
 }
 
 var fieldIDToName_AuthMobileRegisterResult = map[int16]string{
@@ -2239,12 +2593,36 @@ func (p *AuthMobileRegisterResult) String() string {
 	return fmt.Sprintf("AuthMobileRegisterResult(%+v)", *p)
 }
 
+func (p *AuthMobileRegisterResult) DeepEqual(ano *AuthMobileRegisterResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMobileRegisterResult) Field0DeepEqual(src *AuthInfo) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMobileLoginArgs struct {
-	Req *MobileLoginReq `thrift:"req,1"`
+	Req *MobileLoginReq `thrift:"req,1" frugal:"1,default,MobileLoginReq" json:"req"`
 }
 
 func NewAuthMobileLoginArgs() *AuthMobileLoginArgs {
 	return &AuthMobileLoginArgs{}
+}
+
+func (p *AuthMobileLoginArgs) InitDefault() {
+	*p = AuthMobileLoginArgs{}
 }
 
 var AuthMobileLoginArgs_Req_DEFAULT *MobileLoginReq
@@ -2254,6 +2632,9 @@ func (p *AuthMobileLoginArgs) GetReq() (v *MobileLoginReq) {
 		return AuthMobileLoginArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *AuthMobileLoginArgs) SetReq(val *MobileLoginReq) {
+	p.Req = val
 }
 
 var fieldIDToName_AuthMobileLoginArgs = map[int16]string{
@@ -2383,12 +2764,36 @@ func (p *AuthMobileLoginArgs) String() string {
 	return fmt.Sprintf("AuthMobileLoginArgs(%+v)", *p)
 }
 
+func (p *AuthMobileLoginArgs) DeepEqual(ano *AuthMobileLoginArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMobileLoginArgs) Field1DeepEqual(src *MobileLoginReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMobileLoginResult struct {
-	Success *AuthInfo `thrift:"success,0,optional"`
+	Success *AuthInfo `thrift:"success,0,optional" frugal:"0,optional,AuthInfo" json:"success,omitempty"`
 }
 
 func NewAuthMobileLoginResult() *AuthMobileLoginResult {
 	return &AuthMobileLoginResult{}
+}
+
+func (p *AuthMobileLoginResult) InitDefault() {
+	*p = AuthMobileLoginResult{}
 }
 
 var AuthMobileLoginResult_Success_DEFAULT *AuthInfo
@@ -2398,6 +2803,9 @@ func (p *AuthMobileLoginResult) GetSuccess() (v *AuthInfo) {
 		return AuthMobileLoginResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *AuthMobileLoginResult) SetSuccess(x interface{}) {
+	p.Success = x.(*AuthInfo)
 }
 
 var fieldIDToName_AuthMobileLoginResult = map[int16]string{
@@ -2529,12 +2937,36 @@ func (p *AuthMobileLoginResult) String() string {
 	return fmt.Sprintf("AuthMobileLoginResult(%+v)", *p)
 }
 
+func (p *AuthMobileLoginResult) DeepEqual(ano *AuthMobileLoginResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMobileLoginResult) Field0DeepEqual(src *AuthInfo) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMiniProgLoginArgs struct {
-	Req *MiniProgLoginReq `thrift:"req,1"`
+	Req *MiniProgLoginReq `thrift:"req,1" frugal:"1,default,MiniProgLoginReq" json:"req"`
 }
 
 func NewAuthMiniProgLoginArgs() *AuthMiniProgLoginArgs {
 	return &AuthMiniProgLoginArgs{}
+}
+
+func (p *AuthMiniProgLoginArgs) InitDefault() {
+	*p = AuthMiniProgLoginArgs{}
 }
 
 var AuthMiniProgLoginArgs_Req_DEFAULT *MiniProgLoginReq
@@ -2544,6 +2976,9 @@ func (p *AuthMiniProgLoginArgs) GetReq() (v *MiniProgLoginReq) {
 		return AuthMiniProgLoginArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *AuthMiniProgLoginArgs) SetReq(val *MiniProgLoginReq) {
+	p.Req = val
 }
 
 var fieldIDToName_AuthMiniProgLoginArgs = map[int16]string{
@@ -2673,12 +3108,36 @@ func (p *AuthMiniProgLoginArgs) String() string {
 	return fmt.Sprintf("AuthMiniProgLoginArgs(%+v)", *p)
 }
 
+func (p *AuthMiniProgLoginArgs) DeepEqual(ano *AuthMiniProgLoginArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMiniProgLoginArgs) Field1DeepEqual(src *MiniProgLoginReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthMiniProgLoginResult struct {
-	Success *AuthInfo `thrift:"success,0,optional"`
+	Success *AuthInfo `thrift:"success,0,optional" frugal:"0,optional,AuthInfo" json:"success,omitempty"`
 }
 
 func NewAuthMiniProgLoginResult() *AuthMiniProgLoginResult {
 	return &AuthMiniProgLoginResult{}
+}
+
+func (p *AuthMiniProgLoginResult) InitDefault() {
+	*p = AuthMiniProgLoginResult{}
 }
 
 var AuthMiniProgLoginResult_Success_DEFAULT *AuthInfo
@@ -2688,6 +3147,9 @@ func (p *AuthMiniProgLoginResult) GetSuccess() (v *AuthInfo) {
 		return AuthMiniProgLoginResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *AuthMiniProgLoginResult) SetSuccess(x interface{}) {
+	p.Success = x.(*AuthInfo)
 }
 
 var fieldIDToName_AuthMiniProgLoginResult = map[int16]string{
@@ -2819,12 +3281,36 @@ func (p *AuthMiniProgLoginResult) String() string {
 	return fmt.Sprintf("AuthMiniProgLoginResult(%+v)", *p)
 }
 
+func (p *AuthMiniProgLoginResult) DeepEqual(ano *AuthMiniProgLoginResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthMiniProgLoginResult) Field0DeepEqual(src *AuthInfo) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthPwdLoginArgs struct {
-	Req *PwdLoginReq `thrift:"req,1"`
+	Req *PwdLoginReq `thrift:"req,1" frugal:"1,default,PwdLoginReq" json:"req"`
 }
 
 func NewAuthPwdLoginArgs() *AuthPwdLoginArgs {
 	return &AuthPwdLoginArgs{}
+}
+
+func (p *AuthPwdLoginArgs) InitDefault() {
+	*p = AuthPwdLoginArgs{}
 }
 
 var AuthPwdLoginArgs_Req_DEFAULT *PwdLoginReq
@@ -2834,6 +3320,9 @@ func (p *AuthPwdLoginArgs) GetReq() (v *PwdLoginReq) {
 		return AuthPwdLoginArgs_Req_DEFAULT
 	}
 	return p.Req
+}
+func (p *AuthPwdLoginArgs) SetReq(val *PwdLoginReq) {
+	p.Req = val
 }
 
 var fieldIDToName_AuthPwdLoginArgs = map[int16]string{
@@ -2963,12 +3452,36 @@ func (p *AuthPwdLoginArgs) String() string {
 	return fmt.Sprintf("AuthPwdLoginArgs(%+v)", *p)
 }
 
+func (p *AuthPwdLoginArgs) DeepEqual(ano *AuthPwdLoginArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthPwdLoginArgs) Field1DeepEqual(src *PwdLoginReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type AuthPwdLoginResult struct {
-	Success *AuthInfo `thrift:"success,0,optional"`
+	Success *AuthInfo `thrift:"success,0,optional" frugal:"0,optional,AuthInfo" json:"success,omitempty"`
 }
 
 func NewAuthPwdLoginResult() *AuthPwdLoginResult {
 	return &AuthPwdLoginResult{}
+}
+
+func (p *AuthPwdLoginResult) InitDefault() {
+	*p = AuthPwdLoginResult{}
 }
 
 var AuthPwdLoginResult_Success_DEFAULT *AuthInfo
@@ -2978,6 +3491,9 @@ func (p *AuthPwdLoginResult) GetSuccess() (v *AuthInfo) {
 		return AuthPwdLoginResult_Success_DEFAULT
 	}
 	return p.Success
+}
+func (p *AuthPwdLoginResult) SetSuccess(x interface{}) {
+	p.Success = x.(*AuthInfo)
 }
 
 var fieldIDToName_AuthPwdLoginResult = map[int16]string{
@@ -3107,4 +3623,24 @@ func (p *AuthPwdLoginResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("AuthPwdLoginResult(%+v)", *p)
+}
+
+func (p *AuthPwdLoginResult) DeepEqual(ano *AuthPwdLoginResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthPwdLoginResult) Field0DeepEqual(src *AuthInfo) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
 }

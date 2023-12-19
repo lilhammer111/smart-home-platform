@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
+	"github.com/jinzhu/copier"
 
 	user "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -22,6 +25,23 @@ func (h *GetUserListService) Do(req *user.UsersFilter) (resp *[]*user.UserInfo, 
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
+	rpcReq := micro_user.RpcUsersFilterReq{}
+	if err = copier.Copy(&rpcReq, req); err != nil {
+		return nil, err
+	}
 
-	return
+	userInfoList, err := micro_user_cli.QueryUsersWithFilter(h.Context, &rpcReq)
+	if err != nil {
+		return nil, err
+	}
+
+	respList := make([]*user.UserInfo, 0)
+	for _, userInfo := range userInfoList {
+		respInfo := &user.UserInfo{}
+		if err = copier.Copy(respInfo, &userInfo); err != nil {
+			return nil, err
+		}
+		respList = append(respList, respInfo)
+	}
+	return &respList, nil
 }

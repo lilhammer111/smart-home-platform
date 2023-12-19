@@ -3,7 +3,6 @@
 package user
 
 import (
-	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -18,9 +17,8 @@ func _apiMw() []app.HandlerFunc {
 }
 
 func _usersMw() []app.HandlerFunc {
-	return []app.HandlerFunc{
-		mw.JwtMiddleware.MiddlewareFunc(),
-	}
+	// your code...
+	return nil
 }
 
 func _deregisteruserMw() []app.HandlerFunc {
