@@ -126,10 +126,19 @@ func CreateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.
 	return resp, nil
 }
 
-func DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	resp, err = defaultClient.DeleteUser(ctx, userId, callOptions...)
+func DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	resp, err = defaultClient.DeleteUser(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "DeleteUser call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq, callOptions ...callopt.Option) (resp *micro_user.RpcRequestOpenIdResp, err error) {
+	resp, err = defaultClient.RequestOpenId(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "RequestOpenId call failed,err =%+v", err)
 		return nil, err
 	}
 	return resp, nil

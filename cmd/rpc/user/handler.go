@@ -108,3 +108,10 @@ func (s *MicroUserImpl) QueryUsersWithFilter(ctx context.Context, req *user.User
 
 	return resp, err
 }
+
+// RequestOpenId implements the MicroUserImpl interface.
+func (s *MicroUserImpl) RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq) (resp *micro_user.RpcRequestOpenIdResp, err error) {
+	resp, err = service.NewRequestOpenIdService(ctx).Run(req)
+
+	return resp, err
+}

@@ -40,7 +40,9 @@ type RPCClient interface {
 
 	CreateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (resp *user.UserInfo, err error)
 
-	DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (resp *common.Empty, err error)
+	DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq, callOptions ...callopt.Option) (resp *common.Empty, err error)
+
+	RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq, callOptions ...callopt.Option) (resp *micro_user.RpcRequestOpenIdResp, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -121,6 +123,10 @@ func (c *clientImpl) CreateUser(ctx context.Context, req *user.UserInfo, callOpt
 	return c.kitexClient.CreateUser(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	return c.kitexClient.DeleteUser(ctx, userId, callOptions...)
+func (c *clientImpl) DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteUser(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq, callOptions ...callopt.Option) (resp *micro_user.RpcRequestOpenIdResp, err error) {
+	return c.kitexClient.RequestOpenId(ctx, req, callOptions...)
 }

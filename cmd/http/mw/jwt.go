@@ -2,7 +2,6 @@ package mw
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"git.zqbjj.top/pet/services/cmd/http/conf"
@@ -13,11 +12,8 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/protocol"
-	"net/http"
 	"time"
 
-	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/hertz-contrib/jwt"
 )
 
@@ -46,7 +42,6 @@ var (
 	ErrWrongSmsCode        = errors.New("wrong sms code")
 	ErrInternalError       = errors.New("internal error")
 	ErrMiniProgLoginFailed = errors.New("mini program login failed")
-	ErrAccountFrozen       = errors.New("account frozen")
 )
 
 type JwtRespData struct {
@@ -225,48 +220,16 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 		return nil, jwt.ErrMissingLoginValues
 	}
 
-	// invoke wx mini program api
-	cli := &client.Client{}
-	cli, err = client.NewClient()
-	if err != nil {
-		// c.HandlerName() returns the last handler signature in the handler chain, is it current handler ?
-		hlog.Errorf("%s failed to create a http client: %s", c.HandlerName(), err)
-		return nil, ErrMiniProgLoginFailed
-	}
+	miniProgResp, err := micro_user_cli.RequestOpenId(ctx, &micro_user.RpcRequestOpenIdReq{
+		JsCode: req.WxCode,
+		Secret: conf.GetConf().Wx.Secret,
+		Appid:  conf.GetConf().Wx.Appid,
+	})
 
-	httpReq, httpResp := protocol.AcquireRequest(), protocol.AcquireResponse()
-	httpReq.SetRequestURI("https://api.weixin.qq.com/sns/jscode2session")
-	httpReq.SetMethod(http.MethodGet)
-	httpReq.SetQueryString(
-		fmt.Sprintf("appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-			conf.GetConf().Wx.Appid,
-			conf.GetConf().Wx.Secret,
-			req.WxCode,
-		),
-	)
-	err = cli.Do(context.Background(), httpReq, httpResp)
-	if err != nil {
-		hlog.Errorf("failed to do request: %s", err)
-		return nil, ErrMiniProgLoginFailed
-	}
-
-	type MiniProgResp struct {
-		Openid     string `json:"openid,omitempty"`
-		SessionKey string `json:"session_key,omitempty"`
-		UnionId    string `json:"unionid,omitempty"`
-		ErrCode    int32  `json:"errcode,omitempty"`
-		ErrMsg     string `json:"errmsg,omitempty"`
-	}
-	miniProgResp := &MiniProgResp{}
-	err = json.Unmarshal(httpResp.Body(), &miniProgResp)
-	if err != nil {
-		hlog.Errorf("failed to unmarshal miniProgResp: %s", err)
-		return nil, ErrMiniProgLoginFailed
-	}
-	userInfo, err = micro_user_cli.FindUserByOpenid(ctx, &micro_user.RpcFindUserByOpenidReq{Openid: miniProgResp.Openid})
+	userInfo, err = micro_user_cli.FindUserByOpenid(ctx, &micro_user.RpcFindUserByOpenidReq{Openid: miniProgResp.OpenId})
 	if err != nil {
 		hlog.Errorf("failed to get userinfo by openid: %s", err)
-		return nil, ErrMiniProgLoginFailed
+		return nil, err
 	}
 	return userInfo, nil
 }

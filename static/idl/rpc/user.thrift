@@ -59,7 +59,20 @@ struct RpcAfterVerifyReq {
     2: required bool VerifyPassed;
 }
 
+struct RpcRequestOpenIdResp {
+    1: required string OpenId;
+}
 
+struct RpcRequestOpenIdReq {
+    1: required string JsCode;
+    2: required string Secret;
+    3: required string Appid;
+    4: optional string Unionid;
+}
+
+struct RpcDeleteUserReq {
+    1: required i32 UserId;
+}
 
 service micro_user {
     common.Empty SendSmsViaAliyun(1: RpcSmsReq req);
@@ -75,5 +88,6 @@ service micro_user {
     list<user.UserInfo> QueryUsersWithFilter(1: user.UsersFilter req);
     user.UserInfo UpdateUser(1: user.UserInfo req);
     user.UserInfo CreateUser(1: user.UserInfo req);
-    common.Empty DeleteUser(1: i32 UserId);
+    common.Empty DeleteUser(1: RpcDeleteUserReq req);
+    RpcRequestOpenIdResp RequestOpenId(1: RpcRequestOpenIdReq req);
 }

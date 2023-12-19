@@ -26,7 +26,8 @@ type Client interface {
 	QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
 	UpdateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	CreateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
-	DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (r *common.Empty, err error)
+	DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq, callOptions ...callopt.Option) (r *micro_user.RpcRequestOpenIdResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -123,7 +124,12 @@ func (p *kMicroUserClient) CreateUser(ctx context.Context, req *user.UserInfo, c
 	return p.kClient.CreateUser(ctx, req)
 }
 
-func (p *kMicroUserClient) DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (r *common.Empty, err error) {
+func (p *kMicroUserClient) DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DeleteUser(ctx, userId)
+	return p.kClient.DeleteUser(ctx, req)
+}
+
+func (p *kMicroUserClient) RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq, callOptions ...callopt.Option) (r *micro_user.RpcRequestOpenIdResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.RequestOpenId(ctx, req)
 }

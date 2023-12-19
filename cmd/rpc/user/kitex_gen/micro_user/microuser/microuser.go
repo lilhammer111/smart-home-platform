@@ -35,6 +35,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"UpdateUser":               kitex.NewMethodInfo(updateUserHandler, newMicroUserUpdateUserArgs, newMicroUserUpdateUserResult, false),
 		"CreateUser":               kitex.NewMethodInfo(createUserHandler, newMicroUserCreateUserArgs, newMicroUserCreateUserResult, false),
 		"DeleteUser":               kitex.NewMethodInfo(deleteUserHandler, newMicroUserDeleteUserArgs, newMicroUserDeleteUserResult, false),
+		"RequestOpenId":            kitex.NewMethodInfo(requestOpenIdHandler, newMicroUserRequestOpenIdArgs, newMicroUserRequestOpenIdResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "micro_user",
@@ -287,7 +288,7 @@ func newMicroUserCreateUserResult() interface{} {
 func deleteUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*micro_user.MicroUserDeleteUserArgs)
 	realResult := result.(*micro_user.MicroUserDeleteUserResult)
-	success, err := handler.(micro_user.MicroUser).DeleteUser(ctx, realArg.UserId)
+	success, err := handler.(micro_user.MicroUser).DeleteUser(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
@@ -300,6 +301,24 @@ func newMicroUserDeleteUserArgs() interface{} {
 
 func newMicroUserDeleteUserResult() interface{} {
 	return micro_user.NewMicroUserDeleteUserResult()
+}
+
+func requestOpenIdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*micro_user.MicroUserRequestOpenIdArgs)
+	realResult := result.(*micro_user.MicroUserRequestOpenIdResult)
+	success, err := handler.(micro_user.MicroUser).RequestOpenId(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newMicroUserRequestOpenIdArgs() interface{} {
+	return micro_user.NewMicroUserRequestOpenIdArgs()
+}
+
+func newMicroUserRequestOpenIdResult() interface{} {
+	return micro_user.NewMicroUserRequestOpenIdResult()
 }
 
 type kClient struct {
@@ -442,11 +461,21 @@ func (p *kClient) CreateUser(ctx context.Context, req *user.UserInfo) (r *user.U
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) DeleteUser(ctx context.Context, userId int32) (r *common.Empty, err error) {
+func (p *kClient) DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq) (r *common.Empty, err error) {
 	var _args micro_user.MicroUserDeleteUserArgs
-	_args.UserId = userId
+	_args.Req = req
 	var _result micro_user.MicroUserDeleteUserResult
 	if err = p.c.Call(ctx, "DeleteUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) RequestOpenId(ctx context.Context, req *micro_user.RpcRequestOpenIdReq) (r *micro_user.RpcRequestOpenIdResp, err error) {
+	var _args micro_user.MicroUserRequestOpenIdArgs
+	_args.Req = req
+	var _result micro_user.MicroUserRequestOpenIdResult
+	if err = p.c.Call(ctx, "RequestOpenId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
