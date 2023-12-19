@@ -33,7 +33,7 @@ func (s *VerifyEmailPwdService) Run(req *micro_user.RpcVerifyEmailPwdReq) (resp 
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(req.EntryPwd))
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return nil, bizerr.NewAuthenticationError(err)
+			return resp, bizerr.NewAuthenticationError(err)
 		}
 		return nil, bizerr.NewInternalError(err)
 	}
