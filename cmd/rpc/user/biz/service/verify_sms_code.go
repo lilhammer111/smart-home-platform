@@ -5,7 +5,7 @@ import (
 	"errors"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"golang.org/x/crypto/bcrypt"
 )
 

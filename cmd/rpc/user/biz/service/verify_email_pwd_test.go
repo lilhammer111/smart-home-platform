@@ -2,8 +2,7 @@ package service
 
 import (
 	"context"
-	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"testing"
 )
 

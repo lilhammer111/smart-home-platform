@@ -2,9 +2,9 @@ package micro_user_cli
 
 import (
 	"context"
-	commonSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
-	micro_userSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
-	userSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user/microuser"
 	"github.com/cloudwego/kitex/client"

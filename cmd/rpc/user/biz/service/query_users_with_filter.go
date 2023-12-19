@@ -6,7 +6,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model/scope"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

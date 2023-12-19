@@ -6,7 +6,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"strconv"
 	"time"
 )

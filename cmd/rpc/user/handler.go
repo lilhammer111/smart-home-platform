@@ -11,51 +11,9 @@ import (
 // MicroUserImpl implements the last service interface defined in the IDL.
 type MicroUserImpl struct{}
 
-// UpdateUser implements the MicroUserImpl interface.
-func (s *MicroUserImpl) UpdateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
-	resp, err = service.NewUpdateUserService(ctx).Run(req)
-
-	return resp, err
-}
-
-// CreateUser implements the MicroUserImpl interface.
-func (s *MicroUserImpl) CreateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
-	resp, err = service.NewCreateUserService(ctx).Run(req)
-
-	return resp, err
-}
-
 // SendSmsViaAliyun implements the MicroUserImpl interface.
 func (s *MicroUserImpl) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq) (resp *common.Empty, err error) {
 	resp, err = service.NewSendSmsViaAliyunService(ctx).Run(req)
-
-	return resp, err
-}
-
-// DeleteUser implements the MicroUserImpl interface.
-func (s *MicroUserImpl) DeleteUser(ctx context.Context, userId int32) (resp *common.Empty, err error) {
-	resp, err = service.NewDeleteUserService(ctx).Run(userId)
-
-	return resp, err
-}
-
-// FindUserByMobile implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq) (resp *user.UserInfo, err error) {
-	resp, err = service.NewFindUserByMobileService(ctx).Run(req)
-
-	return resp, err
-}
-
-// FindUserByUsername implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FindUserByUsername(ctx context.Context, username *micro_user.RpcFindUserByUsernameReq) (resp *user.UserInfo, err error) {
-	resp, err = service.NewFindUserByUsernameService(ctx).Run(username)
-
-	return resp, err
-}
-
-// FindUserByOpenid implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq) (resp *user.UserInfo, err error) {
-	resp, err = service.NewFindUserByOpenidService(ctx).Run(req)
 
 	return resp, err
 }
@@ -102,9 +60,51 @@ func (s *MicroUserImpl) FindUser(ctx context.Context, req *micro_user.RpcFindUse
 	return resp, err
 }
 
+// FindUserByOpenid implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq) (resp *user.UserInfo, err error) {
+	resp, err = service.NewFindUserByOpenidService(ctx).Run(req)
+
+	return resp, err
+}
+
+// FindUserByMobile implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq) (resp *user.UserInfo, err error) {
+	resp, err = service.NewFindUserByMobileService(ctx).Run(req)
+
+	return resp, err
+}
+
+// FindUserByUsername implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FindUserByUsername(ctx context.Context, req *micro_user.RpcFindUserByUsernameReq) (resp *user.UserInfo, err error) {
+	resp, err = service.NewFindUserByUsernameService(ctx).Run(req)
+
+	return resp, err
+}
+
 // QueryUsersWithFilter implements the MicroUserImpl interface.
 func (s *MicroUserImpl) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (resp []*user.UserInfo, err error) {
 	resp, err = service.NewQueryUsersWithFilterService(ctx).Run(req)
+
+	return resp, err
+}
+
+// UpdateUser implements the MicroUserImpl interface.
+func (s *MicroUserImpl) UpdateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
+	resp, err = service.NewUpdateUserService(ctx).Run(req)
+
+	return resp, err
+}
+
+// CreateUser implements the MicroUserImpl interface.
+func (s *MicroUserImpl) CreateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
+	resp, err = service.NewCreateUserService(ctx).Run(req)
+
+	return resp, err
+}
+
+// DeleteUser implements the MicroUserImpl interface.
+func (s *MicroUserImpl) DeleteUser(ctx context.Context, req *micro_user.RpcDeleteUserReq) (resp *common.Empty, err error) {
+	resp, err = service.NewDeleteUserService(ctx).Run(req)
 
 	return resp, err
 }

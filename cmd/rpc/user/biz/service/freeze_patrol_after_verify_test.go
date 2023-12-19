@@ -11,7 +11,7 @@ func TestFreezePatrolAfterVerify_Run(t *testing.T) {
 	s := NewFreezePatrolAfterVerifyService(ctx)
 	// init req and assert value
 
-	req := &micro_user.RpcFreezeReq{}
+	req := &micro_user.RpcAfterVerifyReq{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

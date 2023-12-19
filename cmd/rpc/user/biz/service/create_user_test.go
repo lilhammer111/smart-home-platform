@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"testing"
 )
 

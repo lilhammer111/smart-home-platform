@@ -6,8 +6,8 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
-	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
-	user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )

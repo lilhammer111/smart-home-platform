@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	"testing"
 )
 
@@ -11,7 +10,7 @@ func TestDeleteUser_Run(t *testing.T) {
 	s := NewDeleteUserService(ctx)
 	// init req and assert value
 
-	userId := &int32{}
+	var userId int32 = 1
 	resp, err := s.Run(userId)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
