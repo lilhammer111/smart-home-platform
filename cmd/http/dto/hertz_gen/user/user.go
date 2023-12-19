@@ -10,94 +10,35 @@ import (
 )
 
 type UsersFilter struct {
-	Gender    *int8   `thrift:"Gender,1,optional" json:"gender,omitempty" query:"gender" vd:"in($, 0, 1, 2)"`
-	Page      *int16  `thrift:"Page,2,optional" json:"page,omitempty" query:"page" vd:"$>=0"`
-	Limit     *int16  `thrift:"Limit,3,optional" json:"limit,omitempty" query:"limit" vd:"$>0"`
-	Sort      *string `thrift:"Sort,4,optional" json:"sort,omitempty" query:"sort" vd:"regexp('^[a-zA-Z]+_(asc|desc)$')"`
-	Search    *string `thrift:"Search,5,optional" json:"search,omitempty" query:"search" vd:"regexp('^[\p{L}\p{N}\p{Lo}]+$')"`
-	StartDate *string `thrift:"StartDate,6,optional" json:"start_date,omitempty" query:"start_date" vd:"regexp('^\d{4}_\d{2}_\d{2}$')"`
-	EndDate   *string `thrift:"EndDate,7,optional" json:"end_date,omitempty" query:"end_date" vd:"regexp('^\d{4}_\d{2}_\d{2}$')"`
+	Page  *int32 `thrift:"Page,1,optional" json:"page,omitempty" query:"page"`
+	Limit *int32 `thrift:"Limit,2,optional" json:"limit,omitempty" query:"limit" vd:"$>0 && $<=100"`
 }
 
 func NewUsersFilter() *UsersFilter {
 	return &UsersFilter{}
 }
 
-var UsersFilter_Gender_DEFAULT int8
+var UsersFilter_Page_DEFAULT int32
 
-func (p *UsersFilter) GetGender() (v int8) {
-	if !p.IsSetGender() {
-		return UsersFilter_Gender_DEFAULT
-	}
-	return *p.Gender
-}
-
-var UsersFilter_Page_DEFAULT int16
-
-func (p *UsersFilter) GetPage() (v int16) {
+func (p *UsersFilter) GetPage() (v int32) {
 	if !p.IsSetPage() {
 		return UsersFilter_Page_DEFAULT
 	}
 	return *p.Page
 }
 
-var UsersFilter_Limit_DEFAULT int16
+var UsersFilter_Limit_DEFAULT int32
 
-func (p *UsersFilter) GetLimit() (v int16) {
+func (p *UsersFilter) GetLimit() (v int32) {
 	if !p.IsSetLimit() {
 		return UsersFilter_Limit_DEFAULT
 	}
 	return *p.Limit
 }
 
-var UsersFilter_Sort_DEFAULT string
-
-func (p *UsersFilter) GetSort() (v string) {
-	if !p.IsSetSort() {
-		return UsersFilter_Sort_DEFAULT
-	}
-	return *p.Sort
-}
-
-var UsersFilter_Search_DEFAULT string
-
-func (p *UsersFilter) GetSearch() (v string) {
-	if !p.IsSetSearch() {
-		return UsersFilter_Search_DEFAULT
-	}
-	return *p.Search
-}
-
-var UsersFilter_StartDate_DEFAULT string
-
-func (p *UsersFilter) GetStartDate() (v string) {
-	if !p.IsSetStartDate() {
-		return UsersFilter_StartDate_DEFAULT
-	}
-	return *p.StartDate
-}
-
-var UsersFilter_EndDate_DEFAULT string
-
-func (p *UsersFilter) GetEndDate() (v string) {
-	if !p.IsSetEndDate() {
-		return UsersFilter_EndDate_DEFAULT
-	}
-	return *p.EndDate
-}
-
 var fieldIDToName_UsersFilter = map[int16]string{
-	1: "Gender",
-	2: "Page",
-	3: "Limit",
-	4: "Sort",
-	5: "Search",
-	6: "StartDate",
-	7: "EndDate",
-}
-
-func (p *UsersFilter) IsSetGender() bool {
-	return p.Gender != nil
+	1: "Page",
+	2: "Limit",
 }
 
 func (p *UsersFilter) IsSetPage() bool {
@@ -106,22 +47,6 @@ func (p *UsersFilter) IsSetPage() bool {
 
 func (p *UsersFilter) IsSetLimit() bool {
 	return p.Limit != nil
-}
-
-func (p *UsersFilter) IsSetSort() bool {
-	return p.Sort != nil
-}
-
-func (p *UsersFilter) IsSetSearch() bool {
-	return p.Search != nil
-}
-
-func (p *UsersFilter) IsSetStartDate() bool {
-	return p.StartDate != nil
-}
-
-func (p *UsersFilter) IsSetEndDate() bool {
-	return p.EndDate != nil
 }
 
 func (p *UsersFilter) Read(iprot thrift.TProtocol) (err error) {
@@ -144,7 +69,7 @@ func (p *UsersFilter) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.BYTE {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -154,58 +79,8 @@ func (p *UsersFilter) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 2:
-			if fieldTypeId == thrift.I16 {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.I16 {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 6:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField6(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 7:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
 				break
@@ -244,64 +119,19 @@ ReadStructEndError:
 
 func (p *UsersFilter) ReadField1(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadByte(); err != nil {
-		return err
-	} else {
-		p.Gender = &v
-	}
-	return nil
-}
-func (p *UsersFilter) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadI16(); err != nil {
+	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
 		p.Page = &v
 	}
 	return nil
 }
-func (p *UsersFilter) ReadField3(iprot thrift.TProtocol) error {
+func (p *UsersFilter) ReadField2(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadI16(); err != nil {
+	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
 		p.Limit = &v
-	}
-	return nil
-}
-func (p *UsersFilter) ReadField4(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.Sort = &v
-	}
-	return nil
-}
-func (p *UsersFilter) ReadField5(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.Search = &v
-	}
-	return nil
-}
-func (p *UsersFilter) ReadField6(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.StartDate = &v
-	}
-	return nil
-}
-func (p *UsersFilter) ReadField7(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.EndDate = &v
 	}
 	return nil
 }
@@ -318,26 +148,6 @@ func (p *UsersFilter) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
-		if err = p.writeField4(oprot); err != nil {
-			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
-			goto WriteFieldError
-		}
-		if err = p.writeField6(oprot); err != nil {
-			fieldId = 6
-			goto WriteFieldError
-		}
-		if err = p.writeField7(oprot); err != nil {
-			fieldId = 7
 			goto WriteFieldError
 		}
 	}
@@ -359,11 +169,11 @@ WriteStructEndError:
 }
 
 func (p *UsersFilter) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetGender() {
-		if err = oprot.WriteFieldBegin("Gender", thrift.BYTE, 1); err != nil {
+	if p.IsSetPage() {
+		if err = oprot.WriteFieldBegin("Page", thrift.I32, 1); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteByte(*p.Gender); err != nil {
+		if err := oprot.WriteI32(*p.Page); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -377,11 +187,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 func (p *UsersFilter) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetPage() {
-		if err = oprot.WriteFieldBegin("Page", thrift.I16, 2); err != nil {
+	if p.IsSetLimit() {
+		if err = oprot.WriteFieldBegin("Limit", thrift.I32, 2); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI16(*p.Page); err != nil {
+		if err := oprot.WriteI32(*p.Limit); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -394,96 +204,6 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
-func (p *UsersFilter) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetLimit() {
-		if err = oprot.WriteFieldBegin("Limit", thrift.I16, 3); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI16(*p.Limit); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-func (p *UsersFilter) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSort() {
-		if err = oprot.WriteFieldBegin("Sort", thrift.STRING, 4); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Sort); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-func (p *UsersFilter) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSearch() {
-		if err = oprot.WriteFieldBegin("Search", thrift.STRING, 5); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Search); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-func (p *UsersFilter) writeField6(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStartDate() {
-		if err = oprot.WriteFieldBegin("StartDate", thrift.STRING, 6); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StartDate); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
-}
-func (p *UsersFilter) writeField7(oprot thrift.TProtocol) (err error) {
-	if p.IsSetEndDate() {
-		if err = oprot.WriteFieldBegin("EndDate", thrift.STRING, 7); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.EndDate); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
-}
 
 func (p *UsersFilter) String() string {
 	if p == nil {
@@ -494,7 +214,7 @@ func (p *UsersFilter) String() string {
 
 type UserInfo struct {
 	Id      *int32  `thrift:"Id,1,optional" form:"id" json:"id,omitempty"`
-	Age     *int8   `thrift:"Age,2,optional" form:"age" json:"age,omitempty" vd:"$>=0 && $ <=200>"`
+	Age     *int8   `thrift:"Age,2,optional" form:"age" json:"age,omitempty" vd:"$>=0 && $<=200"`
 	Gender  *int8   `thrift:"Gender,3,optional" form:"gender" json:"gender,omitempty" vd:"in($,0,1,2)"`
 	Mobile  *string `thrift:"Mobile,4,optional" form:"mobile" json:"mobile,omitempty" vd:"regexp('^1[3-9]\\d{9}$')"`
 	Profile *string `thrift:"Profile,5,optional" form:"profile" json:"profile,omitempty" vd:"regexp('^.{0,200}$')"`

@@ -412,7 +412,7 @@ func (p *kClient) FindUserByUsername(ctx context.Context, req *micro_user.RpcFin
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq) (r []*user.UserInfo, err error) {
+func (p *kClient) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error) {
 	var _args micro_user.MicroUserQueryUsersWithFilterArgs
 	_args.Req = req
 	var _result micro_user.MicroUserQueryUsersWithFilterResult

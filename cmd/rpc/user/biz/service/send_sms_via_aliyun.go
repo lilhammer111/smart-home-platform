@@ -43,19 +43,19 @@ func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common.E
 	err = smsSender.initSmsAssistant(req.Mobile, smsCode)
 	if err != nil {
 		klog.Errorf("failed to get sms client: %s", err)
-		return nil, bizerr.NewThirdPartyErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 
 	smsResp, err := smsSender.smsAssistant.SendSms(smsSender.request)
 	if err != nil || *smsResp.StatusCode != http.StatusOK {
 		klog.Errorf("failed to send sms: %s", err)
-		return nil, bizerr.NewThirdPartyErr(err)
+		return nil, bizerr.NewExternalError(err)
 	}
 
 	_, err = db.GetRedis().Set(s.ctx, req.Mobile, smsCode, smsTTL).Result()
 	if err != nil {
 		klog.Errorf("failed to set sms bizerr in redis for mobile %s: %s", req.Mobile, err)
-		return nil, bizerr.NewRedisErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 	return &common.Empty{}, nil
 }

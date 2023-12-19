@@ -13,8 +13,8 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
-	GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
-	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
+	GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	DeregisterUser(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
@@ -52,12 +52,12 @@ func (p *kUserClient) GetUserList(ctx context.Context, req *user.UsersFilter, ca
 	return p.kClient.GetUserList(ctx, req)
 }
 
-func (p *kUserClient) GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
+func (p *kUserClient) GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserDetail(ctx, req)
 }
 
-func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
+func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UpdateUserInfo(ctx, req)
 }

@@ -34,7 +34,7 @@ type RPCClient interface {
 
 	FindUserByUsername(ctx context.Context, req *micro_user.RpcFindUserByUsernameReq, callOptions ...callopt.Option) (resp *user.UserInfo, err error)
 
-	QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (resp []*user.UserInfo, err error)
+	QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (resp []*user.UserInfo, err error)
 
 	UpdateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (resp *user.UserInfo, err error)
 
@@ -109,7 +109,7 @@ func (c *clientImpl) FindUserByUsername(ctx context.Context, req *micro_user.Rpc
 	return c.kitexClient.FindUserByUsername(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (resp []*user.UserInfo, err error) {
+func (c *clientImpl) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (resp []*user.UserInfo, err error) {
 	return c.kitexClient.QueryUsersWithFilter(ctx, req, callOptions...)
 }
 

@@ -15,26 +15,6 @@ struct RpcFreezeResp {
     10: optional string ThawedAt;
 }
 
-struct RpcUsersFilterReq {
-    1: optional i8 Gender;
-    2: optional i16 Page;
-    3: optional i16 Limit;
-    4: optional string Sort;
-    5: optional string Search;
-    6: optional string StartDate;
-    7: optional string EndDate;
-}
-
-//struct RpcUser {
-//    1: optional i32 Id;
-//    2: required i8 Age;
-//    3: required i8 Gender;
-//    4: required string Mobile;
-//    5: required string Profile;
-//    6: required string Username; //匹配中文字母数字下划线
-//    7: required string Email;
-//    8: required string Avatar;
-//}
 
 struct RpcSmsReq {
     1: required string Mobile;
@@ -86,7 +66,7 @@ service micro_user {
     user.UserInfo FindUserByOpenid (1:RpcFindUserByOpenidReq req);
     user.UserInfo FindUserByMobile (1: RpcFindUserByMobileReq req);
     user.UserInfo FindUserByUsername (1: RpcFindUserByUsernameReq req);
-    list<user.UserInfo> QueryUsersWithFilter(1: RpcUsersFilterReq req);
+    list<user.UserInfo> QueryUsersWithFilter(1: user.UsersFilter req);
     user.UserInfo UpdateUser(1: user.UserInfo req);
     user.UserInfo CreateUser(1: user.UserInfo req);
     common.Empty DeleteUser(1: i32 UserId);

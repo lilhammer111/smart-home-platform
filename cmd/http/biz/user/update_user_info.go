@@ -24,7 +24,6 @@ func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfo, err
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
-	// todo edit your code
 	rpcReq := rpcUser.UserInfo{}
 	if err = copier.Copy(&rpcReq, req); err != nil {
 		return nil, err

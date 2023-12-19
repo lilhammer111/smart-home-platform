@@ -23,7 +23,7 @@ type Client interface {
 	FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	FindUserByUsername(ctx context.Context, req *micro_user.RpcFindUserByUsernameReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
-	QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
+	QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
 	UpdateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	CreateUser(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	DeleteUser(ctx context.Context, userId int32, callOptions ...callopt.Option) (r *common.Empty, err error)
@@ -108,7 +108,7 @@ func (p *kMicroUserClient) FindUserByUsername(ctx context.Context, req *micro_us
 	return p.kClient.FindUserByUsername(ctx, req)
 }
 
-func (p *kMicroUserClient) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
+func (p *kMicroUserClient) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.QueryUsersWithFilter(ctx, req)
 }

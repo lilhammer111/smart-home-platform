@@ -2,13 +2,13 @@ package auth
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
 	biz "git.zqbjj.top/pet/services/cmd/http/biz/auth"
-	"git.zqbjj.top/pet/services/cmd/http/utils"
 )
 
 // SendSms .
@@ -18,17 +18,17 @@ func SendSms(ctx context.Context, c *app.RequestContext) {
 	var req auth.SendSmsReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
 	resp, err := biz.NewSendSmsService(ctx, c).Do(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // MobileRegister .
@@ -38,17 +38,17 @@ func MobileRegister(ctx context.Context, c *app.RequestContext) {
 	var req auth.MobileRegisterReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
 	resp, err := biz.NewMobileRegisterService(ctx, c).Do(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // MobileLogin .
@@ -58,17 +58,17 @@ func MobileLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.MobileLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
 	resp, err := biz.NewMobileLoginService(ctx, c).Do(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // MiniProgLogin .
@@ -78,17 +78,17 @@ func MiniProgLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.MiniProgLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
 	resp, err := biz.NewMiniProgLoginService(ctx, c).Do(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // PwdLogin .
@@ -98,15 +98,15 @@ func PwdLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.PwdLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
 	resp, err := biz.NewPwdLoginService(ctx, c).Do(&req)
 	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }

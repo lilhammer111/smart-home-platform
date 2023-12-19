@@ -6,18 +6,19 @@ import (
 )
 
 const (
-	CodeUnknown = iota + 1
+	CodeUnknown int32 = iota
 	CodeNotFound
 	CodeBadRequest
 	CodeAlreadyExists
-	CodeInternal
-	CodeBadGateway
+	CodeInternalError
+	CodeExternalError
 )
 
 const (
-	MsgUnknown  = "rpc unknown error"
-	MsgNotFound = "rpc resource not found"
-	MsgInternal = "rpc internal error"
+	MsgUnknown       = "rpc unknown error"
+	MsgNotFound      = "rpc resource not found"
+	MsgInternalError = "rpc internal error"
+	MsgExternalError = "rpc external services unavailable"
 )
 
 type RpcErr struct {
@@ -49,18 +50,21 @@ func newRpcError(code int32, msg string, err error) *RpcErr {
 			msg:  MsgUnknown,
 		}
 	}
-
 	return &RpcErr{
 		code: code,
 		msg:  fmt.Sprintf("%s: %s", msg, err),
 	}
 }
 
-func NewInternalErr(err error) kerrors.BizStatusErrorIface {
-	return newRpcError(CodeInternal, MsgInternal, err)
+func NewInternalError(err error) kerrors.BizStatusErrorIface {
+	return newRpcError(CodeInternalError, MsgInternalError, err)
 
 }
 
 func NewNotFoundError(err error) kerrors.BizStatusErrorIface {
 	return newRpcError(CodeNotFound, MsgNotFound, err)
+}
+
+func NewExternalError(err error) kerrors.BizStatusErrorIface {
+	return newRpcError(CodeExternalError, MsgExternalError, err)
 }

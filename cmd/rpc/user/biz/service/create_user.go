@@ -20,11 +20,11 @@ func NewCreateUserService(ctx context.Context) *CreateUserService {
 func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err error) {
 	userInfo := model.User{}
 	if err = db.GetMysql().Create(&userInfo).Error; err != nil {
-		return nil, bizerr.NewInternalErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 	err = copier.Copy(resp, &userInfo)
 	if err != nil {
-		return nil, bizerr.NewInternalErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 	return
 }

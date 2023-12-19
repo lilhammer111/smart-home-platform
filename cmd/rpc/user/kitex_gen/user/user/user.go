@@ -131,7 +131,7 @@ func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r []*
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r []*user.UserInfo, err error) {
+func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r *user.UserInfo, err error) {
 	var _args user.UserGetUserDetailArgs
 	_args.Req = req
 	var _result user.UserGetUserDetailResult
@@ -141,7 +141,7 @@ func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r []*user
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r []*user.UserInfo, err error) {
+func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
 	var _args user.UserUpdateUserInfoArgs
 	_args.Req = req
 	var _result user.UserUpdateUserInfoResult

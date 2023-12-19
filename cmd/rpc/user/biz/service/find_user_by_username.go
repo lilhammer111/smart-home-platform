@@ -26,11 +26,11 @@ func (s *FindUserByUsernameService) Run(req *micro_user.RpcFindUserByUsernameReq
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, bizerr.NewNotFoundError(err)
 		}
-		return nil, bizerr.NewInternalErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 
 	if err = copier.Copy(resp, &userInfo); err != nil {
-		return nil, bizerr.NewInternalErr(err)
+		return nil, bizerr.NewInternalError(err)
 	}
 
 	return

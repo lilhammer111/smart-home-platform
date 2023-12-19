@@ -10,9 +10,9 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"net/http"
 	"time"
@@ -49,11 +49,21 @@ var (
 	ErrAccountFrozen       = errors.New("account frozen")
 )
 
-type JwtUserInfo struct {
-	Id       int32
-	Username string
-	Role     int8
-	Openid   int32
+type JwtRespData struct {
+	Token     string    `json:"token"`
+	ExpiredAt time.Time `json:"expired_at"`
+}
+
+type AccountFrozenRespData struct {
+	IsFrozen bool      `json:"isFrozen"`
+	ThawedAt time.Time `json:"thawedAt,omitempty"`
+}
+
+func newJwtData(token string, expiredAt time.Time) *JwtRespData {
+	return &JwtRespData{
+		Token:     token,
+		ExpiredAt: expiredAt,
+	}
 }
 
 func InitJwt() {
@@ -65,54 +75,25 @@ func InitJwt() {
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName: "Bearer",
 		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			c.JSON(http.StatusOK, utils.H{
-				"success": true,
-				"code":    code,
-				"message": MsgLoginSuccess,
-				"data": utils.H{
-					"token":      token,
-					"expired_at": expire.Format(time.RFC3339),
-				},
-			})
+			responder.SendSuccessResponse(ctx, c, code, newJwtData(token, expire))
 		},
 		LogoutResponse: func(ctx context.Context, c *app.RequestContext, code int) {
-			c.JSON(http.StatusOK, utils.H{
-				"success": true,
-				"code":    http.StatusOK,
-				"message": MsgLogoutSuccess,
-			})
+			responder.SendSuccessResponse(ctx, c, code, nil)
 		},
 		RefreshResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			c.JSON(http.StatusOK, utils.H{
-				"success": true,
-				"code":    http.StatusOK,
-				"message": MsgRefreshSuccess,
-				"data": utils.H{
-					"token":      token,
-					"expired_at": expire.Format(time.RFC3339),
-				},
-			})
+			responder.SendSuccessResponse(ctx, c, code, newJwtData(token, expire))
 		},
 		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
 			hlog.CtxErrorf(ctx, "jwt biz err = %+v", e.Error())
 			return e.Error()
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			resp := utils.H{
-				"success": false,
-				"code":    code,
-				"message": message,
-			}
-
-			// if account was frozen
+			// If the account is frozen, remind users how many minutes it will take to try to
 			if c.GetBool("is_frozen") {
-				resp["data"] = utils.H{
-					"is_frozen": true,
-					"thawed_at": c.GetString("thawed_at"),
-				}
+				// todo why thawed_at is of type string?
+				c.Set(responder.ErrorMessage, fmt.Sprintf("account frozen, please try again in %s minutes", c.GetString("thawed_at")))
 			}
-
-			c.JSON(http.StatusOK, resp)
+			responder.SendErrResponse(ctx, c, code, err)
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			switch string(c.Path()) {

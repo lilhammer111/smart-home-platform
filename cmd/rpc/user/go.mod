@@ -5,7 +5,7 @@ go 1.21.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	git.zqbjj.top/pet/public-repo v0.0.0-20231214151242-19bbf339fe18
+	git.zqbjj.top/lilhammer111/micro-kit v0.0.0-20231216142901-117a2fde11cb
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.5
 	github.com/alibabacloud-go/dysmsapi-20170525/v3 v3.0.6
 	github.com/alibabacloud-go/tea v1.2.1

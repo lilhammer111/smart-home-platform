@@ -99,7 +99,7 @@ func FindUserByUsername(ctx context.Context, req *micro_user.RpcFindUserByUserna
 	return resp, nil
 }
 
-func QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq, callOptions ...callopt.Option) (resp []*user.UserInfo, err error) {
+func QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (resp []*user.UserInfo, err error) {
 	resp, err = defaultClient.QueryUsersWithFilter(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "QueryUsersWithFilter call failed,err =%+v", err)
