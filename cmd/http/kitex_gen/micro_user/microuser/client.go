@@ -14,11 +14,11 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error)
-	FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error)
-	FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error)
-	VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *common.Empty, err error)
-	VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *common.Empty, err error)
-	VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcUserId, err error)
+	FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcAfterVerifyReq, callOptions ...callopt.Option) (r *common.Empty, err error)
+	VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error)
+	VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error)
+	VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error)
 	FindUser(ctx context.Context, req *micro_user.RpcFindUserReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	FindUserByOpenid(ctx context.Context, req *micro_user.RpcFindUserByOpenidReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 	FindUserByMobile(ctx context.Context, req *micro_user.RpcFindUserByMobileReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
@@ -63,27 +63,27 @@ func (p *kMicroUserClient) SendSmsViaAliyun(ctx context.Context, req *micro_user
 	return p.kClient.SendSmsViaAliyun(ctx, req)
 }
 
-func (p *kMicroUserClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kMicroUserClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcUserId, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FreezePatrolBeforeVerify(ctx, req)
 }
 
-func (p *kMicroUserClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kMicroUserClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcAfterVerifyReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FreezePatrolAfterVerify(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+func (p *kMicroUserClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.VerifySmsCode(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+func (p *kMicroUserClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.VerifyUsernamePwd(ctx, req)
 }
 
-func (p *kMicroUserClient) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *common.Empty, err error) {
+func (p *kMicroUserClient) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (r *micro_user.RpcVerifyResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.VerifyEmailPwd(ctx, req)
 }

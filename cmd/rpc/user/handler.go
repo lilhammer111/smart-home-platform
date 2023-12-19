@@ -11,13 +11,6 @@ import (
 // MicroUserImpl implements the last service interface defined in the IDL.
 type MicroUserImpl struct{}
 
-// FreezePatrolBeforeAuth implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FreezePatrolBeforeAuth(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
-	resp, err = service.NewFreezePatrolBeforeAuthService(ctx).Run(req)
-
-	return resp, err
-}
-
 // UpdateUser implements the MicroUserImpl interface.
 func (s *MicroUserImpl) UpdateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
 	resp, err = service.NewUpdateUserService(ctx).Run(req)
@@ -32,51 +25,9 @@ func (s *MicroUserImpl) CreateUser(ctx context.Context, req *user.UserInfo) (res
 	return resp, err
 }
 
-// QueryUsersWithFilter implements the MicroUserImpl interface.
-func (s *MicroUserImpl) QueryUsersWithFilter(ctx context.Context, req *micro_user.RpcUsersFilterReq) (resp []*user.UserInfo, err error) {
-	resp, err = service.NewQueryUsersWithFilterService(ctx).Run(req)
-
-	return resp, err
-}
-
 // SendSmsViaAliyun implements the MicroUserImpl interface.
 func (s *MicroUserImpl) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq) (resp *common.Empty, err error) {
 	resp, err = service.NewSendSmsViaAliyunService(ctx).Run(req)
-
-	return resp, err
-}
-
-// FreezePatrolAfterAuth implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FreezePatrolAfterAuth(ctx context.Context, userId int32) (resp *micro_user.RpcFreezeResp, err error) {
-	resp, err = service.NewFreezePatrolAfterAuthService(ctx).Run(userId)
-
-	return resp, err
-}
-
-// VerifySmsCode implements the MicroUserImpl interface.
-func (s *MicroUserImpl) VerifySmsCode(ctx context.Context, mobile string, smsCode string) (resp *common.Empty, err error) {
-	resp, err = service.NewVerifySmsCodeService(ctx).Run(mobile, smsCode)
-
-	return resp, err
-}
-
-// VerifyUsernamePwd implements the MicroUserImpl interface.
-func (s *MicroUserImpl) VerifyUsernamePwd(ctx context.Context, username string, entryPwd string) (resp *common.Empty, err error) {
-	resp, err = service.NewVerifyUsernamePwdService(ctx).Run(username, entryPwd)
-
-	return resp, err
-}
-
-// VerifyEmailPwd implements the MicroUserImpl interface.
-func (s *MicroUserImpl) VerifyEmailPwd(ctx context.Context, email string, entryPwd string) (resp *common.Empty, err error) {
-	resp, err = service.NewVerifyEmailPwdService(ctx).Run(email, entryPwd)
-
-	return resp, err
-}
-
-// FindUser implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FindUser(ctx context.Context, userId int32) (resp *user.UserInfo, err error) {
-	resp, err = service.NewFindUserService(ctx).Run(userId)
 
 	return resp, err
 }
@@ -110,15 +61,50 @@ func (s *MicroUserImpl) FindUserByOpenid(ctx context.Context, req *micro_user.Rp
 }
 
 // FreezePatrolBeforeVerify implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
+func (s *MicroUserImpl) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcUserId, err error) {
 	resp, err = service.NewFreezePatrolBeforeVerifyService(ctx).Run(req)
 
 	return resp, err
 }
 
 // FreezePatrolAfterVerify implements the MicroUserImpl interface.
-func (s *MicroUserImpl) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (resp *micro_user.RpcFreezeResp, err error) {
+func (s *MicroUserImpl) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcAfterVerifyReq) (resp *common.Empty, err error) {
 	resp, err = service.NewFreezePatrolAfterVerifyService(ctx).Run(req)
+
+	return resp, err
+}
+
+// VerifySmsCode implements the MicroUserImpl interface.
+func (s *MicroUserImpl) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq) (resp *micro_user.RpcVerifyResp, err error) {
+	resp, err = service.NewVerifySmsCodeService(ctx).Run(req)
+
+	return resp, err
+}
+
+// VerifyUsernamePwd implements the MicroUserImpl interface.
+func (s *MicroUserImpl) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq) (resp *micro_user.RpcVerifyResp, err error) {
+	resp, err = service.NewVerifyUsernamePwdService(ctx).Run(req)
+
+	return resp, err
+}
+
+// VerifyEmailPwd implements the MicroUserImpl interface.
+func (s *MicroUserImpl) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq) (resp *micro_user.RpcVerifyResp, err error) {
+	resp, err = service.NewVerifyEmailPwdService(ctx).Run(req)
+
+	return resp, err
+}
+
+// FindUser implements the MicroUserImpl interface.
+func (s *MicroUserImpl) FindUser(ctx context.Context, req *micro_user.RpcFindUserReq) (resp *user.UserInfo, err error) {
+	resp, err = service.NewFindUserService(ctx).Run(req)
+
+	return resp, err
+}
+
+// QueryUsersWithFilter implements the MicroUserImpl interface.
+func (s *MicroUserImpl) QueryUsersWithFilter(ctx context.Context, req *user.UsersFilter) (resp []*user.UserInfo, err error) {
+	resp, err = service.NewQueryUsersWithFilterService(ctx).Run(req)
 
 	return resp, err
 }

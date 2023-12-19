@@ -18,6 +18,7 @@ func NewUpdateUserService(ctx context.Context) *UpdateUserService {
 // Run create note info
 func (s *UpdateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err error) {
 	userInfo := model.User{}
+	userInfo.ID = *req.Id
 	if err = db.GetMysql().Model(&userInfo).Updates(req).Error; err != nil {
 		return nil, bizerr.NewInternalError(err)
 	}

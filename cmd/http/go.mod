@@ -17,6 +17,7 @@ require (
 	github.com/hertz-contrib/pprof v0.1.1
 	github.com/jinzhu/copier v0.4.0
 	github.com/kr/pretty v0.3.1
+	golang.org/x/crypto v0.10.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/validator.v2 v2.0.1
 	gopkg.in/yaml.v2 v2.4.0

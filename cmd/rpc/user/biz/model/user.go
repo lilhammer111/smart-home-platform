@@ -1,6 +1,8 @@
 package model
 
 import (
+	"errors"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -17,4 +19,12 @@ type User struct {
 	Avatar   string    `gorm:"type:varchar(200)" json:"avatar"`
 	IsFrozen bool      `gorm:"type:bool;comment:whether user account frozen, 1 means user is frozen,0 for normal" json:"is_frozen"`
 	ThawedAt time.Time `gorm:"type:datetime;comment:time when user accounts unfrozen" json:"thawed_at"`
+}
+
+// BeforeDelete is a delete hook
+func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
+	if u.ID == 1 {
+		return errors.New("admin user not allowed to delete")
+	}
+	return
 }

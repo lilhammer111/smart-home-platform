@@ -18,7 +18,7 @@ func SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsReq, callOption
 	return resp, nil
 }
 
-func FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (resp *micro_user.RpcFreezeResp, err error) {
+func FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (resp *micro_user.RpcUserId, err error) {
 	resp, err = defaultClient.FreezePatrolBeforeVerify(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "FreezePatrolBeforeVerify call failed,err =%+v", err)
@@ -27,7 +27,7 @@ func FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq,
 	return resp, nil
 }
 
-func FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq, callOptions ...callopt.Option) (resp *micro_user.RpcFreezeResp, err error) {
+func FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcAfterVerifyReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
 	resp, err = defaultClient.FreezePatrolAfterVerify(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "FreezePatrolAfterVerify call failed,err =%+v", err)
@@ -36,7 +36,7 @@ func FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq, 
 	return resp, nil
 }
 
-func VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+func VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOptions ...callopt.Option) (resp *micro_user.RpcVerifyResp, err error) {
 	resp, err = defaultClient.VerifySmsCode(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifySmsCode call failed,err =%+v", err)
@@ -45,7 +45,7 @@ func VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq, callOp
 	return resp, nil
 }
 
-func VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+func VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq, callOptions ...callopt.Option) (resp *micro_user.RpcVerifyResp, err error) {
 	resp, err = defaultClient.VerifyUsernamePwd(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifyUsernamePwd call failed,err =%+v", err)
@@ -54,7 +54,7 @@ func VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwd
 	return resp, nil
 }
 
-func VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+func VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq, callOptions ...callopt.Option) (resp *micro_user.RpcVerifyResp, err error) {
 	resp, err = defaultClient.VerifyEmailPwd(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "VerifyEmailPwd call failed,err =%+v", err)

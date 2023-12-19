@@ -12,13 +12,15 @@ const (
 	CodeAlreadyExists
 	CodeInternalError
 	CodeExternalError
+	CodeAuthenticationFailed
 )
 
 const (
-	MsgUnknown       = "rpc unknown error"
-	MsgNotFound      = "rpc resource not found"
-	MsgInternalError = "rpc internal error"
-	MsgExternalError = "rpc external services unavailable"
+	MsgUnknown              = "rpc unknown error"
+	MsgNotFound             = "rpc resource not found"
+	MsgInternalError        = "rpc internal error"
+	MsgExternalError        = "rpc external services unavailable"
+	MsgAuthenticationFailed = "rpc authentication failed"
 )
 
 type RpcErr struct {
@@ -67,4 +69,8 @@ func NewNotFoundError(err error) kerrors.BizStatusErrorIface {
 
 func NewExternalError(err error) kerrors.BizStatusErrorIface {
 	return newRpcError(CodeExternalError, MsgExternalError, err)
+}
+
+func NewAuthenticationError(err error) kerrors.BizStatusErrorIface {
+	return newRpcError(CodeAuthenticationFailed, MsgAuthenticationFailed, err)
 }

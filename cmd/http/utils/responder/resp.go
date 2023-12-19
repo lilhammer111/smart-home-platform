@@ -45,6 +45,8 @@ func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err e
 		setCodeAndMsg(&resp, http.StatusBadRequest)
 	case bizerr.CodeExternalError:
 		setCodeAndMsg(&resp, http.StatusBadGateway)
+	case bizerr.CodeAuthenticationFailed:
+		setCodeAndMsg(&resp, http.StatusUnauthorized)
 	default:
 		setCodeAndMsg(&resp, http.StatusInternalServerError)
 	}

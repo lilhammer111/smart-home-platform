@@ -12,6 +12,7 @@ import (
 	dysmsapi "github.com/alibabacloud-go/dysmsapi-20170525/v3/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -52,10 +53,15 @@ func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common.E
 		return nil, bizerr.NewExternalError(err)
 	}
 
-	_, err = db.GetRedis().Set(s.ctx, req.Mobile, smsCode, smsTTL).Result()
+	hashedSmsCode, err := hashSmsCode(smsCode)
+	if err != nil {
+		klog.Errorf("failed to hash sms code: %s", err)
+		return nil, bizerr.NewInternalError(err)
+	}
+	_, err = db.GetRedis().SetEx(s.ctx, req.Mobile, hashedSmsCode, smsTTL).Result()
 	if err != nil {
 		klog.Errorf("failed to set sms bizerr in redis for mobile %s: %s", req.Mobile, err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, bizerr.NewExternalError(err)
 	}
 	return &common.Empty{}, nil
 }
@@ -72,6 +78,14 @@ func generateSmsCode(length int) string {
 		}
 	}
 	return sb.String()
+}
+
+func hashSmsCode(code string) (string, error) {
+	hashedCode, err := bcrypt.GenerateFromPassword([]byte(code), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedCode), nil
 }
 
 type SmsSender struct {

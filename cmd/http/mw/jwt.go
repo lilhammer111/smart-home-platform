@@ -149,28 +149,28 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 	}
 
 	// check if the account was frozen
-	freezeResp := &micro_user.RpcFreezeResp{}
-	freezeResp, err = micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
+	patrolResp, err := micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
 	if err != nil {
-		return nil, ErrInternalError
-	}
-	if freezeResp.IsFrozen {
-		c.Set("is_frozen", freezeResp.IsFrozen)
-		c.Set("thawed_at", *freezeResp.ThawedAt)
-		return nil, ErrAccountFrozen
+		return nil, err
 	}
 
-	_, err = micro_user_cli.VerifySmsCode(ctx, &micro_user.RpcVerifyCodeReq{
+	verifyResp, err := micro_user_cli.VerifySmsCode(ctx, &micro_user.RpcVerifyCodeReq{
 		Mobile:  req.Mobile,
 		SmsCode: req.SmsCode,
 	})
-	// if validation failed, add calculate the account unfreezing time
 	if err != nil {
-		micro_user_cli.FreezePatrolAfterVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
-		return nil, ErrWrongSmsCode
+		return nil, err
 	}
 
-	userInfo, err = micro_user_cli.FindUserByMobile(ctx, &micro_user.RpcFindUserByMobileReq{Mobile: req.Mobile})
+	_, err = micro_user_cli.FreezePatrolAfterVerify(ctx, &micro_user.RpcAfterVerifyReq{
+		UserId:       patrolResp.UserId,
+		VerifyPassed: verifyResp.VerifyPassed,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
 		return nil, ErrInternalError
 	}
@@ -180,13 +180,20 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
+	// todo the pwdLoginReq struct may need to be modified
 	req := &auth.PwdLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
 		return nil, jwt.ErrMissingLoginValues
 	}
 
-	_, err = micro_user_cli.VerifyUsernamePwd(ctx, &micro_user.RpcVerifyUsernamePwdReq{
+	// check if the account was frozen
+	patrolResp, err := micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Username: &req.Username})
+	if err != nil {
+		return nil, err
+	}
+
+	verifyResp, err := micro_user_cli.VerifyUsernamePwd(ctx, &micro_user.RpcVerifyUsernamePwdReq{
 		Username: req.Username,
 		EntryPwd: req.Password,
 	})
@@ -194,7 +201,15 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, jwt.ErrFailedAuthentication
 	}
 
-	userInfo, err = micro_user_cli.FindUserByUsername(ctx, &micro_user.RpcFindUserByUsernameReq{Username: req.Username})
+	_, err = micro_user_cli.FreezePatrolAfterVerify(ctx, &micro_user.RpcAfterVerifyReq{
+		UserId:       patrolResp.UserId,
+		VerifyPassed: verifyResp.VerifyPassed,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
 		return nil, ErrInternalError
 	}

@@ -2,8 +2,11 @@ package service
 
 import (
 	"context"
-	common "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
+	"errors"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	micro_user "git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type VerifySmsCodeService struct {
@@ -14,8 +17,20 @@ func NewVerifySmsCodeService(ctx context.Context) *VerifySmsCodeService {
 }
 
 // Run create note info
-func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *common.Empty, err error) {
-	// Finish your business logic.
+func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *micro_user.RpcVerifyResp, err error) {
+	hashedSmsCode, err := db.GetRedis().Get(context.Background(), req.Mobile).Result()
+	if err != nil {
+		return nil, bizerr.NewExternalError(err)
+	}
 
-	return
+	resp = &micro_user.RpcVerifyResp{}
+	if err = bcrypt.CompareHashAndPassword([]byte(hashedSmsCode), []byte(req.SmsCode)); err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return resp, nil
+		}
+		return nil, bizerr.NewInternalError(err)
+	}
+
+	resp.VerifyPassed = true
+	return resp, nil
 }

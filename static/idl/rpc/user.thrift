@@ -10,11 +10,6 @@ struct RpcFreezeReq {
     3: optional string Email;
 }
 
-struct RpcFreezeResp {
-    9: required bool   IsFrozen;
-    10: optional string ThawedAt;
-}
-
 
 struct RpcSmsReq {
     1: required string Mobile;
@@ -55,13 +50,24 @@ struct RpcFindUserByOpenidReq {
     1: required string Openid;
 }
 
+struct RpcVerifyResp {
+    1: required bool VerifyPassed;
+}
+
+struct RpcAfterVerifyReq {
+    1: required i32 UserId;
+    2: required bool VerifyPassed;
+}
+
+
+
 service micro_user {
     common.Empty SendSmsViaAliyun(1: RpcSmsReq req);
-    RpcFreezeResp FreezePatrolBeforeVerify(1: RpcFreezeReq req);
-    RpcFreezeResp FreezePatrolAfterVerify(1: RpcFreezeReq req);
-    common.Empty VerifySmsCode(1: RpcVerifyCodeReq req);
-    common.Empty VerifyUsernamePwd(1: RpcVerifyUsernamePwdReq req);
-    common.Empty VerifyEmailPwd(1: RpcVerifyEmailPwdReq req);
+    RpcUserId FreezePatrolBeforeVerify(1: RpcFreezeReq req);
+    common.Empty FreezePatrolAfterVerify(1: RpcAfterVerifyReq req);
+    RpcVerifyResp VerifySmsCode(1: RpcVerifyCodeReq req);
+    RpcVerifyResp VerifyUsernamePwd(1: RpcVerifyUsernamePwdReq req);
+    RpcVerifyResp VerifyEmailPwd(1: RpcVerifyEmailPwdReq req);
     user.UserInfo FindUser (1: RpcFindUserReq req);
     user.UserInfo FindUserByOpenid (1:RpcFindUserByOpenidReq req);
     user.UserInfo FindUserByMobile (1: RpcFindUserByMobileReq req);

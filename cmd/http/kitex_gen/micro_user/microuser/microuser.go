@@ -322,7 +322,7 @@ func (p *kClient) SendSmsViaAliyun(ctx context.Context, req *micro_user.RpcSmsRe
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcUserId, err error) {
 	var _args micro_user.MicroUserFreezePatrolBeforeVerifyArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFreezePatrolBeforeVerifyResult
@@ -332,7 +332,7 @@ func (p *kClient) FreezePatrolBeforeVerify(ctx context.Context, req *micro_user.
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcFreezeReq) (r *micro_user.RpcFreezeResp, err error) {
+func (p *kClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.RpcAfterVerifyReq) (r *common.Empty, err error) {
 	var _args micro_user.MicroUserFreezePatrolAfterVerifyArgs
 	_args.Req = req
 	var _result micro_user.MicroUserFreezePatrolAfterVerifyResult
@@ -342,7 +342,7 @@ func (p *kClient) FreezePatrolAfterVerify(ctx context.Context, req *micro_user.R
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq) (r *common.Empty, err error) {
+func (p *kClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCodeReq) (r *micro_user.RpcVerifyResp, err error) {
 	var _args micro_user.MicroUserVerifySmsCodeArgs
 	_args.Req = req
 	var _result micro_user.MicroUserVerifySmsCodeResult
@@ -352,7 +352,7 @@ func (p *kClient) VerifySmsCode(ctx context.Context, req *micro_user.RpcVerifyCo
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq) (r *common.Empty, err error) {
+func (p *kClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVerifyUsernamePwdReq) (r *micro_user.RpcVerifyResp, err error) {
 	var _args micro_user.MicroUserVerifyUsernamePwdArgs
 	_args.Req = req
 	var _result micro_user.MicroUserVerifyUsernamePwdResult
@@ -362,7 +362,7 @@ func (p *kClient) VerifyUsernamePwd(ctx context.Context, req *micro_user.RpcVeri
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq) (r *common.Empty, err error) {
+func (p *kClient) VerifyEmailPwd(ctx context.Context, req *micro_user.RpcVerifyEmailPwdReq) (r *micro_user.RpcVerifyResp, err error) {
 	var _args micro_user.MicroUserVerifyEmailPwdArgs
 	_args.Req = req
 	var _result micro_user.MicroUserVerifyEmailPwdResult
