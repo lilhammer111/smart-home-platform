@@ -26,7 +26,7 @@ func main() {
 
 	registerMiddleware(h)
 
-	router.GeneratedRegister(h)
+	router.Register(h)
 
 	h.Spin()
 }

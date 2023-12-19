@@ -10,7 +10,6 @@ import (
 
 const (
 	SuccessMessage = "message"
-	ErrorMessage   = "error"
 )
 
 type FormattedResp struct {
@@ -23,54 +22,47 @@ type FormattedResp struct {
 
 func setCodeAndMsg(resp *FormattedResp, statusCode int) {
 	resp.Code = statusCode
-	resp.Message = http.StatusText(statusCode)
 }
 
 // SendErrResponse  pack error response
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
-	// todo edit custom code
-	resp := FormattedResp{
-		Message: c.GetString(ErrorMessage),
-	}
+	resp := FormattedResp{}
 	bizErr, isBizErr := kerrors.FromBizStatusError(err)
 	if !isBizErr {
+		resp.Message = http.StatusText(http.StatusInternalServerError)
 		setCodeAndMsg(&resp, http.StatusBadGateway)
 	}
+	resp.Message = bizErr.BizMessage()
 	switch bizErr.BizStatusCode() {
 	case bizerr.CodeNotFound:
-		setCodeAndMsg(&resp, http.StatusNotFound)
+		resp.Code = http.StatusNotFound
 	case bizerr.CodeAlreadyExists:
-		setCodeAndMsg(&resp, http.StatusConflict)
+		resp.Code = http.StatusConflict
 	case bizerr.CodeBadRequest:
-		setCodeAndMsg(&resp, http.StatusBadRequest)
+		resp.Code = http.StatusBadRequest
 	case bizerr.CodeExternalError:
-		setCodeAndMsg(&resp, http.StatusBadGateway)
+		resp.Code = http.StatusBadGateway
 	case bizerr.CodeAuthenticationFailed:
-		setCodeAndMsg(&resp, http.StatusUnauthorized)
+		resp.Code = http.StatusUnauthorized
 	default:
-		setCodeAndMsg(&resp, http.StatusInternalServerError)
+		// do nothing
 	}
 	c.JSON(code, resp)
 }
 
 func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, data interface{}) {
-	//resp := &FormattedResp{
-	//	Success: true,
-	//	Message: c.GetString(SuccessMessage),
-	//	Data:    data,
-	//}
 	resp := FormattedResp{
 		Success: true,
 		Data:    data,
+		Message: c.GetString(SuccessMessage),
 	}
-
 	switch string(c.Method()) {
 	case http.MethodPost, http.MethodPut:
-		setCodeAndMsg(&resp, http.StatusCreated)
+		resp.Code = http.StatusCreated
 	case http.MethodDelete:
-		setCodeAndMsg(&resp, http.StatusNoContent)
+		resp.Code = http.StatusNoContent
 	default:
-		setCodeAndMsg(&resp, http.StatusOK)
+		resp.Code = http.StatusOK
 	}
 	c.JSON(code, resp)
 }

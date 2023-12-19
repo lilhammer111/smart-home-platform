@@ -22,10 +22,10 @@ func Register(r *server.Hertz) {
 		_api := root.Group("/api", _apiMw()...)
 		{
 			_auth := _api.Group("/auth", _authMw()...)
-			_auth.GET("/mini_prog_login", append(_miniprogloginMw(), auth.MiniProgLogin)...)
-			_auth.GET("/mobile_login", append(_mobileloginMw(), auth.MobileLogin)...)
-			_auth.POST("/mobile_register", append(_mobileregisterMw(), auth.MobileRegister)...)
-			_auth.GET("/pwd_login", append(_pwdloginMw(), auth.PwdLogin)...)
+			//_auth.GET("/mini_prog_login", append(_miniprogloginMw(), auth.MiniProgLogin)...)
+			//_auth.GET("/mobile_login", append(_mobileloginMw(), auth.MobileLogin)...)
+			//_auth.POST("/mobile_register", append(_mobileregisterMw(), auth.MobileRegister)...)
+			//_auth.GET("/pwd_login", append(_pwdloginMw(), auth.PwdLogin)...)
 			_auth.GET("/send_sms", append(_sendsmsMw(), auth.SendSms)...)
 		}
 	}

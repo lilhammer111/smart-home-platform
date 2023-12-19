@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 
 	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
@@ -23,6 +25,6 @@ func (h *SendSmsService) Do(req *auth.SendSmsReq) (resp *common.Empty, err error
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-
-	return
+	_, err = micro_user_cli.SendSmsViaAliyun(h.Context, &micro_user.RpcSmsReq{Mobile: req.Mobile})
+	return nil, err
 }

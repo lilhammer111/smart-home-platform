@@ -3,7 +3,6 @@ package mw
 import (
 	"context"
 	"errors"
-	"fmt"
 	"git.zqbjj.top/pet/services/cmd/http/conf"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
@@ -83,11 +82,6 @@ func InitJwt() {
 			return e.Error()
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			// If the account is frozen, remind users how many minutes it will take to try to
-			if c.GetBool("is_frozen") {
-				// todo why thawed_at is of type string?
-				c.Set(responder.ErrorMessage, fmt.Sprintf("account frozen, please try again in %s minutes", c.GetString("thawed_at")))
-			}
 			responder.SendErrResponse(ctx, c, code, err)
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {

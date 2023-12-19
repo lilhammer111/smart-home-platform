@@ -29,6 +29,7 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	c.Set(responder.SuccessMessage, "getting user list success")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
@@ -49,6 +50,7 @@ func GetUserDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	c.Set(responder.SuccessMessage, "getting user details success")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
@@ -69,6 +71,7 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	c.Set(responder.SuccessMessage, "updating user information success")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
@@ -89,5 +92,6 @@ func DeregisterUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	c.Set(responder.SuccessMessage, "deregister success")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
