@@ -10,9 +10,9 @@ import (
 func main() {
 	klog.Info("klog debugf works")
 	svr := microuser.NewServer(
-		new(MicroUserImpl),
+		&MicroUserImpl{},
 		server.WithSuite(&suite.BasicSuite{
-			MicroservicePort: 5555, // 5555 for test
+			//MicroservicePort: 5555, // 5555 for test
 		}),
 	)
 

@@ -49,6 +49,7 @@ type RemoteConfig struct {
 	Log          LogConfig          `yaml:"log"`
 	Mysql        DBConfig           `yaml:"mysql"`
 	Redis        DBConfig           `yaml:"redis"` // todo redis db type maybe int
+	Consul       RegistryConfig     `yaml:"consul"`
 }
 
 type MicroserviceConfig struct {
@@ -68,6 +69,13 @@ type DBConfig struct {
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 	DB       string `yaml:"db"`
+}
+
+type RegistryConfig struct {
+	Addr                           string `yaml:"addr"`
+	Interval                       string `yaml:"interval"`
+	Timeout                        string `yaml:"timeout"`
+	DeregisterCriticalServiceAfter string `yaml:"deregister_critical_service_after"`
 }
 
 // GetLocalConf gets a local config instance

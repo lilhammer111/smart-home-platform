@@ -3,10 +3,12 @@ package suite
 import (
 	"fmt"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/log"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
+	consulApi "github.com/hashicorp/consul/api"
+	consul "github.com/kitex-contrib/registry-consul"
 	"github.com/pkg/errors"
 	"net"
 
@@ -24,7 +26,7 @@ type BasicSuite struct {
 
 func (bs *BasicSuite) Options() []server.Option {
 	// Set kitex log
-	log.InitKitexLog()
+	//log.InitKitexLog()
 
 	if binding.GetRemoteConf() == nil {
 		klog.Fatalf("GetRemoteConf() returns a nil value: %s",
@@ -64,9 +66,28 @@ func (bs *BasicSuite) Options() []server.Option {
 		klog.Fatalf("failed to resolve tcp addr: %s", err)
 	}
 
+	// service register
+	r, err := consul.NewConsulRegister(
+		binding.GetRemoteConf().Consul.Addr,
+		consul.WithCheck(&consulApi.AgentServiceCheck{
+			Name:                           fmt.Sprintf("%s-check", endpointBasicInfo.ServiceName),
+			Interval:                       "7s",
+			Timeout:                        "5s",
+			DeregisterCriticalServiceAfter: "1m",
+		}),
+	)
+	if err != nil {
+		klog.Fatalf("failed to start register: %s", err)
+	}
+
 	return []server.Option{
 		server.WithServerBasicInfo(&endpointBasicInfo),
 		server.WithServiceAddr(addr),
 		server.WithMuxTransport(),
+		server.WithRegistry(r),
+		server.WithRegistryInfo(&registry.Info{
+			ServiceName: endpointBasicInfo.ServiceName,
+			Addr:        addr,
+		}),
 	}
 }
