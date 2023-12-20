@@ -3,7 +3,7 @@ microservice:
     ip: 127.0.0.1
 log:
     log_level: info
-    log_file_name: "log/user.log"
+    log_file_name: "var/proj_log/micro_user.log"
     log_max_size: 10
     log_max_age: 3
     log_max_backups: 50
@@ -17,3 +17,8 @@ redis:
     username: ""
     password: ""
     db: 0
+consul:
+    addr: "127.0.0.1:8500"
+    internal: "1m"
+    timeout: "5s"
+    deregister_critical_service_after: "30s"

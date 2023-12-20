@@ -20,10 +20,15 @@ var (
 type Config struct {
 	Env string
 
-	Hertz Hertz `yaml:"hertz"`
-	MySQL MySQL `yaml:"mysql"`
-	Redis Redis `yaml:"redis"`
-	Wx    Wx    `yaml:"wx"`
+	Hertz  Hertz  `yaml:"hertz"`
+	MySQL  MySQL  `yaml:"mysql"`
+	Redis  Redis  `yaml:"redis"`
+	Wx     Wx     `yaml:"wx"`
+	Consul Consul `yaml:"consul"`
+}
+
+type Consul struct {
+	Addr string `yaml:"addr"`
 }
 
 type Wx struct {

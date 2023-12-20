@@ -15,17 +15,23 @@ func InitKitexLog() {
 	switch binding.LoadEnv().GetEnv() {
 	case binding.DevelopmentEnv:
 		klog.SetLevel(klog.LevelDebug)
-	case binding.ProductionEnv:
-		//logger := logrus.New()
-		//logger.SetFormatter(&logrus.TextFormatter{
-		//	ForceColors:     true,
-		//	FullTimestamp:   true,
-		//	TimestampFormat: "2006-01-02 15:04:05",
-		//	PadLevelText:    true,
+		//err := os.MkdirAll("./var/proj_log", 0755)
+		//if err != nil {
+		//	klog.Errorf("failed to mkdir: %s", err)
+		//}
+		//file, err := os.OpenFile("./var/proj_log/micro_user.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		//if err != nil {
+		//	klog.Fatalf("failed to open log file: %s", err)
+		//}
+		//klog.SetOutput(file)
+		//klog.SetOutput(&lumberjack.Logger{
+		//	Filename:   binding.GetRemoteConf().Log.LogFileName,
+		//	MaxSize:    binding.GetRemoteConf().Log.LogMaxSize,
+		//	MaxBackups: binding.GetRemoteConf().Log.LogMaxBackups,
+		//	MaxAge:     binding.GetRemoteConf().Log.LogMaxAge,
 		//})
-		klogger := klogrus.NewLogger(
-		//klogrus.WithLogger(logger),
-		)
+	case binding.ProductionEnv:
+		klogger := klogrus.NewLogger()
 		klog.SetLogger(klogger)
 		klog.SetLevel(getLevelByConfig())
 		klog.SetOutput(&lumberjack.Logger{

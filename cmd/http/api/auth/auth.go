@@ -2,10 +2,10 @@ package auth
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
-
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 
 	biz "git.zqbjj.top/pet/services/cmd/http/biz/auth"
@@ -17,6 +17,7 @@ func SendSms(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.SendSmsReq
 	err = c.BindAndValidate(&req)
+	hlog.Errorf("***************** bind error: %s", err)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -108,5 +109,25 @@ func PwdLogin(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// UsernameRegister .
+// @router /api/auth/username_register [POST]
+func UsernameRegister(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req auth.UsernameRegisterReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := biz.NewUsernameRegisterService(ctx, c).Do(&req)
+
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }

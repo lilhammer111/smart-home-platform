@@ -15,8 +15,9 @@ func Register(r *server.Hertz) {
 
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {
-	r.GET("/api/auth/mini_prog_login", mw.JwtMiddleware.LoginHandler)
-	r.GET("/api/auth/mobile_login", mw.JwtMiddleware.LoginHandler)
-	r.POST("/api/auth/mobile_register", mw.JwtMiddleware.LoginHandler)
-	r.GET("/api/auth/pwd_login", mw.JwtMiddleware.LoginHandler)
+	r.GET(mw.PathMobileLogin, mw.JwtMiddleware.LoginHandler)
+	r.GET(mw.PathMiniProgLogin, mw.JwtMiddleware.LoginHandler)
+	r.POST(mw.PathMobileRegister, mw.JwtMiddleware.LoginHandler)
+	r.POST(mw.PathUsernameRegister, mw.JwtMiddleware.LoginHandler)
+	r.GET(mw.PathPwdLogin, mw.JwtMiddleware.LoginHandler)
 }

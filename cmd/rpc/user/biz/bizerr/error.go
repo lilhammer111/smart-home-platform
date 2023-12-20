@@ -1,6 +1,8 @@
 package bizerr
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 )
@@ -27,6 +29,21 @@ type RpcErr struct {
 	code  int32
 	msg   string
 	extra map[string]string
+}
+
+// ServerErrorHandler convert errors that can be serialized
+func ServerErrorHandler(ctx context.Context, err error) error {
+	// if you want to get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
+	// for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
+
+	if errors.Is(err, kerrors.ErrBiz) {
+		err = errors.Unwrap(err)
+	}
+	//if errCode, ok := geterror(err); ok {
+	//	// for Thrift、KitexProtobuf
+	//	return remote.NewTransError(errCode, err)
+	//}
+	return err
 }
 
 func (e *RpcErr) BizStatusCode() int32 {
@@ -60,7 +77,6 @@ func newRpcError(code int32, msg string, err error) *RpcErr {
 
 func NewInternalError(err error) kerrors.BizStatusErrorIface {
 	return newRpcError(CodeInternalError, MsgInternalError, err)
-
 }
 
 func NewNotFoundError(err error) kerrors.BizStatusErrorIface {

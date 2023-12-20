@@ -1,6 +1,7 @@
 package main
 
 import (
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/suite"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user/microuser"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -10,7 +11,7 @@ import (
 func main() {
 	klog.Info("klog debugf works")
 	svr := microuser.NewServer(
-		&MicroUserImpl{},
+		&biz.MicroUserImpl{},
 		server.WithSuite(&suite.BasicSuite{
 			//MicroservicePort: 5555, // 5555 for test
 		}),

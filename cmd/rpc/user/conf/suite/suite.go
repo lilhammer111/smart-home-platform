@@ -3,9 +3,11 @@ package suite
 import (
 	"fmt"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/log"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/cloudwego/kitex/server"
 	consulApi "github.com/hashicorp/consul/api"
 	consul "github.com/kitex-contrib/registry-consul"
@@ -26,7 +28,7 @@ type BasicSuite struct {
 
 func (bs *BasicSuite) Options() []server.Option {
 	// Set kitex log
-	//log.InitKitexLog()
+	log.InitKitexLog()
 
 	if binding.GetRemoteConf() == nil {
 		klog.Fatalf("GetRemoteConf() returns a nil value: %s",
@@ -89,5 +91,6 @@ func (bs *BasicSuite) Options() []server.Option {
 			ServiceName: endpointBasicInfo.ServiceName,
 			Addr:        addr,
 		}),
+		server.WithMetaHandler(transmeta.ServerTTHeaderHandler),
 	}
 }

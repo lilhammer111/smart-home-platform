@@ -45,3 +45,8 @@ func _sendsmsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _usernameregisterMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

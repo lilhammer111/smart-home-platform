@@ -6,6 +6,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/jinzhu/copier"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -32,7 +33,8 @@ func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err er
 	userInfo.Password = string(encryptedPwd)
 
 	if err = db.GetMysql().Create(&userInfo).Error; err != nil {
-		return nil, bizerr.NewInternalError(err)
+		klog.Errorf("failed to create user: %s", err)
+		return nil, err
 	}
 
 	err = copier.Copy(resp, &userInfo)

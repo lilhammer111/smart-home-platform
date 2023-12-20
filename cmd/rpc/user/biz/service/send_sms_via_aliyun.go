@@ -48,8 +48,12 @@ func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common.E
 	}
 
 	smsResp, err := smsSender.smsAssistant.SendSms(smsSender.request)
-	if err != nil || *smsResp.StatusCode != http.StatusOK {
+	if err != nil {
 		klog.Errorf("failed to send sms: %s", err)
+		return nil, bizerr.NewExternalError(err)
+	}
+	if *smsResp.StatusCode != http.StatusOK {
+		klog.Errorf("unexpected response status from sms service: %s", err)
 		return nil, bizerr.NewExternalError(err)
 	}
 

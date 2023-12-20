@@ -21,26 +21,19 @@ var (
 )
 
 const (
-	MsgLoginSuccess   = "login success"
-	MsgLogoutSuccess  = "logout success"
-	MsgRefreshSuccess = "refresh token success"
-)
-
-const (
-	IdentityKey        = "identity"
-	PathMobileLogin    = "/api/auth/mobile_login"
-	PathPwdLogin       = "/api/auth/pwd_login"
-	PathMiniProgLogin  = "/api/auth/mini_prog_login"
-	PathMobileRegister = "/api/auth/mobile_register"
+	IdentityKey          = "identity"
+	PathMobileLogin      = "/api/auth/mobile_login"
+	PathPwdLogin         = "/api/auth/pwd_login"
+	PathMiniProgLogin    = "/api/auth/mini_prog_login"
+	PathMobileRegister   = "/api/auth/mobile_register"
+	PathUsernameRegister = "/api/auth/username_register"
 
 	AdminPathGetUserList = "/api/users/list"
 )
 
 var (
-	ErrMobileExists        = errors.New("mobile number already exists")
-	ErrWrongSmsCode        = errors.New("wrong sms code")
-	ErrInternalError       = errors.New("internal error")
-	ErrMiniProgLoginFailed = errors.New("mini program login failed")
+	ErrMobileExists  = errors.New("mobile number already exists")
+	ErrInternalError = errors.New("internal error")
 )
 
 type JwtRespData struct {
@@ -94,6 +87,8 @@ func InitJwt() {
 				return miniProgLoginAuthenticator(ctx, c)
 			case PathMobileRegister:
 				return mobileRegisterAuthenticator(ctx, c)
+			case PathUsernameRegister:
+				return usernameRegisterAuthenticator(ctx, c)
 			default:
 				return nil, jwt.ErrFailedAuthentication
 			}
@@ -102,7 +97,7 @@ func InitJwt() {
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*user.UserInfo); ok {
 				return jwt.MapClaims{
-					IdentityKey: v.Id,
+					IdentityKey: *v.Id,
 				}
 			}
 			return jwt.MapClaims{}
@@ -247,7 +242,7 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 		SmsCode: req.SmsCode,
 	})
 	if err != nil {
-		return nil, ErrWrongSmsCode
+		return nil, err
 	}
 
 	userInfo, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{
@@ -257,6 +252,23 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 	})
 	if err != nil {
 		return nil, ErrInternalError
+	}
+	return userInfo, nil
+}
+
+func usernameRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
+	var err error
+	userInfo := &user.UserInfo{}
+	req := &auth.UsernameRegisterReq{}
+	err = c.BindAndValidate(req)
+	if err != nil {
+		return nil, jwt.ErrMissingLoginValues
+	}
+
+	userInfo, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: &req.Username, Password: &req.Password})
+	hlog.Errorf("err is: %s", err)
+	if err != nil {
+		return nil, err
 	}
 	return userInfo, nil
 }

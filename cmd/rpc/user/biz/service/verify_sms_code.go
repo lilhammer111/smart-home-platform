@@ -26,7 +26,7 @@ func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *micr
 	resp = &micro_user.RpcVerifyResp{}
 	if err = bcrypt.CompareHashAndPassword([]byte(hashedSmsCode), []byte(req.SmsCode)); err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return resp, nil
+			return nil, bizerr.NewAuthenticationError(bcrypt.ErrMismatchedHashAndPassword)
 		}
 		return nil, bizerr.NewInternalError(err)
 	}

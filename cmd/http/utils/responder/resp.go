@@ -4,8 +4,10 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"net/http"
+	"reflect"
 )
 
 const (
@@ -28,25 +30,32 @@ func setCodeAndMsg(resp *FormattedResp, statusCode int) {
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
 	resp := FormattedResp{}
 	bizErr, isBizErr := kerrors.FromBizStatusError(err)
+	hlog.Debugf("*********************************** unpack err error: %v", bizErr)
+	hlog.Debugf("*********************************** is biz err?  %v", isBizErr)
+	// Though error is not biz err, it's also can be
 	if !isBizErr {
+		hlog.Debugf("*********************************** biz err type : %T", reflect.TypeOf(bizErr))
+		hlog.Debugf("*********************************** origin err type : %T", reflect.TypeOf(err))
 		resp.Message = http.StatusText(http.StatusInternalServerError)
 		setCodeAndMsg(&resp, http.StatusBadGateway)
+	} else {
+		resp.Message = bizErr.BizMessage()
+		switch bizErr.BizStatusCode() {
+		case bizerr.CodeNotFound:
+			resp.Code = http.StatusNotFound
+		case bizerr.CodeAlreadyExists:
+			resp.Code = http.StatusConflict
+		case bizerr.CodeBadRequest:
+			resp.Code = http.StatusBadRequest
+		case bizerr.CodeExternalError:
+			resp.Code = http.StatusBadGateway
+		case bizerr.CodeAuthenticationFailed:
+			resp.Code = http.StatusUnauthorized
+		default:
+			// do nothing
+		}
 	}
-	resp.Message = bizErr.BizMessage()
-	switch bizErr.BizStatusCode() {
-	case bizerr.CodeNotFound:
-		resp.Code = http.StatusNotFound
-	case bizerr.CodeAlreadyExists:
-		resp.Code = http.StatusConflict
-	case bizerr.CodeBadRequest:
-		resp.Code = http.StatusBadRequest
-	case bizerr.CodeExternalError:
-		resp.Code = http.StatusBadGateway
-	case bizerr.CodeAuthenticationFailed:
-		resp.Code = http.StatusUnauthorized
-	default:
-		// do nothing
-	}
+
 	c.JSON(code, resp)
 }
 

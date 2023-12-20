@@ -27,6 +27,7 @@ func Register(r *server.Hertz) {
 			//_auth.POST("/mobile_register", append(_mobileregisterMw(), auth.MobileRegister)...)
 			//_auth.GET("/pwd_login", append(_pwdloginMw(), auth.PwdLogin)...)
 			_auth.GET("/send_sms", append(_sendsmsMw(), auth.SendSms)...)
+			//_auth.POST("/username_register", append(_usernameregisterMw(), auth.UsernameRegister)...)
 		}
 	}
 }
