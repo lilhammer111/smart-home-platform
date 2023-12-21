@@ -1,0 +1,13 @@
+path: conf/dev_conf.yaml
+update_behavior:
+  type: skip
+body: |-
+  nacos:
+    ip: "127.0.0.1"
+    port: 8848
+    username: nacos
+    namespace: ""
+    data_id: "micro_user.yaml"
+    group: 'dev'
+    log_dir: "var/nacos_log/"
+    cache_dir: "var/nacos_cache/"

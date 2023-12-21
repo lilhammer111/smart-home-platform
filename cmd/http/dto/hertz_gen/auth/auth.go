@@ -154,11 +154,11 @@ func (p *SendSmsReq) String() string {
 }
 
 type MobileRegisterReq struct {
-	Mobile   string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
-	SmsCode  string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
-	Username string `thrift:"Username,3,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
+	Mobile   string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')" example:"19535876981"`
+	SmsCode  string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')" example:"159357"`
+	Username string `thrift:"Username,3,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
 	// 4: required string Password (api.body="password", api.vd="regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,16}$')");
-	Password string `thrift:"Password,4,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')"`
+	Password string `thrift:"Password,4,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')" example:"12345678"`
 }
 
 func NewMobileRegisterReq() *MobileRegisterReq {
@@ -651,7 +651,7 @@ func (p *MobileLoginReq) String() string {
 }
 
 type MiniProgLoginReq struct {
-	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required"`
+	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required" example:"033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL"`
 }
 
 func NewMiniProgLoginReq() *MiniProgLoginReq {
@@ -795,9 +795,9 @@ func (p *MiniProgLoginReq) String() string {
 }
 
 type PwdLoginReq struct {
-	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
-	Email    string `thrift:"Email,2,required" form:"email,required" json:"email,required" vd:"regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')"`
-	Password string `thrift:"Password,3,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')"`
+	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
+	Email    string `thrift:"Email,2,required" form:"email,required" json:"email,required" vd:"regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')" example:"wwwwwdemon@gmail.com"`
+	Password string `thrift:"Password,3,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')" example:"12345678"`
 }
 
 func NewPwdLoginReq() *PwdLoginReq {
@@ -1291,8 +1291,8 @@ func (p *AuthInfo) String() string {
 }
 
 type UsernameRegisterReq struct {
-	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
-	Password string `thrift:"Password,2,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')"`
+	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
+	Password string `thrift:"Password,2,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')" example:"12345678"`
 }
 
 func NewUsernameRegisterReq() *UsernameRegisterReq {

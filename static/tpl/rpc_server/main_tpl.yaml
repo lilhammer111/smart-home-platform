@@ -1,0 +1,28 @@
+path: main.go
+update_behavior:
+  type: skip
+body: |-
+  package main
+
+  import (
+    "git.zqbjj.top/lilhammer111/micro-kit/initializer/suite"
+    "github.com/cloudwego/kitex/pkg/klog"
+    {{- if eq .Codec "thrift"}}
+    "github.com/cloudwego/kitex/pkg/transmeta"
+    {{- end }}
+    "github.com/cloudwego/kitex/server"
+    "{{.ImportPath}}/{{ToLower .ServiceName}}"
+  )
+
+  func main() {
+    svr := {{ToLower .ServiceName}}.NewServer(
+        new({{.ServiceName}}Impl),
+        server.WithSuite(&suite.BasicSuite{}),
+    )
+
+    err := svr.Run()
+    if err != nil {
+        klog.Info("############################   failed to run server    ############################\n")
+        klog.Errorf("############################   %s   ############################", err)
+    }
+  }

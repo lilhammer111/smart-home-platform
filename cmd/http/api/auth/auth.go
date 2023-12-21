@@ -12,6 +12,15 @@ import (
 )
 
 // SendSms .
+// @Summary		ask aliyun to send sms
+// @Tags		captcha
+// @Produce		json
+// @Param		mobile	query	string	true	"mobile number"
+// @Success		200				{object}		example.RespOk 						"success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
 // @router /api/auth/send_sms [GET]
 func SendSms(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -32,8 +41,6 @@ func SendSms(ctx context.Context, c *app.RequestContext) {
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
-// MobileRegister .
-// @router /api/auth/mobile_register [POST]
 func MobileRegister(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.MobileRegisterReq
@@ -52,8 +59,6 @@ func MobileRegister(ctx context.Context, c *app.RequestContext) {
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
-// MobileLogin .
-// @router /api/auth/mobile_login [GET]
 func MobileLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.MobileLoginReq
@@ -72,8 +77,6 @@ func MobileLogin(ctx context.Context, c *app.RequestContext) {
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
-// MiniProgLogin .
-// @router /api/auth/mini_prog_login [GET]
 func MiniProgLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.MiniProgLoginReq
@@ -92,8 +95,6 @@ func MiniProgLogin(ctx context.Context, c *app.RequestContext) {
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
-// PwdLogin .
-// @router /api/auth/pwd_login [GET]
 func PwdLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.PwdLoginReq
@@ -112,8 +113,6 @@ func PwdLogin(ctx context.Context, c *app.RequestContext) {
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
-// UsernameRegister .
-// @router /api/auth/username_register [POST]
 func UsernameRegister(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.UsernameRegisterReq

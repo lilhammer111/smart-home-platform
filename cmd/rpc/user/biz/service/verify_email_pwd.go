@@ -7,6 +7,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/gorm"
 
 	"golang.org/x/crypto/bcrypt"
@@ -23,6 +24,7 @@ func NewVerifyEmailPwdService(ctx context.Context) *VerifyEmailPwdService {
 func (s *VerifyEmailPwdService) Run(req *micro_user.RpcVerifyEmailPwdReq) (resp *micro_user.RpcVerifyResp, err error) {
 	userInfo := model.User{}
 	if err = db.GetMysql().Where("email = ?", req.Email).First(&userInfo).Error; err != nil {
+		klog.Error(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, bizerr.NewNotFoundError(err)
 		}
@@ -32,6 +34,7 @@ func (s *VerifyEmailPwdService) Run(req *micro_user.RpcVerifyEmailPwdReq) (resp 
 	resp = &micro_user.RpcVerifyResp{}
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(req.EntryPwd))
 	if err != nil {
+		klog.Error(err)
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 			return resp, bizerr.NewAuthenticationError(err)
 		}

@@ -1,0 +1,955 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/auth/mini_prog_login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login by mini program",
+                "parameters": [
+                    {
+                        "description": "mini program login",
+                        "name": "mini_login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq"
+                        }
+                    },
+                    {
+                        "description": "register form",
+                        "name": "pwd_register_req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.UsernameRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/mobile_login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login by mobile number and sms code",
+                "parameters": [
+                    {
+                        "description": "mobile login form",
+                        "name": "mobile_login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/mobile_register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user register by mobile, sms code and password",
+                "parameters": [
+                    {
+                        "description": "mobile register form",
+                        "name": "mobile_register",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq"
+                        }
+                    },
+                    {
+                        "description": "register form",
+                        "name": "pwd_register_req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.UsernameRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "409": {
+                        "description": "account already exists",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespConflict"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/pwd_login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login by username and password",
+                "parameters": [
+                    {
+                        "description": "password",
+                        "name": "pwd_login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/send_sms": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "captcha"
+                ],
+                "summary": "ask aliyun to send sms",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "mobile number",
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespOk"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/username_register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user register by username and password",
+                "parameters": [
+                    {
+                        "description": "register form",
+                        "name": "pwd_register_req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.UsernameRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "409": {
+                        "description": "account already exists",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespConflict"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/deregister": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "deregister user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "get user detail",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "get user list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/update": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "update user info",
+                "parameters": [
+                    {
+                        "description": "user data",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "auth.UsernameRegisterReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "12345678"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "demon_wang"
+                }
+            }
+        },
+        "example.RespBadRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "bad request"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "example.RespConflict": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 409
+                },
+                "message": {
+                    "type": "string",
+                    "example": "account already exists"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "example.RespInternal": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 500
+                },
+                "message": {
+                    "type": "string",
+                    "example": "internal error"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "example.RespNotFound": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 404
+                },
+                "message": {
+                    "type": "string",
+                    "example": "not found"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "example.RespOk": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/example.UserData"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "ok"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "example.RespUnauthorized": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 401
+                },
+                "message": {
+                    "type": "string",
+                    "example": "authentication fails"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "example.UserData": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 18
+                },
+                "avatar": {
+                    "type": "string",
+                    "example": ""
+                },
+                "email": {
+                    "type": "string",
+                    "example": "wwwwwdemon@gmail.com"
+                },
+                "gender": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "19535876981"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345678"
+                },
+                "profile": {
+                    "type": "string",
+                    "example": "hello,world"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "lilhammer111"
+                }
+            }
+        },
+        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq": {
+            "type": "object",
+            "properties": {
+                "wx_code": {
+                    "type": "string",
+                    "example": "033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL"
+                }
+            }
+        },
+        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string"
+                },
+                "sms_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string",
+                    "example": "19535876981"
+                },
+                "password": {
+                    "description": "4: required string Password (api.body=\"password\", api.vd=\"regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^\u0026*])[A-Za-z\\d@#$%^\u0026*]{8,16}$')\");",
+                    "type": "string",
+                    "example": "12345678"
+                },
+                "sms_code": {
+                    "type": "string",
+                    "example": "159357"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "demon_wang"
+                }
+            }
+        },
+        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "wwwwwdemon@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345678"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "demon_wang"
+                }
+            }
+        },
+        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "profile": {
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Only lowercase letters, numbers and underscores are allowed",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

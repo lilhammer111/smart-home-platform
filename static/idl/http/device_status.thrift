@@ -19,6 +19,10 @@ struct DeviceStatusInfo {
     9: required RecentFeeding RecentFeeding (api.body="recent_feeding");
 }
 
+struct DeviceStatusFilter {
+
+}
+
 // response
 struct DeviceStatusInfoResp {
     1: required common.Resp Meta;

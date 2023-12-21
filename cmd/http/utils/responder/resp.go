@@ -15,7 +15,7 @@ const (
 )
 
 type FormattedResp struct {
-	Success bool   `json:"success"`
+	Success bool   `json:"success" example:"true"`
 	Code    int    `json:"code"`
 	Message string `json:"message,omitempty"`
 	Total   int    `json:"total,omitempty"`
@@ -30,8 +30,8 @@ func setCodeAndMsg(resp *FormattedResp, statusCode int) {
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
 	resp := FormattedResp{}
 	bizErr, isBizErr := kerrors.FromBizStatusError(err)
-	hlog.Debugf("*********************************** unpack err error: %v", bizErr)
-	hlog.Debugf("*********************************** is biz err?  %v", isBizErr)
+	hlog.Debugf("*********************************** err is: %v", err)
+	hlog.Debugf("*********************************** bizErr: %v", bizErr)
 	// Though error is not biz err, it's also can be
 	if !isBizErr {
 		hlog.Debugf("*********************************** biz err type : %T", reflect.TypeOf(bizErr))

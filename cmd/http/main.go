@@ -3,7 +3,9 @@
 package main
 
 import (
+	"fmt"
 	"git.zqbjj.top/pet/services/cmd/http/conf"
+	_ "git.zqbjj.top/pet/services/cmd/http/docs"
 	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"git.zqbjj.top/pet/services/cmd/http/router"
 	"git.zqbjj.top/pet/services/cmd/http/utils/regis"
@@ -16,6 +18,8 @@ import (
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/logger/accesslog"
 	"github.com/hertz-contrib/pprof"
+	"github.com/hertz-contrib/swagger"
+	swaggerFiles "github.com/swaggo/files"
 )
 
 func main() {
@@ -78,4 +82,8 @@ func registerMiddleware(h *server.Hertz) {
 
 	// cores
 	h.Use(cors.Default())
+
+	// swagger
+	url := swagger.URL(fmt.Sprintf("http://%s/swagger/doc.json", conf.GetConf().Hertz.Address))
+	h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
 }

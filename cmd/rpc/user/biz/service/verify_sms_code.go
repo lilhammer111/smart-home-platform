@@ -6,6 +6,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,11 +21,13 @@ func NewVerifySmsCodeService(ctx context.Context) *VerifySmsCodeService {
 func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *micro_user.RpcVerifyResp, err error) {
 	hashedSmsCode, err := db.GetRedis().Get(context.Background(), req.Mobile).Result()
 	if err != nil {
+		klog.Error(err)
 		return nil, bizerr.NewExternalError(err)
 	}
 
 	resp = &micro_user.RpcVerifyResp{}
 	if err = bcrypt.CompareHashAndPassword([]byte(hashedSmsCode), []byte(req.SmsCode)); err != nil {
+		klog.Error(err)
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 			return nil, bizerr.NewAuthenticationError(bcrypt.ErrMismatchedHashAndPassword)
 		}

@@ -1,0 +1,608 @@
+definitions:
+  auth.UsernameRegisterReq:
+    properties:
+      password:
+        example: "12345678"
+        type: string
+      username:
+        example: demon_wang
+        type: string
+    type: object
+  example.RespBadRequest:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: bad request
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  example.RespConflict:
+    properties:
+      code:
+        example: 409
+        type: integer
+      message:
+        example: account already exists
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  example.RespInternal:
+    properties:
+      code:
+        example: 500
+        type: integer
+      message:
+        example: internal error
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  example.RespNotFound:
+    properties:
+      code:
+        example: 404
+        type: integer
+      message:
+        example: not found
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  example.RespOk:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/example.UserData'
+      message:
+        example: ok
+        type: string
+      success:
+        example: true
+        type: boolean
+      total:
+        example: 1
+        type: integer
+    type: object
+  example.RespUnauthorized:
+    properties:
+      code:
+        example: 401
+        type: integer
+      message:
+        example: authentication fails
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  example.UserData:
+    properties:
+      age:
+        example: 18
+        type: integer
+      avatar:
+        example: ""
+        type: string
+      email:
+        example: wwwwwdemon@gmail.com
+        type: string
+      gender:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      mobile:
+        example: "19535876981"
+        type: string
+      password:
+        example: "12345678"
+        type: string
+      profile:
+        example: hello,world
+        type: string
+      username:
+        example: lilhammer111
+        type: string
+    type: object
+  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq:
+    properties:
+      wx_code:
+        example: 033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL
+        type: string
+    type: object
+  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq:
+    properties:
+      mobile:
+        type: string
+      sms_code:
+        type: string
+    type: object
+  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq:
+    properties:
+      mobile:
+        example: "19535876981"
+        type: string
+      password:
+        description: '4: required string Password (api.body="password", api.vd="regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,16}$'')");'
+        example: "12345678"
+        type: string
+      sms_code:
+        example: "159357"
+        type: string
+      username:
+        example: demon_wang
+        type: string
+    type: object
+  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq:
+    properties:
+      email:
+        example: wwwwwdemon@gmail.com
+        type: string
+      password:
+        example: "12345678"
+        type: string
+      username:
+        example: demon_wang
+        type: string
+    type: object
+  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo:
+    properties:
+      age:
+        type: integer
+      avatar:
+        type: string
+      email:
+        type: string
+      gender:
+        type: integer
+      id:
+        type: integer
+      mobile:
+        type: string
+      password:
+        type: string
+      profile:
+        type: string
+      username:
+        description: Only lowercase letters, numbers and underscores are allowed
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/auth/mini_prog_login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: mini program login
+        in: body
+        name: mini_login
+        required: true
+        schema:
+          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq'
+      - description: register form
+        in: body
+        name: pwd_register_req
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UsernameRegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: user login by mini program
+      tags:
+      - auth
+  /api/auth/mobile_login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: mobile login form
+        in: body
+        name: mobile_login
+        required: true
+        schema:
+          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: user login by mobile number and sms code
+      tags:
+      - auth
+  /api/auth/mobile_register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: mobile register form
+        in: body
+        name: mobile_register
+        required: true
+        schema:
+          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq'
+      - description: register form
+        in: body
+        name: pwd_register_req
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UsernameRegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "409":
+          description: account already exists
+          schema:
+            $ref: '#/definitions/example.RespConflict'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: user register by mobile, sms code and password
+      tags:
+      - auth
+  /api/auth/pwd_login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: password
+        in: body
+        name: pwd_login
+        required: true
+        schema:
+          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: user login by username and password
+      tags:
+      - auth
+  /api/auth/send_sms:
+    get:
+      parameters:
+      - description: mobile number
+        in: query
+        name: mobile
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/example.RespOk'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: ask aliyun to send sms
+      tags:
+      - captcha
+  /api/auth/username_register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: register form
+        in: body
+        name: pwd_register_req
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UsernameRegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "409":
+          description: account already exists
+          schema:
+            $ref: '#/definitions/example.RespConflict'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: user register by username and password
+      tags:
+      - auth
+  /api/users/deregister:
+    delete:
+      parameters:
+      - description: user id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: deregister user
+      tags:
+      - users
+  /api/users/detail:
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get user detail
+      tags:
+      - users
+  /api/users/list:
+    get:
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get user list
+      tags:
+      - users
+  /api/users/update:
+    put:
+      parameters:
+      - description: user data
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update user info
+      tags:
+      - users
+swagger: "2.0"

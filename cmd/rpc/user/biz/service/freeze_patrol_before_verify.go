@@ -42,6 +42,7 @@ func (s *FreezePatrolBeforeVerifyService) Run(req *micro_user.RpcFreezeReq) (res
 
 	res, err := db.GetRedis().Get(context.Background(), getFrozenDurationKey(userInfo.ID)).Result()
 	if err != nil {
+		klog.Error(err)
 		if errors.Is(err, redis.Nil) {
 			return resp, nil
 		}

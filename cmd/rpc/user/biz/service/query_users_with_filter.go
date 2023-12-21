@@ -31,10 +31,12 @@ func (s *QueryUsersWithFilterService) Run(req *user.UsersFilter) (resp []*user.U
 		return nil, bizerr.NewInternalError(res.Error)
 	}
 	if res.RowsAffected == 0 {
+		klog.Debug("rows affected is 0")
 		// Proactively generating a rpc business error
 		return nil, bizerr.NewNotFoundError(gorm.ErrRecordNotFound)
 	}
 
+	resp = make([]*user.UserInfo, 0)
 	err = copier.CopyWithOption(&resp, userInfos, copier.Option{DeepCopy: true})
 	if err != nil {
 		klog.Errorf("failed to deep copy user infos to resp: %s", err)

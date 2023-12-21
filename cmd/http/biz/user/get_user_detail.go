@@ -30,6 +30,7 @@ func (h *GetUserDetailService) Do(req *common.Req) (resp *user.UserInfo, err err
 	if err != nil {
 		return nil, err
 	}
+	resp = &user.UserInfo{}
 	if err = copier.Copy(resp, userInfo); err != nil {
 		return nil, err
 	}

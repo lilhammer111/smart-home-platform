@@ -6,8 +6,8 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
 
 	"github.com/tidwall/gjson"
@@ -27,7 +27,7 @@ func (s *RequestOpenIdService) Run(req *micro_user.RpcRequestOpenIdReq) (resp *m
 	cli := &client.Client{}
 	cli, err = client.NewClient()
 	if err != nil {
-		hlog.Errorf("failed to create a http client: %s", err)
+		klog.Errorf("failed to create a http client: %s", err)
 		return nil, bizerr.NewInternalError(err)
 	}
 
@@ -43,7 +43,7 @@ func (s *RequestOpenIdService) Run(req *micro_user.RpcRequestOpenIdReq) (resp *m
 	)
 	err = cli.Do(context.Background(), httpReq, httpResp)
 	if err != nil {
-		hlog.Errorf("failed to do request: %s", err)
+		klog.Errorf("failed to do request: %s", err)
 		return nil, bizerr.NewExternalError(err)
 	}
 	//type MiniProgResp struct {

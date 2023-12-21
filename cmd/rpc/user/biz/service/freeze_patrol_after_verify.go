@@ -7,6 +7,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"strconv"
 	"time"
 )
@@ -29,6 +30,7 @@ func (s *FreezePatrolAfterVerifyService) Run(req *micro_user.RpcAfterVerifyReq) 
 	if req.VerifyPassed {
 		err = db.GetRedis().Set(context.Background(), getVerifyFailedKey(req.UserId), 0, 0).Err()
 		if err != nil {
+			klog.Error(err)
 			return nil, bizerr.NewExternalError(err)
 		}
 
@@ -36,24 +38,35 @@ func (s *FreezePatrolAfterVerifyService) Run(req *micro_user.RpcAfterVerifyReq) 
 	}
 	// If verification failed, let the total number of failures be added by one
 	count, err := db.GetRedis().Incr(context.Background(), getVerifyFailedKey(req.UserId)).Result()
+	if err != nil {
+		klog.Error(err)
+		return nil, bizerr.NewExternalError(err)
+	}
 	// If it's first time failing verification
 	var currentDuration, lastDuration string
 	if count == 1 {
 		err = db.GetRedis().SetEx(context.Background(), getFrozenDurationKey(req.UserId), initialFrozenDuration, initialFrozenDuration).Err()
+		if err != nil {
+			klog.Error(err)
+			return nil, bizerr.NewExternalError(err)
+		}
 		currentDuration = time.Now().Add(initialFrozenDuration).String()
 	} else {
 		lastDuration, err = db.GetRedis().Get(context.Background(), getFrozenDurationKey(req.UserId)).Result()
 		if err != nil {
+			klog.Error(err)
 			return nil, bizerr.NewExternalError(err)
 		}
 		var duration int64
 		duration, err = strconv.ParseInt(lastDuration, 10, 0)
 		if err != nil {
+			klog.Error(err)
 			return nil, bizerr.NewInternalError(err)
 		}
 
 		err = db.GetRedis().SetEx(context.Background(), getFrozenDurationKey(req.UserId), duration*2, time.Duration(duration*2)).Err()
 		if err != nil {
+			klog.Error(err)
 			return nil, bizerr.NewExternalError(err)
 		}
 		currentDuration = time.Now().Add(time.Duration(duration * 2)).String()

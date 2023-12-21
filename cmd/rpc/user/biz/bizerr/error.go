@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	CodeUnknown int32 = iota
+	CodeUnknown int32 = 11 + iota
 	CodeNotFound
 	CodeBadRequest
 	CodeAlreadyExists

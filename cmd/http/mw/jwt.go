@@ -11,6 +11,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"net/http"
 	"time"
 
 	"github.com/hertz-contrib/jwt"
@@ -32,8 +33,7 @@ const (
 )
 
 var (
-	ErrMobileExists  = errors.New("mobile number already exists")
-	ErrInternalError = errors.New("internal error")
+	ErrMobileExists = errors.New("mobile number already exists")
 )
 
 type JwtRespData struct {
@@ -75,7 +75,11 @@ func InitJwt() {
 			return e.Error()
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			responder.SendErrResponse(ctx, c, code, err)
+			c.JSON(http.StatusOK, responder.FormattedResp{
+				Success: false,
+				Code:    code,
+				Message: message,
+			})
 		},
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 			switch string(c.Path()) {
@@ -123,18 +127,31 @@ func InitJwt() {
 	}
 }
 
+// @Summary		user login by mobile number and sms code
+// @Tags		auth
+// @Accept    	json
+// @Produce		json
+// @Param		mobile_login	body	auth.MobileLoginReq	true	"mobile login form"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/auth/mobile_login [POST]
 func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
 	req := &auth.MobileLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
 
 	// check if the account was frozen
 	patrolResp, err := micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Mobile: &req.Mobile})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
@@ -143,6 +160,7 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 		SmsCode: req.SmsCode,
 	})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
@@ -151,16 +169,29 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 		VerifyPassed: verifyResp.VerifyPassed,
 	})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
 	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
-		return nil, ErrInternalError
+		hlog.Error(err)
+		return nil, err
 	}
 	return userInfo, nil
 }
 
+// @Summary		user login by username and password
+// @Tags		auth
+// @Accept    	json
+// @Produce		json
+// @Param		pwd_login	body	auth.PwdLoginReq	true	"password"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/auth/pwd_login [POST]
 func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
@@ -168,12 +199,14 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 	req := &auth.PwdLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
 
 	// check if the account was frozen
 	patrolResp, err := micro_user_cli.FreezePatrolBeforeVerify(ctx, &micro_user.RpcFreezeReq{Username: &req.Username})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
@@ -182,6 +215,7 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 		EntryPwd: req.Password,
 	})
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrFailedAuthentication
 	}
 
@@ -190,22 +224,37 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 		VerifyPassed: verifyResp.VerifyPassed,
 	})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
 	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
-		return nil, ErrInternalError
+		hlog.Error(err)
+		return nil, err
 	}
 	return userInfo, nil
 }
 
+// @Summary		user login by mini program
+// @Tags		auth
+// @Accept    	json
+// @Produce		json
+// @Param		mini_login	body		auth.MiniProgLoginReq	true	"mini program login"
+// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/auth/mini_prog_login [POST]
 func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
 	req := &auth.MiniProgLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
 
@@ -214,26 +263,50 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 		Secret: conf.GetConf().Wx.Secret,
 		Appid:  conf.GetConf().Wx.Appid,
 	})
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
 	userInfo, err = micro_user_cli.FindUserByOpenid(ctx, &micro_user.RpcFindUserByOpenidReq{Openid: miniProgResp.OpenId})
 	if err != nil {
-		hlog.Errorf("failed to get userinfo by openid: %s", err)
+		hlog.Error(err)
 		return nil, err
 	}
 	return userInfo, nil
 }
 
+// @Summary		user register by mobile, sms code and password
+// @Accept    	json
+// @Tags		auth
+// @Produce		json
+// @Param		mobile_register	body		auth.MobileRegisterReq	true	"mobile register form"
+// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		409 			{object}		example.RespConflict				"account already exists"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/auth/mobile_register [POST]
 func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
 	req := &auth.MobileRegisterReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
 
+	// If user has existed, generate an error of 'account exists'
 	userInfo, err = micro_user_cli.FindUserByMobile(ctx, &micro_user.RpcFindUserByMobileReq{Mobile: req.Mobile})
-	if err == nil && userInfo != nil {
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+	if userInfo != nil {
+		hlog.Error(err)
 		return nil, ErrMobileExists
 	}
 
@@ -242,6 +315,7 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 		SmsCode: req.SmsCode,
 	})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 
@@ -251,23 +325,38 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 		Password: &req.Password,
 	})
 	if err != nil {
-		return nil, ErrInternalError
+		hlog.Error(err)
+		return nil, err
 	}
 	return userInfo, nil
 }
 
+// @Summary		user register by username and password
+// @Tags		auth
+// @Accept 		json
+// @Produce		json
+// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		409 			{object}		example.RespConflict				"account already exists"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/auth/username_register [POST]
 func usernameRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
 	userInfo := &user.UserInfo{}
 	req := &auth.UsernameRegisterReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
+		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
 
 	userInfo, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: &req.Username, Password: &req.Password})
 	hlog.Errorf("err is: %s", err)
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 	return userInfo, nil

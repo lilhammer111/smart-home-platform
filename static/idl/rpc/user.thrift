@@ -81,6 +81,7 @@ service micro_user {
     RpcVerifyResp VerifySmsCode(1: RpcVerifyCodeReq req);
     RpcVerifyResp VerifyUsernamePwd(1: RpcVerifyUsernamePwdReq req);
     RpcVerifyResp VerifyEmailPwd(1: RpcVerifyEmailPwdReq req);
+
     user.UserInfo FindUser (1: RpcFindUserReq req);
     user.UserInfo FindUserByOpenid (1:RpcFindUserByOpenidReq req);
     user.UserInfo FindUserByMobile (1: RpcFindUserByMobileReq req);

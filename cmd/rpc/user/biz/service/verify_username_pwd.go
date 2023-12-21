@@ -7,6 +7,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -22,6 +23,7 @@ func NewVerifyUsernamePwdService(ctx context.Context) *VerifyUsernamePwdService 
 func (s *VerifyUsernamePwdService) Run(req *micro_user.RpcVerifyUsernamePwdReq) (resp *micro_user.RpcVerifyResp, err error) {
 	userInfo := model.User{}
 	if err = db.GetMysql().Where("username = ?", req.Username).First(&userInfo).Error; err != nil {
+		klog.Error(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, bizerr.NewNotFoundError(err)
 		}
@@ -31,6 +33,7 @@ func (s *VerifyUsernamePwdService) Run(req *micro_user.RpcVerifyUsernamePwdReq) 
 	resp = &micro_user.RpcVerifyResp{}
 	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(req.EntryPwd))
 	if err != nil {
+		klog.Error(err)
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 			return resp, bizerr.NewAuthenticationError(err)
 		}

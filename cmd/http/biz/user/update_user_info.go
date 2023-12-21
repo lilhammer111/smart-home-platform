@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
@@ -26,13 +27,17 @@ func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfo, err
 	//}()
 	rpcReq := rpcUser.UserInfo{}
 	if err = copier.Copy(&rpcReq, req); err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
-	userInfo, err := micro_user_cli.UpdateUser(h.Context, &rpcReq)
+	userInfoPtr, err := micro_user_cli.UpdateUser(h.Context, &rpcReq)
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
-	if err = copier.Copy(resp, userInfo); err != nil {
+	resp = &user.UserInfo{}
+	if err = copier.Copy(resp, userInfoPtr); err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 	return

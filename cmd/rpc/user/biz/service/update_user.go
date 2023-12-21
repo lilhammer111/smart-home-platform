@@ -6,6 +6,8 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/jinzhu/copier"
 )
 
 type UpdateUserService struct {
@@ -22,5 +24,12 @@ func (s *UpdateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err er
 	if err = db.GetMysql().Model(&userInfo).Updates(req).Error; err != nil {
 		return nil, bizerr.NewInternalError(err)
 	}
+
+	resp = &user.UserInfo{}
+	if err = copier.Copy(resp, &userInfo); err != nil {
+		klog.Error(err)
+		return nil, err
+	}
+
 	return
 }
