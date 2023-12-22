@@ -7,7 +7,9 @@ import (
 
 type QueryDevicesWithFilterService struct {
 	ctx context.Context
-} // NewQueryDevicesWithFilterService new QueryDevicesWithFilterService
+}
+
+// NewQueryDevicesWithFilterService new QueryDevicesWithFilterService
 func NewQueryDevicesWithFilterService(ctx context.Context) *QueryDevicesWithFilterService {
 	return &QueryDevicesWithFilterService{ctx: ctx}
 }

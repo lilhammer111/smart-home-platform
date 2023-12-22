@@ -11,13 +11,13 @@ import (
 )
 
 type DeviceFilter struct {
-	State     *int8   `thrift:"State,1,optional" frugal:"1,optional,i8" example:"7"`
-	Page      *int16  `thrift:"Page,2,optional" frugal:"2,optional,i16" example:"1"`
-	Limit     *int16  `thrift:"Limit,3,optional" frugal:"3,optional,i16" example:"1"`
-	Sort      *string `thrift:"Sort,4,optional" frugal:"4,optional,string" example:"name_asc"`
-	Search    *string `thrift:"Search,5,optional" frugal:"5,optional,string" example:"hello,device"`
-	StartDate *string `thrift:"StartDate,6,optional" frugal:"6,optional,string" example:"2023_02_01"`
-	EndDate   *string `thrift:"EndDate,7,optional" frugal:"7,optional,string" example:"2023_02_05"`
+	State     *int8    `thrift:"State,1,optional" frugal:"1,optional,i8" example:"7"`
+	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" example:"1"`
+	Limit     *int16   `thrift:"Limit,3,optional" frugal:"3,optional,i16" example:"1"`
+	Sorts     []string `thrift:"Sorts,4,optional" frugal:"4,optional,list<string>" example:"owner_id desc"`
+	Search    *string  `thrift:"Search,5,optional" frugal:"5,optional,string" example:"hello,device"`
+	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" example:"2023-12-22"`
+	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" example:"2024-02-05"`
 }
 
 func NewDeviceFilter() *DeviceFilter {
@@ -55,13 +55,13 @@ func (p *DeviceFilter) GetLimit() (v int16) {
 	return *p.Limit
 }
 
-var DeviceFilter_Sort_DEFAULT string
+var DeviceFilter_Sorts_DEFAULT []string
 
-func (p *DeviceFilter) GetSort() (v string) {
-	if !p.IsSetSort() {
-		return DeviceFilter_Sort_DEFAULT
+func (p *DeviceFilter) GetSorts() (v []string) {
+	if !p.IsSetSorts() {
+		return DeviceFilter_Sorts_DEFAULT
 	}
-	return *p.Sort
+	return p.Sorts
 }
 
 var DeviceFilter_Search_DEFAULT string
@@ -99,8 +99,8 @@ func (p *DeviceFilter) SetPage(val *int16) {
 func (p *DeviceFilter) SetLimit(val *int16) {
 	p.Limit = val
 }
-func (p *DeviceFilter) SetSort(val *string) {
-	p.Sort = val
+func (p *DeviceFilter) SetSorts(val []string) {
+	p.Sorts = val
 }
 func (p *DeviceFilter) SetSearch(val *string) {
 	p.Search = val
@@ -116,7 +116,7 @@ var fieldIDToName_DeviceFilter = map[int16]string{
 	1: "State",
 	2: "Page",
 	3: "Limit",
-	4: "Sort",
+	4: "Sorts",
 	5: "Search",
 	6: "StartDate",
 	7: "EndDate",
@@ -134,8 +134,8 @@ func (p *DeviceFilter) IsSetLimit() bool {
 	return p.Limit != nil
 }
 
-func (p *DeviceFilter) IsSetSort() bool {
-	return p.Sort != nil
+func (p *DeviceFilter) IsSetSorts() bool {
+	return p.Sorts != nil
 }
 
 func (p *DeviceFilter) IsSetSearch() bool {
@@ -200,7 +200,7 @@ func (p *DeviceFilter) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -296,11 +296,24 @@ func (p *DeviceFilter) ReadField3(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *DeviceFilter) ReadField4(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
 		return err
-	} else {
-		p.Sort = &v
+	}
+	p.Sorts = make([]string, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem string
+		if v, err := iprot.ReadString(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		p.Sorts = append(p.Sorts, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -439,11 +452,19 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 func (p *DeviceFilter) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSort() {
-		if err = oprot.WriteFieldBegin("Sort", thrift.STRING, 4); err != nil {
+	if p.IsSetSorts() {
+		if err = oprot.WriteFieldBegin("Sorts", thrift.LIST, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Sort); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Sorts)); err != nil {
+			return err
+		}
+		for _, v := range p.Sorts {
+			if err := oprot.WriteString(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -533,7 +554,7 @@ func (p *DeviceFilter) DeepEqual(ano *DeviceFilter) bool {
 	if !p.Field3DeepEqual(ano.Limit) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.Sort) {
+	if !p.Field4DeepEqual(ano.Sorts) {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.Search) {
@@ -584,15 +605,16 @@ func (p *DeviceFilter) Field3DeepEqual(src *int16) bool {
 	}
 	return true
 }
-func (p *DeviceFilter) Field4DeepEqual(src *string) bool {
+func (p *DeviceFilter) Field4DeepEqual(src []string) bool {
 
-	if p.Sort == src {
-		return true
-	} else if p.Sort == nil || src == nil {
+	if len(p.Sorts) != len(src) {
 		return false
 	}
-	if strings.Compare(*p.Sort, *src) != 0 {
-		return false
+	for i, v := range p.Sorts {
+		_src := src[i]
+		if strings.Compare(v, _src) != 0 {
+			return false
+		}
 	}
 	return true
 }

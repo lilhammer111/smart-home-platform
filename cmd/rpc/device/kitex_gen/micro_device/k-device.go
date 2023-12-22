@@ -191,7 +191,7 @@ func (p *RpcReduceLocReq) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				l, err = p.FastReadField1(buf[offset:])
 				offset += l
 				if err != nil {
@@ -249,7 +249,7 @@ RequiredFieldNotSetError:
 func (p *RpcReduceLocReq) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI16(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -289,8 +289,8 @@ func (p *RpcReduceLocReq) BLength() int {
 
 func (p *RpcReduceLocReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I16, 1)
+	offset += bthrift.Binary.WriteI16(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -298,8 +298,8 @@ func (p *RpcReduceLocReq) fastWriteField1(buf []byte, binaryWriter bthrift.Binar
 
 func (p *RpcReduceLocReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.Id)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I16, 1)
+	l += bthrift.Binary.I16Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -329,7 +329,7 @@ func (p *RpcFindLocReq) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				l, err = p.FastReadField1(buf[offset:])
 				offset += l
 				if err != nil {
@@ -387,7 +387,7 @@ RequiredFieldNotSetError:
 func (p *RpcFindLocReq) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI16(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -427,8 +427,8 @@ func (p *RpcFindLocReq) BLength() int {
 
 func (p *RpcFindLocReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I16, 1)
+	offset += bthrift.Binary.WriteI16(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -436,8 +436,8 @@ func (p *RpcFindLocReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryW
 
 func (p *RpcFindLocReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.Id)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I16, 1)
+	l += bthrift.Binary.I16Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -468,7 +468,7 @@ func (p *LocationData) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				l, err = p.FastReadField1(buf[offset:])
 				offset += l
 				if err != nil {
@@ -546,7 +546,7 @@ RequiredFieldNotSetError:
 func (p *LocationData) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI16(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -602,8 +602,8 @@ func (p *LocationData) BLength() int {
 
 func (p *LocationData) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I16, 1)
+	offset += bthrift.Binary.WriteI16(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -620,8 +620,8 @@ func (p *LocationData) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWr
 
 func (p *LocationData) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.Id)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I16, 1)
+	l += bthrift.Binary.I16Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

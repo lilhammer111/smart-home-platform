@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-service_name="micro_user"
-file="user.thrift"
+service_name="micro_device"
+file="device.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path
@@ -17,10 +17,10 @@ cd ../../cmd/http || exit
 # update the http service
 cwgo client --type RPC \
             --idl "../../static/idl/rpc/$file" \
-            --template ../../static/tpl/custom_rpc_client_tpl/ \
+            --template ../../static/tpl/rpc_client/ \
             --service $service_name \
-            --module git.zqbjj.top/pet/services/cmd/http \
-            --pass "--thrift code_ref"
+            --module git.zqbjj.top/pet/services/cmd/http
+
 
 
 go mod tidy

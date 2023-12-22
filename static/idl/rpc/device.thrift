@@ -8,15 +8,15 @@ struct RpcExpandLocReq {
 }
 
 struct RpcReduceLocReq {
-    1: required i32 Id;
+    1: required i16 Id;
 }
 
 struct RpcFindLocReq {
-    1: required i32 Id;
+    1: required i16 Id;
 }
 
 struct LocationData {
-    1: required i32 Id;
+    1: required i16 Id;
     2: required string Title;
 }
 

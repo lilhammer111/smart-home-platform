@@ -455,8 +455,8 @@ func (p *MobileRegisterReq) String() string {
 }
 
 type MobileLoginReq struct {
-	Mobile  string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
-	SmsCode string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
+	Mobile  string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')" example:"19535876981"`
+	SmsCode string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')" example:"159357"`
 }
 
 func NewMobileLoginReq() *MobileLoginReq {

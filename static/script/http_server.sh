@@ -2,7 +2,7 @@
 
 # specify the service you need to update and the idl file
 service_name="pet_api"
-file="user.thrift"
+file="alert.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path
@@ -19,7 +19,7 @@ cwgo server \
     --type HTTP --service "$service_name" \
     --module "git.zqbjj.top/pet/services/cmd/http" \
     --idl "../../static/idl/http/$file" \
-    --template "../../static/tpl/custom_http_server_tpl" \
+    --template "../../static/tpl/http_server" \
     --pass "--handler_dir ./api/" \
     --pass "--router_dir ./router/" \
     --pass "--model_dir ./dto/hertz_gen/" \

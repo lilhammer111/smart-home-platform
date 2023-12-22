@@ -27,6 +27,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "user login by mini program",
+                "operationId": "LoginByMiniProg",
                 "parameters": [
                     {
                         "description": "mini program login",
@@ -35,15 +36,6 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq"
-                        }
-                    },
-                    {
-                        "description": "register form",
-                        "name": "pwd_register_req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.UsernameRegisterReq"
                         }
                     }
                 ],
@@ -105,6 +97,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "user login by mobile number and sms code",
+                "operationId": "LoginByMobile",
                 "parameters": [
                     {
                         "description": "mobile login form",
@@ -174,6 +167,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "user register by mobile, sms code and password",
+                "operationId": "RegisterByMobile",
                 "parameters": [
                     {
                         "description": "mobile register form",
@@ -182,15 +176,6 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq"
-                        }
-                    },
-                    {
-                        "description": "register form",
-                        "name": "pwd_register_req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.UsernameRegisterReq"
                         }
                     }
                 ],
@@ -258,6 +243,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "user login by username and password",
+                "operationId": "LoginByPwd",
                 "parameters": [
                     {
                         "description": "password",
@@ -324,6 +310,7 @@ const docTemplate = `{
                     "captcha"
                 ],
                 "summary": "ask aliyun to send sms",
+                "operationId": "SendSms",
                 "parameters": [
                     {
                         "type": "string",
@@ -379,6 +366,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "user register by username and password",
+                "operationId": "RegisterByUsername",
                 "parameters": [
                     {
                         "description": "register form",
@@ -442,6 +430,71 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/users/current": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "get current user info",
+                "operationId": "GetCurUserInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.UserData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/deregister": {
             "delete": {
                 "produces": [
@@ -451,7 +504,15 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "deregister user",
+                "operationId": "DeregisterUser",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "user id",
@@ -515,12 +576,20 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "get user detail",
+                "operationId": "GetUserDetail",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "id",
                         "name": "id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -579,7 +648,15 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "get user list",
+                "operationId": "GetUserList",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "page",
@@ -648,14 +725,22 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "update user info",
+                "operationId": "UpdateUserInfo",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "user data",
                         "name": "users",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo"
+                            "$ref": "#/definitions/example.UserData"
                         }
                     }
                 ],
@@ -883,10 +968,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "mobile": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "19535876981"
                 },
                 "sms_code": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "159357"
                 }
             }
         },
@@ -926,39 +1013,6 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "demon_wang"
-                }
-            }
-        },
-        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo": {
-            "type": "object",
-            "properties": {
-                "age": {
-                    "type": "integer"
-                },
-                "avatar": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "gender": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "mobile": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "profile": {
-                    "type": "string"
-                },
-                "username": {
-                    "description": "Only lowercase letters, numbers and underscores are allowed",
-                    "type": "string"
                 }
             }
         }

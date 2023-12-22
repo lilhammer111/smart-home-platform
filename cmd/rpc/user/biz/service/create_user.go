@@ -32,6 +32,8 @@ func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err er
 		return nil, bizerr.NewInternalError(err)
 	}
 
+	klog.Debugf("************** user info : %+v", userInfo)
+
 	encryptedPwd, err := bcrypt.GenerateFromPassword([]byte(userInfo.Password), bcrypt.DefaultCost)
 	if err != nil {
 		klog.Error(err)

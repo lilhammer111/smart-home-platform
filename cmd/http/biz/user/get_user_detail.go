@@ -4,6 +4,7 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
@@ -28,10 +29,12 @@ func (h *GetUserDetailService) Do(req *common.Req) (resp *user.UserInfo, err err
 	// todo edit your code
 	userInfo, err := micro_user_cli.FindUser(h.Context, &micro_user.RpcFindUserReq{UserId: req.Id})
 	if err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 	resp = &user.UserInfo{}
 	if err = copier.Copy(resp, userInfo); err != nil {
+		hlog.Error(err)
 		return nil, err
 	}
 	return

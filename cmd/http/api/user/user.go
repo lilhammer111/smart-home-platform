@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"git.zqbjj.top/lilhammer111/micro-kit/utils/responder"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
@@ -13,9 +13,11 @@ import (
 )
 
 // GetUserList .
+// @id			GetUserList
 // @Summary		get user list
 // @Tags		users
 // @Produce		json
+// @Param        Authorization  header    string  true  "Bearer User's access token"
 // @Param		page	query	string	false	"page"
 // @Param		limit	query	string	false	"limit"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
@@ -44,10 +46,12 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetUserDetail .
+// @id			GetUserDetail
 // @Summary		get user detail
 // @Tags		users
 // @Produce		json
-// @Param		id		path	int	true	"id"
+// @Param        Authorization  header    string  true  "Bearer User's access token"
+// @Param		id		query	int	true	"id"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -69,16 +73,18 @@ func GetUserDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.Set(responder.SuccessMessage, "getting user details success")
+	c.Set(responder.SuccessMessage, "getting user details succeed")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // UpdateUserInfo .
+// @id			UpdateUserInfo
 // @Summary		update user info
 // @Tags		users
 // @Access		json
 // @Produce		json
-// @Param		users	body	user.UserInfo	true	"user data"
+// @Param        Authorization  header    string  true  "Bearer User's access token"
+// @Param		users	body	example.UserData	true	"user data"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -100,14 +106,16 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.Set(responder.SuccessMessage, "updating user information success")
+	c.Set(responder.SuccessMessage, "updating user information succeed")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 
 // DeregisterUser .
+// @id			DeregisterUser
 // @Summary		deregister user
 // @Tags		users
 // @Produce		json
+// @Param        Authorization  header    string  true  "Bearer User's access token"
 // @Param		id	query	string	true	"user id"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
@@ -130,6 +138,38 @@ func DeregisterUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.Set(responder.SuccessMessage, "deregister success")
+	c.Set(responder.SuccessMessage, "deregister succeed")
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// GetCurUserInfo .
+// @id			GetCurUserInfo
+// @Summary		get current user info
+// @Tags		users
+// @Produce		json
+// @Param        Authorization  header    string  true  "Bearer User's access token"
+// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/users/current [GET]
+func GetCurUserInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req common.Empty
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := biz.NewGetCurUserInfoService(ctx, c).Do(&req)
+
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	c.Set(responder.SuccessMessage, "get current user info succeed")
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }

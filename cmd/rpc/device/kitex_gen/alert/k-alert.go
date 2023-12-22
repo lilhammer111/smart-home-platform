@@ -104,7 +104,7 @@ func (p *AlertFilter) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 5:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.LIST {
 				l, err = p.FastReadField5(buf[offset:])
 				offset += l
 				if err != nil {
@@ -134,6 +134,20 @@ func (p *AlertFilter) FastRead(buf []byte) (int, error) {
 		case 7:
 			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField7(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.BOOL {
+				l, err = p.FastReadField8(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
@@ -235,12 +249,29 @@ func (p *AlertFilter) FastReadField4(buf []byte) (int, error) {
 func (p *AlertFilter) FastReadField5(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	offset += l
+	if err != nil {
+		return offset, err
+	}
+	p.Sorts = make([]string, 0, size)
+	for i := 0; i < size; i++ {
+		var _elem string
+		if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+
+			_elem = v
+
+		}
+
+		p.Sorts = append(p.Sorts, _elem)
+	}
+	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-		p.Sort = &v
-
 	}
 	return offset, nil
 }
@@ -271,6 +302,19 @@ func (p *AlertFilter) FastReadField7(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *AlertFilter) FastReadField8(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadBool(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		p.IsOngoing = &v
+
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *AlertFilter) FastWrite(buf []byte) int {
 	return 0
@@ -284,6 +328,7 @@ func (p *AlertFilter) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWri
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField8(buf[offset:], binaryWriter)
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField7(buf[offset:], binaryWriter)
@@ -304,6 +349,7 @@ func (p *AlertFilter) BLength() int {
 		l += p.field5Length()
 		l += p.field6Length()
 		l += p.field7Length()
+		l += p.field8Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -356,10 +402,18 @@ func (p *AlertFilter) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWri
 
 func (p *AlertFilter) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	if p.IsSetSort() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Sort", thrift.STRING, 5)
-		offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, *p.Sort)
+	if p.IsSetSorts() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Sorts", thrift.LIST, 5)
+		listBeginOffset := offset
+		offset += bthrift.Binary.ListBeginLength(thrift.STRING, 0)
+		var length int
+		for _, v := range p.Sorts {
+			length++
+			offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, v)
 
+		}
+		bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.STRING, length)
+		offset += bthrift.Binary.WriteListEnd(buf[offset:])
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
 	return offset
@@ -381,6 +435,17 @@ func (p *AlertFilter) fastWriteField7(buf []byte, binaryWriter bthrift.BinaryWri
 	if p.IsSetEndDate() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "EndDate", thrift.STRING, 7)
 		offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, *p.EndDate)
+
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
+	return offset
+}
+
+func (p *AlertFilter) fastWriteField8(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	if p.IsSetIsOngoing() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "IsOngoing", thrift.BOOL, 8)
+		offset += bthrift.Binary.WriteBool(buf[offset:], *p.IsOngoing)
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
@@ -433,10 +498,14 @@ func (p *AlertFilter) field4Length() int {
 
 func (p *AlertFilter) field5Length() int {
 	l := 0
-	if p.IsSetSort() {
-		l += bthrift.Binary.FieldBeginLength("Sort", thrift.STRING, 5)
-		l += bthrift.Binary.StringLengthNocopy(*p.Sort)
+	if p.IsSetSorts() {
+		l += bthrift.Binary.FieldBeginLength("Sorts", thrift.LIST, 5)
+		l += bthrift.Binary.ListBeginLength(thrift.STRING, len(p.Sorts))
+		for _, v := range p.Sorts {
+			l += bthrift.Binary.StringLengthNocopy(v)
 
+		}
+		l += bthrift.Binary.ListEndLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
 	return l
@@ -464,6 +533,17 @@ func (p *AlertFilter) field7Length() int {
 	return l
 }
 
+func (p *AlertFilter) field8Length() int {
+	l := 0
+	if p.IsSetIsOngoing() {
+		l += bthrift.Binary.FieldBeginLength("IsOngoing", thrift.BOOL, 8)
+		l += bthrift.Binary.BoolLength(*p.IsOngoing)
+
+		l += bthrift.Binary.FieldEndLength()
+	}
+	return l
+}
+
 func (p *AlertInfo) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
@@ -476,6 +556,7 @@ func (p *AlertInfo) FastRead(buf []byte) (int, error) {
 	var issetDesc bool = false
 	var issetFirstAlarm bool = false
 	var issetLastAlarm bool = false
+	var issetIsOngoing bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -596,6 +677,21 @@ func (p *AlertInfo) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 8:
+			if fieldTypeId == thrift.BOOL {
+				l, err = p.FastReadField8(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetIsOngoing = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -643,6 +739,11 @@ func (p *AlertInfo) FastRead(buf []byte) (int, error) {
 
 	if !issetLastAlarm {
 		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetIsOngoing {
+		fieldId = 8
 		goto RequiredFieldNotSetError
 	}
 	return offset, nil
@@ -759,6 +860,20 @@ func (p *AlertInfo) FastReadField7(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *AlertInfo) FastReadField8(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadBool(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.IsOngoing = v
+
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *AlertInfo) FastWrite(buf []byte) int {
 	return 0
@@ -772,6 +887,7 @@ func (p *AlertInfo) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWrite
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
+		offset += p.fastWriteField8(buf[offset:], binaryWriter)
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField7(buf[offset:], binaryWriter)
@@ -792,6 +908,7 @@ func (p *AlertInfo) BLength() int {
 		l += p.field5Length()
 		l += p.field6Length()
 		l += p.field7Length()
+		l += p.field8Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -863,6 +980,15 @@ func (p *AlertInfo) fastWriteField7(buf []byte, binaryWriter bthrift.BinaryWrite
 	return offset
 }
 
+func (p *AlertInfo) fastWriteField8(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "IsOngoing", thrift.BOOL, 8)
+	offset += bthrift.Binary.WriteBool(buf[offset:], p.IsOngoing)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
 func (p *AlertInfo) field1Length() int {
 	l := 0
 	if p.IsSetId() {
@@ -923,6 +1049,15 @@ func (p *AlertInfo) field7Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("LastAlarm", thrift.STRING, 7)
 	l += bthrift.Binary.StringLengthNocopy(p.LastAlarm)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *AlertInfo) field8Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("IsOngoing", thrift.BOOL, 8)
+	l += bthrift.Binary.BoolLength(p.IsOngoing)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

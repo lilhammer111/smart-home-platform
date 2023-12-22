@@ -2,8 +2,8 @@ package auth
 
 import (
 	"context"
+	"git.zqbjj.top/lilhammer111/micro-kit/utils/responder"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -12,6 +12,7 @@ import (
 )
 
 // SendSms .
+// @id			SendSms
 // @Summary		ask aliyun to send sms
 // @Tags		captcha
 // @Produce		json

@@ -14,7 +14,9 @@ import (
 
 type FindAllLocationEnumService struct {
 	ctx context.Context
-} // NewFindAllLocationEnumService new FindAllLocationEnumService
+}
+
+// NewFindAllLocationEnumService new FindAllLocationEnumService
 func NewFindAllLocationEnumService(ctx context.Context) *FindAllLocationEnumService {
 	return &FindAllLocationEnumService{ctx: ctx}
 }

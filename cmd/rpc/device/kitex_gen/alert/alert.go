@@ -11,13 +11,14 @@ import (
 )
 
 type AlertFilter struct {
-	Page      *int16  `thrift:"Page,2,optional" frugal:"2,optional,i16" json:"Page,omitempty"`
-	Limit     *int16  `thrift:"Limit,1,optional" frugal:"1,optional,i16" json:"Limit,omitempty"`
-	Level     *int8   `thrift:"Level,3,optional" frugal:"3,optional,i8" json:"Level,omitempty"`
-	DeviceId  *int32  `thrift:"DeviceId,4,optional" frugal:"4,optional,i32" json:"DeviceId,omitempty"`
-	Sort      *string `thrift:"Sort,5,optional" frugal:"5,optional,string" json:"Sort,omitempty"`
-	StartDate *string `thrift:"StartDate,6,optional" frugal:"6,optional,string" json:"StartDate,omitempty"`
-	EndDate   *string `thrift:"EndDate,7,optional" frugal:"7,optional,string" json:"EndDate,omitempty"`
+	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" example:"1"`
+	Limit     *int16   `thrift:"Limit,1,optional" frugal:"1,optional,i16" example:"1"`
+	Level     *int8    `thrift:"Level,3,optional" frugal:"3,optional,i8" example:"1"`
+	DeviceId  *int32   `thrift:"DeviceId,4,optional" frugal:"4,optional,i32" example:"1"`
+	Sorts     []string `thrift:"Sorts,5,optional" frugal:"5,optional,list<string>" example:"device_id desc"`
+	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" example:"2023-12-22"`
+	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" example:"2024-02-10"`
+	IsOngoing *bool    `thrift:"IsOngoing,8,optional" frugal:"8,optional,bool" example:"true"`
 }
 
 func NewAlertFilter() *AlertFilter {
@@ -64,13 +65,13 @@ func (p *AlertFilter) GetDeviceId() (v int32) {
 	return *p.DeviceId
 }
 
-var AlertFilter_Sort_DEFAULT string
+var AlertFilter_Sorts_DEFAULT []string
 
-func (p *AlertFilter) GetSort() (v string) {
-	if !p.IsSetSort() {
-		return AlertFilter_Sort_DEFAULT
+func (p *AlertFilter) GetSorts() (v []string) {
+	if !p.IsSetSorts() {
+		return AlertFilter_Sorts_DEFAULT
 	}
-	return *p.Sort
+	return p.Sorts
 }
 
 var AlertFilter_StartDate_DEFAULT string
@@ -90,6 +91,15 @@ func (p *AlertFilter) GetEndDate() (v string) {
 	}
 	return *p.EndDate
 }
+
+var AlertFilter_IsOngoing_DEFAULT bool
+
+func (p *AlertFilter) GetIsOngoing() (v bool) {
+	if !p.IsSetIsOngoing() {
+		return AlertFilter_IsOngoing_DEFAULT
+	}
+	return *p.IsOngoing
+}
 func (p *AlertFilter) SetPage(val *int16) {
 	p.Page = val
 }
@@ -102,8 +112,8 @@ func (p *AlertFilter) SetLevel(val *int8) {
 func (p *AlertFilter) SetDeviceId(val *int32) {
 	p.DeviceId = val
 }
-func (p *AlertFilter) SetSort(val *string) {
-	p.Sort = val
+func (p *AlertFilter) SetSorts(val []string) {
+	p.Sorts = val
 }
 func (p *AlertFilter) SetStartDate(val *string) {
 	p.StartDate = val
@@ -111,15 +121,19 @@ func (p *AlertFilter) SetStartDate(val *string) {
 func (p *AlertFilter) SetEndDate(val *string) {
 	p.EndDate = val
 }
+func (p *AlertFilter) SetIsOngoing(val *bool) {
+	p.IsOngoing = val
+}
 
 var fieldIDToName_AlertFilter = map[int16]string{
 	2: "Page",
 	1: "Limit",
 	3: "Level",
 	4: "DeviceId",
-	5: "Sort",
+	5: "Sorts",
 	6: "StartDate",
 	7: "EndDate",
+	8: "IsOngoing",
 }
 
 func (p *AlertFilter) IsSetPage() bool {
@@ -138,8 +152,8 @@ func (p *AlertFilter) IsSetDeviceId() bool {
 	return p.DeviceId != nil
 }
 
-func (p *AlertFilter) IsSetSort() bool {
-	return p.Sort != nil
+func (p *AlertFilter) IsSetSorts() bool {
+	return p.Sorts != nil
 }
 
 func (p *AlertFilter) IsSetStartDate() bool {
@@ -148,6 +162,10 @@ func (p *AlertFilter) IsSetStartDate() bool {
 
 func (p *AlertFilter) IsSetEndDate() bool {
 	return p.EndDate != nil
+}
+
+func (p *AlertFilter) IsSetIsOngoing() bool {
+	return p.IsOngoing != nil
 }
 
 func (p *AlertFilter) Read(iprot thrift.TProtocol) (err error) {
@@ -210,7 +228,7 @@ func (p *AlertFilter) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 5:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -232,6 +250,16 @@ func (p *AlertFilter) Read(iprot thrift.TProtocol) (err error) {
 		case 7:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
 				break
@@ -305,11 +333,24 @@ func (p *AlertFilter) ReadField4(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *AlertFilter) ReadField5(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
 		return err
-	} else {
-		p.Sort = &v
+	}
+	p.Sorts = make([]string, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem string
+		if v, err := iprot.ReadString(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		p.Sorts = append(p.Sorts, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -328,6 +369,15 @@ func (p *AlertFilter) ReadField7(iprot thrift.TProtocol) error {
 		return err
 	} else {
 		p.EndDate = &v
+	}
+	return nil
+}
+func (p *AlertFilter) ReadField8(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		p.IsOngoing = &v
 	}
 	return nil
 }
@@ -364,6 +414,10 @@ func (p *AlertFilter) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -457,11 +511,19 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *AlertFilter) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSort() {
-		if err = oprot.WriteFieldBegin("Sort", thrift.STRING, 5); err != nil {
+	if p.IsSetSorts() {
+		if err = oprot.WriteFieldBegin("Sorts", thrift.LIST, 5); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Sort); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Sorts)); err != nil {
+			return err
+		}
+		for _, v := range p.Sorts {
+			if err := oprot.WriteString(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -510,6 +572,24 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
+func (p *AlertFilter) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetIsOngoing() {
+		if err = oprot.WriteFieldBegin("IsOngoing", thrift.BOOL, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.IsOngoing); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
 
 func (p *AlertFilter) String() string {
 	if p == nil {
@@ -536,13 +616,16 @@ func (p *AlertFilter) DeepEqual(ano *AlertFilter) bool {
 	if !p.Field4DeepEqual(ano.DeviceId) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.Sort) {
+	if !p.Field5DeepEqual(ano.Sorts) {
 		return false
 	}
 	if !p.Field6DeepEqual(ano.StartDate) {
 		return false
 	}
 	if !p.Field7DeepEqual(ano.EndDate) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.IsOngoing) {
 		return false
 	}
 	return true
@@ -596,15 +679,16 @@ func (p *AlertFilter) Field4DeepEqual(src *int32) bool {
 	}
 	return true
 }
-func (p *AlertFilter) Field5DeepEqual(src *string) bool {
+func (p *AlertFilter) Field5DeepEqual(src []string) bool {
 
-	if p.Sort == src {
-		return true
-	} else if p.Sort == nil || src == nil {
+	if len(p.Sorts) != len(src) {
 		return false
 	}
-	if strings.Compare(*p.Sort, *src) != 0 {
-		return false
+	for i, v := range p.Sorts {
+		_src := src[i]
+		if strings.Compare(v, _src) != 0 {
+			return false
+		}
 	}
 	return true
 }
@@ -632,15 +716,28 @@ func (p *AlertFilter) Field7DeepEqual(src *string) bool {
 	}
 	return true
 }
+func (p *AlertFilter) Field8DeepEqual(src *bool) bool {
+
+	if p.IsOngoing == src {
+		return true
+	} else if p.IsOngoing == nil || src == nil {
+		return false
+	}
+	if *p.IsOngoing != *src {
+		return false
+	}
+	return true
+}
 
 type AlertInfo struct {
-	Id         *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" json:"Id,omitempty"`
-	DeviceId   int32  `thrift:"DeviceId,4,required" frugal:"4,required,i32" json:"DeviceId"`
-	Count      int8   `thrift:"Count,2,required" frugal:"2,required,i8" json:"Count"`
-	Level      int8   `thrift:"Level,3,required" frugal:"3,required,i8" json:"Level"`
-	Desc       string `thrift:"Desc,5,required" frugal:"5,required,string" json:"Desc"`
-	FirstAlarm string `thrift:"FirstAlarm,6,required" frugal:"6,required,string" json:"FirstAlarm"`
-	LastAlarm  string `thrift:"LastAlarm,7,required" frugal:"7,required,string" json:"LastAlarm"`
+	Id         *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" example:"1"`
+	DeviceId   int32  `thrift:"DeviceId,4,required" frugal:"4,required,i32" example:"1"`
+	Count      int8   `thrift:"Count,2,required" frugal:"2,required,i8" example:"50"`
+	Level      int8   `thrift:"Level,3,required" frugal:"3,required,i8" example:"1"`
+	Desc       string `thrift:"Desc,5,required" frugal:"5,required,string" example:"hello,alert"`
+	FirstAlarm string `thrift:"FirstAlarm,6,required" frugal:"6,required,string" example:"2023-12-22 15:16:00"`
+	LastAlarm  string `thrift:"LastAlarm,7,required" frugal:"7,required,string" example:"2023-12-30 15:16:00"`
+	IsOngoing  bool   `thrift:"IsOngoing,8,required" frugal:"8,required,bool" example:"true"`
 }
 
 func NewAlertInfo() *AlertInfo {
@@ -683,6 +780,10 @@ func (p *AlertInfo) GetFirstAlarm() (v string) {
 func (p *AlertInfo) GetLastAlarm() (v string) {
 	return p.LastAlarm
 }
+
+func (p *AlertInfo) GetIsOngoing() (v bool) {
+	return p.IsOngoing
+}
 func (p *AlertInfo) SetId(val *int32) {
 	p.Id = val
 }
@@ -704,6 +805,9 @@ func (p *AlertInfo) SetFirstAlarm(val string) {
 func (p *AlertInfo) SetLastAlarm(val string) {
 	p.LastAlarm = val
 }
+func (p *AlertInfo) SetIsOngoing(val bool) {
+	p.IsOngoing = val
+}
 
 var fieldIDToName_AlertInfo = map[int16]string{
 	1: "Id",
@@ -713,6 +817,7 @@ var fieldIDToName_AlertInfo = map[int16]string{
 	5: "Desc",
 	6: "FirstAlarm",
 	7: "LastAlarm",
+	8: "IsOngoing",
 }
 
 func (p *AlertInfo) IsSetId() bool {
@@ -729,6 +834,7 @@ func (p *AlertInfo) Read(iprot thrift.TProtocol) (err error) {
 	var issetDesc bool = false
 	var issetFirstAlarm bool = false
 	var issetLastAlarm bool = false
+	var issetIsOngoing bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -820,6 +926,17 @@ func (p *AlertInfo) Read(iprot thrift.TProtocol) (err error) {
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 8:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetIsOngoing = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -860,6 +977,11 @@ func (p *AlertInfo) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetLastAlarm {
 		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetIsOngoing {
+		fieldId = 8
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -943,6 +1065,15 @@ func (p *AlertInfo) ReadField7(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
+func (p *AlertInfo) ReadField8(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		p.IsOngoing = v
+	}
+	return nil
+}
 
 func (p *AlertInfo) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -976,6 +1107,10 @@ func (p *AlertInfo) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -1110,6 +1245,22 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
+func (p *AlertInfo) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("IsOngoing", thrift.BOOL, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteBool(p.IsOngoing); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
 
 func (p *AlertInfo) String() string {
 	if p == nil {
@@ -1143,6 +1294,9 @@ func (p *AlertInfo) DeepEqual(ano *AlertInfo) bool {
 		return false
 	}
 	if !p.Field7DeepEqual(ano.LastAlarm) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.IsOngoing) {
 		return false
 	}
 	return true
@@ -1198,6 +1352,13 @@ func (p *AlertInfo) Field6DeepEqual(src string) bool {
 func (p *AlertInfo) Field7DeepEqual(src string) bool {
 
 	if strings.Compare(p.LastAlarm, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *AlertInfo) Field8DeepEqual(src bool) bool {
+
+	if p.IsOngoing != src {
 		return false
 	}
 	return true

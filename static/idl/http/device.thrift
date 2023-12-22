@@ -6,16 +6,16 @@ struct DeviceFilter {
     1: optional i8 State (api.query="state", api.vd="len($)<=8 && len($)>=0" ,go.tag="example:\"7\"")
     2: optional i16 Page (api.query="page", api.vd="$>=0" ,go.tag="example:\"1\"");
     3: optional i16 Limit (api.query="limit", api.vd="$>0" ,go.tag="example:\"1\"");
-    4: optional string Sort (api.query="sort", api.vd="regexp('^[a-zA-Z]+_(asc|desc)$')" ,go.tag="example:\"name_asc\"");
+    4: optional list<string> Sorts (api.query="sorts", api.vd="range($, regexp('^[a-zA-Z]+ (asc|desc)$', #v))" ,go.tag="example:\"owner_id desc\"");
     5: optional string Search (api.query="search", api.vd="regexp('^[\p{L}\p{N}\p{Lo}]+$')" ,go.tag="example:\"hello,device\"");
-    6: optional string StartDate (api.query="start_date", api.vd="regexp('^\d{4}_\d{2}_\d{2}$')" ,go.tag="example:\"2023_02_01\"");
-    7: optional string EndDate (api.query="end_date", api.vd="regexp('^\d{4}_\d{2}_\d{2}$')" ,go.tag="example:\"2023_02_05\"");
+    6: optional string StartDate (api.query="start_date", api.vd="regexp('^\d{4}-\d{2}-\d{2}$')" ,go.tag="example:\"2023-12-22\"");
+    7: optional string EndDate (api.query="end_date", api.vd="regexp('^\d{4}-\d{2}-\d{2}$')" ,go.tag="example:\"2024-02-05\"");
 }
 
 struct DeviceInfo {
     1: optional i32 Id (api.body="id",go.tag="example:\"1\"");
-    10: required i32 OwnerId (api.body="id" ,go.tag="example:\"1\"");
-    11: required i32 ProductId (api.body="id" ,go.tag="example:\"1\"");
+    10: required i32 OwnerId (api.body="owner_id" ,go.tag="example:\"1\"");
+    11: required i32 ProductId (api.body="product_id" ,go.tag="example:\"1\"");
     2: required string SerialNo (api.body="serial_no" ,go.tag="example:\"KEwju0rKOlKCDAxUnDzQI\"");
     3: required string Name (api.body="name", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')" ,go.tag="example:\"demon's feeder\"");
     4: required i8 State (api.body="state", go.tag="example:\"8\"")

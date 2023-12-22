@@ -124,8 +124,10 @@ definitions:
   git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq:
     properties:
       mobile:
+        example: "19535876981"
         type: string
       sms_code:
+        example: "159357"
         type: string
     type: object
   git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq:
@@ -156,28 +158,6 @@ definitions:
         example: demon_wang
         type: string
     type: object
-  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo:
-    properties:
-      age:
-        type: integer
-      avatar:
-        type: string
-      email:
-        type: string
-      gender:
-        type: integer
-      id:
-        type: integer
-      mobile:
-        type: string
-      password:
-        type: string
-      profile:
-        type: string
-      username:
-        description: Only lowercase letters, numbers and underscores are allowed
-        type: string
-    type: object
 info:
   contact: {}
 paths:
@@ -185,6 +165,7 @@ paths:
     post:
       consumes:
       - application/json
+      operationId: LoginByMiniProg
       parameters:
       - description: mini program login
         in: body
@@ -192,12 +173,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq'
-      - description: register form
-        in: body
-        name: pwd_register_req
-        required: true
-        schema:
-          $ref: '#/definitions/auth.UsernameRegisterReq'
       produces:
       - application/json
       responses:
@@ -233,6 +208,7 @@ paths:
     post:
       consumes:
       - application/json
+      operationId: LoginByMobile
       parameters:
       - description: mobile login form
         in: body
@@ -275,6 +251,7 @@ paths:
     post:
       consumes:
       - application/json
+      operationId: RegisterByMobile
       parameters:
       - description: mobile register form
         in: body
@@ -282,12 +259,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq'
-      - description: register form
-        in: body
-        name: pwd_register_req
-        required: true
-        schema:
-          $ref: '#/definitions/auth.UsernameRegisterReq'
       produces:
       - application/json
       responses:
@@ -327,6 +298,7 @@ paths:
     post:
       consumes:
       - application/json
+      operationId: LoginByPwd
       parameters:
       - description: password
         in: body
@@ -367,6 +339,7 @@ paths:
       - auth
   /api/auth/send_sms:
     get:
+      operationId: SendSms
       parameters:
       - description: mobile number
         in: query
@@ -403,6 +376,7 @@ paths:
     post:
       consumes:
       - application/json
+      operationId: RegisterByUsername
       parameters:
       - description: register form
         in: body
@@ -445,9 +419,55 @@ paths:
       summary: user register by username and password
       tags:
       - auth
+  /api/users/current:
+    get:
+      operationId: GetCurUserInfo
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UserData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get current user info
+      tags:
+      - users
   /api/users/deregister:
     delete:
+      operationId: DeregisterUser
       parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: user id
         in: query
         name: id
@@ -486,9 +506,15 @@ paths:
       - users
   /api/users/detail:
     get:
+      operationId: GetUserDetail
       parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: id
-        in: path
+        in: query
         name: id
         required: true
         type: integer
@@ -525,7 +551,13 @@ paths:
       - users
   /api/users/list:
     get:
+      operationId: GetUserList
       parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: page
         in: query
         name: page
@@ -567,13 +599,19 @@ paths:
       - users
   /api/users/update:
     put:
+      operationId: UpdateUserInfo
       parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: user data
         in: body
         name: users
         required: true
         schema:
-          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_user.UserInfo'
+          $ref: '#/definitions/example.UserData'
       produces:
       - application/json
       responses:

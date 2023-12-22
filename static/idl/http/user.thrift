@@ -21,6 +21,7 @@ struct UserInfo {
 
 
 service user {
+    UserInfo GetCurUserInfo(1: common.Empty req) (api.get="/api/users/current");
     list<UserInfo> GetUserList(1: UsersFilter req) (api.get="/api/users/list");
     UserInfo GetUserDetail(1: common.Req req) (api.get="/api/users/detail");
     UserInfo UpdateUserInfo(1: UserInfo req) (api.put="/api/users/update");

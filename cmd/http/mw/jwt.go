@@ -9,8 +9,10 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 	"net/http"
 	"time"
 
@@ -22,12 +24,14 @@ var (
 )
 
 const (
-	IdentityKey          = "identity"
+	IdentityKey = "uid"
+
 	PathMobileLogin      = "/api/auth/mobile_login"
 	PathPwdLogin         = "/api/auth/pwd_login"
 	PathMiniProgLogin    = "/api/auth/mini_prog_login"
 	PathMobileRegister   = "/api/auth/mobile_register"
 	PathUsernameRegister = "/api/auth/username_register"
+	PathRefreshPath      = "/api/auth/refresh"
 
 	AdminPathGetUserList = "/api/users/list"
 )
@@ -99,18 +103,23 @@ func InitJwt() {
 		},
 		IdentityKey: IdentityKey,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*user.UserInfo); ok {
+			if v, ok := data.(*model.User); ok {
+				hlog.Info("payload func type assert success")
+				hlog.Infof("v is %+v", v)
 				return jwt.MapClaims{
-					IdentityKey: *v.Id,
+					IdentityKey: v.ID,
 				}
 			}
 			return jwt.MapClaims{}
 		},
 		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
 			claims := jwt.ExtractClaims(ctx, c)
-			return &user.UserInfo{
-				Id: claims[IdentityKey].(*int32),
-			}
+			hlog.Infof("claims is %+v", claims)
+			userInfo := model.User{}
+			uid := claims[IdentityKey].(float64)
+			userInfo.ID = int32(uid)
+			hlog.Info("user info id is: %d", userInfo.ID)
+			return &userInfo
 		},
 		Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
 			switch string(c.Path()) {
@@ -128,6 +137,7 @@ func InitJwt() {
 }
 
 // @Summary		user login by mobile number and sms code
+// @id			LoginByMobile
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
@@ -140,7 +150,6 @@ func InitJwt() {
 // @router /api/auth/mobile_login [POST]
 func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	userInfo := &user.UserInfo{}
 	req := &auth.MobileLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
@@ -173,15 +182,25 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 		return nil, err
 	}
 
-	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
+	findResp := &user.UserInfo{}
+	findResp, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
-	return userInfo, nil
+
+	userInfo := model.User{}
+	err = copier.Copy(&userInfo, findResp)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	return &userInfo, nil
 }
 
 // @Summary		user login by username and password
+// @id			LoginByPwd
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
@@ -194,7 +213,6 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 // @router /api/auth/pwd_login [POST]
 func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	userInfo := &user.UserInfo{}
 	// todo the pwdLoginReq struct may need to be modified
 	req := &auth.PwdLoginReq{}
 	err = c.BindAndValidate(req)
@@ -228,20 +246,29 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, err
 	}
 
-	userInfo, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
+	findResp := &user.UserInfo{}
+	findResp, err = micro_user_cli.FindUser(ctx, &micro_user.RpcFindUserReq{UserId: patrolResp.UserId})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
-	return userInfo, nil
+
+	userInfo := model.User{}
+	err = copier.Copy(&userInfo, findResp)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	return &userInfo, nil
 }
 
 // @Summary		user login by mini program
+// @id			LoginByMiniProg
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
 // @Param		mini_login	body		auth.MiniProgLoginReq	true	"mini program login"
-// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -250,7 +277,6 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 // @router /api/auth/mini_prog_login [POST]
 func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	userInfo := &user.UserInfo{}
 	req := &auth.MiniProgLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
@@ -268,20 +294,29 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 		return nil, err
 	}
 
-	userInfo, err = micro_user_cli.FindUserByOpenid(ctx, &micro_user.RpcFindUserByOpenidReq{Openid: miniProgResp.OpenId})
+	findResp := &user.UserInfo{}
+	findResp, err = micro_user_cli.FindUserByOpenid(ctx, &micro_user.RpcFindUserByOpenidReq{Openid: miniProgResp.OpenId})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
-	return userInfo, nil
+
+	userInfo := model.User{}
+	err = copier.Copy(&userInfo, findResp)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	return &userInfo, nil
 }
 
 // @Summary		user register by mobile, sms code and password
+// @id			RegisterByMobile
 // @Accept    	json
 // @Tags		auth
 // @Produce		json
 // @Param		mobile_register	body		auth.MobileRegisterReq	true	"mobile register form"
-// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
 // @Success		200				{object}		example.RespOk{data=example.UserData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -291,21 +326,21 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 // @router /api/auth/mobile_register [POST]
 func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	userInfo := &user.UserInfo{}
+
 	req := &auth.MobileRegisterReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
 		hlog.Error(err)
 		return nil, jwt.ErrMissingLoginValues
 	}
-
+	findResp := &user.UserInfo{}
 	// If user has existed, generate an error of 'account exists'
-	userInfo, err = micro_user_cli.FindUserByMobile(ctx, &micro_user.RpcFindUserByMobileReq{Mobile: req.Mobile})
+	findResp, err = micro_user_cli.FindUserByMobile(ctx, &micro_user.RpcFindUserByMobileReq{Mobile: req.Mobile})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
-	if userInfo != nil {
+	if findResp != nil {
 		hlog.Error(err)
 		return nil, ErrMobileExists
 	}
@@ -319,7 +354,8 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 		return nil, err
 	}
 
-	userInfo, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{
+	createResp := &user.UserInfo{}
+	createResp, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{
 		Mobile:   &req.Mobile,
 		Username: &req.Username,
 		Password: &req.Password,
@@ -328,10 +364,19 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 		hlog.Error(err)
 		return nil, err
 	}
-	return userInfo, nil
+
+	userInfo := model.User{}
+	err = copier.Copy(&userInfo, createResp)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	return &userInfo, nil
 }
 
 // @Summary		user register by username and password
+// @id			RegisterByUsername
 // @Tags		auth
 // @Accept 		json
 // @Produce		json
@@ -345,7 +390,6 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 // @router /api/auth/username_register [POST]
 func usernameRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	userInfo := &user.UserInfo{}
 	req := &auth.UsernameRegisterReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
@@ -353,11 +397,19 @@ func usernameRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (
 		return nil, jwt.ErrMissingLoginValues
 	}
 
-	userInfo, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: &req.Username, Password: &req.Password})
+	createResp := &user.UserInfo{}
+	createResp, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: &req.Username, Password: &req.Password})
 	hlog.Errorf("err is: %s", err)
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
-	return userInfo, nil
+
+	userInfo := model.User{}
+	err = copier.Copy(&userInfo, createResp)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+	return &userInfo, nil
 }

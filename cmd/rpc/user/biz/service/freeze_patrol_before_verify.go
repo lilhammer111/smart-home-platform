@@ -42,10 +42,11 @@ func (s *FreezePatrolBeforeVerifyService) Run(req *micro_user.RpcFreezeReq) (res
 
 	res, err := db.GetRedis().Get(context.Background(), getFrozenDurationKey(userInfo.ID)).Result()
 	if err != nil {
-		klog.Error(err)
 		if errors.Is(err, redis.Nil) {
+			klog.Info("account is in normal")
 			return resp, nil
 		}
+		klog.Error(err)
 		return nil, bizerr.NewExternalError(err)
 	}
 	// Proactively generating a rpc business error

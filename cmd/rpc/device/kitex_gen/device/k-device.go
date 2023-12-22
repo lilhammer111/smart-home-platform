@@ -90,7 +90,7 @@ func (p *DeviceFilter) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.LIST {
 				l, err = p.FastReadField4(buf[offset:])
 				offset += l
 				if err != nil {
@@ -222,12 +222,29 @@ func (p *DeviceFilter) FastReadField3(buf []byte) (int, error) {
 func (p *DeviceFilter) FastReadField4(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	offset += l
+	if err != nil {
+		return offset, err
+	}
+	p.Sorts = make([]string, 0, size)
+	for i := 0; i < size; i++ {
+		var _elem string
+		if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+
+			_elem = v
+
+		}
+
+		p.Sorts = append(p.Sorts, _elem)
+	}
+	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-		p.Sort = &v
-
 	}
 	return offset, nil
 }
@@ -345,10 +362,18 @@ func (p *DeviceFilter) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWr
 
 func (p *DeviceFilter) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	if p.IsSetSort() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Sort", thrift.STRING, 4)
-		offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, *p.Sort)
+	if p.IsSetSorts() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Sorts", thrift.LIST, 4)
+		listBeginOffset := offset
+		offset += bthrift.Binary.ListBeginLength(thrift.STRING, 0)
+		var length int
+		for _, v := range p.Sorts {
+			length++
+			offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, v)
 
+		}
+		bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.STRING, length)
+		offset += bthrift.Binary.WriteListEnd(buf[offset:])
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
 	return offset
@@ -422,10 +447,14 @@ func (p *DeviceFilter) field3Length() int {
 
 func (p *DeviceFilter) field4Length() int {
 	l := 0
-	if p.IsSetSort() {
-		l += bthrift.Binary.FieldBeginLength("Sort", thrift.STRING, 4)
-		l += bthrift.Binary.StringLengthNocopy(*p.Sort)
+	if p.IsSetSorts() {
+		l += bthrift.Binary.FieldBeginLength("Sorts", thrift.LIST, 4)
+		l += bthrift.Binary.ListBeginLength(thrift.STRING, len(p.Sorts))
+		for _, v := range p.Sorts {
+			l += bthrift.Binary.StringLengthNocopy(v)
 
+		}
+		l += bthrift.Binary.ListEndLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
 	return l

@@ -6,7 +6,11 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
+	"os"
 	"sync"
+	"time"
 )
 
 var (
@@ -28,10 +32,22 @@ func initMysql() {
 		binding.GetRemoteConf().Mysql.Addr,
 		binding.GetRemoteConf().Mysql.DB,
 	)
+
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold: time.Second, // Slow SQL threshold
+			LogLevel:      logger.Info, // Log level
+			//IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries: true, // Don't include params in the SQL log
+			Colorful:             true, // Disable color
+		},
+	)
+
 	gormDB, err = gorm.Open(mysql.Open(DSN),
 		&gorm.Config{
-			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
+			Logger:                 newLogger,
 		},
 	)
 	if err != nil {

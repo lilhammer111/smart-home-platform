@@ -184,7 +184,7 @@ func (p *RpcExpandLocReq) Field1DeepEqual(src string) bool {
 }
 
 type RpcReduceLocReq struct {
-	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Id int16 `thrift:"Id,1,required" frugal:"1,required,i16" json:"Id"`
 }
 
 func NewRpcReduceLocReq() *RpcReduceLocReq {
@@ -195,10 +195,10 @@ func (p *RpcReduceLocReq) InitDefault() {
 	*p = RpcReduceLocReq{}
 }
 
-func (p *RpcReduceLocReq) GetId() (v int32) {
+func (p *RpcReduceLocReq) GetId() (v int16) {
 	return p.Id
 }
-func (p *RpcReduceLocReq) SetId(val int32) {
+func (p *RpcReduceLocReq) SetId(val int16) {
 	p.Id = val
 }
 
@@ -227,7 +227,7 @@ func (p *RpcReduceLocReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -274,7 +274,7 @@ RequiredFieldNotSetError:
 
 func (p *RpcReduceLocReq) ReadField1(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI16(); err != nil {
 		return err
 	} else {
 		p.Id = v
@@ -311,10 +311,10 @@ WriteStructEndError:
 }
 
 func (p *RpcReduceLocReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I16, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Id); err != nil {
+	if err := oprot.WriteI16(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -346,7 +346,7 @@ func (p *RpcReduceLocReq) DeepEqual(ano *RpcReduceLocReq) bool {
 	return true
 }
 
-func (p *RpcReduceLocReq) Field1DeepEqual(src int32) bool {
+func (p *RpcReduceLocReq) Field1DeepEqual(src int16) bool {
 
 	if p.Id != src {
 		return false
@@ -355,7 +355,7 @@ func (p *RpcReduceLocReq) Field1DeepEqual(src int32) bool {
 }
 
 type RpcFindLocReq struct {
-	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Id int16 `thrift:"Id,1,required" frugal:"1,required,i16" json:"Id"`
 }
 
 func NewRpcFindLocReq() *RpcFindLocReq {
@@ -366,10 +366,10 @@ func (p *RpcFindLocReq) InitDefault() {
 	*p = RpcFindLocReq{}
 }
 
-func (p *RpcFindLocReq) GetId() (v int32) {
+func (p *RpcFindLocReq) GetId() (v int16) {
 	return p.Id
 }
-func (p *RpcFindLocReq) SetId(val int32) {
+func (p *RpcFindLocReq) SetId(val int16) {
 	p.Id = val
 }
 
@@ -398,7 +398,7 @@ func (p *RpcFindLocReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -445,7 +445,7 @@ RequiredFieldNotSetError:
 
 func (p *RpcFindLocReq) ReadField1(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI16(); err != nil {
 		return err
 	} else {
 		p.Id = v
@@ -482,10 +482,10 @@ WriteStructEndError:
 }
 
 func (p *RpcFindLocReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I16, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Id); err != nil {
+	if err := oprot.WriteI16(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -517,7 +517,7 @@ func (p *RpcFindLocReq) DeepEqual(ano *RpcFindLocReq) bool {
 	return true
 }
 
-func (p *RpcFindLocReq) Field1DeepEqual(src int32) bool {
+func (p *RpcFindLocReq) Field1DeepEqual(src int16) bool {
 
 	if p.Id != src {
 		return false
@@ -526,7 +526,7 @@ func (p *RpcFindLocReq) Field1DeepEqual(src int32) bool {
 }
 
 type LocationData struct {
-	Id    int32  `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Id    int16  `thrift:"Id,1,required" frugal:"1,required,i16" json:"Id"`
 	Title string `thrift:"Title,2,required" frugal:"2,required,string" json:"Title"`
 }
 
@@ -538,14 +538,14 @@ func (p *LocationData) InitDefault() {
 	*p = LocationData{}
 }
 
-func (p *LocationData) GetId() (v int32) {
+func (p *LocationData) GetId() (v int16) {
 	return p.Id
 }
 
 func (p *LocationData) GetTitle() (v string) {
 	return p.Title
 }
-func (p *LocationData) SetId(val int32) {
+func (p *LocationData) SetId(val int16) {
 	p.Id = val
 }
 func (p *LocationData) SetTitle(val string) {
@@ -579,7 +579,7 @@ func (p *LocationData) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I16 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -642,7 +642,7 @@ RequiredFieldNotSetError:
 
 func (p *LocationData) ReadField1(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadI32(); err != nil {
+	if v, err := iprot.ReadI16(); err != nil {
 		return err
 	} else {
 		p.Id = v
@@ -692,10 +692,10 @@ WriteStructEndError:
 }
 
 func (p *LocationData) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I16, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.Id); err != nil {
+	if err := oprot.WriteI16(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -746,7 +746,7 @@ func (p *LocationData) DeepEqual(ano *LocationData) bool {
 	return true
 }
 
-func (p *LocationData) Field1DeepEqual(src int32) bool {
+func (p *LocationData) Field1DeepEqual(src int16) bool {
 
 	if p.Id != src {
 		return false

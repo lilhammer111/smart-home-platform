@@ -11,7 +11,16 @@ func TestQueryAlertsWithFilter_Run(t *testing.T) {
 	s := NewQueryAlertsWithFilterService(ctx)
 	// init req and assert value
 
-	req := &alert.AlertFilter{}
+	req := &alert.AlertFilter{
+		Page:      nil,
+		Limit:     nil,
+		Level:     nil,
+		DeviceId:  nil,
+		Sorts:     nil,
+		StartDate: nil,
+		EndDate:   nil,
+		IsOngoing: nil,
+	}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
