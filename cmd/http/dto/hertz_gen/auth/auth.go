@@ -154,11 +154,11 @@ func (p *SendSmsReq) String() string {
 }
 
 type MobileRegisterReq struct {
-	Mobile   string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')" example:"19535876981"`
-	SmsCode  string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')" example:"159357"`
-	Username string `thrift:"Username,3,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
+	Mobile   string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
+	SmsCode  string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
+	Username string `thrift:"Username,3,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
 	// 4: required string Password (api.body="password", api.vd="regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,16}$')");
-	Password string `thrift:"Password,4,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')" example:"12345678"`
+	Password string `thrift:"Password,4,required" form:"password,required" json:"password,required" vd:"regexp('.{4,16}')"`
 }
 
 func NewMobileRegisterReq() *MobileRegisterReq {
@@ -455,8 +455,8 @@ func (p *MobileRegisterReq) String() string {
 }
 
 type MobileLoginReq struct {
-	Mobile  string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')" example:"19535876981"`
-	SmsCode string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')" example:"159357"`
+	Mobile  string `thrift:"Mobile,1,required" form:"mobile,required" json:"mobile,required" vd:"regexp('^1[3-9]\\d{9}$')"`
+	SmsCode string `thrift:"SmsCode,2,required" form:"sms_code,required" json:"sms_code,required" vd:"regexp('^\\d{6}$')"`
 }
 
 func NewMobileLoginReq() *MobileLoginReq {
@@ -651,7 +651,7 @@ func (p *MobileLoginReq) String() string {
 }
 
 type MiniProgLoginReq struct {
-	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required" example:"033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL"`
+	WxCode string `thrift:"WxCode,1,required" form:"wx_code,required" json:"wx_code,required"`
 }
 
 func NewMiniProgLoginReq() *MiniProgLoginReq {
@@ -795,9 +795,9 @@ func (p *MiniProgLoginReq) String() string {
 }
 
 type PwdLoginReq struct {
-	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
-	Email    string `thrift:"Email,2,required" form:"email,required" json:"email,required" vd:"regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')" example:"wwwwwdemon@gmail.com"`
-	Password string `thrift:"Password,3,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')" example:"12345678"`
+	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
+	//    2: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+	Password string `thrift:"Password,3,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')"`
 }
 
 func NewPwdLoginReq() *PwdLoginReq {
@@ -808,17 +808,12 @@ func (p *PwdLoginReq) GetUsername() (v string) {
 	return p.Username
 }
 
-func (p *PwdLoginReq) GetEmail() (v string) {
-	return p.Email
-}
-
 func (p *PwdLoginReq) GetPassword() (v string) {
 	return p.Password
 }
 
 var fieldIDToName_PwdLoginReq = map[int16]string{
 	1: "Username",
-	2: "Email",
 	3: "Password",
 }
 
@@ -827,7 +822,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUsername bool = false
-	var issetEmail bool = false
 	var issetPassword bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -850,17 +844,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetUsername = true
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetEmail = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -895,11 +878,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetEmail {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
 	if !issetPassword {
 		fieldId = 3
 		goto RequiredFieldNotSetError
@@ -931,15 +909,6 @@ func (p *PwdLoginReq) ReadField1(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *PwdLoginReq) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.Email = v
-	}
-	return nil
-}
 func (p *PwdLoginReq) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
@@ -958,10 +927,6 @@ func (p *PwdLoginReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 		if err = p.writeField3(oprot); err != nil {
@@ -1001,22 +966,6 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-func (p *PwdLoginReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Email", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Email); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 func (p *PwdLoginReq) writeField3(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 3); err != nil {
@@ -1291,8 +1240,8 @@ func (p *AuthInfo) String() string {
 }
 
 type UsernameRegisterReq struct {
-	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')" example:"demon_wang"`
-	Password string `thrift:"Password,2,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')" example:"12345678"`
+	Username string `thrift:"Username,1,required" form:"username,required" json:"username,required" vd:"regexp('^[a-z0-9_]{1,30}$')"`
+	Password string `thrift:"Password,2,required" form:"password,required" json:"password,required" vd:"regexp('.{8,16}')"`
 }
 
 func NewUsernameRegisterReq() *UsernameRegisterReq {

@@ -21,7 +21,7 @@ func NewGetUserDetailService(Context context.Context, RequestContext *app.Reques
 	return &GetUserDetailService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetUserDetailService) Do(req *common.Req) (resp *user.UserInfo, err error) {
+func (h *GetUserDetailService) Do(req *common.Req) (resp *user.UserInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
@@ -32,7 +32,7 @@ func (h *GetUserDetailService) Do(req *common.Req) (resp *user.UserInfo, err err
 		hlog.Error(err)
 		return nil, err
 	}
-	resp = &user.UserInfo{}
+	resp = &user.UserInfoResp{}
 	if err = copier.Copy(resp, userInfo); err != nil {
 		hlog.Error(err)
 		return nil, err

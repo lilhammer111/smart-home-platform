@@ -77,13 +77,6 @@ func (s *MicroDeviceImpl) ExpandLocationEnum(ctx context.Context, req *micro_dev
 	return resp, err
 }
 
-// FindAlert implements the MicroDeviceImpl interface.
-func (s *MicroDeviceImpl) FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq) (resp *alert.AlertInfo, err error) {
-	resp, err = alertsrv.NewFindAlertService(ctx).Run(req)
-
-	return resp, err
-}
-
 // QueryAlertsWithFilter implements the MicroDeviceImpl interface.
 func (s *MicroDeviceImpl) QueryAlertsWithFilter(ctx context.Context, req *alert.AlertFilter) (resp []*alert.AlertInfo, err error) {
 	resp, err = alertsrv.NewQueryAlertsWithFilterService(ctx).Run(req)
@@ -108,6 +101,13 @@ func (s *MicroDeviceImpl) UpdateAlert(ctx context.Context, req *alert.AlertInfo)
 // DeleteAlert implements the MicroDeviceImpl interface.
 func (s *MicroDeviceImpl) DeleteAlert(ctx context.Context, req *micro_device.RpcDeleteAlertReq) (resp *common.Empty, err error) {
 	resp, err = alertsrv.NewDeleteAlertService(ctx).Run(req)
+
+	return resp, err
+}
+
+// FindAlert implements the MicroDeviceImpl interface.
+func (s *MicroDeviceImpl) FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq) (resp *alert.AlertInfo, err error) {
+	resp, err = alertsrv.NewFindAlertService(ctx).Run(req)
 
 	return resp, err
 }

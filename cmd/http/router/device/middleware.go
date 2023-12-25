@@ -3,6 +3,7 @@
 package device
 
 import (
+	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,8 +18,9 @@ func _apiMw() []app.HandlerFunc {
 }
 
 func _devicesMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	handlerFunc := make([]app.HandlerFunc, 0)
+	handlerFunc = append(handlerFunc, mw.JwtMiddleware.MiddlewareFunc())
+	return handlerFunc
 }
 
 func _binddeviceMw() []app.HandlerFunc {

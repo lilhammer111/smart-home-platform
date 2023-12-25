@@ -24,7 +24,7 @@ func NewQueryAlertsWithFilterService(ctx context.Context) *QueryAlertsWithFilter
 
 // Run create note info
 func (s *QueryAlertsWithFilterService) Run(req *alert.AlertFilter) (resp []*alert.AlertInfo, err error) {
-	tx := db.GetMysql().Model(&model.Device{})
+	tx := db.GetMysql().Model(&model.Alert{})
 
 	if req.Level != nil {
 		tx = tx.Where("level = ?", req.Level)
@@ -48,7 +48,11 @@ func (s *QueryAlertsWithFilterService) Run(req *alert.AlertFilter) (resp []*aler
 	}
 
 	resp = make([]*alert.AlertInfo, 0)
-	err = tx.Scopes(scope.Paginate(req.Page, req.Limit)).Find(&resp).Error
+	if req.Page != nil && req.Limit != nil {
+		err = tx.Scopes(scope.Paginate(req.Page, req.Limit)).Find(&resp).Error
+	} else {
+		err = tx.Offset(0).Limit(10).Find(&resp).Error
+	}
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

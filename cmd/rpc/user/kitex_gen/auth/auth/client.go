@@ -14,6 +14,7 @@ import (
 type Client interface {
 	SendSms(ctx context.Context, req *auth.SendSmsReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 	MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
+	UsernameRegister(ctx context.Context, req *auth.UsernameRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
 	MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
 	MiniProgLogin(ctx context.Context, req *auth.MiniProgLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
 	PwdLogin(ctx context.Context, req *auth.PwdLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error)
@@ -56,6 +57,11 @@ func (p *kAuthClient) SendSms(ctx context.Context, req *auth.SendSmsReq, callOpt
 func (p *kAuthClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MobileRegister(ctx, req)
+}
+
+func (p *kAuthClient) UsernameRegister(ctx context.Context, req *auth.UsernameRegisterReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UsernameRegister(ctx, req)
 }
 
 func (p *kAuthClient) MobileLogin(ctx context.Context, req *auth.MobileLoginReq, callOptions ...callopt.Option) (r *auth.AuthInfo, err error) {

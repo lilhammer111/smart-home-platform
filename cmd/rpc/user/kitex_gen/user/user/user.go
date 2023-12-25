@@ -20,6 +20,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "user"
 	handlerType := (*user.User)(nil)
 	methods := map[string]kitex.MethodInfo{
+		"GetCurUserInfo": kitex.NewMethodInfo(getCurUserInfoHandler, newUserGetCurUserInfoArgs, newUserGetCurUserInfoResult, false),
 		"GetUserList":    kitex.NewMethodInfo(getUserListHandler, newUserGetUserListArgs, newUserGetUserListResult, false),
 		"GetUserDetail":  kitex.NewMethodInfo(getUserDetailHandler, newUserGetUserDetailArgs, newUserGetUserDetailResult, false),
 		"UpdateUserInfo": kitex.NewMethodInfo(updateUserInfoHandler, newUserUpdateUserInfoArgs, newUserUpdateUserInfoResult, false),
@@ -37,6 +38,24 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		Extra:           extra,
 	}
 	return svcInfo
+}
+
+func getCurUserInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserGetCurUserInfoArgs)
+	realResult := result.(*user.UserGetCurUserInfoResult)
+	success, err := handler.(user.User).GetCurUserInfo(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserGetCurUserInfoArgs() interface{} {
+	return user.NewUserGetCurUserInfoArgs()
+}
+
+func newUserGetCurUserInfoResult() interface{} {
+	return user.NewUserGetCurUserInfoResult()
 }
 
 func getUserListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -121,7 +140,17 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfo, err error) {
+func (p *kClient) GetCurUserInfo(ctx context.Context, req *common.Empty) (r *user.UserInfoResp, err error) {
+	var _args user.UserGetCurUserInfoArgs
+	_args.Req = req
+	var _result user.UserGetCurUserInfoResult
+	if err = p.c.Call(ctx, "GetCurUserInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r []*user.UserInfoResp, err error) {
 	var _args user.UserGetUserListArgs
 	_args.Req = req
 	var _result user.UserGetUserListResult
@@ -131,7 +160,7 @@ func (p *kClient) GetUserList(ctx context.Context, req *user.UsersFilter) (r []*
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r *user.UserInfo, err error) {
+func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r *user.UserInfoResp, err error) {
 	var _args user.UserGetUserDetailArgs
 	_args.Req = req
 	var _result user.UserGetUserDetailResult
@@ -141,7 +170,7 @@ func (p *kClient) GetUserDetail(ctx context.Context, req *common.Req) (r *user.U
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *user.UserInfo, err error) {
+func (p *kClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo) (r *user.UserInfoResp, err error) {
 	var _args user.UserUpdateUserInfoArgs
 	_args.Req = req
 	var _result user.UserUpdateUserInfoResult

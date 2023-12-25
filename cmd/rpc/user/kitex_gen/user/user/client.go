@@ -12,9 +12,10 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error)
-	GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfo, err error)
-	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error)
+	GetCurUserInfo(ctx context.Context, req *common.Empty, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
+	GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfoResp, err error)
+	GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
+	UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfoResp, err error)
 	DeregisterUser(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
@@ -47,17 +48,22 @@ type kUserClient struct {
 	*kClient
 }
 
-func (p *kUserClient) GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfo, err error) {
+func (p *kUserClient) GetCurUserInfo(ctx context.Context, req *common.Empty, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetCurUserInfo(ctx, req)
+}
+
+func (p *kUserClient) GetUserList(ctx context.Context, req *user.UsersFilter, callOptions ...callopt.Option) (r []*user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserList(ctx, req)
 }
 
-func (p *kUserClient) GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+func (p *kUserClient) GetUserDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserDetail(ctx, req)
 }
 
-func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+func (p *kUserClient) UpdateUserInfo(ctx context.Context, req *user.UserInfo, callOptions ...callopt.Option) (r *user.UserInfoResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UpdateUserInfo(ctx, req)
 }

@@ -23,7 +23,7 @@ type Client interface {
 	FindAllLocationEnum(ctx context.Context, callOptions ...callopt.Option) (r []*micro_device.LocationData, err error)
 	ReduceLocationEnum(ctx context.Context, req *micro_device.RpcReduceLocReq, callOptions ...callopt.Option) (r *common.Empty, err error)
 	ExpandLocationEnum(ctx context.Context, req *micro_device.RpcExpandLocReq, callOptions ...callopt.Option) (r *common.Empty, err error)
-	FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq, callOptions ...callopt.Option) (r *alert.AlertInfo, err error)
+	FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq, callOptions ...callopt.Option) (r *alert.AlertInfo, err error)
 	QueryAlertsWithFilter(ctx context.Context, req *alert.AlertFilter, callOptions ...callopt.Option) (r []*alert.AlertInfo, err error)
 	CreateAlert(ctx context.Context, req *alert.AlertInfo, callOptions ...callopt.Option) (r *alert.AlertInfo, err error)
 	UpdateAlert(ctx context.Context, req *alert.AlertInfo, callOptions ...callopt.Option) (r *alert.AlertInfo, err error)
@@ -104,7 +104,7 @@ func (p *kMicroDeviceClient) ExpandLocationEnum(ctx context.Context, req *micro_
 	return p.kClient.ExpandLocationEnum(ctx, req)
 }
 
-func (p *kMicroDeviceClient) FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq, callOptions ...callopt.Option) (r *alert.AlertInfo, err error) {
+func (p *kMicroDeviceClient) FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq, callOptions ...callopt.Option) (r *alert.AlertInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FindAlert(ctx, req)
 }

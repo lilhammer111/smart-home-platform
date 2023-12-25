@@ -2,6 +2,9 @@ package alert
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_device"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_device_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 
 	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -17,11 +20,11 @@ func NewDeleteAlertService(Context context.Context, RequestContext *app.RequestC
 }
 
 func (h *DeleteAlertService) Do(req *common.Req) (resp *common.Empty, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	_, err = micro_device_cli.DeleteAlert(h.Context, &micro_device.RpcDeleteAlertReq{Id: req.Id})
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	h.RequestContext.Set(responder.SuccessMessage, "deleting alert info succeed")
+	return nil, nil
 }

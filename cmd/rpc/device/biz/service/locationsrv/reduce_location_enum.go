@@ -23,7 +23,8 @@ func NewReduceLocationEnumService(ctx context.Context) *ReduceLocationEnumServic
 
 // Run create note info
 func (s *ReduceLocationEnumService) Run(req *micro_device.RpcReduceLocReq) (resp *common.Empty, err error) {
-	err = db.GetMysql().Delete(&model.Location{}, req.Id).Error
+	// permanent deletion with Unscoped()
+	err = db.GetMysql().Unscoped().Delete(&model.Location{}, req.Id).Error
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

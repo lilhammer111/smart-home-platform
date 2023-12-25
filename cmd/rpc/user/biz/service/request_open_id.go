@@ -3,10 +3,12 @@ package service
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
 
@@ -28,7 +30,7 @@ func (s *RequestOpenIdService) Run(req *micro_user.RpcRequestOpenIdReq) (resp *m
 	cli, err = client.NewClient()
 	if err != nil {
 		klog.Errorf("failed to create a http client: %s", err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	httpReq, httpResp := protocol.AcquireRequest(), protocol.AcquireResponse()
@@ -44,7 +46,7 @@ func (s *RequestOpenIdService) Run(req *micro_user.RpcRequestOpenIdReq) (resp *m
 	err = cli.Do(context.Background(), httpReq, httpResp)
 	if err != nil {
 		klog.Errorf("failed to do request: %s", err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 	//type MiniProgResp struct {
 	//	Openid     string `json:"openid,omitempty"`

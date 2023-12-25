@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-service_name="micro_device"
-file="device.thrift"
+service_name="micro_user"
+file="user.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path

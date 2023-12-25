@@ -5,7 +5,7 @@ go 1.21.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	git.zqbjj.top/lilhammer111/micro-kit v0.0.0-20231222091815-a61844d10c00
+	git.zqbjj.top/lilhammer111/micro-kit v0.0.0-20231225084836-2cf94f3d1f3d
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.8.0
 	github.com/jinzhu/copier v0.4.0
@@ -70,7 +70,7 @@ require (
 	github.com/redis/go-redis/v9 v9.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
-	github.com/tidwall/gjson v1.9.3 // indirect
+	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect

@@ -3,7 +3,6 @@
 package user
 
 import (
-	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"github.com/cloudwego/hertz/pkg/app/server"
 
 	user "git.zqbjj.top/pet/services/cmd/http/api/user"
@@ -22,7 +21,7 @@ func Register(r *server.Hertz) {
 	{
 		_api := root.Group("/api", _apiMw()...)
 		{
-			_users := _api.Group("/users", _usersMw()...).Use(mw.JwtMiddleware.MiddlewareFunc())
+			_users := _api.Group("/users", _usersMw()...)
 			_users.GET("/current", append(_getcuruserinfoMw(), user.GetCurUserInfo)...)
 			_users.DELETE("/deregister", append(_deregisteruserMw(), user.DeregisterUser)...)
 			_users.GET("/detail", append(_getuserdetailMw(), user.GetUserDetail)...)

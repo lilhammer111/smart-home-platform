@@ -11,14 +11,14 @@ import (
 )
 
 type AlertFilter struct {
-	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" example:"1"`
-	Limit     *int16   `thrift:"Limit,1,optional" frugal:"1,optional,i16" example:"1"`
-	Level     *int8    `thrift:"Level,3,optional" frugal:"3,optional,i8" example:"1"`
-	DeviceId  *int32   `thrift:"DeviceId,4,optional" frugal:"4,optional,i32" example:"1"`
-	Sorts     []string `thrift:"Sorts,5,optional" frugal:"5,optional,list<string>" example:"device_id desc"`
-	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" example:"2023-12-22"`
-	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" example:"2024-02-10"`
-	IsOngoing *bool    `thrift:"IsOngoing,8,optional" frugal:"8,optional,bool" example:"true"`
+	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" json:"Page,omitempty"`
+	Limit     *int16   `thrift:"Limit,1,optional" frugal:"1,optional,i16" json:"Limit,omitempty"`
+	Level     *int8    `thrift:"Level,3,optional" frugal:"3,optional,i8" json:"Level,omitempty"`
+	DeviceId  *int32   `thrift:"DeviceId,4,optional" frugal:"4,optional,i32" json:"DeviceId,omitempty"`
+	Sorts     []string `thrift:"Sorts,5,optional" frugal:"5,optional,list<string>" json:"Sorts,omitempty"`
+	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" json:"StartDate,omitempty"`
+	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" json:"EndDate,omitempty"`
+	IsOngoing *bool    `thrift:"IsOngoing,8,optional" frugal:"8,optional,bool" json:"IsOngoing,omitempty"`
 }
 
 func NewAlertFilter() *AlertFilter {
@@ -730,14 +730,14 @@ func (p *AlertFilter) Field8DeepEqual(src *bool) bool {
 }
 
 type AlertInfo struct {
-	Id         *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" example:"1"`
-	DeviceId   int32  `thrift:"DeviceId,4,required" frugal:"4,required,i32" example:"1"`
-	Count      int8   `thrift:"Count,2,required" frugal:"2,required,i8" example:"50"`
-	Level      int8   `thrift:"Level,3,required" frugal:"3,required,i8" example:"1"`
-	Desc       string `thrift:"Desc,5,required" frugal:"5,required,string" example:"hello,alert"`
-	FirstAlarm string `thrift:"FirstAlarm,6,required" frugal:"6,required,string" example:"2023-12-22 15:16:00"`
-	LastAlarm  string `thrift:"LastAlarm,7,required" frugal:"7,required,string" example:"2023-12-30 15:16:00"`
-	IsOngoing  bool   `thrift:"IsOngoing,8,required" frugal:"8,required,bool" example:"true"`
+	Id         *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" json:"Id,omitempty"`
+	DeviceId   int32  `thrift:"DeviceId,4,required" frugal:"4,required,i32" json:"DeviceId"`
+	Count      int8   `thrift:"Count,2,required" frugal:"2,required,i8" json:"Count"`
+	Level      int8   `thrift:"Level,3,required" frugal:"3,required,i8" json:"Level"`
+	Desc       string `thrift:"Desc,5,required" frugal:"5,required,string" json:"Desc"`
+	FirstAlarm string `thrift:"FirstAlarm,6,required" frugal:"6,required,string" json:"FirstAlarm"`
+	LastAlarm  string `thrift:"LastAlarm,7,required" frugal:"7,required,string" json:"LastAlarm"`
+	IsOngoing  bool   `thrift:"IsOngoing,8,required" frugal:"8,required,bool" json:"IsOngoing"`
 }
 
 func NewAlertInfo() *AlertInfo {

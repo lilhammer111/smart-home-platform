@@ -1,7 +1,107 @@
 definitions:
-  auth.UsernameRegisterReq:
+  example.AlertData:
+    properties:
+      count:
+        example: 50
+        type: integer
+      desc:
+        example: hello,alert
+        type: string
+      device_id:
+        example: 1
+        type: integer
+      first_alarm:
+        example: "2023-12-22 15:16:00"
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_ongoing:
+        example: true
+        type: boolean
+      last_alarm:
+        example: "2023-12-30 15:16:00"
+        type: string
+      level:
+        example: 1
+        type: integer
+    type: object
+  example.AuthData:
+    properties:
+      expired_at:
+        example: "2023-12-25T14:59:11.322480873+08:00"
+        type: string
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDM0ODc1NTEsIm9yaWdfaWF0IjoxNzAzNDgzOTUxLCJ1aWQiOjN9.J5sOSjOPIgifaTpGIqzfZV3vi1ZRD6WnOJV3fok_ltk
+        type: string
+    type: object
+  example.DeviceData:
+    properties:
+      desc:
+        example: test
+        type: string
+      hardware_version:
+        example: 1.0.0
+        type: string
+      id:
+        example: 1
+        type: integer
+      location_id:
+        example: "1"
+        type: string
+      name:
+        example: test
+        type: string
+      owner_id:
+        example: 1
+        type: integer
+      product_id:
+        example: 1
+        type: integer
+      serial_no:
+        example: "1234567890123456"
+        type: string
+      software_version:
+        example: 1.0.0
+        type: string
+      state:
+        example: 1
+        type: integer
+    type: object
+  example.MiniProgLoginBody:
+    properties:
+      wxCode:
+        example: wx1234567890abcdef1234567890abcdef
+        type: string
+    type: object
+  example.MobileLoginBody:
+    properties:
+      mobile:
+        example: "19535876981"
+        type: string
+      smsCode:
+        example: "123456"
+        type: string
+    type: object
+  example.MobileRegisterBody:
+    properties:
+      mobile:
+        example: "19535876981"
+        type: string
+      password:
+        example: "12345678"
+        type: string
+      smsCode:
+        example: "123456"
+        type: string
+      username:
+        example: demon_wang
+        type: string
+    type: object
+  example.PwdLoginBody:
     properties:
       password:
+        description: '2: required string Email (api.body="email", api.vd="regexp(''^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$'')");'
         example: "12345678"
         type: string
       username:
@@ -61,17 +161,12 @@ definitions:
       code:
         example: 200
         type: integer
-      data:
-        $ref: '#/definitions/example.UserData'
       message:
         example: ok
         type: string
       success:
         example: true
         type: boolean
-      total:
-        example: 1
-        type: integer
     type: object
   example.RespUnauthorized:
     properties:
@@ -115,42 +210,8 @@ definitions:
         example: lilhammer111
         type: string
     type: object
-  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq:
+  example.UsernameRegisterBody:
     properties:
-      wx_code:
-        example: 033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL
-        type: string
-    type: object
-  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq:
-    properties:
-      mobile:
-        example: "19535876981"
-        type: string
-      sms_code:
-        example: "159357"
-        type: string
-    type: object
-  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq:
-    properties:
-      mobile:
-        example: "19535876981"
-        type: string
-      password:
-        description: '4: required string Password (api.body="password", api.vd="regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*])[A-Za-z\d@#$%^&*]{8,16}$'')");'
-        example: "12345678"
-        type: string
-      sms_code:
-        example: "159357"
-        type: string
-      username:
-        example: demon_wang
-        type: string
-    type: object
-  git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq:
-    properties:
-      email:
-        example: wwwwwdemon@gmail.com
-        type: string
       password:
         example: "12345678"
         type: string
@@ -172,7 +233,7 @@ paths:
         name: mini_login
         required: true
         schema:
-          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq'
+          $ref: '#/definitions/example.MiniProgLoginBody'
       produces:
       - application/json
       responses:
@@ -183,7 +244,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.UserData'
+                  $ref: '#/definitions/example.AuthData'
               type: object
         "400":
           description: bad request
@@ -215,7 +276,7 @@ paths:
         name: mobile_login
         required: true
         schema:
-          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq'
+          $ref: '#/definitions/example.MobileLoginBody'
       produces:
       - application/json
       responses:
@@ -226,7 +287,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.UserData'
+                  $ref: '#/definitions/example.AuthData'
               type: object
         "400":
           description: bad request
@@ -258,7 +319,7 @@ paths:
         name: mobile_register
         required: true
         schema:
-          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq'
+          $ref: '#/definitions/example.MobileRegisterBody'
       produces:
       - application/json
       responses:
@@ -269,7 +330,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.UserData'
+                  $ref: '#/definitions/example.AuthData'
               type: object
         "400":
           description: bad request
@@ -305,7 +366,7 @@ paths:
         name: pwd_login
         required: true
         schema:
-          $ref: '#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq'
+          $ref: '#/definitions/example.PwdLoginBody'
       produces:
       - application/json
       responses:
@@ -316,7 +377,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.UserData'
+                  $ref: '#/definitions/example.AuthData'
               type: object
         "400":
           description: bad request
@@ -383,7 +444,7 @@ paths:
         name: pwd_register_req
         required: true
         schema:
-          $ref: '#/definitions/auth.UsernameRegisterReq'
+          $ref: '#/definitions/example.UsernameRegisterBody'
       produces:
       - application/json
       responses:
@@ -394,7 +455,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.UserData'
+                  $ref: '#/definitions/example.AuthData'
               type: object
         "400":
           description: bad request
@@ -419,6 +480,496 @@ paths:
       summary: user register by username and password
       tags:
       - auth
+  /api/devices/alerts/delete:
+    delete:
+      operationId: DeleteAlert
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: alert id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/example.RespOk'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: delete alert info
+      tags:
+      - alerts
+  /api/devices/alerts/detail:
+    get:
+      operationId: GetAlertDetail
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.AlertData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get alert detail
+      tags:
+      - alerts
+  /api/devices/alerts/list:
+    get:
+      operationId: GetAlertList
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: device id
+        in: query
+        name: device_id
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      - description: sorts
+        in: query
+        name: sorts
+        type: string
+      - description: start date
+        in: query
+        name: start_date
+        type: string
+      - description: end date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.AlertData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get alert list
+      tags:
+      - alerts
+  /api/devices/alerts/update:
+    put:
+      operationId: UpdateAlertInfo
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: alert data
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/example.AlertData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.AlertData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update alert info
+      tags:
+      - alerts
+  /api/devices/alerts/upload:
+    post:
+      operationId: UploadAlertInfo
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: alert data
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/example.AlertData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.AlertData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: upload alert info
+      tags:
+      - alerts
+  /api/devices/bind:
+    post:
+      operationId: BindDevice
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: device data
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/example.DeviceData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: bind device info
+      tags:
+      - devices
+  /api/devices/detail:
+    get:
+      operationId: GetDeviceDetail
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get device detail
+      tags:
+      - devices
+  /api/devices/list:
+    get:
+      operationId: GetDeviceList
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: state
+        in: query
+        name: state
+        type: string
+      - description: sorts
+        in: query
+        name: state
+        type: string
+      - description: search
+        in: query
+        name: state
+        type: string
+      - description: start_date
+        in: query
+        name: state
+        type: string
+      - description: end_date
+        in: query
+        name: state
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get device list
+      tags:
+      - devices
+  /api/devices/unbind:
+    delete:
+      operationId: UnbindDevice
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: device id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/example.RespOk'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: unbind device
+      tags:
+      - devices
+  /api/devices/update:
+    put:
+      operationId: UpdateDeviceInfo
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: device data
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/example.DeviceData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update device info
+      tags:
+      - devices
   /api/users/current:
     get:
       operationId: GetCurUserInfo
@@ -479,12 +1030,7 @@ paths:
         "200":
           description: success
           schema:
-            allOf:
-            - $ref: '#/definitions/example.RespOk'
-            - properties:
-                data:
-                  $ref: '#/definitions/example.UserData'
-              type: object
+            $ref: '#/definitions/example.RespOk'
         "400":
           description: bad request
           schema:
@@ -546,7 +1092,7 @@ paths:
           description: internal error
           schema:
             $ref: '#/definitions/example.RespInternal'
-      summary: get user detail
+      summary: get users detail
       tags:
       - users
   /api/users/list:
@@ -594,7 +1140,7 @@ paths:
           description: internal error
           schema:
             $ref: '#/definitions/example.RespInternal'
-      summary: get user list
+      summary: get users list
       tags:
       - users
   /api/users/update:

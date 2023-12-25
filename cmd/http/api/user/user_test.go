@@ -9,6 +9,17 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/ut"
 )
 
+func TestGetCurUserInfo(t *testing.T) {
+	h := server.Default()
+	h.GET("/api/users/current", GetCurUserInfo)
+	w := ut.PerformRequest(h.Engine, "GET", "/api/users/current", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+		ut.Header{})
+	resp := w.Result()
+	assert.DeepEqual(t, 201, resp.StatusCode())
+	assert.DeepEqual(t, "", string(resp.Body()))
+	// todo edit your unit test.
+}
+
 func TestGetUserList(t *testing.T) {
 	h := server.Default()
 	h.GET("/api/users/list", GetUserList)

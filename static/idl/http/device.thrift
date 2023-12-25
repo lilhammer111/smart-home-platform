@@ -3,26 +3,26 @@ include "common.thrift"
 
 
 struct DeviceFilter {
-    1: optional i8 State (api.query="state", api.vd="len($)<=8 && len($)>=0" ,go.tag="example:\"7\"")
-    2: optional i16 Page (api.query="page", api.vd="$>=0" ,go.tag="example:\"1\"");
-    3: optional i16 Limit (api.query="limit", api.vd="$>0" ,go.tag="example:\"1\"");
-    4: optional list<string> Sorts (api.query="sorts", api.vd="range($, regexp('^[a-zA-Z]+ (asc|desc)$', #v))" ,go.tag="example:\"owner_id desc\"");
-    5: optional string Search (api.query="search", api.vd="regexp('^[\p{L}\p{N}\p{Lo}]+$')" ,go.tag="example:\"hello,device\"");
-    6: optional string StartDate (api.query="start_date", api.vd="regexp('^\d{4}-\d{2}-\d{2}$')" ,go.tag="example:\"2023-12-22\"");
-    7: optional string EndDate (api.query="end_date", api.vd="regexp('^\d{4}-\d{2}-\d{2}$')" ,go.tag="example:\"2024-02-05\"");
+    1: optional i8 State (api.query="state")
+    2: optional i16 Page (api.query="page");
+    3: optional i16 Limit (api.query="limit");
+    4: optional list<string> Sorts (api.query="sorts");
+    5: optional string Search (api.query="search");
+    6: optional string StartDate (api.query="start_date");
+    7: optional string EndDate (api.query="end_date");
 }
 
 struct DeviceInfo {
-    1: optional i32 Id (api.body="id",go.tag="example:\"1\"");
-    10: required i32 OwnerId (api.body="owner_id" ,go.tag="example:\"1\"");
-    11: required i32 ProductId (api.body="product_id" ,go.tag="example:\"1\"");
-    2: required string SerialNo (api.body="serial_no" ,go.tag="example:\"KEwju0rKOlKCDAxUnDzQI\"");
-    3: required string Name (api.body="name", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')" ,go.tag="example:\"demon's feeder\"");
-    4: required i8 State (api.body="state", go.tag="example:\"8\"")
-    6: required string LocationId (api.body="location" ,go.tag="example:\"1\"");
-    7: required string HardwareVersion (api.body="hardware_version" ,go.tag="example:\"v 1.0.0\"");
-    8: required string SoftwareVersion (api.body="software_version" ,go.tag="example:\"v 1.0.0\"");
-    9: required string Desc (api.body="desc" ,go.tag="example:\"hello,device\"");
+    1: optional i32 Id (api.body="id");
+    10: required i32 OwnerId (api.body="owner_id");
+    11: required i32 ProductId (api.body="product_id");
+    2: required string SerialNo (api.body="serial_no");
+    3: required string Name (api.body="name", api.vd="regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')");
+    4: required i8 State (api.body="state")
+    6: required i8 LocationId (api.body="location" );
+    7: required string HardwareVersion (api.body="hardware_version");
+    8: required string SoftwareVersion (api.body="software_version");
+    9: required string Desc (api.body="desc");
 }
 
 service device {

@@ -2,10 +2,10 @@ package micro_device_cli
 
 import (
 	"context"
-	alertSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/alert"
-	commonSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
-	deviceSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/device"
-	micro_deviceSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_device"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/alert"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/device"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_device"
 
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_device/microdevice"
 	"github.com/cloudwego/kitex/client"
@@ -33,7 +33,7 @@ type RPCClient interface {
 
 	ExpandLocationEnum(ctx context.Context, req *micro_device.RpcExpandLocReq, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error)
+	FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error)
 
 	QueryAlertsWithFilter(ctx context.Context, req *alert.AlertFilter, callOptions ...callopt.Option) (resp []*alert.AlertInfo, err error)
 
@@ -106,7 +106,7 @@ func (c *clientImpl) ExpandLocationEnum(ctx context.Context, req *micro_device.R
 	return c.kitexClient.ExpandLocationEnum(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error) {
+func (c *clientImpl) FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error) {
 	return c.kitexClient.FindAlert(ctx, req, callOptions...)
 }
 

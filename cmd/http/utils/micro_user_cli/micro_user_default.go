@@ -2,9 +2,9 @@ package micro_user_cli
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
+	common "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	micro_user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
+	user "git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	"github.com/cloudwego/kitex/client/callopt"
 	"github.com/cloudwego/kitex/pkg/klog"
 )

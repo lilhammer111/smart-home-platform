@@ -2,14 +2,16 @@ package service
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
+	"git.zqbjj.top/lilhammer111/micro-kit/model/scope"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model/scope"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
+	"github.com/cloudwego/kitex/pkg/kerrors"
+
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/jinzhu/copier"
-	"gorm.io/gorm"
 )
 
 type QueryUsersWithFilterService struct {
@@ -27,13 +29,13 @@ func (s *QueryUsersWithFilterService) Run(req *user.UsersFilter) (resp []*user.U
 	userInfos := make([]*model.User, 0)
 	res := db.GetMysql().Scopes(scope.Paginate(req.Page, req.Limit)).Find(&userInfos)
 	if res.Error != nil {
-		klog.Errorf("failed to find all eligible user infos: %s", res.Error)
-		return nil, bizerr.NewInternalError(res.Error)
+		klog.Error(res.Error)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	if res.RowsAffected == 0 {
 		klog.Debug("rows affected is 0")
 		// Proactively generating a rpc business error
-		return nil, bizerr.NewNotFoundError(gorm.ErrRecordNotFound)
+		return nil, kerrors.NewBizStatusError(code.NotFound, "no eligible users")
 	}
 
 	resp = make([]*user.UserInfo, 0)

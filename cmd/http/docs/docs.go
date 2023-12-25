@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq"
+                            "$ref": "#/definitions/example.MiniProgLoginBody"
                         }
                     }
                 ],
@@ -51,7 +51,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.UserData"
+                                            "$ref": "#/definitions/example.AuthData"
                                         }
                                     }
                                 }
@@ -105,7 +105,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq"
+                            "$ref": "#/definitions/example.MobileLoginBody"
                         }
                     }
                 ],
@@ -121,7 +121,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.UserData"
+                                            "$ref": "#/definitions/example.AuthData"
                                         }
                                     }
                                 }
@@ -175,7 +175,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq"
+                            "$ref": "#/definitions/example.MobileRegisterBody"
                         }
                     }
                 ],
@@ -191,7 +191,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.UserData"
+                                            "$ref": "#/definitions/example.AuthData"
                                         }
                                     }
                                 }
@@ -251,7 +251,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq"
+                            "$ref": "#/definitions/example.PwdLoginBody"
                         }
                     }
                 ],
@@ -267,7 +267,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.UserData"
+                                            "$ref": "#/definitions/example.AuthData"
                                         }
                                     }
                                 }
@@ -374,7 +374,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.UsernameRegisterReq"
+                            "$ref": "#/definitions/example.UsernameRegisterBody"
                         }
                     }
                 ],
@@ -390,7 +390,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.UserData"
+                                            "$ref": "#/definitions/example.AuthData"
                                         }
                                     }
                                 }
@@ -419,6 +419,780 @@ const docTemplate = `{
                         "description": "account already exists",
                         "schema": {
                             "$ref": "#/definitions/example.RespConflict"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/alerts/delete": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "delete alert info",
+                "operationId": "DeleteAlert",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "alert id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespOk"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/alerts/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "get alert detail",
+                "operationId": "GetAlertDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.AlertData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/alerts/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "get alert list",
+                "operationId": "GetAlertList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "device id",
+                        "name": "device_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "level",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sorts",
+                        "name": "sorts",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "start date",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.AlertData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/alerts/update": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "update alert info",
+                "operationId": "UpdateAlertInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "alert data",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.AlertData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.AlertData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/alerts/upload": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alerts"
+                ],
+                "summary": "upload alert info",
+                "operationId": "UploadAlertInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "alert data",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.AlertData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.AlertData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/bind": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devices"
+                ],
+                "summary": "bind device info",
+                "operationId": "BindDevice",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "device data",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.DeviceData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devices"
+                ],
+                "summary": "get device detail",
+                "operationId": "GetDeviceDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devices"
+                ],
+                "summary": "get device list",
+                "operationId": "GetDeviceList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "state",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sorts",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "start_date",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end_date",
+                        "name": "state",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/unbind": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devices"
+                ],
+                "summary": "unbind device",
+                "operationId": "UnbindDevice",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "device id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespOk"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/update": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devices"
+                ],
+                "summary": "update device info",
+                "operationId": "UpdateDeviceInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "device data",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.DeviceData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
                         }
                     },
                     "500": {
@@ -525,19 +1299,7 @@ const docTemplate = `{
                     "200": {
                         "description": "success",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/example.RespOk"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/example.UserData"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/example.RespOk"
                         }
                     },
                     "400": {
@@ -575,7 +1337,7 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "get user detail",
+                "summary": "get users detail",
                 "operationId": "GetUserDetail",
                 "parameters": [
                     {
@@ -647,7 +1409,7 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "get user list",
+                "summary": "get users list",
                 "operationId": "GetUserList",
                 "parameters": [
                     {
@@ -792,10 +1554,149 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "auth.UsernameRegisterReq": {
+        "example.AlertData": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "example": 50
+                },
+                "desc": {
+                    "type": "string",
+                    "example": "hello,alert"
+                },
+                "device_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "first_alarm": {
+                    "type": "string",
+                    "example": "2023-12-22 15:16:00"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "is_ongoing": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "last_alarm": {
+                    "type": "string",
+                    "example": "2023-12-30 15:16:00"
+                },
+                "level": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "example.AuthData": {
+            "type": "object",
+            "properties": {
+                "expired_at": {
+                    "type": "string",
+                    "example": "2023-12-25T14:59:11.322480873+08:00"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDM0ODc1NTEsIm9yaWdfaWF0IjoxNzAzNDgzOTUxLCJ1aWQiOjN9.J5sOSjOPIgifaTpGIqzfZV3vi1ZRD6WnOJV3fok_ltk"
+                }
+            }
+        },
+        "example.DeviceData": {
+            "type": "object",
+            "properties": {
+                "desc": {
+                    "type": "string",
+                    "example": "test"
+                },
+                "hardware_version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "location_id": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test"
+                },
+                "owner_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "product_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "serial_no": {
+                    "type": "string",
+                    "example": "1234567890123456"
+                },
+                "software_version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                },
+                "state": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "example.MiniProgLoginBody": {
+            "type": "object",
+            "properties": {
+                "wxCode": {
+                    "type": "string",
+                    "example": "wx1234567890abcdef1234567890abcdef"
+                }
+            }
+        },
+        "example.MobileLoginBody": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string",
+                    "example": "19535876981"
+                },
+                "smsCode": {
+                    "type": "string",
+                    "example": "123456"
+                }
+            }
+        },
+        "example.MobileRegisterBody": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string",
+                    "example": "19535876981"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "12345678"
+                },
+                "smsCode": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "demon_wang"
+                }
+            }
+        },
+        "example.PwdLoginBody": {
             "type": "object",
             "properties": {
                 "password": {
+                    "description": "2: required string Email (api.body=\"email\", api.vd=\"regexp('^\\\\w+([-+.]\\\\w+)*@\\\\w+([-.]\\\\w+)*\\\\.\\\\w+([-.]\\\\w+)*$')\");",
                     "type": "string",
                     "example": "12345678"
                 },
@@ -880,9 +1781,6 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 200
                 },
-                "data": {
-                    "$ref": "#/definitions/example.UserData"
-                },
                 "message": {
                     "type": "string",
                     "example": "ok"
@@ -890,10 +1788,6 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": true
-                },
-                "total": {
-                    "type": "integer",
-                    "example": 1
                 }
             }
         },
@@ -955,57 +1849,9 @@ const docTemplate = `{
                 }
             }
         },
-        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MiniProgLoginReq": {
+        "example.UsernameRegisterBody": {
             "type": "object",
             "properties": {
-                "wx_code": {
-                    "type": "string",
-                    "example": "033b5zLW0lOibb2AJ7LW0GxYzLW0b5zL"
-                }
-            }
-        },
-        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileLoginReq": {
-            "type": "object",
-            "properties": {
-                "mobile": {
-                    "type": "string",
-                    "example": "19535876981"
-                },
-                "sms_code": {
-                    "type": "string",
-                    "example": "159357"
-                }
-            }
-        },
-        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.MobileRegisterReq": {
-            "type": "object",
-            "properties": {
-                "mobile": {
-                    "type": "string",
-                    "example": "19535876981"
-                },
-                "password": {
-                    "description": "4: required string Password (api.body=\"password\", api.vd=\"regexp(^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^\u0026*])[A-Za-z\\d@#$%^\u0026*]{8,16}$')\");",
-                    "type": "string",
-                    "example": "12345678"
-                },
-                "sms_code": {
-                    "type": "string",
-                    "example": "159357"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "demon_wang"
-                }
-            }
-        },
-        "git_zqbjj_top_pet_services_cmd_http_dto_hertz_gen_auth.PwdLoginReq": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "wwwwwdemon@gmail.com"
-                },
                 "password": {
                     "type": "string",
                     "example": "12345678"

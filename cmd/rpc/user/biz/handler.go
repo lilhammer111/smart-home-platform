@@ -6,7 +6,6 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
-	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 // MicroUserImpl implements the last service interface defined in the IDL.
@@ -99,7 +98,7 @@ func (s *MicroUserImpl) UpdateUser(ctx context.Context, req *user.UserInfo) (res
 // CreateUser implements the MicroUserImpl interface.
 func (s *MicroUserImpl) CreateUser(ctx context.Context, req *user.UserInfo) (resp *user.UserInfo, err error) {
 	resp, err = service.NewCreateUserService(ctx).Run(req)
-	klog.Errorf("err is: %s", err)
+
 	return resp, err
 }
 

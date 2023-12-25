@@ -10,14 +10,14 @@ import (
 )
 
 type AlertFilter struct {
-	Page      *int16   `thrift:"Page,2,optional" example:"1" json:"page,omitempty" query:"page" vd:"$>=0"`
-	Limit     *int16   `thrift:"Limit,1,optional" example:"1" json:"limit,omitempty" query:"limit" vd:"$>0"`
-	Level     *int8    `thrift:"Level,3,optional" example:"1" json:"level,omitempty" query:"level" vd:"in($, 0, 1, 2)"`
-	DeviceId  *int32   `thrift:"DeviceId,4,optional" example:"1" json:"device_id,omitempty" query:"device_id"`
-	Sorts     []string `thrift:"Sorts,5,optional" example:"device_id desc" json:"sorts,omitempty" query:"sorts" vd:"range($, regexp('^[a-zA-Z]+ (asc|desc)$', #v))"`
-	StartDate *string  `thrift:"StartDate,6,optional" example:"2023-12-22" json:"start_date,omitempty" query:"start_date" vd:"regexp('^\d{4}-\d{2}-\d{2}$')"`
-	EndDate   *string  `thrift:"EndDate,7,optional" example:"2024-02-10" json:"end_date,omitempty" query:"end_date" vd:"regexp('^\d{4}-\d{2}-\d{2}$')"`
-	IsOngoing *bool    `thrift:"IsOngoing,8,optional" example:"true" json:"is_ongoing,omitempty" query:"is_ongoing"`
+	Page      *int16   `thrift:"Page,2,optional" json:"page,omitempty" query:"page"`
+	Limit     *int16   `thrift:"Limit,1,optional" json:"limit,omitempty" query:"limit"`
+	Level     *int8    `thrift:"Level,3,optional" json:"level,omitempty" query:"level"`
+	DeviceId  *int32   `thrift:"DeviceId,4,optional" json:"device_id,omitempty" query:"device_id"`
+	Sorts     []string `thrift:"Sorts,5,optional" json:"sorts,omitempty" query:"sorts"`
+	StartDate *string  `thrift:"StartDate,6,optional" json:"start_date,omitempty" query:"start_date"`
+	EndDate   *string  `thrift:"EndDate,7,optional" json:"end_date,omitempty" query:"end_date"`
+	IsOngoing *bool    `thrift:"IsOngoing,8,optional" json:"is_ongoing,omitempty" query:"is_ongoing"`
 }
 
 func NewAlertFilter() *AlertFilter {
@@ -570,14 +570,14 @@ func (p *AlertFilter) String() string {
 }
 
 type AlertInfo struct {
-	Id         *int32 `thrift:"Id,1,optional" example:"1" form:"id" json:"id,omitempty"`
-	DeviceId   int32  `thrift:"DeviceId,4,required" example:"1" form:"device_id,required" json:"device_id,required"`
-	Count      int8   `thrift:"Count,2,required" example:"50" form:"count,required" json:"count,required" vd:"$<=127 && $>=0"`
-	Level      int8   `thrift:"Level,3,required" example:"1" form:"level,required" json:"level,required" vd:"in($, 0, 1, 2)"`
-	Desc       string `thrift:"Desc,5,required" example:"hello,alert" form:"desc,required" json:"desc,required" vd:"len($)<=600"`
-	FirstAlarm string `thrift:"FirstAlarm,6,required" example:"2023-12-22 15:16:00" form:"first_alarm,required" json:"first_alarm,required"`
-	LastAlarm  string `thrift:"LastAlarm,7,required" example:"2023-12-30 15:16:00" form:"last_alarm,required" json:"last_alarm,required"`
-	IsOngoing  bool   `thrift:"IsOngoing,8,required" example:"true" form:"is_ongoing,required" json:"is_ongoing,required"`
+	Id         *int32 `thrift:"Id,1,optional" form:"id" json:"id,omitempty"`
+	DeviceId   int32  `thrift:"DeviceId,4,required" form:"device_id,required" json:"device_id,required"`
+	Count      int8   `thrift:"Count,2,required" form:"count,required" json:"count,required" vd:"$<=127 && $>=0"`
+	Level      int8   `thrift:"Level,3,required" form:"level,required" json:"level,required" vd:"in($, 0, 1, 2)"`
+	Desc       string `thrift:"Desc,5,required" form:"desc,required" json:"desc,required" vd:"len($)<=600"`
+	FirstAlarm string `thrift:"FirstAlarm,6,required" form:"first_alarm,required" json:"first_alarm,required"`
+	LastAlarm  string `thrift:"LastAlarm,7,required" form:"last_alarm,required" json:"last_alarm,required"`
+	IsOngoing  bool   `thrift:"IsOngoing,8,required" form:"is_ongoing,required" json:"is_ongoing,required"`
 }
 
 func NewAlertInfo() *AlertInfo {

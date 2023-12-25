@@ -614,7 +614,7 @@ func (p *DeviceInfo) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.BYTE {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
@@ -840,7 +840,7 @@ func (p *DeviceInfo) FastReadField4(buf []byte) (int, error) {
 func (p *DeviceInfo) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadByte(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -906,9 +906,9 @@ func (p *DeviceInfo) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWrit
 		offset += p.fastWriteField10(buf[offset:], binaryWriter)
 		offset += p.fastWriteField11(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
-		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField7(buf[offset:], binaryWriter)
 		offset += p.fastWriteField8(buf[offset:], binaryWriter)
 		offset += p.fastWriteField9(buf[offset:], binaryWriter)
@@ -996,8 +996,8 @@ func (p *DeviceInfo) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWrit
 
 func (p *DeviceInfo) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "LocationId", thrift.STRING, 6)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.LocationId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "LocationId", thrift.BYTE, 6)
+	offset += bthrift.Binary.WriteByte(buf[offset:], p.LocationId)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1088,8 +1088,8 @@ func (p *DeviceInfo) field4Length() int {
 
 func (p *DeviceInfo) field6Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("LocationId", thrift.STRING, 6)
-	l += bthrift.Binary.StringLengthNocopy(p.LocationId)
+	l += bthrift.Binary.FieldBeginLength("LocationId", thrift.BYTE, 6)
+	l += bthrift.Binary.ByteLength(p.LocationId)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

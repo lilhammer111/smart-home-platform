@@ -11,7 +11,6 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/device/kitex_gen/micro_device"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
 
@@ -26,21 +25,14 @@ func NewFindDeviceService(ctx context.Context) *FindDeviceService {
 
 // Run create note info
 func (s *FindDeviceService) Run(req *micro_device.RpcFindDeviceReq) (resp *device.DeviceInfo, err error) {
-	deviceInfo := model.Device{}
-	err = db.GetMysql().First(&deviceInfo, req.DeviceId).Error
+	resp = &device.DeviceInfo{}
+	err = db.GetMysql().Model(&model.Device{}).First(&resp, req.Id).Error
 	if err != nil {
 		klog.Error(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, kerrors.NewBizStatusError(code.NotFound, "device is not existed")
 		}
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
-	}
-
-	resp = &device.DeviceInfo{}
-	err = copier.Copy(resp, deviceInfo)
-	if err != nil {
-		klog.Error(err)
-		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	return resp, nil

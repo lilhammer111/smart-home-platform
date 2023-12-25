@@ -2,13 +2,14 @@ package model
 
 import (
 	"errors"
+	"git.zqbjj.top/lilhammer111/micro-kit/model"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	BaseModel
+	model.BaseModel
 	Username *string `gorm:"type:varchar(30);index;unique" json:"username"`
-	Password *string `gorm:"type:varchar(255)" json:"password"`
+	Password *string `gorm:"type:varchar(255)" json:"password,omitempty"`
 	Openid   *string `gorm:"type:varchar(50);index;unique" json:"openid"` // current length is 28
 	Age      *int8   `gorm:"type:tinyint unsigned" json:"age"`
 	Gender   *int8   `gorm:"type:tinyint unsigned" json:"gender"`

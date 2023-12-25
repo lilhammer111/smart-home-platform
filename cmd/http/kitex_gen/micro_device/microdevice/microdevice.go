@@ -402,7 +402,7 @@ func (p *kClient) ExpandLocationEnum(ctx context.Context, req *micro_device.RpcE
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq) (r *alert.AlertInfo, err error) {
+func (p *kClient) FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq) (r *alert.AlertInfo, err error) {
 	var _args micro_device.MicroDeviceFindAlertArgs
 	_args.Req = req
 	var _result micro_device.MicroDeviceFindAlertResult

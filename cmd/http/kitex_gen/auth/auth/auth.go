@@ -20,11 +20,12 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "auth"
 	handlerType := (*auth.Auth)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"SendSms":        kitex.NewMethodInfo(sendSmsHandler, newAuthSendSmsArgs, newAuthSendSmsResult, false),
-		"MobileRegister": kitex.NewMethodInfo(mobileRegisterHandler, newAuthMobileRegisterArgs, newAuthMobileRegisterResult, false),
-		"MobileLogin":    kitex.NewMethodInfo(mobileLoginHandler, newAuthMobileLoginArgs, newAuthMobileLoginResult, false),
-		"MiniProgLogin":  kitex.NewMethodInfo(miniProgLoginHandler, newAuthMiniProgLoginArgs, newAuthMiniProgLoginResult, false),
-		"PwdLogin":       kitex.NewMethodInfo(pwdLoginHandler, newAuthPwdLoginArgs, newAuthPwdLoginResult, false),
+		"SendSms":          kitex.NewMethodInfo(sendSmsHandler, newAuthSendSmsArgs, newAuthSendSmsResult, false),
+		"MobileRegister":   kitex.NewMethodInfo(mobileRegisterHandler, newAuthMobileRegisterArgs, newAuthMobileRegisterResult, false),
+		"UsernameRegister": kitex.NewMethodInfo(usernameRegisterHandler, newAuthUsernameRegisterArgs, newAuthUsernameRegisterResult, false),
+		"MobileLogin":      kitex.NewMethodInfo(mobileLoginHandler, newAuthMobileLoginArgs, newAuthMobileLoginResult, false),
+		"MiniProgLogin":    kitex.NewMethodInfo(miniProgLoginHandler, newAuthMiniProgLoginArgs, newAuthMiniProgLoginResult, false),
+		"PwdLogin":         kitex.NewMethodInfo(pwdLoginHandler, newAuthPwdLoginArgs, newAuthPwdLoginResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "auth",
@@ -74,6 +75,24 @@ func newAuthMobileRegisterArgs() interface{} {
 
 func newAuthMobileRegisterResult() interface{} {
 	return auth.NewAuthMobileRegisterResult()
+}
+
+func usernameRegisterHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*auth.AuthUsernameRegisterArgs)
+	realResult := result.(*auth.AuthUsernameRegisterResult)
+	success, err := handler.(auth.Auth).UsernameRegister(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newAuthUsernameRegisterArgs() interface{} {
+	return auth.NewAuthUsernameRegisterArgs()
+}
+
+func newAuthUsernameRegisterResult() interface{} {
+	return auth.NewAuthUsernameRegisterResult()
 }
 
 func mobileLoginHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -155,6 +174,16 @@ func (p *kClient) MobileRegister(ctx context.Context, req *auth.MobileRegisterRe
 	_args.Req = req
 	var _result auth.AuthMobileRegisterResult
 	if err = p.c.Call(ctx, "MobileRegister", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UsernameRegister(ctx context.Context, req *auth.UsernameRegisterReq) (r *auth.AuthInfo, err error) {
+	var _args auth.AuthUsernameRegisterArgs
+	_args.Req = req
+	var _result auth.AuthUsernameRegisterResult
+	if err = p.c.Call(ctx, "UsernameRegister", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

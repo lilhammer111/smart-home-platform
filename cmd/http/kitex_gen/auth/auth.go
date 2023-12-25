@@ -956,7 +956,6 @@ func (p *MiniProgLoginReq) Field1DeepEqual(src string) bool {
 
 type PwdLoginReq struct {
 	Username string `thrift:"Username,1,required" frugal:"1,required,string" json:"Username"`
-	Email    string `thrift:"Email,2,required" frugal:"2,required,string" json:"Email"`
 	Password string `thrift:"Password,3,required" frugal:"3,required,string" json:"Password"`
 }
 
@@ -972,18 +971,11 @@ func (p *PwdLoginReq) GetUsername() (v string) {
 	return p.Username
 }
 
-func (p *PwdLoginReq) GetEmail() (v string) {
-	return p.Email
-}
-
 func (p *PwdLoginReq) GetPassword() (v string) {
 	return p.Password
 }
 func (p *PwdLoginReq) SetUsername(val string) {
 	p.Username = val
-}
-func (p *PwdLoginReq) SetEmail(val string) {
-	p.Email = val
 }
 func (p *PwdLoginReq) SetPassword(val string) {
 	p.Password = val
@@ -991,7 +983,6 @@ func (p *PwdLoginReq) SetPassword(val string) {
 
 var fieldIDToName_PwdLoginReq = map[int16]string{
 	1: "Username",
-	2: "Email",
 	3: "Password",
 }
 
@@ -1000,7 +991,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUsername bool = false
-	var issetEmail bool = false
 	var issetPassword bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -1023,17 +1013,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetUsername = true
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetEmail = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1068,11 +1047,6 @@ func (p *PwdLoginReq) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetEmail {
-		fieldId = 2
-		goto RequiredFieldNotSetError
-	}
-
 	if !issetPassword {
 		fieldId = 3
 		goto RequiredFieldNotSetError
@@ -1104,15 +1078,6 @@ func (p *PwdLoginReq) ReadField1(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *PwdLoginReq) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.Email = v
-	}
-	return nil
-}
 func (p *PwdLoginReq) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
@@ -1131,10 +1096,6 @@ func (p *PwdLoginReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 		if err = p.writeField3(oprot); err != nil {
@@ -1175,22 +1136,6 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
-func (p *PwdLoginReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Email", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Email); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
 func (p *PwdLoginReq) writeField3(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
@@ -1224,9 +1169,6 @@ func (p *PwdLoginReq) DeepEqual(ano *PwdLoginReq) bool {
 	if !p.Field1DeepEqual(ano.Username) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Email) {
-		return false
-	}
 	if !p.Field3DeepEqual(ano.Password) {
 		return false
 	}
@@ -1236,13 +1178,6 @@ func (p *PwdLoginReq) DeepEqual(ano *PwdLoginReq) bool {
 func (p *PwdLoginReq) Field1DeepEqual(src string) bool {
 
 	if strings.Compare(p.Username, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *PwdLoginReq) Field2DeepEqual(src string) bool {
-
-	if strings.Compare(p.Email, src) != 0 {
 		return false
 	}
 	return true
@@ -1556,10 +1491,248 @@ func (p *AuthInfo) Field3DeepEqual(src int32) bool {
 	return true
 }
 
+type UsernameRegisterReq struct {
+	Username string `thrift:"Username,1,required" frugal:"1,required,string" json:"Username"`
+	Password string `thrift:"Password,2,required" frugal:"2,required,string" json:"Password"`
+}
+
+func NewUsernameRegisterReq() *UsernameRegisterReq {
+	return &UsernameRegisterReq{}
+}
+
+func (p *UsernameRegisterReq) InitDefault() {
+	*p = UsernameRegisterReq{}
+}
+
+func (p *UsernameRegisterReq) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *UsernameRegisterReq) GetPassword() (v string) {
+	return p.Password
+}
+func (p *UsernameRegisterReq) SetUsername(val string) {
+	p.Username = val
+}
+func (p *UsernameRegisterReq) SetPassword(val string) {
+	p.Password = val
+}
+
+var fieldIDToName_UsernameRegisterReq = map[int16]string{
+	1: "Username",
+	2: "Password",
+}
+
+func (p *UsernameRegisterReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetUsername bool = false
+	var issetPassword bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetUsername = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetPassword = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetUsername {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetPassword {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UsernameRegisterReq[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_UsernameRegisterReq[fieldId]))
+}
+
+func (p *UsernameRegisterReq) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Username = v
+	}
+	return nil
+}
+func (p *UsernameRegisterReq) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Password = v
+	}
+	return nil
+}
+
+func (p *UsernameRegisterReq) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UsernameRegisterReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UsernameRegisterReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *UsernameRegisterReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Password); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *UsernameRegisterReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UsernameRegisterReq(%+v)", *p)
+}
+
+func (p *UsernameRegisterReq) DeepEqual(ano *UsernameRegisterReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Password) {
+		return false
+	}
+	return true
+}
+
+func (p *UsernameRegisterReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UsernameRegisterReq) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
+}
+
 type Auth interface {
 	SendSms(ctx context.Context, req *SendSmsReq) (r *common.Empty, err error)
 
 	MobileRegister(ctx context.Context, req *MobileRegisterReq) (r *AuthInfo, err error)
+
+	UsernameRegister(ctx context.Context, req *UsernameRegisterReq) (r *AuthInfo, err error)
 
 	MobileLogin(ctx context.Context, req *MobileLoginReq) (r *AuthInfo, err error)
 
@@ -1608,6 +1781,15 @@ func (p *AuthClient) MobileRegister(ctx context.Context, req *MobileRegisterReq)
 	_args.Req = req
 	var _result AuthMobileRegisterResult
 	if err = p.Client_().Call(ctx, "MobileRegister", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *AuthClient) UsernameRegister(ctx context.Context, req *UsernameRegisterReq) (r *AuthInfo, err error) {
+	var _args AuthUsernameRegisterArgs
+	_args.Req = req
+	var _result AuthUsernameRegisterResult
+	if err = p.Client_().Call(ctx, "UsernameRegister", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1662,6 +1844,7 @@ func NewAuthProcessor(handler Auth) *AuthProcessor {
 	self := &AuthProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("SendSms", &authProcessorSendSms{handler: handler})
 	self.AddToProcessorMap("MobileRegister", &authProcessorMobileRegister{handler: handler})
+	self.AddToProcessorMap("UsernameRegister", &authProcessorUsernameRegister{handler: handler})
 	self.AddToProcessorMap("MobileLogin", &authProcessorMobileLogin{handler: handler})
 	self.AddToProcessorMap("MiniProgLogin", &authProcessorMiniProgLogin{handler: handler})
 	self.AddToProcessorMap("PwdLogin", &authProcessorPwdLogin{handler: handler})
@@ -1764,6 +1947,54 @@ func (p *authProcessorMobileRegister) Process(ctx context.Context, seqId int32, 
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("MobileRegister", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type authProcessorUsernameRegister struct {
+	handler Auth
+}
+
+func (p *authProcessorUsernameRegister) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := AuthUsernameRegisterArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("UsernameRegister", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := AuthUsernameRegisterResult{}
+	var retval *AuthInfo
+	if retval, err2 = p.handler.UsernameRegister(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UsernameRegister: "+err2.Error())
+		oprot.WriteMessageBegin("UsernameRegister", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("UsernameRegister", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2606,6 +2837,350 @@ func (p *AuthMobileRegisterResult) DeepEqual(ano *AuthMobileRegisterResult) bool
 }
 
 func (p *AuthMobileRegisterResult) Field0DeepEqual(src *AuthInfo) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type AuthUsernameRegisterArgs struct {
+	Req *UsernameRegisterReq `thrift:"req,1" frugal:"1,default,UsernameRegisterReq" json:"req"`
+}
+
+func NewAuthUsernameRegisterArgs() *AuthUsernameRegisterArgs {
+	return &AuthUsernameRegisterArgs{}
+}
+
+func (p *AuthUsernameRegisterArgs) InitDefault() {
+	*p = AuthUsernameRegisterArgs{}
+}
+
+var AuthUsernameRegisterArgs_Req_DEFAULT *UsernameRegisterReq
+
+func (p *AuthUsernameRegisterArgs) GetReq() (v *UsernameRegisterReq) {
+	if !p.IsSetReq() {
+		return AuthUsernameRegisterArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *AuthUsernameRegisterArgs) SetReq(val *UsernameRegisterReq) {
+	p.Req = val
+}
+
+var fieldIDToName_AuthUsernameRegisterArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *AuthUsernameRegisterArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *AuthUsernameRegisterArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AuthUsernameRegisterArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewUsernameRegisterReq()
+
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *AuthUsernameRegisterArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UsernameRegister_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("AuthUsernameRegisterArgs(%+v)", *p)
+}
+
+func (p *AuthUsernameRegisterArgs) DeepEqual(ano *AuthUsernameRegisterArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthUsernameRegisterArgs) Field1DeepEqual(src *UsernameRegisterReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type AuthUsernameRegisterResult struct {
+	Success *AuthInfo `thrift:"success,0,optional" frugal:"0,optional,AuthInfo" json:"success,omitempty"`
+}
+
+func NewAuthUsernameRegisterResult() *AuthUsernameRegisterResult {
+	return &AuthUsernameRegisterResult{}
+}
+
+func (p *AuthUsernameRegisterResult) InitDefault() {
+	*p = AuthUsernameRegisterResult{}
+}
+
+var AuthUsernameRegisterResult_Success_DEFAULT *AuthInfo
+
+func (p *AuthUsernameRegisterResult) GetSuccess() (v *AuthInfo) {
+	if !p.IsSetSuccess() {
+		return AuthUsernameRegisterResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *AuthUsernameRegisterResult) SetSuccess(x interface{}) {
+	p.Success = x.(*AuthInfo)
+}
+
+var fieldIDToName_AuthUsernameRegisterResult = map[int16]string{
+	0: "success",
+}
+
+func (p *AuthUsernameRegisterResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *AuthUsernameRegisterResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AuthUsernameRegisterResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewAuthInfo()
+
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *AuthUsernameRegisterResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UsernameRegister_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *AuthUsernameRegisterResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("AuthUsernameRegisterResult(%+v)", *p)
+}
+
+func (p *AuthUsernameRegisterResult) DeepEqual(ano *AuthUsernameRegisterResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *AuthUsernameRegisterResult) Field0DeepEqual(src *AuthInfo) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

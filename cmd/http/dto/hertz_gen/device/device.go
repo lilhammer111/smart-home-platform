@@ -10,13 +10,13 @@ import (
 )
 
 type DeviceFilter struct {
-	State     *int8    `thrift:"State,1,optional" example:"7" json:"state,omitempty" query:"state" vd:"len($)<=8 && len($)>=0"`
-	Page      *int16   `thrift:"Page,2,optional" example:"1" json:"page,omitempty" query:"page" vd:"$>=0"`
-	Limit     *int16   `thrift:"Limit,3,optional" example:"1" json:"limit,omitempty" query:"limit" vd:"$>0"`
-	Sorts     []string `thrift:"Sorts,4,optional" example:"owner_id desc" json:"sorts,omitempty" query:"sorts" vd:"range($, regexp('^[a-zA-Z]+ (asc|desc)$', #v))"`
-	Search    *string  `thrift:"Search,5,optional" example:"hello,device" json:"search,omitempty" query:"search" vd:"regexp('^[\p{L}\p{N}\p{Lo}]+$')"`
-	StartDate *string  `thrift:"StartDate,6,optional" example:"2023-12-22" json:"start_date,omitempty" query:"start_date" vd:"regexp('^\d{4}-\d{2}-\d{2}$')"`
-	EndDate   *string  `thrift:"EndDate,7,optional" example:"2024-02-05" json:"end_date,omitempty" query:"end_date" vd:"regexp('^\d{4}-\d{2}-\d{2}$')"`
+	State     *int8    `thrift:"State,1,optional" json:"state,omitempty" query:"state"`
+	Page      *int16   `thrift:"Page,2,optional" json:"page,omitempty" query:"page"`
+	Limit     *int16   `thrift:"Limit,3,optional" json:"limit,omitempty" query:"limit"`
+	Sorts     []string `thrift:"Sorts,4,optional" json:"sorts,omitempty" query:"sorts"`
+	Search    *string  `thrift:"Search,5,optional" json:"search,omitempty" query:"search"`
+	StartDate *string  `thrift:"StartDate,6,optional" json:"start_date,omitempty" query:"start_date"`
+	EndDate   *string  `thrift:"EndDate,7,optional" json:"end_date,omitempty" query:"end_date"`
 }
 
 func NewDeviceFilter() *DeviceFilter {
@@ -514,16 +514,16 @@ func (p *DeviceFilter) String() string {
 }
 
 type DeviceInfo struct {
-	Id              *int32 `thrift:"Id,1,optional" example:"1" form:"id" json:"id,omitempty"`
-	OwnerId         int32  `thrift:"OwnerId,10,required" example:"1" form:"owner_id,required" json:"owner_id,required"`
-	ProductId       int32  `thrift:"ProductId,11,required" example:"1" form:"product_id,required" json:"product_id,required"`
-	SerialNo        string `thrift:"SerialNo,2,required" example:"KEwju0rKOlKCDAxUnDzQI" form:"serial_no,required" json:"serial_no,required"`
-	Name            string `thrift:"Name,3,required" example:"demon's feeder" form:"name,required" json:"name,required" vd:"regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')"`
-	State           int8   `thrift:"State,4,required" example:"8" form:"state,required" json:"state,required"`
-	LocationId      string `thrift:"LocationId,6,required" example:"1" form:"location,required" json:"location,required"`
-	HardwareVersion string `thrift:"HardwareVersion,7,required" example:"v 1.0.0" form:"hardware_version,required" json:"hardware_version,required"`
-	SoftwareVersion string `thrift:"SoftwareVersion,8,required" example:"v 1.0.0" form:"software_version,required" json:"software_version,required"`
-	Desc            string `thrift:"Desc,9,required" example:"hello,device" form:"desc,required" json:"desc,required"`
+	Id              *int32 `thrift:"Id,1,optional" form:"id" json:"id,omitempty"`
+	OwnerId         int32  `thrift:"OwnerId,10,required" form:"owner_id,required" json:"owner_id,required"`
+	ProductId       int32  `thrift:"ProductId,11,required" form:"product_id,required" json:"product_id,required"`
+	SerialNo        string `thrift:"SerialNo,2,required" form:"serial_no,required" json:"serial_no,required"`
+	Name            string `thrift:"Name,3,required" form:"name,required" json:"name,required" vd:"regexp('^[\p{L}\p{N}\p{Lo}_]{1,15}$')"`
+	State           int8   `thrift:"State,4,required" form:"state,required" json:"state,required"`
+	LocationId      int8   `thrift:"LocationId,6,required" form:"location,required" json:"location,required"`
+	HardwareVersion string `thrift:"HardwareVersion,7,required" form:"hardware_version,required" json:"hardware_version,required"`
+	SoftwareVersion string `thrift:"SoftwareVersion,8,required" form:"software_version,required" json:"software_version,required"`
+	Desc            string `thrift:"Desc,9,required" form:"desc,required" json:"desc,required"`
 }
 
 func NewDeviceInfo() *DeviceInfo {
@@ -559,7 +559,7 @@ func (p *DeviceInfo) GetState() (v int8) {
 	return p.State
 }
 
-func (p *DeviceInfo) GetLocationId() (v string) {
+func (p *DeviceInfo) GetLocationId() (v int8) {
 	return p.LocationId
 }
 
@@ -686,7 +686,7 @@ func (p *DeviceInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.BYTE {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -860,7 +860,7 @@ func (p *DeviceInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *DeviceInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadByte(); err != nil {
 		return err
 	} else {
 		p.LocationId = v
@@ -1058,10 +1058,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *DeviceInfo) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("LocationId", thrift.STRING, 6); err != nil {
+	if err = oprot.WriteFieldBegin("LocationId", thrift.BYTE, 6); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.LocationId); err != nil {
+	if err := oprot.WriteByte(p.LocationId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

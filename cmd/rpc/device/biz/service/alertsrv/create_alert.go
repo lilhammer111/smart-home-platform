@@ -23,6 +23,7 @@ func NewCreateAlertService(ctx context.Context) *CreateAlertService {
 
 // Run create note info
 func (s *CreateAlertService) Run(req *alert.AlertInfo) (resp *alert.AlertInfo, err error) {
+	req.Id = nil
 	alertInfo := model.Alert{}
 	err = copier.Copy(&alertInfo, req)
 	if err != nil {

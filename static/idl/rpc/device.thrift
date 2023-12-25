@@ -25,20 +25,21 @@ struct LocationListResp {
 }
 
 struct RpcFindDeviceReq {
-    1: required i32 DeviceId
+    1: required i32 Id;
 }
 
 struct RpcDeleteDeviceReq {
-    1: required i32 DeviceId;
+    1: required i32 Id;
 }
 
 struct RpcFindAlertReq {
-    1: required i32 AlertId
+    1: required i32 Id;
 }
 
 struct RpcDeleteAlertReq {
-    1: required i32 AlertId;
+    1: required i32 Id;
 }
+
 
 service MicroDevice {
     device.DeviceInfo FindDevice(1: RpcFindDeviceReq req);
@@ -52,7 +53,7 @@ service MicroDevice {
     common.Empty ReduceLocationEnum(1: RpcReduceLocReq req);
     common.Empty ExpandLocationEnum(1: RpcExpandLocReq req);
 
-    alert.AlertInfo FindAlert(1: RpcFindDeviceReq req);
+    alert.AlertInfo FindAlert(1: RpcFindAlertReq req);
     list<alert.AlertInfo> QueryAlertsWithFilter(1: alert.AlertFilter req);
     alert.AlertInfo CreateAlert(1: alert.AlertInfo req);
     alert.AlertInfo UpdateAlert(1: alert.AlertInfo req);

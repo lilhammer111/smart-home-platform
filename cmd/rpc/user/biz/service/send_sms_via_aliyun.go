@@ -3,14 +3,16 @@ package service
 import (
 	"context"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/binding"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/binding"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	dysmsapi "github.com/alibabacloud-go/dysmsapi-20170525/v3/client"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"golang.org/x/crypto/bcrypt"
 	"math/rand"
@@ -44,28 +46,28 @@ func (s *SendSmsViaAliyunService) Run(req *micro_user.RpcSmsReq) (resp *common.E
 	err = smsSender.initSmsAssistant(req.Mobile, smsCode)
 	if err != nil {
 		klog.Errorf("failed to get sms client: %s", err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	smsResp, err := smsSender.smsAssistant.SendSms(smsSender.request)
 	if err != nil {
 		klog.Errorf("failed to send sms: %s", err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	if *smsResp.StatusCode != http.StatusOK {
 		klog.Errorf("unexpected response status from sms service: %s", err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
 	hashedSmsCode, err := hashSmsCode(smsCode)
 	if err != nil {
 		klog.Errorf("failed to hash sms code: %s", err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 	_, err = db.GetRedis().SetEx(s.ctx, req.Mobile, hashedSmsCode, smsTTL).Result()
 	if err != nil {
 		klog.Errorf("failed to set sms bizerr in redis for mobile %s: %s", req.Mobile, err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	return &common.Empty{}, nil
 }

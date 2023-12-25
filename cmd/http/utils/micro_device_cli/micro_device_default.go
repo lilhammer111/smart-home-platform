@@ -91,7 +91,7 @@ func ExpandLocationEnum(ctx context.Context, req *micro_device.RpcExpandLocReq, 
 	return resp, nil
 }
 
-func FindAlert(ctx context.Context, req *micro_device.RpcFindDeviceReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error) {
+func FindAlert(ctx context.Context, req *micro_device.RpcFindAlertReq, callOptions ...callopt.Option) (resp *alert.AlertInfo, err error) {
 	resp, err = defaultClient.FindAlert(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "FindAlert call failed,err =%+v", err)

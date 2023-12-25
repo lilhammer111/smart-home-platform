@@ -1,8 +1,8 @@
 package main
 
 import (
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 

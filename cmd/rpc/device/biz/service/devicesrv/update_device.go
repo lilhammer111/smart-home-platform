@@ -30,7 +30,7 @@ func (s *UpdateDeviceService) Run(req *device.DeviceInfo) (resp *device.DeviceIn
 
 	// Using Save for a full update, as it ensures all fields in device model, including zero values, are updated.
 	// This is appropriate since all necessary fields are validated and included at the API gateway level.
-	err = db.GetMysql().Save(&deviceInfo).Error
+	err = db.GetMysql().Omit("created_at").Save(&deviceInfo).Error
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

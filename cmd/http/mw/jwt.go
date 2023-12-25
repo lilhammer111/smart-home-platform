@@ -3,16 +3,17 @@ package mw
 import (
 	"context"
 	"errors"
+	"fmt"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/pet/services/cmd/http/conf"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/user"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/jinzhu/copier"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"net/http"
 	"time"
 
@@ -103,11 +104,10 @@ func InitJwt() {
 		},
 		IdentityKey: IdentityKey,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*model.User); ok {
+			if v, ok := data.(*user.UserInfo); ok {
 				hlog.Info("payload func type assert success")
-				hlog.Infof("v is %+v", v)
 				return jwt.MapClaims{
-					IdentityKey: v.ID,
+					IdentityKey: v.GetId(),
 				}
 			}
 			return jwt.MapClaims{}
@@ -115,11 +115,9 @@ func InitJwt() {
 		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
 			claims := jwt.ExtractClaims(ctx, c)
 			hlog.Infof("claims is %+v", claims)
-			userInfo := model.User{}
 			uid := claims[IdentityKey].(float64)
-			userInfo.ID = int32(uid)
-			hlog.Info("user info id is: %d", userInfo.ID)
-			return &userInfo
+			hlog.Info("user info id is: ", uid)
+			return int32(uid)
 		},
 		Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
 			switch string(c.Path()) {
@@ -141,8 +139,8 @@ func InitJwt() {
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
-// @Param		mobile_login	body	auth.MobileLoginReq	true	"mobile login form"
-// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Param		mobile_login	body	example.MobileLoginBody	true	"mobile login form"
+// @Success		200				{object}		example.RespOk{data=example.AuthData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -189,14 +187,15 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 		return nil, err
 	}
 
-	userInfo := model.User{}
-	err = copier.Copy(&userInfo, findResp)
-	if err != nil {
-		hlog.Error(err)
-		return nil, err
-	}
+	//userInfo := model.User{}
+	//err = copier.Copy(&userInfo, findResp)
+	//if err != nil {
+	//	hlog.Error(err)
+	//	return nil, err
+	//}
 
-	return &userInfo, nil
+	c.Set(responder.SuccessMessage, fmt.Sprintf("user %s login successes", findResp.Mobile))
+	return findResp, nil
 }
 
 // @Summary		user login by username and password
@@ -204,8 +203,8 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
-// @Param		pwd_login	body	auth.PwdLoginReq	true	"password"
-// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Param		pwd_login	body	example.PwdLoginBody	true	"password"
+// @Success		200				{object}		example.RespOk{data=example.AuthData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -213,7 +212,6 @@ func mobileLoginAuthenticator(ctx context.Context, c *app.RequestContext) (inter
 // @router /api/auth/pwd_login [POST]
 func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interface{}, error) {
 	var err error
-	// todo the pwdLoginReq struct may need to be modified
 	req := &auth.PwdLoginReq{}
 	err = c.BindAndValidate(req)
 	if err != nil {
@@ -253,14 +251,8 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 		return nil, err
 	}
 
-	userInfo := model.User{}
-	err = copier.Copy(&userInfo, findResp)
-	if err != nil {
-		hlog.Error(err)
-		return nil, err
-	}
-
-	return &userInfo, nil
+	c.Set(responder.SuccessMessage, fmt.Sprintf("user %s login successes", findResp.Username))
+	return findResp, nil
 }
 
 // @Summary		user login by mini program
@@ -268,8 +260,8 @@ func pwdLoginAuthenticator(ctx context.Context, c *app.RequestContext) (interfac
 // @Tags		auth
 // @Accept    	json
 // @Produce		json
-// @Param		mini_login	body		auth.MiniProgLoginReq	true	"mini program login"
-// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Param		mini_login	body		example.MiniProgLoginBody	true	"mini program login"
+// @Success		200				{object}		example.RespOk{data=example.AuthData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -301,14 +293,8 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 		return nil, err
 	}
 
-	userInfo := model.User{}
-	err = copier.Copy(&userInfo, findResp)
-	if err != nil {
-		hlog.Error(err)
-		return nil, err
-	}
-
-	return &userInfo, nil
+	c.Set(responder.SuccessMessage, fmt.Sprintf("user %s login successes", findResp.GetOpenid()))
+	return findResp, nil
 }
 
 // @Summary		user register by mobile, sms code and password
@@ -316,8 +302,8 @@ func miniProgLoginAuthenticator(ctx context.Context, c *app.RequestContext) (int
 // @Accept    	json
 // @Tags		auth
 // @Produce		json
-// @Param		mobile_register	body		auth.MobileRegisterReq	true	"mobile register form"
-// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Param		mobile_register	body		example.MobileRegisterBody	true	"mobile register form"
+// @Success		200				{object}		example.RespOk{data=example.AuthData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -356,23 +342,17 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 
 	createResp := &user.UserInfo{}
 	createResp, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{
-		Mobile:   &req.Mobile,
-		Username: &req.Username,
-		Password: &req.Password,
+		Mobile:   req.Mobile,
+		Username: req.Username,
+		Password: req.Password,
 	})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
 
-	userInfo := model.User{}
-	err = copier.Copy(&userInfo, createResp)
-	if err != nil {
-		hlog.Error(err)
-		return nil, err
-	}
-
-	return &userInfo, nil
+	c.Set(responder.SuccessMessage, fmt.Sprintf("user %s register successes", createResp.GetMobile()))
+	return createResp, nil
 }
 
 // @Summary		user register by username and password
@@ -380,8 +360,8 @@ func mobileRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (in
 // @Tags		auth
 // @Accept 		json
 // @Produce		json
-// @Param		pwd_register_req	body		auth.UsernameRegisterReq	true	"register form"
-// @Success		200				{object}		example.RespOk{data=example.UserData} "success"
+// @Param		pwd_register_req	body		example.UsernameRegisterBody	true	"register form"
+// @Success		200				{object}		example.RespOk{data=example.AuthData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -398,18 +378,17 @@ func usernameRegisterAuthenticator(ctx context.Context, c *app.RequestContext) (
 	}
 
 	createResp := &user.UserInfo{}
-	createResp, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: &req.Username, Password: &req.Password})
-	hlog.Errorf("err is: %s", err)
+	createResp, err = micro_user_cli.CreateUser(ctx, &user.UserInfo{Username: req.Username, Password: req.Password})
 	if err != nil {
 		hlog.Error(err)
-		return nil, err
+		bizErr, isBizErr := kerrors.FromBizStatusError(err)
+		if !isBizErr {
+			return nil, errors.New(msg.InternalError)
+		} else {
+			return nil, errors.New(bizErr.BizMessage())
+		}
 	}
 
-	userInfo := model.User{}
-	err = copier.Copy(&userInfo, createResp)
-	if err != nil {
-		hlog.Error(err)
-		return nil, err
-	}
-	return &userInfo, nil
+	c.Set(responder.SuccessMessage, fmt.Sprintf("user %s register successes", createResp.GetUsername()))
+	return createResp, nil
 }

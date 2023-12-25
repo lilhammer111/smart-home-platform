@@ -2,8 +2,8 @@ package auth
 
 import (
 	"context"
-	auth "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"
 	"github.com/cloudwego/hertz/pkg/app"

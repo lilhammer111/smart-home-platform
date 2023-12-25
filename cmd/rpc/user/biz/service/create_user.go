@@ -3,9 +3,11 @@ package service
 import (
 	"context"
 	"errors"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"fmt"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -29,33 +31,34 @@ func (s *CreateUserService) Run(req *user.UserInfo) (resp *user.UserInfo, err er
 	userInfo := model.User{}
 	if err = copier.Copy(&userInfo, req); err != nil {
 		klog.Error(err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	klog.Debugf("************** user info : %+v", userInfo)
 
-	encryptedPwd, err := bcrypt.GenerateFromPassword([]byte(userInfo.Password), bcrypt.DefaultCost)
+	encryptedPwd, err := bcrypt.GenerateFromPassword([]byte(*userInfo.Password), bcrypt.DefaultCost)
 	if err != nil {
 		klog.Error(err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
-	userInfo.Password = string(encryptedPwd)
+	pwd := string(encryptedPwd)
+	userInfo.Password = &pwd
 
 	if err = db.GetMysql().Create(&userInfo).Error; err != nil {
 		klog.Error(err)
 		var mysqlErr *mysql.MySQLError
 		ok := errors.As(err, &mysqlErr)
 		if ok && mysqlErr.Number == 1062 {
-			return nil, kerrors.NewBizStatusError(bizerr.CodeExternalError, "account already exists")
+			return nil, kerrors.NewBizStatusError(code.AlreadyExists, fmt.Sprintf("account of username %s already exists", req.Username))
 		}
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
 	resp = &user.UserInfo{}
 	err = copier.Copy(resp, &userInfo)
 	if err != nil {
 		klog.Error(err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 	return
 }

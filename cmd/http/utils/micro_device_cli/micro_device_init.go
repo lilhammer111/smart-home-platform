@@ -1,6 +1,7 @@
 package micro_device_cli
 
 import (
+	"git.zqbjj.top/pet/services/cmd/http/utils/discovery"
 	"sync"
 
 	"github.com/cloudwego/kitex/client"
@@ -13,9 +14,12 @@ var (
 	defaultClient     RPCClient
 	defaultDstService = "micro_device"
 	defaultClientOpts = []client.Option{
-		client.WithHostPorts("127.0.0.1:8888"),
+		//client.WithHostPorts("127.0.0.1:8888"),
 		client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
 		client.WithTransportProtocol(transport.TTHeader),
+		client.WithResolver(discovery.GetDiscoveryResolver()),
+		client.WithMuxConnection(1),
+		client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
 	}
 	once sync.Once
 )

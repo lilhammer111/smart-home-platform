@@ -30,7 +30,7 @@ func (s *UpdateAlertService) Run(req *alert.AlertInfo) (resp *alert.AlertInfo, e
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
-	err = db.GetMysql().Save(&alertInfo).Error
+	err = db.GetMysql().Omit("created_at").Save(&alertInfo).Error
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)

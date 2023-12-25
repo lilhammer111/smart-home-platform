@@ -3,9 +3,11 @@ package service
 import (
 	"context"
 	"errors"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -22,16 +24,16 @@ func (s *VerifySmsCodeService) Run(req *micro_user.RpcVerifyCodeReq) (resp *micr
 	hashedSmsCode, err := db.GetRedis().Get(context.Background(), req.Mobile).Result()
 	if err != nil {
 		klog.Error(err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
 	resp = &micro_user.RpcVerifyResp{}
 	if err = bcrypt.CompareHashAndPassword([]byte(hashedSmsCode), []byte(req.SmsCode)); err != nil {
 		klog.Error(err)
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return nil, bizerr.NewAuthenticationError(bcrypt.ErrMismatchedHashAndPassword)
+			return nil, kerrors.NewBizStatusError(code.AuthenticationFailed, bcrypt.ErrMismatchedHashAndPassword.Error())
 		}
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	resp.VerifyPassed = true

@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -34,23 +35,29 @@ func (s *FreezePatrolBeforeVerifyService) Run(req *micro_user.RpcFreezeReq) (res
 	if err != nil {
 		klog.Errorf("failed to query user model: %s", err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, bizerr.NewNotFoundError(err)
+			return nil, kerrors.NewBizStatusError(code.NotFound, "account is no found")
 		}
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	resp.UserId = userInfo.ID
 
-	res, err := db.GetRedis().Get(context.Background(), getFrozenDurationKey(userInfo.ID)).Result()
+	// get the ttl
+	remainingTime, err := db.GetRedis().TTL(context.Background(), getFrozenDurationKey(userInfo.ID)).Result()
 	if err != nil {
-		if errors.Is(err, redis.Nil) {
-			klog.Info("account is in normal")
-			return resp, nil
-		}
 		klog.Error(err)
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
-	// Proactively generating a rpc business error
-	return resp, bizerr.NewAuthenticationError(getFrozenError(res))
+
+	if remainingTime == -2 {
+		klog.Info("account is in normal")
+		return resp, nil
+	} else if remainingTime == -1 {
+		klog.Info("key do not set the ttl")
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	} else {
+		// Proactively generating a rpc business error
+		return resp, kerrors.NewBizStatusError(code.AuthenticationFailed, fmt.Sprintf("account frozen, please try again in %s minutes", remainingTime))
+	}
 }
 
 func getFrozenDurationKey(id int32) string {

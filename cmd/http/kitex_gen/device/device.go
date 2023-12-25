@@ -11,13 +11,13 @@ import (
 )
 
 type DeviceFilter struct {
-	State     *int8    `thrift:"State,1,optional" frugal:"1,optional,i8" example:"7"`
-	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" example:"1"`
-	Limit     *int16   `thrift:"Limit,3,optional" frugal:"3,optional,i16" example:"1"`
-	Sorts     []string `thrift:"Sorts,4,optional" frugal:"4,optional,list<string>" example:"owner_id desc"`
-	Search    *string  `thrift:"Search,5,optional" frugal:"5,optional,string" example:"hello,device"`
-	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" example:"2023-12-22"`
-	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" example:"2024-02-05"`
+	State     *int8    `thrift:"State,1,optional" frugal:"1,optional,i8" json:"State,omitempty"`
+	Page      *int16   `thrift:"Page,2,optional" frugal:"2,optional,i16" json:"Page,omitempty"`
+	Limit     *int16   `thrift:"Limit,3,optional" frugal:"3,optional,i16" json:"Limit,omitempty"`
+	Sorts     []string `thrift:"Sorts,4,optional" frugal:"4,optional,list<string>" json:"Sorts,omitempty"`
+	Search    *string  `thrift:"Search,5,optional" frugal:"5,optional,string" json:"Search,omitempty"`
+	StartDate *string  `thrift:"StartDate,6,optional" frugal:"6,optional,string" json:"StartDate,omitempty"`
+	EndDate   *string  `thrift:"EndDate,7,optional" frugal:"7,optional,string" json:"EndDate,omitempty"`
 }
 
 func NewDeviceFilter() *DeviceFilter {
@@ -656,16 +656,16 @@ func (p *DeviceFilter) Field7DeepEqual(src *string) bool {
 }
 
 type DeviceInfo struct {
-	Id              *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" example:"1"`
-	OwnerId         int32  `thrift:"OwnerId,10,required" frugal:"10,required,i32" example:"1"`
-	ProductId       int32  `thrift:"ProductId,11,required" frugal:"11,required,i32" example:"1"`
-	SerialNo        string `thrift:"SerialNo,2,required" frugal:"2,required,string" example:"KEwju0rKOlKCDAxUnDzQI"`
-	Name            string `thrift:"Name,3,required" frugal:"3,required,string" example:"demon's feeder"`
-	State           int8   `thrift:"State,4,required" frugal:"4,required,i8" example:"8"`
-	LocationId      string `thrift:"LocationId,6,required" frugal:"6,required,string" example:"1"`
-	HardwareVersion string `thrift:"HardwareVersion,7,required" frugal:"7,required,string" example:"v 1.0.0"`
-	SoftwareVersion string `thrift:"SoftwareVersion,8,required" frugal:"8,required,string" example:"v 1.0.0"`
-	Desc            string `thrift:"Desc,9,required" frugal:"9,required,string" example:"hello,device"`
+	Id              *int32 `thrift:"Id,1,optional" frugal:"1,optional,i32" json:"Id,omitempty"`
+	OwnerId         int32  `thrift:"OwnerId,10,required" frugal:"10,required,i32" json:"OwnerId"`
+	ProductId       int32  `thrift:"ProductId,11,required" frugal:"11,required,i32" json:"ProductId"`
+	SerialNo        string `thrift:"SerialNo,2,required" frugal:"2,required,string" json:"SerialNo"`
+	Name            string `thrift:"Name,3,required" frugal:"3,required,string" json:"Name"`
+	State           int8   `thrift:"State,4,required" frugal:"4,required,i8" json:"State"`
+	LocationId      int8   `thrift:"LocationId,6,required" frugal:"6,required,i8" json:"LocationId"`
+	HardwareVersion string `thrift:"HardwareVersion,7,required" frugal:"7,required,string" json:"HardwareVersion"`
+	SoftwareVersion string `thrift:"SoftwareVersion,8,required" frugal:"8,required,string" json:"SoftwareVersion"`
+	Desc            string `thrift:"Desc,9,required" frugal:"9,required,string" json:"Desc"`
 }
 
 func NewDeviceInfo() *DeviceInfo {
@@ -705,7 +705,7 @@ func (p *DeviceInfo) GetState() (v int8) {
 	return p.State
 }
 
-func (p *DeviceInfo) GetLocationId() (v string) {
+func (p *DeviceInfo) GetLocationId() (v int8) {
 	return p.LocationId
 }
 
@@ -738,7 +738,7 @@ func (p *DeviceInfo) SetName(val string) {
 func (p *DeviceInfo) SetState(val int8) {
 	p.State = val
 }
-func (p *DeviceInfo) SetLocationId(val string) {
+func (p *DeviceInfo) SetLocationId(val int8) {
 	p.LocationId = val
 }
 func (p *DeviceInfo) SetHardwareVersion(val string) {
@@ -862,7 +862,7 @@ func (p *DeviceInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.BYTE {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1036,7 +1036,7 @@ func (p *DeviceInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *DeviceInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadByte(); err != nil {
 		return err
 	} else {
 		p.LocationId = v
@@ -1234,10 +1234,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *DeviceInfo) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("LocationId", thrift.STRING, 6); err != nil {
+	if err = oprot.WriteFieldBegin("LocationId", thrift.BYTE, 6); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.LocationId); err != nil {
+	if err := oprot.WriteByte(p.LocationId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1391,9 +1391,9 @@ func (p *DeviceInfo) Field4DeepEqual(src int8) bool {
 	}
 	return true
 }
-func (p *DeviceInfo) Field6DeepEqual(src string) bool {
+func (p *DeviceInfo) Field6DeepEqual(src int8) bool {
 
-	if strings.Compare(p.LocationId, src) != 0 {
+	if p.LocationId != src {
 		return false
 	}
 	return true

@@ -20,7 +20,7 @@ func NewUpdateUserInfoService(Context context.Context, RequestContext *app.Reque
 	return &UpdateUserInfoService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfo, err error) {
+func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfoResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
@@ -35,7 +35,7 @@ func (h *UpdateUserInfoService) Do(req *user.UserInfo) (resp *user.UserInfo, err
 		hlog.Error(err)
 		return nil, err
 	}
-	resp = &user.UserInfo{}
+	resp = &user.UserInfoResp{}
 	if err = copier.Copy(resp, userInfoPtr); err != nil {
 		hlog.Error(err)
 		return nil, err

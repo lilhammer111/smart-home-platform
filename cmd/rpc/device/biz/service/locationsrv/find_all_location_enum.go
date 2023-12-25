@@ -9,7 +9,6 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/device/kitex_gen/micro_device"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/jinzhu/copier"
 )
 
 type FindAllLocationEnumService struct {
@@ -23,18 +22,11 @@ func NewFindAllLocationEnumService(ctx context.Context) *FindAllLocationEnumServ
 
 // Run create note info
 func (s *FindAllLocationEnumService) Run() (resp []*micro_device.LocationData, err error) {
-	locInfos := make([]model.Location, 0)
-	err = db.GetMysql().Find(&locInfos).Error
+	resp = make([]*micro_device.LocationData, 0)
+	err = db.GetMysql().Model(&model.Location{}).Find(&resp).Error
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
-	}
-
-	resp = make([]*micro_device.LocationData, 0)
-	err = copier.Copy(resp, locInfos)
-	if err != nil {
-		klog.Error(err)
-		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	return resp, nil

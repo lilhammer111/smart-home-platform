@@ -803,7 +803,7 @@ func (p *RpcFindDeviceReq) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetDeviceId bool = false
+	var issetId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -827,7 +827,7 @@ func (p *RpcFindDeviceReq) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetDeviceId = true
+				issetId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -855,7 +855,7 @@ func (p *RpcFindDeviceReq) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetDeviceId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -884,7 +884,7 @@ func (p *RpcFindDeviceReq) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.DeviceId = v
+		p.Id = v
 
 	}
 	return offset, nil
@@ -919,8 +919,8 @@ func (p *RpcFindDeviceReq) BLength() int {
 
 func (p *RpcFindDeviceReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "DeviceId", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.DeviceId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
+	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -928,8 +928,8 @@ func (p *RpcFindDeviceReq) fastWriteField1(buf []byte, binaryWriter bthrift.Bina
 
 func (p *RpcFindDeviceReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("DeviceId", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.DeviceId)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
+	l += bthrift.Binary.I32Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -941,7 +941,7 @@ func (p *RpcDeleteDeviceReq) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetDeviceId bool = false
+	var issetId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -965,7 +965,7 @@ func (p *RpcDeleteDeviceReq) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetDeviceId = true
+				issetId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -993,7 +993,7 @@ func (p *RpcDeleteDeviceReq) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetDeviceId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1022,7 +1022,7 @@ func (p *RpcDeleteDeviceReq) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.DeviceId = v
+		p.Id = v
 
 	}
 	return offset, nil
@@ -1057,8 +1057,8 @@ func (p *RpcDeleteDeviceReq) BLength() int {
 
 func (p *RpcDeleteDeviceReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "DeviceId", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.DeviceId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
+	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1066,8 +1066,8 @@ func (p *RpcDeleteDeviceReq) fastWriteField1(buf []byte, binaryWriter bthrift.Bi
 
 func (p *RpcDeleteDeviceReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("DeviceId", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.DeviceId)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
+	l += bthrift.Binary.I32Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -1079,7 +1079,7 @@ func (p *RpcFindAlertReq) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetAlertId bool = false
+	var issetId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1103,7 +1103,7 @@ func (p *RpcFindAlertReq) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetAlertId = true
+				issetId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1131,7 +1131,7 @@ func (p *RpcFindAlertReq) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetAlertId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1160,7 +1160,7 @@ func (p *RpcFindAlertReq) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.AlertId = v
+		p.Id = v
 
 	}
 	return offset, nil
@@ -1195,8 +1195,8 @@ func (p *RpcFindAlertReq) BLength() int {
 
 func (p *RpcFindAlertReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "AlertId", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.AlertId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
+	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1204,8 +1204,8 @@ func (p *RpcFindAlertReq) fastWriteField1(buf []byte, binaryWriter bthrift.Binar
 
 func (p *RpcFindAlertReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("AlertId", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.AlertId)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
+	l += bthrift.Binary.I32Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -1217,7 +1217,7 @@ func (p *RpcDeleteAlertReq) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetAlertId bool = false
+	var issetId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1241,7 +1241,7 @@ func (p *RpcDeleteAlertReq) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetAlertId = true
+				issetId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1269,7 +1269,7 @@ func (p *RpcDeleteAlertReq) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetAlertId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1298,7 +1298,7 @@ func (p *RpcDeleteAlertReq) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.AlertId = v
+		p.Id = v
 
 	}
 	return offset, nil
@@ -1333,8 +1333,8 @@ func (p *RpcDeleteAlertReq) BLength() int {
 
 func (p *RpcDeleteAlertReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "AlertId", thrift.I32, 1)
-	offset += bthrift.Binary.WriteI32(buf[offset:], p.AlertId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Id", thrift.I32, 1)
+	offset += bthrift.Binary.WriteI32(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1342,8 +1342,8 @@ func (p *RpcDeleteAlertReq) fastWriteField1(buf []byte, binaryWriter bthrift.Bin
 
 func (p *RpcDeleteAlertReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("AlertId", thrift.I32, 1)
-	l += bthrift.Binary.I32Length(p.AlertId)
+	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
+	l += bthrift.Binary.I32Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -3749,7 +3749,7 @@ ReadStructEndError:
 func (p *MicroDeviceFindAlertArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewRpcFindDeviceReq()
+	tmp := NewRpcFindAlertReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

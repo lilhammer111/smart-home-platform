@@ -3,11 +3,14 @@ package service
 import (
 	"context"
 	"errors"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/bizerr"
+	"fmt"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
+	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/biz/model"
-	"git.zqbjj.top/pet/services/cmd/rpc/user/conf/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/rpc/user/kitex_gen/user"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
@@ -28,14 +31,17 @@ func (s *FindUserService) Run(req *micro_user.RpcFindUserReq) (resp *user.UserIn
 	if err = db.GetMysql().First(&userInfo, req.UserId).Error; err != nil {
 		klog.Error(err)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, bizerr.NewNotFoundError(err)
+			return nil, kerrors.NewBizStatusError(code.NotFound, fmt.Sprintf("account %d do not exist", req.UserId))
 		}
-		return nil, bizerr.NewExternalError(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
+
+	userInfo.Password = nil
+
 	resp = &user.UserInfo{}
 	if err = copier.Copy(resp, &userInfo); err != nil {
 		klog.Error(err)
-		return nil, bizerr.NewInternalError(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 	return
 }

@@ -24,7 +24,7 @@ struct MiniProgLoginReq {
 
 struct PwdLoginReq {
     1: required string Username (api.body="username", api.vd="regexp('^[a-z0-9_]{1,30}$')");
-    2: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
+//    2: required string Email (api.body="email", api.vd="regexp('^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$')");
     3: required string Password (api.body="password", api.vd="regexp('.{8,16}')");
 }
 

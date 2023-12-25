@@ -11,7 +11,7 @@ func TestFindAlert_Run(t *testing.T) {
 	s := NewFindAlertService(ctx)
 	// init req and assert value
 
-	req := &micro_device.RpcFindDeviceReq{}
+	req := &micro_device.RpcFindAlertReq{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

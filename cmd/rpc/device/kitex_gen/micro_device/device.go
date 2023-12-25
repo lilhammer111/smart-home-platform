@@ -958,7 +958,7 @@ func (p *LocationListResp) Field1DeepEqual(src []*LocationData) bool {
 }
 
 type RpcFindDeviceReq struct {
-	DeviceId int32 `thrift:"DeviceId,1,required" frugal:"1,required,i32" json:"DeviceId"`
+	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
 }
 
 func NewRpcFindDeviceReq() *RpcFindDeviceReq {
@@ -969,22 +969,22 @@ func (p *RpcFindDeviceReq) InitDefault() {
 	*p = RpcFindDeviceReq{}
 }
 
-func (p *RpcFindDeviceReq) GetDeviceId() (v int32) {
-	return p.DeviceId
+func (p *RpcFindDeviceReq) GetId() (v int32) {
+	return p.Id
 }
-func (p *RpcFindDeviceReq) SetDeviceId(val int32) {
-	p.DeviceId = val
+func (p *RpcFindDeviceReq) SetId(val int32) {
+	p.Id = val
 }
 
 var fieldIDToName_RpcFindDeviceReq = map[int16]string{
-	1: "DeviceId",
+	1: "Id",
 }
 
 func (p *RpcFindDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetDeviceId bool = false
+	var issetId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1005,7 +1005,7 @@ func (p *RpcFindDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetDeviceId = true
+				issetId = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1024,7 +1024,7 @@ func (p *RpcFindDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetDeviceId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1051,7 +1051,7 @@ func (p *RpcFindDeviceReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.DeviceId = v
+		p.Id = v
 	}
 	return nil
 }
@@ -1085,10 +1085,10 @@ WriteStructEndError:
 }
 
 func (p *RpcFindDeviceReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("DeviceId", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.DeviceId); err != nil {
+	if err := oprot.WriteI32(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1114,7 +1114,7 @@ func (p *RpcFindDeviceReq) DeepEqual(ano *RpcFindDeviceReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.DeviceId) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	return true
@@ -1122,14 +1122,14 @@ func (p *RpcFindDeviceReq) DeepEqual(ano *RpcFindDeviceReq) bool {
 
 func (p *RpcFindDeviceReq) Field1DeepEqual(src int32) bool {
 
-	if p.DeviceId != src {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
 
 type RpcDeleteDeviceReq struct {
-	DeviceId int32 `thrift:"DeviceId,1,required" frugal:"1,required,i32" json:"DeviceId"`
+	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
 }
 
 func NewRpcDeleteDeviceReq() *RpcDeleteDeviceReq {
@@ -1140,22 +1140,22 @@ func (p *RpcDeleteDeviceReq) InitDefault() {
 	*p = RpcDeleteDeviceReq{}
 }
 
-func (p *RpcDeleteDeviceReq) GetDeviceId() (v int32) {
-	return p.DeviceId
+func (p *RpcDeleteDeviceReq) GetId() (v int32) {
+	return p.Id
 }
-func (p *RpcDeleteDeviceReq) SetDeviceId(val int32) {
-	p.DeviceId = val
+func (p *RpcDeleteDeviceReq) SetId(val int32) {
+	p.Id = val
 }
 
 var fieldIDToName_RpcDeleteDeviceReq = map[int16]string{
-	1: "DeviceId",
+	1: "Id",
 }
 
 func (p *RpcDeleteDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetDeviceId bool = false
+	var issetId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1176,7 +1176,7 @@ func (p *RpcDeleteDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetDeviceId = true
+				issetId = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1195,7 +1195,7 @@ func (p *RpcDeleteDeviceReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetDeviceId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1222,7 +1222,7 @@ func (p *RpcDeleteDeviceReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.DeviceId = v
+		p.Id = v
 	}
 	return nil
 }
@@ -1256,10 +1256,10 @@ WriteStructEndError:
 }
 
 func (p *RpcDeleteDeviceReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("DeviceId", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.DeviceId); err != nil {
+	if err := oprot.WriteI32(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1285,7 +1285,7 @@ func (p *RpcDeleteDeviceReq) DeepEqual(ano *RpcDeleteDeviceReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.DeviceId) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	return true
@@ -1293,14 +1293,14 @@ func (p *RpcDeleteDeviceReq) DeepEqual(ano *RpcDeleteDeviceReq) bool {
 
 func (p *RpcDeleteDeviceReq) Field1DeepEqual(src int32) bool {
 
-	if p.DeviceId != src {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
 
 type RpcFindAlertReq struct {
-	AlertId int32 `thrift:"AlertId,1,required" frugal:"1,required,i32" json:"AlertId"`
+	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
 }
 
 func NewRpcFindAlertReq() *RpcFindAlertReq {
@@ -1311,22 +1311,22 @@ func (p *RpcFindAlertReq) InitDefault() {
 	*p = RpcFindAlertReq{}
 }
 
-func (p *RpcFindAlertReq) GetAlertId() (v int32) {
-	return p.AlertId
+func (p *RpcFindAlertReq) GetId() (v int32) {
+	return p.Id
 }
-func (p *RpcFindAlertReq) SetAlertId(val int32) {
-	p.AlertId = val
+func (p *RpcFindAlertReq) SetId(val int32) {
+	p.Id = val
 }
 
 var fieldIDToName_RpcFindAlertReq = map[int16]string{
-	1: "AlertId",
+	1: "Id",
 }
 
 func (p *RpcFindAlertReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetAlertId bool = false
+	var issetId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1347,7 +1347,7 @@ func (p *RpcFindAlertReq) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetAlertId = true
+				issetId = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1366,7 +1366,7 @@ func (p *RpcFindAlertReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetAlertId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1393,7 +1393,7 @@ func (p *RpcFindAlertReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.AlertId = v
+		p.Id = v
 	}
 	return nil
 }
@@ -1427,10 +1427,10 @@ WriteStructEndError:
 }
 
 func (p *RpcFindAlertReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("AlertId", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.AlertId); err != nil {
+	if err := oprot.WriteI32(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1456,7 +1456,7 @@ func (p *RpcFindAlertReq) DeepEqual(ano *RpcFindAlertReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.AlertId) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	return true
@@ -1464,14 +1464,14 @@ func (p *RpcFindAlertReq) DeepEqual(ano *RpcFindAlertReq) bool {
 
 func (p *RpcFindAlertReq) Field1DeepEqual(src int32) bool {
 
-	if p.AlertId != src {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
 
 type RpcDeleteAlertReq struct {
-	AlertId int32 `thrift:"AlertId,1,required" frugal:"1,required,i32" json:"AlertId"`
+	Id int32 `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
 }
 
 func NewRpcDeleteAlertReq() *RpcDeleteAlertReq {
@@ -1482,22 +1482,22 @@ func (p *RpcDeleteAlertReq) InitDefault() {
 	*p = RpcDeleteAlertReq{}
 }
 
-func (p *RpcDeleteAlertReq) GetAlertId() (v int32) {
-	return p.AlertId
+func (p *RpcDeleteAlertReq) GetId() (v int32) {
+	return p.Id
 }
-func (p *RpcDeleteAlertReq) SetAlertId(val int32) {
-	p.AlertId = val
+func (p *RpcDeleteAlertReq) SetId(val int32) {
+	p.Id = val
 }
 
 var fieldIDToName_RpcDeleteAlertReq = map[int16]string{
-	1: "AlertId",
+	1: "Id",
 }
 
 func (p *RpcDeleteAlertReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetAlertId bool = false
+	var issetId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1518,7 +1518,7 @@ func (p *RpcDeleteAlertReq) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetAlertId = true
+				issetId = true
 				break
 			}
 			if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1537,7 +1537,7 @@ func (p *RpcDeleteAlertReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetAlertId {
+	if !issetId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1564,7 +1564,7 @@ func (p *RpcDeleteAlertReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.AlertId = v
+		p.Id = v
 	}
 	return nil
 }
@@ -1598,10 +1598,10 @@ WriteStructEndError:
 }
 
 func (p *RpcDeleteAlertReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("AlertId", thrift.I32, 1); err != nil {
+	if err = oprot.WriteFieldBegin("Id", thrift.I32, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(p.AlertId); err != nil {
+	if err := oprot.WriteI32(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1627,7 +1627,7 @@ func (p *RpcDeleteAlertReq) DeepEqual(ano *RpcDeleteAlertReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.AlertId) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	return true
@@ -1635,7 +1635,7 @@ func (p *RpcDeleteAlertReq) DeepEqual(ano *RpcDeleteAlertReq) bool {
 
 func (p *RpcDeleteAlertReq) Field1DeepEqual(src int32) bool {
 
-	if p.AlertId != src {
+	if p.Id != src {
 		return false
 	}
 	return true
@@ -1660,7 +1660,7 @@ type MicroDevice interface {
 
 	ExpandLocationEnum(ctx context.Context, req *RpcExpandLocReq) (r *common.Empty, err error)
 
-	FindAlert(ctx context.Context, req *RpcFindDeviceReq) (r *alert.AlertInfo, err error)
+	FindAlert(ctx context.Context, req *RpcFindAlertReq) (r *alert.AlertInfo, err error)
 
 	QueryAlertsWithFilter(ctx context.Context, req *alert.AlertFilter) (r []*alert.AlertInfo, err error)
 
@@ -1777,7 +1777,7 @@ func (p *MicroDeviceClient) ExpandLocationEnum(ctx context.Context, req *RpcExpa
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MicroDeviceClient) FindAlert(ctx context.Context, req *RpcFindDeviceReq) (r *alert.AlertInfo, err error) {
+func (p *MicroDeviceClient) FindAlert(ctx context.Context, req *RpcFindAlertReq) (r *alert.AlertInfo, err error) {
 	var _args MicroDeviceFindAlertArgs
 	_args.Req = req
 	var _result MicroDeviceFindAlertResult
@@ -5619,7 +5619,7 @@ func (p *MicroDeviceExpandLocationEnumResult) Field0DeepEqual(src *common.Empty)
 }
 
 type MicroDeviceFindAlertArgs struct {
-	Req *RpcFindDeviceReq `thrift:"req,1" frugal:"1,default,RpcFindDeviceReq" json:"req"`
+	Req *RpcFindAlertReq `thrift:"req,1" frugal:"1,default,RpcFindAlertReq" json:"req"`
 }
 
 func NewMicroDeviceFindAlertArgs() *MicroDeviceFindAlertArgs {
@@ -5630,15 +5630,15 @@ func (p *MicroDeviceFindAlertArgs) InitDefault() {
 	*p = MicroDeviceFindAlertArgs{}
 }
 
-var MicroDeviceFindAlertArgs_Req_DEFAULT *RpcFindDeviceReq
+var MicroDeviceFindAlertArgs_Req_DEFAULT *RpcFindAlertReq
 
-func (p *MicroDeviceFindAlertArgs) GetReq() (v *RpcFindDeviceReq) {
+func (p *MicroDeviceFindAlertArgs) GetReq() (v *RpcFindAlertReq) {
 	if !p.IsSetReq() {
 		return MicroDeviceFindAlertArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *MicroDeviceFindAlertArgs) SetReq(val *RpcFindDeviceReq) {
+func (p *MicroDeviceFindAlertArgs) SetReq(val *RpcFindAlertReq) {
 	p.Req = val
 }
 
@@ -5709,7 +5709,7 @@ ReadStructEndError:
 }
 
 func (p *MicroDeviceFindAlertArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewRpcFindDeviceReq()
+	p.Req = NewRpcFindAlertReq()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -5781,7 +5781,7 @@ func (p *MicroDeviceFindAlertArgs) DeepEqual(ano *MicroDeviceFindAlertArgs) bool
 	return true
 }
 
-func (p *MicroDeviceFindAlertArgs) Field1DeepEqual(src *RpcFindDeviceReq) bool {
+func (p *MicroDeviceFindAlertArgs) Field1DeepEqual(src *RpcFindAlertReq) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
