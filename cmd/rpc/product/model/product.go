@@ -1,5 +1,7 @@
 package model
 
+import "git.zqbjj.top/lilhammer111/micro-kit/model"
+
 type ProductState int8
 
 const (
@@ -11,14 +13,14 @@ const (
 )
 
 type Product struct {
-	BaseModel
+	model.BaseModel
 	CategoryId int32 `gorm:"type:int unsigned;not null"`
 	BrandId    int32 `gorm:"type:int unsigned;not null"`
 
-	Name    string   `gorm:"type:varchar(50);not null"`
-	Model   []string `gorm:"type:json;not null"`
-	Brief   string   `gorm:"type:varchar(100);not null"`
-	Picture string   `gorm:"type:varchar(200);not null;comment: oss url"`
+	Name    string `gorm:"type:varchar(50);not null"`
+	ModelId int32  `gorm:"type:json;not null"`
+	Brief   string `gorm:"type:varchar(100);not null"`
+	Picture string `gorm:"type:varchar(200);not null;comment: oss url"`
 
 	State    ProductState `gorm:"type:tinyint unsigned;not null"`
 	Price    float32      `gorm:"type:float;not null"`
@@ -27,22 +29,28 @@ type Product struct {
 }
 
 type Category struct {
-	BaseModel
+	model.BaseModel
 	Name     string   `gorm:"type:varchar(20);not null"`
 	Brief    string   `gorm:"type:varchar(100);not null"`
 	Picture  string   `gorm:"type:varchar(200);not null;comment: oss url"`
 	Showcase []string `gorm:"type:json;not null;comment:provide a range of product illustrations also as product detail"`
 }
 
-type Brands struct {
-	BaseModel
-	Name string `gorm:"type:varchar(20);not null"`
-	Logo string `gorm:"type:varchar(200);default:'';not null;comment: brand logo picture url"`
+type Brand struct {
+	model.BaseModel
+	CategoryId int32  `gorm:"type:int unsigned;not null"`
+	Name       string `gorm:"type:varchar(20);not null"`
+	Logo       string `gorm:"type:varchar(200);default:'';not null;comment: brand logo picture url"`
 }
 
 type Banner struct {
-	BaseModel
-	Picture string `gorm:"type:varchar(200);not null;comment: oss url"`
-	Url     string `gorm:"type:varchar(200);not null"`
-	Index   int8   `gorm:"type:tinyint unsigned;unique;not null"`
+	Id          int8   `gorm:"type:tinyint unsigned;primaryKey"`
+	Picture     string `gorm:"type:varchar(200);not null;comment: oss url"`
+	ProductLink string `gorm:"type:varchar(200);not null"`
+	Index       int8   `gorm:"type:tinyint unsigned;unique;not null"`
+}
+
+type Model struct {
+	Id   int32  `gorm:"type:int unsigned;primaryKey"`
+	Name string `gorm:"type:varchar(50);not null"`
 }
