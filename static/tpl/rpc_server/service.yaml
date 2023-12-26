@@ -1,9 +1,10 @@
-path: biz/service/{{ SnakeString (index .Methods 0).Name }}.go
+path: biz/service/{{ SnakeString .ServiceName }}/{{ SnakeString (index .Methods 0).Name }}.go
+loop_service: true
 loop_method: true
 update_behavior:
   type: skip
 body: |-
-  package service
+  package {{ SnakeString .ServiceName }}
 
   import (
     "context"
@@ -26,9 +27,7 @@ body: |-
     ctx context.Context
   }
 
-  {{- if or .ClientStreaming .ServerStreaming}}
-
-
+  {{if or .ClientStreaming .ServerStreaming}}
   // New{{.Name}}Service new {{.Name}}Service
   func New{{.Name}}Service(ctx context.Context) *{{.Name}}Service {
     return &{{.Name}}Service{ctx: ctx}

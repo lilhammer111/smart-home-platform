@@ -69,13 +69,13 @@ layouts:
       {{- range $_, $OutDir := $OutDirs}}
         {{if eq $OutDir "" -}}
         {{- if ne $.PackageName $excludedNamespace }}
-        biz  "{{$.ProjPackage}}/biz/{{$.PackageName}}"
+        "{{$.ProjPackage}}/api/{{$.PackageName}}/handler"
         {{- end}}
         {{- else -}}
         "{{$.ProjPackage}}/biz/{{$OutDir}}"
         {{- end -}}
       {{- end}}
-      "{{$.ProjPackage}}/responder"
+      "{{$.ProjPackage}}/utils/responder"
       )
       {{range $_, $MethodInfo := .Methods}}
       {{$MethodInfo.Comment}}
@@ -90,7 +90,7 @@ layouts:
        }
        {{end}}
         {{if eq $MethodInfo.OutputDir "" -}}
-          resp,err := biz.New{{$MethodInfo.Name}}Service(ctx, c).Do(&req)
+          resp,err := handler.New{{$MethodInfo.Name}}Service(ctx, c).Do(&req)
           if err != nil {
                responder.SendErrResponse(ctx, c, consts.StatusOK, err)
                return
@@ -131,7 +131,7 @@ layouts:
        }
        {{end}}
        {{if eq .OutputDir "" -}}
-          resp,err := biz.New{{.Name}}Service(ctx, c).Do(&req)
+          resp,err := handler.New{{.Name}}Service(ctx, c).Do(&req)
         {{else}}
           resp,err := {{.OutputDir}}.New{{.Name}}Service(ctx, c).Do(&req)
         {{end}}
@@ -142,7 +142,7 @@ layouts:
        responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
       }
 
-  - path: "biz/{{.ServiceName}}/{{ToSnakeCase .MethodName}}.go"
+  - path: "api/{{ToSnakeCase .ServiceName}}/handler/{{ToSnakeCase .MethodName}}.go"
     delims:
       - '{{'
       - '}}'
@@ -150,7 +150,7 @@ layouts:
     update_behavior:
       type: "skip"
     body: |-
-      package {{.FilePackage}}
+      package {{ToSnakeCase .FilePackage}}
       import (
        "context"
 
@@ -178,7 +178,7 @@ layouts:
        return
       }
 
-  - path: "biz/{{.ServiceName}}/{{ToSnakeCase .MethodName}}_test.go"
+  - path: "api/{{ToSnakeCase .ServiceName}}/handler/{{ToSnakeCase .MethodName}}_test.go"
     delims:
       - '{{'
       - '}}'
@@ -186,7 +186,7 @@ layouts:
     update_behavior:
       type: "skip"
     body: |-
-      package {{.FilePackage}}
+      package {{ToSnakeCase .FilePackage}}
       import (
         "context"
         "testing"

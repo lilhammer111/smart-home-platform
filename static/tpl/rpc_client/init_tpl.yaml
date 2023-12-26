@@ -15,10 +15,13 @@ body: |-
   	defaultClient     RPCClient
   	defaultDstService = "{{.RealServiceName}}"
   	defaultClientOpts = []client.Option{
-  		client.WithHostPorts("127.0.0.1:8888"),
+  		// client.WithHostPorts("127.0.0.1:8888"),
         {{- if eq .Codec "thrift"}}
         client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
         client.WithTransportProtocol(transport.TTHeader),
+        client.WithResolver(discovery.GetDiscoveryResolver()),
+        client.WithMuxConnection(1),
+        client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
         {{- end}}
   	}
   	once       sync.Once

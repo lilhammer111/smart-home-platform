@@ -2,7 +2,7 @@ package device
 
 import (
 	"context"
-	biz "git.zqbjj.top/pet/services/cmd/http/biz/device"
+	"git.zqbjj.top/pet/services/cmd/http/api/device/handler"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/device"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
@@ -38,7 +38,7 @@ func GetDeviceList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetDeviceListService(ctx, c).Do(&req)
+	resp, err := handler.NewGetDeviceListService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -69,7 +69,7 @@ func GetDeviceDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetDeviceDetailService(ctx, c).Do(&req)
+	resp, err := handler.NewGetDeviceDetailService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -101,7 +101,7 @@ func UpdateDeviceInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUpdateDeviceInfoService(ctx, c).Do(&req)
+	resp, err := handler.NewUpdateDeviceInfoService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -132,7 +132,7 @@ func BindDevice(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewBindDeviceService(ctx, c).Do(&req)
+	resp, err := handler.NewBindDeviceService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -163,7 +163,7 @@ func UnbindDevice(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUnbindDeviceService(ctx, c).Do(&req)
+	resp, err := handler.NewUnbindDeviceService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-service_name="pet_api"
-file="user.thrift"
+file_dir="http/model.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path
@@ -16,9 +15,9 @@ cd ../../cmd/http || exit
 
 # update the http service
 cwgo server \
-    --type HTTP --service "$service_name" \
+    --type HTTP --service "pet_api" \
     --module "git.zqbjj.top/pet/services/cmd/http" \
-    --idl "../../static/idl/http/$file" \
+    --idl "../../static/idl/$file_dir" \
     --template "../../static/tpl/http_server" \
     --pass "--handler_dir ./api/" \
     --pass "--router_dir ./router/" \

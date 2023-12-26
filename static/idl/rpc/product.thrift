@@ -1,6 +1,9 @@
 namespace go product
 include "../http/common.thrift"
 
+namespace go product
+include "common.thrift"
+
 struct ProductFilter {
     8: optional i16 Page (api.query="page");
     9: optional i16 Limit (api.query="limit");
@@ -10,7 +13,7 @@ struct ProductFilter {
     4: optional list<string> Sorts (api.query="sorts");
 }
 
-struct ProductInfo {
+struct ProductDetail {
     1: required i32 Id (api.body="id");
     2: required i32 CategoryId (api.body="category_id");
     3: required i32 BrandId (api.body="brand_id");
@@ -24,7 +27,7 @@ struct ProductInfo {
     12: required list<string> Showcase (api.body="showcase");
 }
 
-struct BasicProdInfo {
+struct ProductInfo {
     1: required i32 Id (api.body="id");
     2: required i32 CategoryId (api.body="category_id");
     3: required i32 BrandId (api.body="brand_id");
@@ -34,12 +37,9 @@ struct BasicProdInfo {
     8: required string Picture (api.body="picture");
     9: required i8 State (api.body="state");
     10: required double Price (api.body="price");
+    11: required list<string> Pictures (api.body="pictures");
 }
 
-struct ProductShowcase {
-    2: required i32 Id (api.body="id");
-    1: required list<string> Pictures (api.body="pictures");
-}
 
 struct RatingReq {
     2: required i32 Id (api.body="id");
@@ -63,12 +63,11 @@ struct NewProduct {
     1: required list<string> Showcase (api.body="showcase");
 }
 
-service ProductService0 {
-    list<BasicProdInfo> GetProductList(1: ProductFilter req) (api.get="/api/products/list");
-    ProductInfo  GetProductDetail(1: common.Req req) (api.get="/api/products/detail");
-    ProductInfo  AddNewProduct(1: NewProduct req) (api.post="/api/products/add");
-    BasicProdInfo UpdateProductBasicInfo (1: BasicProdInfo req) (api.put="/api/products/update_basis/");
-    ProductShowcase UpdateProdShowcase (1: ProductShowcase req) (api.put="/api/products/update_showcase");
+service ProductService {
+    list<ProductDetail> GetProductList(1: ProductFilter req) (api.get="/api/products/list");
+    ProductDetail GetProductDetail(1: common.Req req) (api.get="/api/products/detail");
+    ProductInfo AddNewProduct(1: NewProduct req) (api.post="/api/products/add");
+    ProductInfo UpdateProduct (1: ProductInfo req) (api.put="/api/products/update");
     RatingResp UpdateRating (1: RatingReq req) (api.put="/api/products/update_rating")
     common.Empty DeleteProduct(1: common.Req req) (api.delete="/api/products/delete");
 }
@@ -103,7 +102,7 @@ struct PageFilter {
     2: optional i16 Limit (api.query="limit");
 }
 
-service ProductService1 {
+service CategoryService {
     list<CategoryBasicInfo> GetCategoryList(1: PageFilter req) (api.get="/api/products/categories/list");
     CategoryDetail GetCategoryDetail(1: common.Req req) (api.get="/api/products/categories/detail");
     CategoryInfo AddNewCategory(1: AddCategoryReq req) (api.post="/api/products/categories/add");
@@ -120,10 +119,11 @@ struct NewModel {
     1: required string Name (api.body="name");
 }
 
-service model {
-    list<ModelInfo> GetAllModels() (api.get="/api/products/models/list")
-    ModelInfo AddNewModel(1: NewModel req) (api.post="/api/products/models/add")
-    common.Empty DeleteModel(1: common.Req req) (api.delete="/api/products/models/delete")
+service ModelService {
+    list<ModelInfo> GetAllModels() (api.get="/api/products/models/list");
+    ModelInfo GetModelDetail(1: common.Req req) (api.get="/api/products/models/detail");
+    ModelInfo AddNewModel(1: NewModel req) (api.post="/api/products/models/add");
+    common.Empty DeleteModel(1: common.Req req) (api.delete="/api/products/models/delete");
 }
 
 struct BrandInfo {
@@ -141,7 +141,7 @@ struct GetBrandByCatReq {
     1: required i32 CategoryId (api.query="category_id");
 }
 
-service ProductService2 {
+service BrandService {
     list<BrandInfo> GetBrandList(1: PageFilter req) (api.get="/api/products/brands/list");
     list<BrandInfo> GetBrandByCategory(1: GetBrandByCatReq req) (api.get="/api/products/categories/brands/list");
     BrandInfo AddNewBrand(1: NewBrand req) (api.post="/api/products/brands/add");
@@ -162,7 +162,7 @@ struct NewBanner {
     4: required i8  Index (api.body="index");
 }
 
-service ProductService3 {
+service BannerService {
     list<BannerInfo> GetAllBanners () (api.get="/api/products/banners/list");
     BannerInfo AddNewBanner(1: NewBanner req) (api.post="/api/products/banners/add");
     BannerInfo UpdateBanner(1: BannerInfo req) (api.put="/api/products/banners/update");

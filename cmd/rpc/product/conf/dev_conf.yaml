@@ -1,0 +1,9 @@
+nacos:
+  ip: "127.0.0.1"
+  port: 8848
+  username: nacos
+  namespace: "66a2ee2a-f2c3-4027-9f03-322ee4354e52"
+  data_id: "micro_product.yaml"
+  group: 'pet_micro'
+  log_dir: "var/nacos_log/"
+  cache_dir: "var/nacos_cache/"

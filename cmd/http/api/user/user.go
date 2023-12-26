@@ -2,14 +2,13 @@ package user
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/api/user/handler"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
-	biz "git.zqbjj.top/pet/services/cmd/http/biz/user"
 )
 
 // GetCurUserInfo .
@@ -33,7 +32,7 @@ func GetCurUserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetCurUserInfoService(ctx, c).Do(&req)
+	resp, err := handler.NewGetCurUserInfoService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -65,7 +64,7 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetUserListService(ctx, c).Do(&req)
+	resp, err := handler.NewGetUserListService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -96,7 +95,7 @@ func GetUserDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetUserDetailService(ctx, c).Do(&req)
+	resp, err := handler.NewGetUserDetailService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -127,7 +126,7 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUpdateUserInfoService(ctx, c).Do(&req)
+	resp, err := handler.NewUpdateUserInfoService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -158,7 +157,7 @@ func DeregisterUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewDeregisterUserService(ctx, c).Do(&req)
+	resp, err := handler.NewDeregisterUserService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	biz "git.zqbjj.top/pet/services/cmd/http/biz/auth"
+	"git.zqbjj.top/pet/services/cmd/http/api/auth/handler"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/auth"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -32,7 +32,7 @@ func SendSms(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewSendSmsService(ctx, c).Do(&req)
+	resp, err := handler.NewSendSmsService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -50,7 +50,7 @@ func MobileRegister(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewMobileRegisterService(ctx, c).Do(&req)
+	resp, err := handler.NewMobileRegisterService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -68,7 +68,7 @@ func MobileLogin(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewMobileLoginService(ctx, c).Do(&req)
+	resp, err := handler.NewMobileLoginService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -86,7 +86,7 @@ func MiniProgLogin(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewMiniProgLoginService(ctx, c).Do(&req)
+	resp, err := handler.NewMiniProgLoginService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -104,7 +104,7 @@ func PwdLogin(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewPwdLoginService(ctx, c).Do(&req)
+	resp, err := handler.NewPwdLoginService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -122,7 +122,7 @@ func UsernameRegister(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUsernameRegisterService(ctx, c).Do(&req)
+	resp, err := handler.NewUsernameRegisterService(ctx, c).Do(&req)
 
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)

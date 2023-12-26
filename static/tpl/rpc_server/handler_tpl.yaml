@@ -36,7 +36,6 @@ update_behavior:
   import_tpl:
     - "{{ ( index (index (index .Methods 0).Args 0).Deps 0).ImportPath }}"
     - "{{ ( index (index .Methods 0).Resp.Deps 0).ImportPath }}"
-
 body: |-
   package biz
   import (
@@ -50,7 +49,6 @@ body: |-
   			{{- end}}
   		{{- end}}
   	{{- end}}
-   "{{.Module}}/biz/service"
   )
 
   // {{.ServiceName}}Impl implements the last service interface defined in the IDL.
@@ -60,7 +58,7 @@ body: |-
   {{- if or .ClientStreaming .ServerStreaming}}
   func (s *{{$.ServiceName}}Impl) {{.Name}}({{if not .ClientStreaming}}{{range .Args}}{{LowerFirst .Name}} {{.Type}}, {{end}}{{end}}stream {{.PkgRefName}}.{{.ServiceName}}_{{.RawName}}Server) (err error) {	
     ctx := context.Background()
-    err = service.New{{.Name}}Service(ctx).Run({{if not .ClientStreaming}}{{range .Args}}{{LowerFirst .Name}}, {{end}}{{end}}stream)
+    err = {{ SnakeString .ServiceName }}.New{{.Name}}Service(ctx).Run({{if not .ClientStreaming}}{{range .Args}}{{LowerFirst .Name}}, {{end}}{{end}}stream)
     return
   }
   {{- else}}
@@ -72,14 +70,14 @@ body: |-
   // If possible, do not use oneway methods.
   {{- end}}
   func (s *{{$.ServiceName}}Impl) {{.Name}}(ctx context.Context {{- range .Args}}, {{LowerFirst .Name}} {{.Type}}{{end}}) (err error) {
-    err = service.New{{.Name}}Service(ctx).Run({{range .Args}} {{LowerFirst .Name}}, {{end}})
+    err = {{ SnakeString .ServiceName }}.New{{.Name}}Service(ctx).Run({{range .Args}} {{LowerFirst .Name}}, {{end}})
 
     return err
   }
   {{else -}}
   // {{.Name}} implements the {{.ServiceName}}Impl interface.
   func (s *{{$.ServiceName}}Impl) {{.Name}}(ctx context.Context {{range .Args}}, {{LowerFirst .Name}} {{.Type}}{{end}} ) (resp {{.Resp.Type}}, err error) {
-    resp, err = service.New{{.Name}}Service(ctx).Run({{range .Args}} {{LowerFirst .Name}}, {{end}})
+    resp, err = {{ SnakeString .ServiceName }}.New{{.Name}}Service(ctx).Run({{range .Args}} {{LowerFirst .Name}}, {{end}})
 
     return resp, err
   }

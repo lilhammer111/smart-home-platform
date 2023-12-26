@@ -41,3 +41,5 @@ type RespUnauthorized struct {
 	Code    int    `example:"401"`
 	Message string `example:"authentication fails"`
 }
+
+type Empty struct{}

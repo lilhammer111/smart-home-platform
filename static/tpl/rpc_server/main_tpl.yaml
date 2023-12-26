@@ -8,7 +8,6 @@ body: |-
     "git.zqbjj.top/lilhammer111/micro-kit/initializer/suite"
     "github.com/cloudwego/kitex/pkg/klog"
     {{- if eq .Codec "thrift"}}
-    "github.com/cloudwego/kitex/pkg/transmeta"
     {{- end }}
     "github.com/cloudwego/kitex/server"
     "{{.ImportPath}}/{{ToLower .ServiceName}}"
@@ -16,7 +15,7 @@ body: |-
 
   func main() {
     svr := {{ToLower .ServiceName}}.NewServer(
-        new({{.ServiceName}}Impl),
+        new(biz.{{.ServiceName}}Impl),
         server.WithSuite(&suite.BasicSuite{}),
     )
 

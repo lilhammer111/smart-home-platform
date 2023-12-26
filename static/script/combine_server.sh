@@ -21,7 +21,7 @@ cwgo server --type RPC \
             --module git.zqbjj.top/pet/services/cmd/rpc/$dir \
             --service $service_name \
             --template ../../../static/tpl/rpc_server/ \
-            --combine-service
+            --pass "--combine-service"
 
 
 go mod tidy

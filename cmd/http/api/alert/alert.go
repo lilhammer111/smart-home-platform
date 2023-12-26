@@ -2,14 +2,13 @@ package alert
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/api/alert/handler"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/alert"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
-	biz "git.zqbjj.top/pet/services/cmd/http/biz/alert"
 )
 
 // GetAlertList .
@@ -40,7 +39,7 @@ func GetAlertList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetAlertListService(ctx, c).Do(&req)
+	resp, err := handler.NewGetAlertListService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -71,7 +70,7 @@ func GetAlertDetail(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewGetAlertDetailService(ctx, c).Do(&req)
+	resp, err := handler.NewGetAlertDetailService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -103,7 +102,7 @@ func UpdateAlertInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUpdateAlertInfoService(ctx, c).Do(&req)
+	resp, err := handler.NewUpdateAlertInfoService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -134,7 +133,7 @@ func UploadAlertInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewUploadAlertInfoService(ctx, c).Do(&req)
+	resp, err := handler.NewUploadAlertInfoService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -165,7 +164,7 @@ func DeleteAlert(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, err := biz.NewDeleteAlertService(ctx, c).Do(&req)
+	resp, err := handler.NewDeleteAlertService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

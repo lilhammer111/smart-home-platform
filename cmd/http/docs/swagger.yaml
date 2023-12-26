@@ -1,4 +1,10 @@
 definitions:
+  example.AddModelBody:
+    properties:
+      name:
+        example: 豪华旗舰款
+        type: string
+    type: object
   example.AlertData:
     properties:
       count:
@@ -68,6 +74,8 @@ definitions:
         example: 1
         type: integer
     type: object
+  example.Empty:
+    type: object
   example.MiniProgLoginBody:
     properties:
       wxCode:
@@ -96,6 +104,15 @@ definitions:
         type: string
       username:
         example: demon_wang
+        type: string
+    type: object
+  example.ModelData:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 豪华旗舰款
         type: string
     type: object
   example.PwdLoginBody:
@@ -970,6 +987,163 @@ paths:
       summary: update device info
       tags:
       - devices
+  /api/products/add:
+    post:
+      responses: {}
+  /api/products/banners/add:
+    post:
+      responses: {}
+  /api/products/banners/delete:
+    delete:
+      responses: {}
+  /api/products/banners/list:
+    get:
+      responses: {}
+  /api/products/banners/update:
+    put:
+      responses: {}
+  /api/products/brands/add:
+    post:
+      responses: {}
+  /api/products/brands/delete:
+    delete:
+      responses: {}
+  /api/products/brands/list:
+    get:
+      responses: {}
+  /api/products/brands/update:
+    put:
+      responses: {}
+  /api/products/categories/add:
+    post:
+      responses: {}
+  /api/products/categories/brands/list:
+    get:
+      responses: {}
+  /api/products/categories/delete:
+    delete:
+      responses: {}
+  /api/products/categories/detail:
+    get:
+      responses: {}
+  /api/products/categories/list:
+    get:
+      responses: {}
+  /api/products/categories/update:
+    put:
+      responses: {}
+  /api/products/delete:
+    delete:
+      responses: {}
+  /api/products/detail:
+    get:
+      responses: {}
+  /api/products/list:
+    get:
+      responses: {}
+  /api/products/models/add:
+    post:
+      operationId: AddNewModel
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: model request body
+        in: body
+        name: models
+        required: true
+        schema:
+          $ref: '#/definitions/example.AddModelBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.ModelData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: add a new product model
+      tags:
+      - models
+  /api/products/models/delete:
+    delete:
+      operationId: DeleteModel
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: model id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.Empty'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: delete a product model
+      tags:
+      - models
+  /api/products/models/list:
+    get:
+      responses: {}
+  /api/products/update_basis/:
+    put:
+      responses: {}
+  /api/products/update_rating:
+    put:
+      responses: {}
+  /api/products/update_showcase:
+    put:
+      responses: {}
   /api/users/current:
     get:
       operationId: GetCurUserInfo

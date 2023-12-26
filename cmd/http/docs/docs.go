@@ -1204,6 +1204,262 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/products/add": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/api/products/banners/add": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/api/products/banners/delete": {
+            "delete": {
+                "responses": {}
+            }
+        },
+        "/api/products/banners/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/banners/update": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/brands/add": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/api/products/brands/delete": {
+            "delete": {
+                "responses": {}
+            }
+        },
+        "/api/products/brands/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/brands/update": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/add": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/brands/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/delete": {
+            "delete": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/detail": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/categories/update": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/delete": {
+            "delete": {
+                "responses": {}
+            }
+        },
+        "/api/products/detail": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/models/add": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "add a new product model",
+                "operationId": "AddNewModel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "model request body",
+                        "name": "models",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.AddModelBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.ModelData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/models/delete": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "delete a product model",
+                "operationId": "DeleteModel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "model id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.Empty"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/models/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/update_basis/": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/update_rating": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/update_showcase": {
+            "put": {
+                "responses": {}
+            }
+        },
         "/api/users/current": {
             "get": {
                 "produces": [
@@ -1554,6 +1810,15 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "example.AddModelBody": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "豪华旗舰款"
+                }
+            }
+        },
         "example.AlertData": {
             "type": "object",
             "properties": {
@@ -1649,6 +1914,9 @@ const docTemplate = `{
                 }
             }
         },
+        "example.Empty": {
+            "type": "object"
+        },
         "example.MiniProgLoginBody": {
             "type": "object",
             "properties": {
@@ -1689,6 +1957,19 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "demon_wang"
+                }
+            }
+        },
+        "example.ModelData": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "豪华旗舰款"
                 }
             }
         },
