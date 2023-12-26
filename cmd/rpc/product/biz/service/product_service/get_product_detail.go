@@ -16,7 +16,7 @@ func NewGetProductDetailService(ctx context.Context) *GetProductDetailService {
 }
 
 // Run create note info
-func (s *GetProductDetailService) Run(req *common.Req) (resp *product.ProductInfo, err error) {
+func (s *GetProductDetailService) Run(req *common.Req) (resp *product.ProductDetail, err error) {
 	// Finish your business logic.
 
 	return

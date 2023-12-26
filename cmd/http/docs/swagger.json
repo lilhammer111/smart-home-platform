@@ -826,7 +826,7 @@
                     },
                     {
                         "description": "device data",
-                        "name": "users",
+                        "name": "devices",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -1025,7 +1025,10 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.DeviceData"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.DeviceData"
+                                            }
                                         }
                                     }
                                 }
@@ -1086,10 +1089,10 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/example.RespOk"
+                            "$ref": "#/definitions/example.RespNoContent"
                         }
                     },
                     "400": {
@@ -1139,7 +1142,7 @@
                     },
                     {
                         "description": "device data",
-                        "name": "users",
+                        "name": "devices",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -1200,7 +1203,76 @@
         },
         "/api/products/banners/add": {
             "post": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "banners"
+                ],
+                "summary": "bind banner info",
+                "operationId": "AddNewBanner",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "banner data",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewBannerBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespCreated"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.BannerData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/banners/delete": {
@@ -1215,27 +1287,436 @@
         },
         "/api/products/banners/update": {
             "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "banners"
+                ],
+                "summary": "update banner info",
+                "operationId": "UpdateBanner",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "banner data",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.BannerData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.BannerData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/brands/add": {
             "post": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "bind brand info",
+                "operationId": "AddNewBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "brand data",
+                        "name": "brand",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewBrandBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespCreated"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/brands/delete": {
             "delete": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "delete brand record",
+                "operationId": "DeleteBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/brands/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "get brand detail",
+                "operationId": "GetBrandDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.BrandData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/brands/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "get brand list",
+                "operationId": "GetBrandList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.BrandData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/brands/update": {
             "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "update brand info",
+                "operationId": "UpdateBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "brand data",
+                        "name": "brand",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewBrandBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.BrandData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/categories/add": {
@@ -1245,7 +1726,77 @@
         },
         "/api/products/categories/brands/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "brands"
+                ],
+                "summary": "get brands list by category id",
+                "operationId": "GetBrandListByCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "category_id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.BrandData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/categories/delete": {
@@ -1264,6 +1815,26 @@
             }
         },
         "/api/products/categories/update": {
+            "put": {
+                "responses": {}
+            }
+        },
+        "/api/products/category_brand/batch_add": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/api/products/category_brand/delete_category": {
+            "delete": {
+                "responses": {}
+            }
+        },
+        "/api/products/category_brand/list": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/products/category_brand/update": {
             "put": {
                 "responses": {}
             }
@@ -1429,9 +2000,144 @@
                 }
             }
         },
+        "/api/products/models/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "get product model detail",
+                "operationId": "GetModelDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.DeviceData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
         "/api/products/models/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "models"
+                ],
+                "summary": "get all models",
+                "operationId": "GetAllModels",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.ModelData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/update_basis/": {
@@ -1858,6 +2564,44 @@
                 }
             }
         },
+        "example.BannerData": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "index": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51"
+                },
+                "productLink": {
+                    "type": "string",
+                    "example": "https://pet.service.com/prodcut-link"
+                }
+            }
+        },
+        "example.BrandData": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "logo": {
+                    "type": "string",
+                    "example": "https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "xiaomi"
+                }
+            }
+        },
         "example.DeviceData": {
             "type": "object",
             "properties": {
@@ -1962,6 +2706,40 @@
                 }
             }
         },
+        "example.NewBannerBody": {
+            "type": "object",
+            "properties": {
+                "index": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51"
+                },
+                "productLink": {
+                    "type": "string",
+                    "example": "https://pet.service.com/prodcut-link"
+                }
+            }
+        },
+        "example.NewBrandBody": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "logo": {
+                    "type": "string",
+                    "example": "https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "xiaomi"
+                }
+            }
+        },
         "example.PwdLoginBody": {
             "type": "object",
             "properties": {
@@ -1985,7 +2763,7 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "bad request"
+                    "example": "Bad request."
                 },
                 "success": {
                     "type": "boolean",
@@ -2002,11 +2780,28 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "account already exists"
+                    "example": "Already exists."
                 },
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "example.RespCreated": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 201
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Creating successes."
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -2019,11 +2814,28 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "internal error"
+                    "example": "Internal server error."
                 },
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "example.RespNoContent": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 204
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Deleting successes."
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -2036,7 +2848,7 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "not found"
+                    "example": "Not found."
                 },
                 "success": {
                     "type": "boolean",
@@ -2053,7 +2865,7 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "ok"
+                    "example": "OK."
                 },
                 "success": {
                     "type": "boolean",
@@ -2070,7 +2882,7 @@
                 },
                 "message": {
                     "type": "string",
-                    "example": "authentication fails"
+                    "example": "Authentication fails."
                 },
                 "success": {
                     "type": "boolean",

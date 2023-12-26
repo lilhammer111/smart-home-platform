@@ -60,3 +60,18 @@ func _getbrandbycategoryMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getbranddetailMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _deletebrandMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getbrandlistbycategoryMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

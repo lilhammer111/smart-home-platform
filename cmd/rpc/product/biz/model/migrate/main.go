@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	err := db.GetMysql().AutoMigrate(&model.Product{}, &model.Model{}, &model.Category{}, &model.Banner{}, &model.Brand{})
+	err := db.GetMysql().AutoMigrate(&model.Brand{})
 	if err != nil {
 		klog.Errorf("failed to auto migrate user table: %s", err)
 	}

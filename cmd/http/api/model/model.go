@@ -13,7 +13,16 @@ import (
 )
 
 // GetAllModels .
-
+// @id			GetAllModels
+// @Summary		get all models
+// @Tags		models
+// @Produce		json
+// @Param       Authorization  header    string  true  "Bearer User's access token"
+// @Success		200				{object}		example.RespOk{data=[]example.ModelData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
 // @router /api/products/models/list [GET]
 func GetAllModels(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -92,5 +101,36 @@ func DeleteModel(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// GetModelDetail .
+// @id			GetModelDetail
+// @Summary		get product model detail
+// @Tags		models
+// @Produce		json
+// @Param        Authorization  header    string  true  "Bearer User's access token"
+// @Param		id		query	int	true	"id"
+// @Success		200				{object}		example.RespOk{data=example.DeviceData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/products/models/detail [GET]
+func GetModelDetail(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req common.Req
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := handler.NewGetModelDetailService(ctx, c).Do(&req)
+
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }

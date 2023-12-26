@@ -23,7 +23,7 @@ import (
 // @Param		state	query	string	false	"search"
 // @Param		state	query	string	false	"start_date"
 // @Param		state	query	string	false	"end_date"
-// @Success		200				{object}		example.RespOk{data=example.DeviceData} "success"
+// @Success		200				{object}		example.RespOk{data=[]example.DeviceData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -85,7 +85,7 @@ func GetDeviceDetail(ctx context.Context, c *app.RequestContext) {
 // @Access		json
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		users	body	example.DeviceData	true	"device data"
+// @Param		devices	body	example.DeviceData	true	"device data"
 // @Success		200				{object}		example.RespOk{data=example.DeviceData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -116,7 +116,7 @@ func UpdateDeviceInfo(ctx context.Context, c *app.RequestContext) {
 // @Tags		devices
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		users	body	example.DeviceData	true	"device data"
+// @Param		devices	body	example.DeviceData	true	"device data"
 // @Success		200				{object}		example.RespOk{data=example.DeviceData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -148,7 +148,7 @@ func BindDevice(ctx context.Context, c *app.RequestContext) {
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Param		id	query	string	true	"device id"
-// @Success		200				{object}		example.RespOk 						"success"
+// @Success		204				{object}		example.RespNoContent				"success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"

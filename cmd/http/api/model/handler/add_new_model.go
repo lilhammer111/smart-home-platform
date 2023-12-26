@@ -4,6 +4,7 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
 
@@ -34,5 +35,6 @@ func (h *AddNewModelService) Do(req *model.NewModel) (resp *model.ModelInfo, err
 		return nil, err
 	}
 
+	h.RequestContext.Set(responder.SuccessMessage, "Adding a new product model successes.")
 	return resp, nil
 }

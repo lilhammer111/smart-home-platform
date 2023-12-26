@@ -36,6 +36,6 @@ func (h *GetAlertDetailService) Do(req *common.Req) (resp *alert.AlertInfo, err 
 		return nil, err
 	}
 
-	h.RequestContext.Set(responder.SuccessMessage, "getting alert info succeed")
+	h.RequestContext.Set(responder.SuccessMessage, "Getting alert info succeed!")
 	return resp, nil
 }

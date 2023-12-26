@@ -1,5 +1,8 @@
 namespace go product
 include "common.thrift"
+include "category.thrift"
+include "brand.thrift"
+include "model.thrift"
 
 struct ProductFilter {
     8: optional i16 Page (api.query="page");
@@ -22,6 +25,9 @@ struct ProductDetail {
     10: required double Price (api.body="price");
     11: required double Rating (api.body="rating");
     12: required list<string> Showcase (api.body="showcase");
+    13: required category.CategoryInfo Category (api.body="category");
+    14: required brand.BrandInfo Brand (api.body="brand");
+    15: required model.ModelInfo Model (api.body="model");
 }
 
 struct ProductInfo {

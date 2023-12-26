@@ -69,7 +69,7 @@ func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, d
 		Data:    data,
 	}
 	switch string(c.Method()) {
-	case http.MethodPost, http.MethodPut:
+	case http.MethodPost:
 		resp.Code = http.StatusCreated // 201
 	case http.MethodDelete:
 		resp.Code = http.StatusNoContent // 204

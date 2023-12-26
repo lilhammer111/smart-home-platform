@@ -13,15 +13,13 @@ import (
 type RPCClient interface {
 	KitexClient() combineservice.Client
 	Service() string
-	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.BasicProdInfo, err error)
+	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductDetail, err error)
 
-	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
+	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetail, err error)
 
 	AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
 
-	UpdateProductBasicInfo(ctx context.Context, req *product.BasicProdInfo, callOptions ...callopt.Option) (resp *product.BasicProdInfo, err error)
-
-	UpdateProdShowcase(ctx context.Context, req *product.ProductShowcase, callOptions ...callopt.Option) (resp *product.ProductShowcase, err error)
+	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
 
 	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error)
 
@@ -39,19 +37,23 @@ type RPCClient interface {
 
 	GetAllModels(ctx context.Context, callOptions ...callopt.Option) (resp []*product.ModelInfo, err error)
 
+	GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ModelInfo, err error)
+
 	AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (resp *product.ModelInfo, err error)
 
 	DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
 	GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
-	GetBrandByCategory(ctx context.Context, req *product.GetBrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
+	GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
+
+	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.BrandInfo, err error)
 
 	AddNewBrand(ctx context.Context, req *product.NewBrand_, callOptions ...callopt.Option) (resp *product.BrandInfo, err error)
 
 	UpdateBrand(ctx context.Context, req *product.BrandInfo, callOptions ...callopt.Option) (resp *product.BrandInfo, err error)
 
-	DelteBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+	DeleteBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
 	GetAllBanners(ctx context.Context, callOptions ...callopt.Option) (resp []*product.BannerInfo, err error)
 
@@ -59,7 +61,17 @@ type RPCClient interface {
 
 	UpdateBanner(ctx context.Context, req *product.BannerInfo, callOptions ...callopt.Option) (resp *product.BannerInfo, err error)
 
-	DelteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+	DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+
+	GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error)
+
+	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error)
+
+	UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (resp *product.CategoryBrandInfo, err error)
+
+	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+
+	DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -88,11 +100,11 @@ func (c *clientImpl) KitexClient() combineservice.Client {
 	return c.kitexClient
 }
 
-func (c *clientImpl) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.BasicProdInfo, err error) {
+func (c *clientImpl) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductDetail, err error) {
 	return c.kitexClient.GetProductList(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
+func (c *clientImpl) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetail, err error) {
 	return c.kitexClient.GetProductDetail(ctx, req, callOptions...)
 }
 
@@ -100,12 +112,8 @@ func (c *clientImpl) AddNewProduct(ctx context.Context, req *product.NewProduct_
 	return c.kitexClient.AddNewProduct(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) UpdateProductBasicInfo(ctx context.Context, req *product.BasicProdInfo, callOptions ...callopt.Option) (resp *product.BasicProdInfo, err error) {
-	return c.kitexClient.UpdateProductBasicInfo(ctx, req, callOptions...)
-}
-
-func (c *clientImpl) UpdateProdShowcase(ctx context.Context, req *product.ProductShowcase, callOptions ...callopt.Option) (resp *product.ProductShowcase, err error) {
-	return c.kitexClient.UpdateProdShowcase(ctx, req, callOptions...)
+func (c *clientImpl) UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
+	return c.kitexClient.UpdateProduct(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error) {
@@ -140,6 +148,10 @@ func (c *clientImpl) GetAllModels(ctx context.Context, callOptions ...callopt.Op
 	return c.kitexClient.GetAllModels(ctx, callOptions...)
 }
 
+func (c *clientImpl) GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
+	return c.kitexClient.GetModelDetail(ctx, req, callOptions...)
+}
+
 func (c *clientImpl) AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
 	return c.kitexClient.AddNewModel(ctx, req, callOptions...)
 }
@@ -152,8 +164,12 @@ func (c *clientImpl) GetBrandList(ctx context.Context, req *product.PageFilter, 
 	return c.kitexClient.GetBrandList(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetBrandByCategory(ctx context.Context, req *product.GetBrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
-	return c.kitexClient.GetBrandByCategory(ctx, req, callOptions...)
+func (c *clientImpl) GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+	return c.kitexClient.GetBrandListByCategory(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.BrandInfo, err error) {
+	return c.kitexClient.GetBrandDetail(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) AddNewBrand(ctx context.Context, req *product.NewBrand_, callOptions ...callopt.Option) (resp *product.BrandInfo, err error) {
@@ -164,8 +180,8 @@ func (c *clientImpl) UpdateBrand(ctx context.Context, req *product.BrandInfo, ca
 	return c.kitexClient.UpdateBrand(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) DelteBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	return c.kitexClient.DelteBrand(ctx, req, callOptions...)
+func (c *clientImpl) DeleteBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteBrand(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) GetAllBanners(ctx context.Context, callOptions ...callopt.Option) (resp []*product.BannerInfo, err error) {
@@ -180,6 +196,26 @@ func (c *clientImpl) UpdateBanner(ctx context.Context, req *product.BannerInfo, 
 	return c.kitexClient.UpdateBanner(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) DelteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	return c.kitexClient.DelteBanner(ctx, req, callOptions...)
+func (c *clientImpl) DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteBanner(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
+	return c.kitexClient.GetCategoryBrandList(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
+	return c.kitexClient.BatchAddCategoryBrand(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (resp *product.CategoryBrandInfo, err error) {
+	return c.kitexClient.UpdateCategoryBrand(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteCategoryByBrand(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteBrandByCategory(ctx, req, callOptions...)
 }

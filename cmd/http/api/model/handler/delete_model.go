@@ -27,6 +27,6 @@ func (h *DeleteModelService) Do(req *common.Req) (resp *common.Empty, err error)
 		return nil, err
 	}
 
-	h.RequestContext.Set(responder.SuccessMessage, "deleting product model succeed")
+	h.RequestContext.Set(responder.SuccessMessage, "Deleting product model successes.")
 	return &common.Empty{}, nil
 }

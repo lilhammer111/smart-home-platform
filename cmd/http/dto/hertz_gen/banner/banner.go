@@ -564,7 +564,7 @@ type Banner interface {
 
 	UpdateBanner(ctx context.Context, req *BannerInfo) (r *BannerInfo, err error)
 
-	DelteBanner(ctx context.Context, req *common.Req) (r *common.Empty, err error)
+	DeleteBanner(ctx context.Context, req *common.Req) (r *common.Empty, err error)
 }
 
 type BannerClient struct {
@@ -620,11 +620,11 @@ func (p *BannerClient) UpdateBanner(ctx context.Context, req *BannerInfo) (r *Ba
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *BannerClient) DelteBanner(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
-	var _args BannerDelteBannerArgs
+func (p *BannerClient) DeleteBanner(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
+	var _args BannerDeleteBannerArgs
 	_args.Req = req
-	var _result BannerDelteBannerResult
-	if err = p.Client_().Call(ctx, "DelteBanner", &_args, &_result); err != nil {
+	var _result BannerDeleteBannerResult
+	if err = p.Client_().Call(ctx, "DeleteBanner", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -653,7 +653,7 @@ func NewBannerProcessor(handler Banner) *BannerProcessor {
 	self.AddToProcessorMap("GetAllBanners", &bannerProcessorGetAllBanners{handler: handler})
 	self.AddToProcessorMap("AddNewBanner", &bannerProcessorAddNewBanner{handler: handler})
 	self.AddToProcessorMap("UpdateBanner", &bannerProcessorUpdateBanner{handler: handler})
-	self.AddToProcessorMap("DelteBanner", &bannerProcessorDelteBanner{handler: handler})
+	self.AddToProcessorMap("DeleteBanner", &bannerProcessorDeleteBanner{handler: handler})
 	return self
 }
 func (p *BannerProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -818,16 +818,16 @@ func (p *bannerProcessorUpdateBanner) Process(ctx context.Context, seqId int32, 
 	return true, err
 }
 
-type bannerProcessorDelteBanner struct {
+type bannerProcessorDeleteBanner struct {
 	handler Banner
 }
 
-func (p *bannerProcessorDelteBanner) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := BannerDelteBannerArgs{}
+func (p *bannerProcessorDeleteBanner) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := BannerDeleteBannerArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("DelteBanner", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("DeleteBanner", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -836,11 +836,11 @@ func (p *bannerProcessorDelteBanner) Process(ctx context.Context, seqId int32, i
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := BannerDelteBannerResult{}
+	result := BannerDeleteBannerResult{}
 	var retval *common.Empty
-	if retval, err2 = p.handler.DelteBanner(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DelteBanner: "+err2.Error())
-		oprot.WriteMessageBegin("DelteBanner", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.DeleteBanner(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteBanner: "+err2.Error())
+		oprot.WriteMessageBegin("DeleteBanner", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -848,7 +848,7 @@ func (p *bannerProcessorDelteBanner) Process(ctx context.Context, seqId int32, i
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("DelteBanner", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("DeleteBanner", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1756,32 +1756,32 @@ func (p *BannerUpdateBannerResult) String() string {
 	return fmt.Sprintf("BannerUpdateBannerResult(%+v)", *p)
 }
 
-type BannerDelteBannerArgs struct {
+type BannerDeleteBannerArgs struct {
 	Req *common.Req `thrift:"req,1"`
 }
 
-func NewBannerDelteBannerArgs() *BannerDelteBannerArgs {
-	return &BannerDelteBannerArgs{}
+func NewBannerDeleteBannerArgs() *BannerDeleteBannerArgs {
+	return &BannerDeleteBannerArgs{}
 }
 
-var BannerDelteBannerArgs_Req_DEFAULT *common.Req
+var BannerDeleteBannerArgs_Req_DEFAULT *common.Req
 
-func (p *BannerDelteBannerArgs) GetReq() (v *common.Req) {
+func (p *BannerDeleteBannerArgs) GetReq() (v *common.Req) {
 	if !p.IsSetReq() {
-		return BannerDelteBannerArgs_Req_DEFAULT
+		return BannerDeleteBannerArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_BannerDelteBannerArgs = map[int16]string{
+var fieldIDToName_BannerDeleteBannerArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *BannerDelteBannerArgs) IsSetReq() bool {
+func (p *BannerDeleteBannerArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *BannerDelteBannerArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1829,7 +1829,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BannerDelteBannerArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BannerDeleteBannerArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1839,7 +1839,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *BannerDelteBannerArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *BannerDeleteBannerArgs) ReadField1(iprot thrift.TProtocol) error {
 	p.Req = common.NewReq()
 
 	if err := p.Req.Read(iprot); err != nil {
@@ -1848,9 +1848,9 @@ func (p *BannerDelteBannerArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *BannerDelteBannerArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("DelteBanner_args"); err != nil {
+	if err = oprot.WriteStructBegin("DeleteBanner_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1876,7 +1876,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *BannerDelteBannerArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1893,39 +1893,39 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *BannerDelteBannerArgs) String() string {
+func (p *BannerDeleteBannerArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BannerDelteBannerArgs(%+v)", *p)
+	return fmt.Sprintf("BannerDeleteBannerArgs(%+v)", *p)
 }
 
-type BannerDelteBannerResult struct {
+type BannerDeleteBannerResult struct {
 	Success *common.Empty `thrift:"success,0,optional"`
 }
 
-func NewBannerDelteBannerResult() *BannerDelteBannerResult {
-	return &BannerDelteBannerResult{}
+func NewBannerDeleteBannerResult() *BannerDeleteBannerResult {
+	return &BannerDeleteBannerResult{}
 }
 
-var BannerDelteBannerResult_Success_DEFAULT *common.Empty
+var BannerDeleteBannerResult_Success_DEFAULT *common.Empty
 
-func (p *BannerDelteBannerResult) GetSuccess() (v *common.Empty) {
+func (p *BannerDeleteBannerResult) GetSuccess() (v *common.Empty) {
 	if !p.IsSetSuccess() {
-		return BannerDelteBannerResult_Success_DEFAULT
+		return BannerDeleteBannerResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_BannerDelteBannerResult = map[int16]string{
+var fieldIDToName_BannerDeleteBannerResult = map[int16]string{
 	0: "success",
 }
 
-func (p *BannerDelteBannerResult) IsSetSuccess() bool {
+func (p *BannerDeleteBannerResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *BannerDelteBannerResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1973,7 +1973,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BannerDelteBannerResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BannerDeleteBannerResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1983,7 +1983,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *BannerDelteBannerResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *BannerDeleteBannerResult) ReadField0(iprot thrift.TProtocol) error {
 	p.Success = common.NewEmpty()
 
 	if err := p.Success.Read(iprot); err != nil {
@@ -1992,9 +1992,9 @@ func (p *BannerDelteBannerResult) ReadField0(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *BannerDelteBannerResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("DelteBanner_result"); err != nil {
+	if err = oprot.WriteStructBegin("DeleteBanner_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -2020,7 +2020,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *BannerDelteBannerResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *BannerDeleteBannerResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -2039,9 +2039,9 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *BannerDelteBannerResult) String() string {
+func (p *BannerDeleteBannerResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BannerDelteBannerResult(%+v)", *p)
+	return fmt.Sprintf("BannerDeleteBannerResult(%+v)", *p)
 }

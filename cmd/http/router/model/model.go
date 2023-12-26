@@ -26,6 +26,7 @@ func Register(r *server.Hertz) {
 				_models := _products.Group("/models", _modelsMw()...)
 				_models.POST("/add", append(_addnewmodelMw(), model.AddNewModel)...)
 				_models.DELETE("/delete", append(_deletemodelMw(), model.DeleteModel)...)
+				_models.GET("/detail", append(_getmodeldetailMw(), model.GetModelDetail)...)
 				_models.GET("/list", append(_getallmodelsMw(), model.GetAllModels)...)
 			}
 		}

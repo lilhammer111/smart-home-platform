@@ -269,3 +269,256 @@ func (p *Empty) DeepEqual(ano *Empty) bool {
 	}
 	return true
 }
+
+type PageFilter struct {
+	Page  *int16 `thrift:"Page,1,optional" frugal:"1,optional,i16" json:"Page,omitempty"`
+	Limit *int16 `thrift:"Limit,2,optional" frugal:"2,optional,i16" json:"Limit,omitempty"`
+}
+
+func NewPageFilter() *PageFilter {
+	return &PageFilter{}
+}
+
+func (p *PageFilter) InitDefault() {
+	*p = PageFilter{}
+}
+
+var PageFilter_Page_DEFAULT int16
+
+func (p *PageFilter) GetPage() (v int16) {
+	if !p.IsSetPage() {
+		return PageFilter_Page_DEFAULT
+	}
+	return *p.Page
+}
+
+var PageFilter_Limit_DEFAULT int16
+
+func (p *PageFilter) GetLimit() (v int16) {
+	if !p.IsSetLimit() {
+		return PageFilter_Limit_DEFAULT
+	}
+	return *p.Limit
+}
+func (p *PageFilter) SetPage(val *int16) {
+	p.Page = val
+}
+func (p *PageFilter) SetLimit(val *int16) {
+	p.Limit = val
+}
+
+var fieldIDToName_PageFilter = map[int16]string{
+	1: "Page",
+	2: "Limit",
+}
+
+func (p *PageFilter) IsSetPage() bool {
+	return p.Page != nil
+}
+
+func (p *PageFilter) IsSetLimit() bool {
+	return p.Limit != nil
+}
+
+func (p *PageFilter) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I16 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.I16 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PageFilter[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *PageFilter) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI16(); err != nil {
+		return err
+	} else {
+		p.Page = &v
+	}
+	return nil
+}
+func (p *PageFilter) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI16(); err != nil {
+		return err
+	} else {
+		p.Limit = &v
+	}
+	return nil
+}
+
+func (p *PageFilter) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("PageFilter"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *PageFilter) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPage() {
+		if err = oprot.WriteFieldBegin("Page", thrift.I16, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI16(*p.Page); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+func (p *PageFilter) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetLimit() {
+		if err = oprot.WriteFieldBegin("Limit", thrift.I16, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI16(*p.Limit); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *PageFilter) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("PageFilter(%+v)", *p)
+}
+
+func (p *PageFilter) DeepEqual(ano *PageFilter) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Page) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Limit) {
+		return false
+	}
+	return true
+}
+
+func (p *PageFilter) Field1DeepEqual(src *int16) bool {
+
+	if p.Page == src {
+		return true
+	} else if p.Page == nil || src == nil {
+		return false
+	}
+	if *p.Page != *src {
+		return false
+	}
+	return true
+}
+func (p *PageFilter) Field2DeepEqual(src *int16) bool {
+
+	if p.Limit == src {
+		return true
+	} else if p.Limit == nil || src == nil {
+		return false
+	}
+	if *p.Limit != *src {
+		return false
+	}
+	return true
+}

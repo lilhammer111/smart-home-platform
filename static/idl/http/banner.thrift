@@ -19,5 +19,5 @@ service Banner {
     list<BannerInfo> GetAllBanners (1: common.Empty req) (api.get="/api/products/banners/list");
     BannerInfo AddNewBanner(1: NewBanner req) (api.post="/api/products/banners/add");
     BannerInfo UpdateBanner(1: BannerInfo req) (api.put="/api/products/banners/update");
-    common.Empty DelteBanner(1: common.Req req) (api.delete="/api/products/banners/delete");
+    common.Empty DeleteBanner(1: common.Req req) (api.delete="/api/products/banners/delete");
 }

@@ -14,7 +14,7 @@ var (
 	defaultClient     RPCClient
 	defaultDstService = "micro_product"
 	defaultClientOpts = []client.Option{
-		//client.WithHostPorts("127.0.0.1:8888"),
+		// client.WithHostPorts("127.0.0.1:8888"),
 		client.WithMetaHandler(transmeta.ClientTTHeaderHandler),
 		client.WithTransportProtocol(transport.TTHeader),
 		client.WithResolver(discovery.GetDiscoveryResolver()),

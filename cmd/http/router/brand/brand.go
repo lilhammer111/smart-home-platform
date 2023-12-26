@@ -25,7 +25,8 @@ func Register(r *server.Hertz) {
 			{
 				_brands := _products.Group("/brands", _brandsMw()...)
 				_brands.POST("/add", append(_addnewbrandMw(), brand.AddNewBrand)...)
-				_brands.DELETE("/delete", append(_deltebrandMw(), brand.DelteBrand)...)
+				_brands.DELETE("/delete", append(_deletebrandMw(), brand.DeleteBrand)...)
+				_brands.GET("/detail", append(_getbranddetailMw(), brand.GetBrandDetail)...)
 				_brands.GET("/list", append(_getbrandlistMw(), brand.GetBrandList)...)
 				_brands.PUT("/update", append(_updatebrandMw(), brand.UpdateBrand)...)
 			}
@@ -33,7 +34,7 @@ func Register(r *server.Hertz) {
 				_categories := _products.Group("/categories", _categoriesMw()...)
 				{
 					_brands0 := _categories.Group("/brands", _brands0Mw()...)
-					_brands0.GET("/list", append(_getbrandbycategoryMw(), brand.GetBrandByCategory)...)
+					_brands0.GET("/list", append(_getbrandlistbycategoryMw(), brand.GetBrandListByCategory)...)
 				}
 			}
 		}

@@ -45,3 +45,8 @@ func _updatebannerMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _deletebannerMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

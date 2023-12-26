@@ -2,8 +2,13 @@ package handler
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 
-	brand "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/brand"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/brand"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,11 +22,26 @@ func NewUpdateBrandService(Context context.Context, RequestContext *app.RequestC
 }
 
 func (h *UpdateBrandService) Do(req *brand.BrandInfo) (resp *brand.BrandInfo, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	brandsReq := product.BrandInfo{}
+	err = copier.Copy(&brandsReq, req)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	updatedBrandInfos, err := micro_product_cli.UpdateBrand(h.Context, &brandsReq)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	resp = &brand.BrandInfo{}
+	err = copier.Copy(resp, updatedBrandInfos)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	h.RequestContext.Set(responder.SuccessMessage, "Updating brand successes.")
+	return resp, nil
 }

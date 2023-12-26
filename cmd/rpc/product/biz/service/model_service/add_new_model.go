@@ -6,7 +6,8 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
-	product "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/utils"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/jinzhu/copier"
@@ -33,6 +34,10 @@ func (s *AddNewModelService) Run(req *product.NewModel_) (resp *product.ModelInf
 	err = db.GetMysql().Create(&modelInfo).Error
 	if err != nil {
 		klog.Error(err)
+		if isConflict, kerr := utils.CheckResourceConflict(err, "Banner name conflicts."); isConflict {
+			return nil, kerr
+		}
+
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 

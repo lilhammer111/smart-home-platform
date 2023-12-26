@@ -41,6 +41,33 @@ definitions:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDM0ODc1NTEsIm9yaWdfaWF0IjoxNzAzNDgzOTUxLCJ1aWQiOjN9.J5sOSjOPIgifaTpGIqzfZV3vi1ZRD6WnOJV3fok_ltk
         type: string
     type: object
+  example.BannerData:
+    properties:
+      id:
+        example: 1
+        type: integer
+      index:
+        example: 1
+        type: integer
+      picture:
+        example: https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51
+        type: string
+      productLink:
+        example: https://pet.service.com/prodcut-link
+        type: string
+    type: object
+  example.BrandData:
+    properties:
+      id:
+        example: 1
+        type: integer
+      logo:
+        example: https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg
+        type: string
+      name:
+        example: xiaomi
+        type: string
+    type: object
   example.DeviceData:
     properties:
       desc:
@@ -115,6 +142,30 @@ definitions:
         example: 豪华旗舰款
         type: string
     type: object
+  example.NewBannerBody:
+    properties:
+      index:
+        example: 1
+        type: integer
+      picture:
+        example: https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51
+        type: string
+      productLink:
+        example: https://pet.service.com/prodcut-link
+        type: string
+    type: object
+  example.NewBrandBody:
+    properties:
+      id:
+        example: 1
+        type: integer
+      logo:
+        example: https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg
+        type: string
+      name:
+        example: xiaomi
+        type: string
+    type: object
   example.PwdLoginBody:
     properties:
       password:
@@ -131,7 +182,7 @@ definitions:
         example: 400
         type: integer
       message:
-        example: bad request
+        example: Bad request.
         type: string
       success:
         example: false
@@ -143,10 +194,22 @@ definitions:
         example: 409
         type: integer
       message:
-        example: account already exists
+        example: Already exists.
         type: string
       success:
         example: false
+        type: boolean
+    type: object
+  example.RespCreated:
+    properties:
+      code:
+        example: 201
+        type: integer
+      message:
+        example: Creating successes.
+        type: string
+      success:
+        example: true
         type: boolean
     type: object
   example.RespInternal:
@@ -155,10 +218,22 @@ definitions:
         example: 500
         type: integer
       message:
-        example: internal error
+        example: Internal server error.
         type: string
       success:
         example: false
+        type: boolean
+    type: object
+  example.RespNoContent:
+    properties:
+      code:
+        example: 204
+        type: integer
+      message:
+        example: Deleting successes.
+        type: string
+      success:
+        example: true
         type: boolean
     type: object
   example.RespNotFound:
@@ -167,7 +242,7 @@ definitions:
         example: 404
         type: integer
       message:
-        example: not found
+        example: Not found.
         type: string
       success:
         example: false
@@ -179,7 +254,7 @@ definitions:
         example: 200
         type: integer
       message:
-        example: ok
+        example: OK.
         type: string
       success:
         example: true
@@ -191,7 +266,7 @@ definitions:
         example: 401
         type: integer
       message:
-        example: authentication fails
+        example: Authentication fails.
         type: string
       success:
         example: false
@@ -753,7 +828,7 @@ paths:
         type: string
       - description: device data
         in: body
-        name: users
+        name: devices
         required: true
         schema:
           $ref: '#/definitions/example.DeviceData'
@@ -880,7 +955,9 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.DeviceData'
+                  items:
+                    $ref: '#/definitions/example.DeviceData'
+                  type: array
               type: object
         "400":
           description: bad request
@@ -918,10 +995,10 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "204":
           description: success
           schema:
-            $ref: '#/definitions/example.RespOk'
+            $ref: '#/definitions/example.RespNoContent'
         "400":
           description: bad request
           schema:
@@ -952,7 +1029,7 @@ paths:
         type: string
       - description: device data
         in: body
-        name: users
+        name: devices
         required: true
         schema:
           $ref: '#/definitions/example.DeviceData'
@@ -992,7 +1069,50 @@ paths:
       responses: {}
   /api/products/banners/add:
     post:
-      responses: {}
+      operationId: AddNewBanner
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: banner data
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/example.NewBannerBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespCreated'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.BannerData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: bind banner info
+      tags:
+      - banners
   /api/products/banners/delete:
     delete:
       responses: {}
@@ -1001,25 +1121,327 @@ paths:
       responses: {}
   /api/products/banners/update:
     put:
-      responses: {}
+      operationId: UpdateBanner
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: banner data
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/example.BannerData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.BannerData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update banner info
+      tags:
+      - banners
   /api/products/brands/add:
     post:
-      responses: {}
+      operationId: AddNewBrand
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: brand data
+        in: body
+        name: brand
+        required: true
+        schema:
+          $ref: '#/definitions/example.NewBrandBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespCreated'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: bind brand info
+      tags:
+      - brands
   /api/products/brands/delete:
     delete:
-      responses: {}
+      operationId: DeleteBrand
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: success
+          schema:
+            $ref: '#/definitions/example.RespNoContent'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: delete brand record
+      tags:
+      - brands
+  /api/products/brands/detail:
+    get:
+      operationId: GetBrandDetail
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.BrandData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get brand detail
+      tags:
+      - brands
   /api/products/brands/list:
     get:
-      responses: {}
+      operationId: GetBrandList
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/example.BrandData'
+                  type: array
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get brand list
+      tags:
+      - brands
   /api/products/brands/update:
     put:
-      responses: {}
+      operationId: UpdateBrand
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: brand data
+        in: body
+        name: brand
+        required: true
+        schema:
+          $ref: '#/definitions/example.NewBrandBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.BrandData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update brand info
+      tags:
+      - brands
   /api/products/categories/add:
     post:
       responses: {}
   /api/products/categories/brands/list:
     get:
-      responses: {}
+      operationId: GetBrandListByCategory
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: category_id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/example.BrandData'
+                  type: array
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get brands list by category id
+      tags:
+      - brands
   /api/products/categories/delete:
     delete:
       responses: {}
@@ -1030,6 +1452,18 @@ paths:
     get:
       responses: {}
   /api/products/categories/update:
+    put:
+      responses: {}
+  /api/products/category_brand/batch_add:
+    post:
+      responses: {}
+  /api/products/category_brand/delete_category:
+    delete:
+      responses: {}
+  /api/products/category_brand/list:
+    get:
+      responses: {}
+  /api/products/category_brand/update:
     put:
       responses: {}
   /api/products/delete:
@@ -1132,9 +1566,93 @@ paths:
       summary: delete a product model
       tags:
       - models
+  /api/products/models/detail:
+    get:
+      operationId: GetModelDetail
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.DeviceData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get product model detail
+      tags:
+      - models
   /api/products/models/list:
     get:
-      responses: {}
+      operationId: GetAllModels
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/example.ModelData'
+                  type: array
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: get all models
+      tags:
+      - models
   /api/products/update_basis/:
     put:
       responses: {}

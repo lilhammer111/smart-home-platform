@@ -35,6 +35,6 @@ func (h *GetAllModelsService) Do(req *common.Empty) (resp *[]*model.ModelInfo, e
 		return nil, err
 	}
 
-	h.RequestContext.Set(responder.SuccessMessage, "Getting all models succeed!")
+	h.RequestContext.Set(responder.SuccessMessage, "Getting all models successes.")
 	return resp, nil
 }

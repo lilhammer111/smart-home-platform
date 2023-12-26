@@ -25,7 +25,7 @@ func Register(r *server.Hertz) {
 			{
 				_banners := _products.Group("/banners", _bannersMw()...)
 				_banners.POST("/add", append(_addnewbannerMw(), banner.AddNewBanner)...)
-				_banners.DELETE("/delete", append(_deltebannerMw(), banner.DelteBanner)...)
+				_banners.DELETE("/delete", append(_deletebannerMw(), banner.DeleteBanner)...)
 				_banners.GET("/list", append(_getallbannersMw(), banner.GetAllBanners)...)
 				_banners.PUT("/update", append(_updatebannerMw(), banner.UpdateBanner)...)
 			}

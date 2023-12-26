@@ -40,3 +40,8 @@ func _getallmodelsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getmodeldetailMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
