@@ -144,6 +144,7 @@ struct GetBrandByCatReq {
 service BrandService {
     list<BrandInfo> GetBrandList(1: PageFilter req) (api.get="/api/products/brands/list");
     list<BrandInfo> GetBrandByCategory(1: GetBrandByCatReq req) (api.get="/api/products/categories/brands/list");
+    BrandInfo GetBrandDetail (1:common.Req req) (api.get="/api/products/brands/detail")
     BrandInfo AddNewBrand(1: NewBrand req) (api.post="/api/products/brands/add");
     BrandInfo UpdateBrand(1: BrandInfo req) (api.put="/api/products/brands/update");
     common.Empty DelteBrand(1: common.Req req) (api.delete="/api/products/brands/delete");
