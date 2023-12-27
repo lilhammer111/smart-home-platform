@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"net/http"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/model"
@@ -29,6 +30,8 @@ func GetAllModels(ctx context.Context, c *app.RequestContext) {
 	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -60,6 +63,8 @@ func AddNewModel(ctx context.Context, c *app.RequestContext) {
 	var req model.NewModel
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -91,6 +96,8 @@ func DeleteModel(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -122,6 +129,8 @@ func GetModelDetail(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

@@ -2,8 +2,7 @@ package category_service
 
 import (
 	"context"
-	common "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
-	product "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	"testing"
 )
 

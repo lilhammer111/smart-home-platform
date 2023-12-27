@@ -28,7 +28,7 @@ func (s *DeleteCategoryService) Run(req *common.Req) (resp *common.Empty, err er
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	if res.RowsAffected == 0 {
-		klog.Info("the record to delete does not exist")
+		klog.Infof("the category of id %d does not exist", req.Id)
 		return nil, kerrors.NewBizStatusError(code.NotFound, "Deletion failed. The category is not existed.")
 	}
 

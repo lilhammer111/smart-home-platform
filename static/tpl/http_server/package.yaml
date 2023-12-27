@@ -55,26 +55,16 @@ layouts:
       - '{{'
       - '}}'
     body: |-
-      {{$excludedNamespace := "standard"}}
       {{$OutDirs := GetUniqueHandlerOutDir .Methods}}
       package {{.PackageName}}
       import (
        "context"
-
        "github.com/cloudwego/hertz/pkg/app"
        "github.com/cloudwego/hertz/pkg/protocol/consts"
       {{- range $k, $v := .Imports}} 
         "{{$v.Package}}"
         {{- end}}
-      {{- range $_, $OutDir := $OutDirs}}
-        {{if eq $OutDir "" -}}
-        {{- if ne $.PackageName $excludedNamespace }}
-        "{{$.ProjPackage}}/api/{{$.PackageName}}/handler"
-        {{- end}}
-        {{- else -}}
-        "{{$.ProjPackage}}/biz/{{$OutDir}}"
-        {{- end -}}
-      {{- end}}
+      "{{$.ProjPackage}}/api/{{$.PackageName}}/handler"
       "{{$.ProjPackage}}/utils/responder"
       )
       {{range $_, $MethodInfo := .Methods}}
@@ -85,6 +75,7 @@ layouts:
        var req {{$MethodInfo.RequestTypeName}}
        err = c.BindAndValidate(&req)
        if err != nil {
+          c.Set(responder.ErrorMessage, "Invalid parameter.")
           responder.SendErrResponse(ctx, c, consts.StatusOK, err)
           return
        }
@@ -108,14 +99,7 @@ layouts:
     update_behavior:
       import_tpl:
         - |-
-          {{$OutDirs := GetUniqueHandlerOutDir .Methods}}
-          {{- range $_, $OutDir := $OutDirs}}
-            {{if eq $OutDir "" -}}
-              "{{$.ProjPackage}}/biz"
-            {{- else -}}
-              "{{$.ProjPackage}}/biz/{{$OutDir}}"
-            {{end}}
-          {{- end}}
+          "{{$.ProjPackage}}/api/{{$.PackageName}}/handler"
 
   - path: handler_single.go
     body: |+
@@ -126,6 +110,7 @@ layouts:
        var req {{.RequestTypeName}}
        err = c.BindAndValidate(&req)
        if err != nil {
+          c.Set(responder.ErrorMessage, "Invalid parameter.")
           responder.SendErrResponse(ctx, c, consts.StatusOK, err)
           return
        }

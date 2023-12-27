@@ -8,6 +8,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"net/http"
 )
 
 // BatchAddCategoryBrand .
@@ -16,7 +17,7 @@ import (
 // @Tags		product category_brand
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		category_brand	body	example.NewCategoryBrandBody	true	"category data"
+// @Param		category_brand	body	example.NewCategoryBrandBody	true	"category_brand data"
 // @Success		201				{object}		example.RespCreated{data=example.CategoryBrandData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
@@ -28,6 +29,8 @@ func BatchAddCategoryBrand(ctx context.Context, c *app.RequestContext) {
 	var req category_brand.NewCategoryBrand
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -59,6 +62,8 @@ func BatchReduceCategoryBrand(ctx context.Context, c *app.RequestContext) {
 	var req category_brand.NewCategoryBrand
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -90,6 +95,8 @@ func DeleteBrandByCategory(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -121,6 +128,8 @@ func DeleteCategoryByBrand(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

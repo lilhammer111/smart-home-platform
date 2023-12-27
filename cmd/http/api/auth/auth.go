@@ -8,6 +8,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"net/http"
 )
 
 // SendSms .
@@ -46,6 +47,9 @@ func MobileRegister(ctx context.Context, c *app.RequestContext) {
 	var req auth.MobileRegisterReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -64,6 +68,9 @@ func MobileLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.MobileLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -82,6 +89,9 @@ func MiniProgLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.MiniProgLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -100,6 +110,9 @@ func PwdLogin(ctx context.Context, c *app.RequestContext) {
 	var req auth.PwdLoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -118,6 +131,8 @@ func UsernameRegister(ctx context.Context, c *app.RequestContext) {
 	var req auth.UsernameRegisterReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

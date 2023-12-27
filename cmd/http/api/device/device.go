@@ -8,6 +8,7 @@ import (
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"net/http"
 )
 
 // GetDeviceList .
@@ -34,6 +35,8 @@ func GetDeviceList(ctx context.Context, c *app.RequestContext) {
 	var req device.DeviceFilter
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -65,6 +68,8 @@ func GetDeviceDetail(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -97,6 +102,8 @@ func UpdateDeviceInfo(ctx context.Context, c *app.RequestContext) {
 	var req device.DeviceInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -128,6 +135,8 @@ func BindDevice(ctx context.Context, c *app.RequestContext) {
 	var req device.DeviceInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -159,6 +168,8 @@ func UnbindDevice(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

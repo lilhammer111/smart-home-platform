@@ -2383,7 +2383,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "category data",
+                        "description": "category_brand data",
                         "name": "category_brand",
                         "in": "body",
                         "required": true,
@@ -3714,7 +3714,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51"
                 },
-                "productLink": {
+                "product_link": {
                     "type": "string",
                     "example": "https://pet.service.com/prodcut-link"
                 }
@@ -3740,11 +3740,11 @@ const docTemplate = `{
         "example.CategoryBrandData": {
             "type": "object",
             "properties": {
-                "brandId": {
+                "brand_id": {
                     "type": "integer",
                     "example": 5
                 },
-                "categoryId": {
+                "category_id": {
                     "type": "integer",
                     "example": 10
                 },
@@ -3900,7 +3900,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51"
                 },
-                "productLink": {
+                "product_link": {
                     "type": "string",
                     "example": "https://pet.service.com/prodcut-link"
                 }
@@ -3947,7 +3947,24 @@ const docTemplate = `{
             }
         },
         "example.NewCategoryBrandBody": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "category_id": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        10,
+                        11,
+                        12
+                    ]
+                }
+            }
         },
         "example.NewProductBody": {
             "type": "object",

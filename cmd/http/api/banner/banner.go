@@ -2,6 +2,7 @@ package banner
 
 import (
 	"context"
+	"net/http"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/banner"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
@@ -29,6 +30,8 @@ func GetAllBanners(ctx context.Context, c *app.RequestContext) {
 	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -60,6 +63,8 @@ func AddNewBanner(ctx context.Context, c *app.RequestContext) {
 	var req banner.NewBanner
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -92,6 +97,8 @@ func UpdateBanner(ctx context.Context, c *app.RequestContext) {
 	var req banner.BannerInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -123,6 +130,8 @@ func DeleteBanner(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

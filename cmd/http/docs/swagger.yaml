@@ -52,7 +52,7 @@ definitions:
       picture:
         example: https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51
         type: string
-      productLink:
+      product_link:
         example: https://pet.service.com/prodcut-link
         type: string
     type: object
@@ -70,10 +70,10 @@ definitions:
     type: object
   example.CategoryBrandData:
     properties:
-      brandId:
+      brand_id:
         example: 5
         type: integer
-      categoryId:
+      category_id:
         example: 10
         type: integer
       id:
@@ -184,7 +184,7 @@ definitions:
       picture:
         example: https://img.freepik.com/free-psd/bold-gradients-banner-template_23-2148819008.jpg?t=st=1703601665~exp=1703602265~hmac=84f6d13b72f5e743e64c58166cfe6323de3809450b6dfa9340cb80ab5e455a51
         type: string
-      productLink:
+      product_link:
         example: https://pet.service.com/prodcut-link
         type: string
     type: object
@@ -217,6 +217,18 @@ definitions:
         type: array
     type: object
   example.NewCategoryBrandBody:
+    properties:
+      brand_id:
+        example: 5
+        type: integer
+      category_id:
+        example:
+        - 10
+        - 11
+        - 12
+        items:
+          type: integer
+        type: array
     type: object
   example.NewProductBody:
     properties:
@@ -1941,7 +1953,7 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: category data
+      - description: category_brand data
         in: body
         name: category_brand
         required: true

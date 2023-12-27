@@ -9,6 +9,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
+	"reflect"
 )
 
 type AddNewCategoryService struct {
@@ -25,6 +26,7 @@ func (h *AddNewCategoryService) Do(req *category.NewCategory) (resp *category.Ca
 	err = copier.Copy(&rpcCategoryReq, req)
 	if err != nil {
 		hlog.Error(err)
+		hlog.Error(reflect.TypeOf(err))
 		return nil, err
 	}
 

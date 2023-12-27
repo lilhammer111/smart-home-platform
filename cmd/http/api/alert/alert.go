@@ -4,6 +4,7 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/api/alert/handler"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"net/http"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/alert"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
@@ -35,6 +36,9 @@ func GetAlertList(ctx context.Context, c *app.RequestContext) {
 	var req alert.AlertFilter
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -66,6 +70,9 @@ func GetAlertDetail(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -98,6 +105,9 @@ func UpdateAlertInfo(ctx context.Context, c *app.RequestContext) {
 	var req alert.AlertInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -129,6 +139,9 @@ func UploadAlertInfo(ctx context.Context, c *app.RequestContext) {
 	var req alert.AlertInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -160,6 +173,9 @@ func DeleteAlert(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}

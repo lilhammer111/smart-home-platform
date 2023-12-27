@@ -35,9 +35,9 @@ func (s *BatchAddCategoryBrandService) Run(req *product.NewCategoryBrand_) (resp
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	categoryInfo := make([]model.Category, 0)
+	categoryInfos := make([]model.Category, 0)
 	// todo test_0001
-	res := db.GetMysql().Find(&categoryInfo, req.CategoryId)
+	res := db.GetMysql().Find(&categoryInfos, req.CategoryId)
 	if res.Error != nil {
 		klog.Error(res.Error)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
@@ -47,28 +47,25 @@ func (s *BatchAddCategoryBrandService) Run(req *product.NewCategoryBrand_) (resp
 		return nil, kerrors.NewBizStatusError(code.NotFound, "None of categories exist.")
 	}
 
-	newCategoryBrands := make([]model.CategoryBrand, 0)
-	err = copier.Copy(&newCategoryBrands, categoryInfo)
-	if err != nil {
-		klog.Error(err)
-		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	newCategoryBrandInfos := make([]model.CategoryBrand, 0)
+	for _, category := range categoryInfos {
+		newCategoryBrandInfos = append(newCategoryBrandInfos, model.CategoryBrand{
+			BrandId:    req.BrandId,
+			CategoryId: category.Id,
+		})
 	}
 
-	for _, everyRecord := range newCategoryBrands {
-		everyRecord.BrandId = req.BrandId
-	}
-
-	res = db.GetMysql().Create(&newCategoryBrands)
+	res = db.GetMysql().Create(&newCategoryBrandInfos)
 	if res.Error != nil {
 		klog.Error(res.Error)
-		if isConflict, kerr := utils.CheckResourceConflict(err, "Category or Brand conflicts."); isConflict {
+		if isConflict, kerr := utils.CheckResourceConflict(res.Error, "Category or Brand conflicts."); isConflict {
 			return nil, kerr
 		}
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
 	resp = make([]*product.CategoryBrandInfo, 0)
-	err = copier.Copy(&resp, newCategoryBrands)
+	err = copier.Copy(&resp, newCategoryBrandInfos)
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)

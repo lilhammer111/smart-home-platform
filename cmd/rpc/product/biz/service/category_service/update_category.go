@@ -34,9 +34,16 @@ func (s *UpdateCategoryService) Run(req *product.CategoryInfo) (resp *product.Ca
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	res := db.GetMysql().Model(&model.Category{Id: req.Id}).Updates(req)
-	if res.Error != nil {
+	categoryInfo := model.Category{}
+	err = copier.Copy(&categoryInfo, req)
+	if err != nil {
 		klog.Error(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	}
+
+	res := db.GetMysql().Updates(&categoryInfo)
+	if res.Error != nil {
+		klog.Error(res.Error)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	if res.RowsAffected == 0 {
@@ -45,7 +52,7 @@ func (s *UpdateCategoryService) Run(req *product.CategoryInfo) (resp *product.Ca
 	}
 
 	resp = &product.CategoryInfo{}
-	err = copier.Copy(resp, req)
+	err = copier.Copy(resp, categoryInfo)
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)

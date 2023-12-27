@@ -7,10 +7,11 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"net/http"
+	"reflect"
 )
 
 const (
-	SuccessMessage = "message"
+	SuccessMessage = "success_msg"
 	ErrorMessage   = "err_msg"
 	ErrorCode      = "err_code"
 )
@@ -26,6 +27,7 @@ type FormattedResp struct {
 // SendErrResponse  pack error response.
 func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err error) {
 	hlog.Error(err)
+	hlog.Info("err type :", reflect.TypeOf(err))
 	resp := FormattedResp{
 		Success: false,
 		Code:    http.StatusInternalServerError,

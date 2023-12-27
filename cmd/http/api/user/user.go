@@ -4,6 +4,7 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/api/user/handler"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"net/http"
 
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
@@ -28,6 +29,8 @@ func GetCurUserInfo(ctx context.Context, c *app.RequestContext) {
 	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -60,6 +63,8 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 	var req user.UsersFilter
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -91,6 +96,8 @@ func GetUserDetail(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -122,6 +129,8 @@ func UpdateUserInfo(ctx context.Context, c *app.RequestContext) {
 	var req user.UserInfo
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
@@ -153,6 +162,8 @@ func DeregisterUser(ctx context.Context, c *app.RequestContext) {
 	var req common.Req
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		c.Set(responder.ErrorCode, http.StatusBadRequest)
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
