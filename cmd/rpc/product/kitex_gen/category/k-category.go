@@ -36,6 +36,7 @@ func (p *CategoryInfo) FastRead(buf []byte) (int, error) {
 	var issetName bool = false
 	var issetPicture bool = false
 	var issetShowcase bool = false
+	var issetBrief bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -112,6 +113,21 @@ func (p *CategoryInfo) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField5(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetBrief = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -149,6 +165,11 @@ func (p *CategoryInfo) FastRead(buf []byte) (int, error) {
 
 	if !issetShowcase {
 		fieldId = 4
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetBrief {
+		fieldId = 5
 		goto RequiredFieldNotSetError
 	}
 	return offset, nil
@@ -240,6 +261,20 @@ func (p *CategoryInfo) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *CategoryInfo) FastReadField5(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Brief = v
+
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *CategoryInfo) FastWrite(buf []byte) int {
 	return 0
@@ -253,6 +288,7 @@ func (p *CategoryInfo) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWr
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -267,6 +303,7 @@ func (p *CategoryInfo) BLength() int {
 		l += p.field2Length()
 		l += p.field3Length()
 		l += p.field4Length()
+		l += p.field5Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -317,6 +354,15 @@ func (p *CategoryInfo) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWr
 	return offset
 }
 
+func (p *CategoryInfo) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Brief", thrift.STRING, 5)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Brief)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
 func (p *CategoryInfo) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("Id", thrift.I32, 1)
@@ -357,7 +403,16 @@ func (p *CategoryInfo) field4Length() int {
 	return l
 }
 
-func (p *AddCategoryReq) FastRead(buf []byte) (int, error) {
+func (p *CategoryInfo) field5Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("Brief", thrift.STRING, 5)
+	l += bthrift.Binary.StringLengthNocopy(p.Brief)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *NewCategory_) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -366,6 +421,7 @@ func (p *AddCategoryReq) FastRead(buf []byte) (int, error) {
 	var issetName bool = false
 	var issetPicture bool = false
 	var issetShowcase bool = false
+	var issetBrief bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -427,6 +483,21 @@ func (p *AddCategoryReq) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField5(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+				issetBrief = true
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -461,13 +532,18 @@ func (p *AddCategoryReq) FastRead(buf []byte) (int, error) {
 		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
+
+	if !issetBrief {
+		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
 	return offset, nil
 ReadStructBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AddCategoryReq[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NewCategory_[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -475,10 +551,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_AddCategoryReq[fieldId]))
+	return offset, thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_NewCategory_[fieldId]))
 }
 
-func (p *AddCategoryReq) FastReadField2(buf []byte) (int, error) {
+func (p *NewCategory_) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
@@ -492,7 +568,7 @@ func (p *AddCategoryReq) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *AddCategoryReq) FastReadField3(buf []byte) (int, error) {
+func (p *NewCategory_) FastReadField3(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
@@ -506,7 +582,7 @@ func (p *AddCategoryReq) FastReadField3(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *AddCategoryReq) FastReadField4(buf []byte) (int, error) {
+func (p *NewCategory_) FastReadField4(buf []byte) (int, error) {
 	offset := 0
 
 	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
@@ -536,38 +612,54 @@ func (p *AddCategoryReq) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *NewCategory_) FastReadField5(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Brief = v
+
+	}
+	return offset, nil
+}
+
 // for compatibility
-func (p *AddCategoryReq) FastWrite(buf []byte) int {
+func (p *NewCategory_) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *AddCategoryReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NewCategory_) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "AddCategoryReq")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "NewCategory")
 	if p != nil {
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
 	return offset
 }
 
-func (p *AddCategoryReq) BLength() int {
+func (p *NewCategory_) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("AddCategoryReq")
+	l += bthrift.Binary.StructBeginLength("NewCategory")
 	if p != nil {
 		l += p.field2Length()
 		l += p.field3Length()
 		l += p.field4Length()
+		l += p.field5Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
 	return l
 }
 
-func (p *AddCategoryReq) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NewCategory_) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Name", thrift.STRING, 2)
 	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Name)
@@ -576,7 +668,7 @@ func (p *AddCategoryReq) fastWriteField2(buf []byte, binaryWriter bthrift.Binary
 	return offset
 }
 
-func (p *AddCategoryReq) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NewCategory_) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Picture", thrift.STRING, 3)
 	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Picture)
@@ -585,7 +677,7 @@ func (p *AddCategoryReq) fastWriteField3(buf []byte, binaryWriter bthrift.Binary
 	return offset
 }
 
-func (p *AddCategoryReq) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NewCategory_) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Showcase", thrift.LIST, 4)
 	listBeginOffset := offset
@@ -602,7 +694,16 @@ func (p *AddCategoryReq) fastWriteField4(buf []byte, binaryWriter bthrift.Binary
 	return offset
 }
 
-func (p *AddCategoryReq) field2Length() int {
+func (p *NewCategory_) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Brief", thrift.STRING, 5)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Brief)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *NewCategory_) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("Name", thrift.STRING, 2)
 	l += bthrift.Binary.StringLengthNocopy(p.Name)
@@ -611,7 +712,7 @@ func (p *AddCategoryReq) field2Length() int {
 	return l
 }
 
-func (p *AddCategoryReq) field3Length() int {
+func (p *NewCategory_) field3Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("Picture", thrift.STRING, 3)
 	l += bthrift.Binary.StringLengthNocopy(p.Picture)
@@ -620,7 +721,7 @@ func (p *AddCategoryReq) field3Length() int {
 	return l
 }
 
-func (p *AddCategoryReq) field4Length() int {
+func (p *NewCategory_) field4Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("Showcase", thrift.LIST, 4)
 	l += bthrift.Binary.ListBeginLength(thrift.STRING, len(p.Showcase))
@@ -629,6 +730,15 @@ func (p *AddCategoryReq) field4Length() int {
 
 	}
 	l += bthrift.Binary.ListEndLength()
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *NewCategory_) field5Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("Brief", thrift.STRING, 5)
+	l += bthrift.Binary.StringLengthNocopy(p.Brief)
+
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
@@ -1249,7 +1359,7 @@ ReadStructEndError:
 func (p *CategoryAddNewCategoryArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAddCategoryReq()
+	tmp := NewNewCategory_()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

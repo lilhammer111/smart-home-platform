@@ -161,7 +161,7 @@ func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *ca
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) AddNewCategory(ctx context.Context, req *category.AddCategoryReq) (r *category.CategoryInfo, err error) {
+func (p *kClient) AddNewCategory(ctx context.Context, req *category.NewCategory_) (r *category.CategoryInfo, err error) {
 	var _args category.CategoryAddNewCategoryArgs
 	_args.Req = req
 	var _result category.CategoryAddNewCategoryResult

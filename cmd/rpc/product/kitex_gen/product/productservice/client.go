@@ -16,7 +16,7 @@ type Client interface {
 	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetail, err error)
 	AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
 	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
-	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error)
+	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error)
 	DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
@@ -69,7 +69,7 @@ func (p *kProductServiceClient) UpdateProduct(ctx context.Context, req *product.
 	return p.kClient.UpdateProduct(ctx, req)
 }
 
-func (p *kProductServiceClient) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error) {
+func (p *kProductServiceClient) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UpdateRating(ctx, req)
 }

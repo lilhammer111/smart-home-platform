@@ -1209,7 +1209,76 @@ const docTemplate = `{
         },
         "/api/products/add": {
             "post": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "add a new product",
+                "operationId": "AddNewProduct",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "product data",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewProductBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespCreated"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.ProductData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/banners/add": {
@@ -1218,7 +1287,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "banners"
+                    "product banners"
                 ],
                 "summary": "bind banner info",
                 "operationId": "AddNewBanner",
@@ -1288,12 +1357,142 @@ const docTemplate = `{
         },
         "/api/products/banners/delete": {
             "delete": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product banners"
+                ],
+                "summary": "delete a product banner",
+                "operationId": "DeleteBanner",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "banner id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.Empty"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/banners/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product banners"
+                ],
+                "summary": "get all banners",
+                "operationId": "GetAllBanners",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.BannerData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/banners/update": {
@@ -1302,7 +1501,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "banners"
+                    "product banners"
                 ],
                 "summary": "update banner info",
                 "operationId": "UpdateBanner",
@@ -1376,7 +1575,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "brands"
+                    "product brands"
                 ],
                 "summary": "bind brand info",
                 "operationId": "AddNewBrand",
@@ -1444,145 +1643,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/brands/delete": {
-            "delete": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "brands"
-                ],
-                "summary": "delete brand record",
-                "operationId": "DeleteBrand",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer User's access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespNoContent"
-                        }
-                    },
-                    "400": {
-                        "description": "bad request",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespBadRequest"
-                        }
-                    },
-                    "401": {
-                        "description": "authentication failed",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespUnauthorized"
-                        }
-                    },
-                    "404": {
-                        "description": "not found",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespNotFound"
-                        }
-                    },
-                    "500": {
-                        "description": "internal error",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespInternal"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/products/brands/detail": {
+        "/api/products/brands/all": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "brands"
-                ],
-                "summary": "get brand detail",
-                "operationId": "GetBrandDetail",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer User's access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "id",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/example.RespOk"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/example.BrandData"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "bad request",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespBadRequest"
-                        }
-                    },
-                    "401": {
-                        "description": "authentication failed",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespUnauthorized"
-                        }
-                    },
-                    "404": {
-                        "description": "not found",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespNotFound"
-                        }
-                    },
-                    "500": {
-                        "description": "internal error",
-                        "schema": {
-                            "$ref": "#/definitions/example.RespInternal"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/products/brands/list": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "brands"
+                    "product brands"
                 ],
                 "summary": "get brand list",
                 "operationId": "GetBrandList",
@@ -1656,16 +1723,16 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/brands/update": {
-            "put": {
+        "/api/products/brands/delete": {
+            "delete": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "brands"
+                    "product brands"
                 ],
-                "summary": "update brand info",
-                "operationId": "UpdateBrand",
+                "summary": "delete brand record",
+                "operationId": "DeleteBrand",
                 "parameters": [
                     {
                         "type": "string",
@@ -1675,13 +1742,71 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "brand data",
-                        "name": "brand",
-                        "in": "body",
-                        "required": true,
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/example.NewBrandBody"
+                            "$ref": "#/definitions/example.RespNoContent"
                         }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/brands/detail": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product brands"
+                ],
+                "summary": "get brand detail",
+                "operationId": "GetBrandDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1730,21 +1855,16 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/categories/add": {
-            "post": {
-                "responses": {}
-            }
-        },
-        "/api/products/categories/brands/list": {
+        "/api/products/brands/related": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "brands"
+                    "product brands"
                 ],
                 "summary": "get brands list by category id",
-                "operationId": "GetBrandListByCategory",
+                "operationId": "GetRelatedBrandsByCategoryId",
                 "parameters": [
                     {
                         "type": "string",
@@ -1756,7 +1876,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "category_id",
-                        "name": "id",
+                        "name": "category_id",
                         "in": "query",
                         "required": true
                     }
@@ -1810,59 +1930,930 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/products/brands/update": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product brands"
+                ],
+                "summary": "update brand info",
+                "operationId": "UpdateBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "brand data",
+                        "name": "brand",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.BrandData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.BrandData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/categories/add": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product categories"
+                ],
+                "summary": "add a new category",
+                "operationId": "AddNewCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "category data",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewCategoryBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespCreated"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.CategoryData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
         "/api/products/categories/delete": {
             "delete": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product categories"
+                ],
+                "summary": "delete category record",
+                "operationId": "DeleteCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/categories/detail": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product categories"
+                ],
+                "summary": "get category detail",
+                "operationId": "GetCategoryDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.CategoryData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/categories/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product categories"
+                ],
+                "summary": "get category list",
+                "operationId": "GetCategoryList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.CategoryData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/categories/update": {
             "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product categories"
+                ],
+                "summary": "update category info",
+                "operationId": "UpdateCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "category data",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.CategoryData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.CategoryData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/category_brand/batch_add": {
             "post": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product category_brand"
+                ],
+                "summary": "add related categories in batch by brand id",
+                "operationId": "BatchAddCategoryBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "category data",
+                        "name": "category_brand",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewCategoryBrandBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespCreated"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.CategoryBrandData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/category_brand/batch_reduce": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product category_brand"
+                ],
+                "summary": "reduce related categories in batch by brand id",
+                "operationId": "BatchReduceCategoryBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "category data",
+                        "name": "category_brand",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.NewCategoryBrandBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/category_brand/delete_brand": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product category_brand"
+                ],
+                "summary": "delete related brand by category id",
+                "operationId": "DeleteBrandByCategory",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/category_brand/delete_category": {
             "delete": {
-                "responses": {}
-            }
-        },
-        "/api/products/category_brand/list": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/products/category_brand/update": {
-            "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product category_brand"
+                ],
+                "summary": "delete related category by brand id",
+                "operationId": "DeleteCategoryByBrand",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/delete": {
             "delete": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "delete product",
+                "operationId": "DeleteProduct",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNoContent"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/detail": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "get product detail",
+                "operationId": "GetProductDetail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.ProductData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/list": {
             "get": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "get product list",
+                "operationId": "GetProductList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "state",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "category_id",
+                        "name": "category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "brand_id",
+                        "name": "brand_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sorts",
+                        "name": "sorts",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/example.ProductData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/models/add": {
@@ -1871,7 +2862,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "models"
+                    "product models"
                 ],
                 "summary": "add a new product model",
                 "operationId": "AddNewModel",
@@ -1945,7 +2936,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "models"
+                    "product models"
                 ],
                 "summary": "delete a product model",
                 "operationId": "DeleteModel",
@@ -2017,7 +3008,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "models"
+                    "product models"
                 ],
                 "summary": "get product model detail",
                 "operationId": "GetModelDetail",
@@ -2089,7 +3080,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "models"
+                    "product models"
                 ],
                 "summary": "get all models",
                 "operationId": "GetAllModels",
@@ -2151,19 +3142,152 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/update_basis/": {
+        "/api/products/update": {
             "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "update product info",
+                "operationId": "UpdateProduct",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "product data",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.ProductData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.ProductData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/products/update_rating": {
             "put": {
-                "responses": {}
-            }
-        },
-        "/api/products/update_showcase": {
-            "put": {
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "update product rating info",
+                "operationId": "UpdateRating",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer User's access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "product rating data",
+                        "name": "rating",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/example.RatingReqBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.RespOk"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/example.RatingData"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "authentication failed",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespUnauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespNotFound"
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "$ref": "#/definitions/example.RespInternal"
+                        }
+                    }
+                }
             }
         },
         "/api/users/current": {
@@ -2613,6 +3737,54 @@ const docTemplate = `{
                 }
             }
         },
+        "example.CategoryBrandData": {
+            "type": "object",
+            "properties": {
+                "brandId": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "categoryId": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 123
+                }
+            }
+        },
+        "example.CategoryData": {
+            "type": "object",
+            "properties": {
+                "brief": {
+                    "type": "string",
+                    "example": "An automated feeder for pets"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "smart pet feeder"
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://example.com/pet_feeder.jpg"
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://example.com/showcase1.jpg",
+                        " https://example.com/showcase2.jpg"
+                    ]
+                }
+            }
+        },
         "example.DeviceData": {
             "type": "object",
             "properties": {
@@ -2737,10 +3909,6 @@ const docTemplate = `{
         "example.NewBrandBody": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "example": 1
-                },
                 "logo": {
                     "type": "string",
                     "example": "https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg"
@@ -2750,6 +3918,132 @@ const docTemplate = `{
                     "example": "xiaomi"
                 }
             }
+        },
+        "example.NewCategoryBody": {
+            "type": "object",
+            "properties": {
+                "brief": {
+                    "type": "string",
+                    "example": "An automated feeder for pets"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "smart pet feeder"
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://example.com/pet_feeder.jpg"
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://example.com/showcase1.jpg",
+                        " https://example.com/showcase2.jpg"
+                    ]
+                }
+            }
+        },
+        "example.NewCategoryBrandBody": {
+            "type": "object"
+        },
+        "example.NewProductBody": {
+            "type": "object",
+            "properties": {
+                "brandId": {
+                    "type": "integer"
+                },
+                "brief": {
+                    "type": "string"
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+                "modelId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "ratingId": {
+                    "type": "integer"
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/example.ProductState"
+                }
+            }
+        },
+        "example.ProductData": {
+            "type": "object",
+            "properties": {
+                "brandId": {
+                    "type": "integer"
+                },
+                "brief": {
+                    "type": "string"
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "modelId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "ratingId": {
+                    "type": "integer"
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "state": {
+                    "$ref": "#/definitions/example.ProductState"
+                }
+            }
+        },
+        "example.ProductState": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                4,
+                8,
+                16
+            ],
+            "x-enum-varnames": [
+                "OnSale",
+                "IsFreeShipping",
+                "IsNew",
+                "IsHot",
+                "IsRecommended"
+            ]
         },
         "example.PwdLoginBody": {
             "type": "object",
@@ -2762,6 +4056,40 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "demon_wang"
+                }
+            }
+        },
+        "example.RatingData": {
+            "type": "object",
+            "properties": {
+                "cur_rating": {
+                    "type": "number",
+                    "example": 4.5
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "product_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "total_customer": {
+                    "type": "integer",
+                    "example": 250
+                }
+            }
+        },
+        "example.RatingReqBody": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "rating": {
+                    "type": "number",
+                    "example": 4.5
                 }
             }
         },

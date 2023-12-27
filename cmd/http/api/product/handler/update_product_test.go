@@ -4,17 +4,17 @@ import (
 	"context"
 	"testing"
 
-	category_brand "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category_brand"
+	product "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )
 
-func TestUpdateCategoryBrandService_Run(t *testing.T) {
+func TestUpdateProductService_Run(t *testing.T) {
 	ctx := context.Background()
 	c := app.NewContext(1)
-	s := NewUpdateCategoryBrandService(ctx, c)
+	s := NewUpdateProductService(ctx, c)
 	// init req and assert value
-	req := &category_brand.CategoryBrandInfo{}
+	req := &product.ProductInfo{}
 	resp, err := s.Do(req)
 	assert.DeepEqual(t, nil, resp)
 	assert.DeepEqual(t, nil, err)

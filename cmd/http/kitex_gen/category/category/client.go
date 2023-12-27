@@ -14,7 +14,7 @@ import (
 type Client interface {
 	GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*category.CategoryInfo, err error)
 	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *category.CategoryInfo, err error)
-	AddNewCategory(ctx context.Context, req *category.AddCategoryReq, callOptions ...callopt.Option) (r *category.CategoryInfo, err error)
+	AddNewCategory(ctx context.Context, req *category.NewCategory_, callOptions ...callopt.Option) (r *category.CategoryInfo, err error)
 	UpdateCategory(ctx context.Context, req *category.CategoryInfo, callOptions ...callopt.Option) (r *category.CategoryInfo, err error)
 	DeleteCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
@@ -58,7 +58,7 @@ func (p *kCategoryClient) GetCategoryDetail(ctx context.Context, req *common.Req
 	return p.kClient.GetCategoryDetail(ctx, req)
 }
 
-func (p *kCategoryClient) AddNewCategory(ctx context.Context, req *category.AddCategoryReq, callOptions ...callopt.Option) (r *category.CategoryInfo, err error) {
+func (p *kCategoryClient) AddNewCategory(ctx context.Context, req *category.NewCategory_, callOptions ...callopt.Option) (r *category.CategoryInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddNewCategory(ctx, req)
 }

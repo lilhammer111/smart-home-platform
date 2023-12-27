@@ -2,6 +2,11 @@ package handler
 
 import (
 	"context"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 
 	category "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category"
 	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
@@ -17,12 +22,20 @@ func NewGetCategoryDetailService(Context context.Context, RequestContext *app.Re
 	return &GetCategoryDetailService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetCategoryDetailService) Do(req *common.Req) (resp *category.CategoryDetail, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+func (h *GetCategoryDetailService) Do(req *common.Req) (resp *category.CategoryInfo, err error) {
+	categoryInfo, err := micro_product_cli.GetCategoryDetail(h.Context, &rpcCommon.Req{Id: req.Id})
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	resp = &category.CategoryInfo{}
+	err = copier.Copy(resp, categoryInfo)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	h.RequestContext.Set(responder.SuccessMessage, "Getting category details successes.")
+	return resp, nil
 }

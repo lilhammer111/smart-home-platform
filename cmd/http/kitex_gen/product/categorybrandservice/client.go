@@ -12,11 +12,10 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error)
 	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error)
-	UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (r *product.CategoryBrandInfo, err error)
-	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
+	BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error)
 	DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
+	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -48,27 +47,22 @@ type kCategoryBrandServiceClient struct {
 	*kClient
 }
 
-func (p *kCategoryBrandServiceClient) GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetCategoryBrandList(ctx, req)
-}
-
 func (p *kCategoryBrandServiceClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.BatchAddCategoryBrand(ctx, req)
 }
 
-func (p *kCategoryBrandServiceClient) UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (r *product.CategoryBrandInfo, err error) {
+func (p *kCategoryBrandServiceClient) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.UpdateCategoryBrand(ctx, req)
-}
-
-func (p *kCategoryBrandServiceClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DeleteCategoryByBrand(ctx, req)
+	return p.kClient.BatchReduceCategoryBrand(ctx, req)
 }
 
 func (p *kCategoryBrandServiceClient) DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteBrandByCategory(ctx, req)
+}
+
+func (p *kCategoryBrandServiceClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteCategoryByBrand(ctx, req)
 }

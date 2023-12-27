@@ -15,7 +15,7 @@ import (
 // GetAllBanners .
 // @id			GetAllBanners
 // @Summary		get all banners
-// @Tags		banners
+// @Tags		product banners
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Success		200				{object}		example.RespOk{data=[]example.BannerData} "success"
@@ -45,7 +45,7 @@ func GetAllBanners(ctx context.Context, c *app.RequestContext) {
 // AddNewBanner .
 // @id			AddNewBanner
 // @Summary		bind banner info
-// @Tags		banners
+// @Tags		product banners
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
 // @Param		banner	body	example.NewBannerBody	true	"banner data"
@@ -76,7 +76,7 @@ func AddNewBanner(ctx context.Context, c *app.RequestContext) {
 // UpdateBanner .
 // @id			UpdateBanner
 // @Summary		update banner info
-// @Tags		banners
+// @Tags		product banners
 // @Access		json
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
@@ -108,7 +108,7 @@ func UpdateBanner(ctx context.Context, c *app.RequestContext) {
 // DeleteBanner .
 // @id			DeleteBanner
 // @Summary		delete a product banner
-// @Tags		banners
+// @Tags		product banners
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Param		id	query	string	true	"banner id"

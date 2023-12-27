@@ -200,7 +200,7 @@ func (p *kClient) UpdateProduct(ctx context.Context, req *product.ProductInfo) (
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateRating(ctx context.Context, req *product.RatingReq) (r *product.RatingResp, err error) {
+func (p *kClient) UpdateRating(ctx context.Context, req *product.RatingReq) (r *product.RatingInfo, err error) {
 	var _args product.ProductServiceUpdateRatingArgs
 	_args.Req = req
 	var _result product.ProductServiceUpdateRatingResult

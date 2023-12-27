@@ -2,10 +2,14 @@ package handler
 
 import (
 	"context"
-
-	category "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category"
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 )
 
 type GetCategoryListService struct {
@@ -17,12 +21,27 @@ func NewGetCategoryListService(Context context.Context, RequestContext *app.Requ
 	return &GetCategoryListService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetCategoryListService) Do(req *common.PageFilter) (resp *[]*category.CategoryBasicInfo, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+func (h *GetCategoryListService) Do(req *common.PageFilter) (resp *[]*category.CategoryInfo, err error) {
+	pageFilter := product.PageFilter{}
+	err = copier.Copy(&pageFilter, req)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	categoryInfos, err := micro_product_cli.GetCategoryList(h.Context, &pageFilter)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	resp = new([]*category.CategoryInfo)
+	err = copier.Copy(resp, categoryInfos)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	h.RequestContext.Set(responder.SuccessMessage, "Getting category list successes.")
+	return resp, nil
 }

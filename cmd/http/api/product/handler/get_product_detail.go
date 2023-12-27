@@ -2,10 +2,14 @@ package handler
 
 import (
 	"context"
-
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
-	product "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 )
 
 type GetProductDetailService struct {
@@ -18,11 +22,19 @@ func NewGetProductDetailService(Context context.Context, RequestContext *app.Req
 }
 
 func (h *GetProductDetailService) Do(req *common.Req) (resp *product.ProductInfo, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	productInfo, err := micro_product_cli.GetProductDetail(h.Context, &rpcCommon.Req{Id: req.Id})
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	resp = &product.ProductInfo{}
+	err = copier.Copy(resp, productInfo)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	h.RequestContext.Set(responder.SuccessMessage, "Getting product details successes.")
+	return resp, nil
 }

@@ -170,3 +170,13 @@ func _updateproductbasicinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updateproductMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _ratingMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -15,6 +15,7 @@ type CategoryInfo struct {
 	Name     string   `thrift:"Name,2,required" frugal:"2,required,string" json:"Name"`
 	Picture  string   `thrift:"Picture,3,required" frugal:"3,required,string" json:"Picture"`
 	Showcase []string `thrift:"Showcase,4,required" frugal:"4,required,list<string>" json:"Showcase"`
+	Brief    string   `thrift:"Brief,5,required" frugal:"5,required,string" json:"Brief"`
 }
 
 func NewCategoryInfo() *CategoryInfo {
@@ -40,6 +41,10 @@ func (p *CategoryInfo) GetPicture() (v string) {
 func (p *CategoryInfo) GetShowcase() (v []string) {
 	return p.Showcase
 }
+
+func (p *CategoryInfo) GetBrief() (v string) {
+	return p.Brief
+}
 func (p *CategoryInfo) SetId(val int32) {
 	p.Id = val
 }
@@ -52,12 +57,16 @@ func (p *CategoryInfo) SetPicture(val string) {
 func (p *CategoryInfo) SetShowcase(val []string) {
 	p.Showcase = val
 }
+func (p *CategoryInfo) SetBrief(val string) {
+	p.Brief = val
+}
 
 var fieldIDToName_CategoryInfo = map[int16]string{
 	1: "Id",
 	2: "Name",
 	3: "Picture",
 	4: "Showcase",
+	5: "Brief",
 }
 
 func (p *CategoryInfo) Read(iprot thrift.TProtocol) (err error) {
@@ -68,6 +77,7 @@ func (p *CategoryInfo) Read(iprot thrift.TProtocol) (err error) {
 	var issetName bool = false
 	var issetPicture bool = false
 	var issetShowcase bool = false
+	var issetBrief bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -127,6 +137,17 @@ func (p *CategoryInfo) Read(iprot thrift.TProtocol) (err error) {
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetBrief = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -157,6 +178,11 @@ func (p *CategoryInfo) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetShowcase {
 		fieldId = 4
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetBrief {
+		fieldId = 5
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -226,6 +252,15 @@ func (p *CategoryInfo) ReadField4(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
+func (p *CategoryInfo) ReadField5(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Brief = v
+	}
+	return nil
+}
 
 func (p *CategoryInfo) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -247,6 +282,10 @@ func (p *CategoryInfo) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -339,6 +378,22 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
+func (p *CategoryInfo) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Brief", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Brief); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
 
 func (p *CategoryInfo) String() string {
 	if p == nil {
@@ -363,6 +418,9 @@ func (p *CategoryInfo) DeepEqual(ano *CategoryInfo) bool {
 		return false
 	}
 	if !p.Field4DeepEqual(ano.Showcase) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Brief) {
 		return false
 	}
 	return true
@@ -402,55 +460,72 @@ func (p *CategoryInfo) Field4DeepEqual(src []string) bool {
 	}
 	return true
 }
+func (p *CategoryInfo) Field5DeepEqual(src string) bool {
 
-type AddCategoryReq struct {
+	if strings.Compare(p.Brief, src) != 0 {
+		return false
+	}
+	return true
+}
+
+type NewCategory_ struct {
 	Name     string   `thrift:"Name,2,required" frugal:"2,required,string" json:"Name"`
 	Picture  string   `thrift:"Picture,3,required" frugal:"3,required,string" json:"Picture"`
 	Showcase []string `thrift:"Showcase,4,required" frugal:"4,required,list<string>" json:"Showcase"`
+	Brief    string   `thrift:"Brief,5,required" frugal:"5,required,string" json:"Brief"`
 }
 
-func NewAddCategoryReq() *AddCategoryReq {
-	return &AddCategoryReq{}
+func NewNewCategory_() *NewCategory_ {
+	return &NewCategory_{}
 }
 
-func (p *AddCategoryReq) InitDefault() {
-	*p = AddCategoryReq{}
+func (p *NewCategory_) InitDefault() {
+	*p = NewCategory_{}
 }
 
-func (p *AddCategoryReq) GetName() (v string) {
+func (p *NewCategory_) GetName() (v string) {
 	return p.Name
 }
 
-func (p *AddCategoryReq) GetPicture() (v string) {
+func (p *NewCategory_) GetPicture() (v string) {
 	return p.Picture
 }
 
-func (p *AddCategoryReq) GetShowcase() (v []string) {
+func (p *NewCategory_) GetShowcase() (v []string) {
 	return p.Showcase
 }
-func (p *AddCategoryReq) SetName(val string) {
+
+func (p *NewCategory_) GetBrief() (v string) {
+	return p.Brief
+}
+func (p *NewCategory_) SetName(val string) {
 	p.Name = val
 }
-func (p *AddCategoryReq) SetPicture(val string) {
+func (p *NewCategory_) SetPicture(val string) {
 	p.Picture = val
 }
-func (p *AddCategoryReq) SetShowcase(val []string) {
+func (p *NewCategory_) SetShowcase(val []string) {
 	p.Showcase = val
 }
+func (p *NewCategory_) SetBrief(val string) {
+	p.Brief = val
+}
 
-var fieldIDToName_AddCategoryReq = map[int16]string{
+var fieldIDToName_NewCategory_ = map[int16]string{
 	2: "Name",
 	3: "Picture",
 	4: "Showcase",
+	5: "Brief",
 }
 
-func (p *AddCategoryReq) Read(iprot thrift.TProtocol) (err error) {
+func (p *NewCategory_) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetName bool = false
 	var issetPicture bool = false
 	var issetShowcase bool = false
+	var issetBrief bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -499,6 +574,17 @@ func (p *AddCategoryReq) Read(iprot thrift.TProtocol) (err error) {
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetBrief = true
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -526,13 +612,18 @@ func (p *AddCategoryReq) Read(iprot thrift.TProtocol) (err error) {
 		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
+
+	if !issetBrief {
+		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AddCategoryReq[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NewCategory_[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -541,10 +632,10 @@ ReadFieldEndError:
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 RequiredFieldNotSetError:
-	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_AddCategoryReq[fieldId]))
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_NewCategory_[fieldId]))
 }
 
-func (p *AddCategoryReq) ReadField2(iprot thrift.TProtocol) error {
+func (p *NewCategory_) ReadField2(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -553,7 +644,7 @@ func (p *AddCategoryReq) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *AddCategoryReq) ReadField3(iprot thrift.TProtocol) error {
+func (p *NewCategory_) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -562,7 +653,7 @@ func (p *AddCategoryReq) ReadField3(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *AddCategoryReq) ReadField4(iprot thrift.TProtocol) error {
+func (p *NewCategory_) ReadField4(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -584,10 +675,19 @@ func (p *AddCategoryReq) ReadField4(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
+func (p *NewCategory_) ReadField5(iprot thrift.TProtocol) error {
 
-func (p *AddCategoryReq) Write(oprot thrift.TProtocol) (err error) {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Brief = v
+	}
+	return nil
+}
+
+func (p *NewCategory_) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("AddCategoryReq"); err != nil {
+	if err = oprot.WriteStructBegin("NewCategory"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -601,6 +701,10 @@ func (p *AddCategoryReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -621,7 +725,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *AddCategoryReq) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *NewCategory_) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Name", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -637,7 +741,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
-func (p *AddCategoryReq) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *NewCategory_) writeField3(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Picture", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -653,7 +757,7 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
-func (p *AddCategoryReq) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *NewCategory_) writeField4(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("Showcase", thrift.LIST, 4); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -677,15 +781,31 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
+func (p *NewCategory_) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Brief", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Brief); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
 
-func (p *AddCategoryReq) String() string {
+func (p *NewCategory_) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("AddCategoryReq(%+v)", *p)
+	return fmt.Sprintf("NewCategory_(%+v)", *p)
 }
 
-func (p *AddCategoryReq) DeepEqual(ano *AddCategoryReq) bool {
+func (p *NewCategory_) DeepEqual(ano *NewCategory_) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -700,24 +820,27 @@ func (p *AddCategoryReq) DeepEqual(ano *AddCategoryReq) bool {
 	if !p.Field4DeepEqual(ano.Showcase) {
 		return false
 	}
+	if !p.Field5DeepEqual(ano.Brief) {
+		return false
+	}
 	return true
 }
 
-func (p *AddCategoryReq) Field2DeepEqual(src string) bool {
+func (p *NewCategory_) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Name, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *AddCategoryReq) Field3DeepEqual(src string) bool {
+func (p *NewCategory_) Field3DeepEqual(src string) bool {
 
 	if strings.Compare(p.Picture, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *AddCategoryReq) Field4DeepEqual(src []string) bool {
+func (p *NewCategory_) Field4DeepEqual(src []string) bool {
 
 	if len(p.Showcase) != len(src) {
 		return false
@@ -730,13 +853,20 @@ func (p *AddCategoryReq) Field4DeepEqual(src []string) bool {
 	}
 	return true
 }
+func (p *NewCategory_) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Brief, src) != 0 {
+		return false
+	}
+	return true
+}
 
 type Category interface {
 	GetCategoryList(ctx context.Context, req *common.PageFilter) (r []*CategoryInfo, err error)
 
 	GetCategoryDetail(ctx context.Context, req *common.Req) (r *CategoryInfo, err error)
 
-	AddNewCategory(ctx context.Context, req *AddCategoryReq) (r *CategoryInfo, err error)
+	AddNewCategory(ctx context.Context, req *NewCategory_) (r *CategoryInfo, err error)
 
 	UpdateCategory(ctx context.Context, req *CategoryInfo) (r *CategoryInfo, err error)
 
@@ -787,7 +917,7 @@ func (p *CategoryClient) GetCategoryDetail(ctx context.Context, req *common.Req)
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *CategoryClient) AddNewCategory(ctx context.Context, req *AddCategoryReq) (r *CategoryInfo, err error) {
+func (p *CategoryClient) AddNewCategory(ctx context.Context, req *NewCategory_) (r *CategoryInfo, err error) {
 	var _args CategoryAddNewCategoryArgs
 	_args.Req = req
 	var _result CategoryAddNewCategoryResult
@@ -1815,7 +1945,7 @@ func (p *CategoryGetCategoryDetailResult) Field0DeepEqual(src *CategoryInfo) boo
 }
 
 type CategoryAddNewCategoryArgs struct {
-	Req *AddCategoryReq `thrift:"req,1" frugal:"1,default,AddCategoryReq" json:"req"`
+	Req *NewCategory_ `thrift:"req,1" frugal:"1,default,NewCategory_" json:"req"`
 }
 
 func NewCategoryAddNewCategoryArgs() *CategoryAddNewCategoryArgs {
@@ -1826,15 +1956,15 @@ func (p *CategoryAddNewCategoryArgs) InitDefault() {
 	*p = CategoryAddNewCategoryArgs{}
 }
 
-var CategoryAddNewCategoryArgs_Req_DEFAULT *AddCategoryReq
+var CategoryAddNewCategoryArgs_Req_DEFAULT *NewCategory_
 
-func (p *CategoryAddNewCategoryArgs) GetReq() (v *AddCategoryReq) {
+func (p *CategoryAddNewCategoryArgs) GetReq() (v *NewCategory_) {
 	if !p.IsSetReq() {
 		return CategoryAddNewCategoryArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *CategoryAddNewCategoryArgs) SetReq(val *AddCategoryReq) {
+func (p *CategoryAddNewCategoryArgs) SetReq(val *NewCategory_) {
 	p.Req = val
 }
 
@@ -1905,7 +2035,7 @@ ReadStructEndError:
 }
 
 func (p *CategoryAddNewCategoryArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewAddCategoryReq()
+	p.Req = NewNewCategory_()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1977,7 +2107,7 @@ func (p *CategoryAddNewCategoryArgs) DeepEqual(ano *CategoryAddNewCategoryArgs) 
 	return true
 }
 
-func (p *CategoryAddNewCategoryArgs) Field1DeepEqual(src *AddCategoryReq) bool {
+func (p *CategoryAddNewCategoryArgs) Field1DeepEqual(src *NewCategory_) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false

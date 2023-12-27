@@ -15,7 +15,7 @@ import (
 // GetAllModels .
 // @id			GetAllModels
 // @Summary		get all models
-// @Tags		models
+// @Tags		product models
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Success		200				{object}		example.RespOk{data=[]example.ModelData} "success"
@@ -45,7 +45,7 @@ func GetAllModels(ctx context.Context, c *app.RequestContext) {
 // AddNewModel .
 // @id			AddNewModel
 // @Summary		add a new product model
-// @Tags		models
+// @Tags		product models
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Param		models	body	example.AddModelBody	true	"model request body"
@@ -76,7 +76,7 @@ func AddNewModel(ctx context.Context, c *app.RequestContext) {
 // DeleteModel .
 // @id			DeleteModel
 // @Summary		delete a product model
-// @Tags		models
+// @Tags		product models
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
 // @Param		id	query	string	true	"model id"
@@ -107,7 +107,7 @@ func DeleteModel(ctx context.Context, c *app.RequestContext) {
 // GetModelDetail .
 // @id			GetModelDetail
 // @Summary		get product model detail
-// @Tags		models
+// @Tags		product models
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
 // @Param		id		query	int	true	"id"

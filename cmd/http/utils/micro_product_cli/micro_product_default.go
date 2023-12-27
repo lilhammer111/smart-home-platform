@@ -44,7 +44,7 @@ func UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ..
 	return resp, nil
 }
 
-func UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error) {
+func UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error) {
 	resp, err = defaultClient.UpdateRating(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "UpdateRating call failed,err =%+v", err)
@@ -62,7 +62,7 @@ func DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.
 	return resp, nil
 }
 
-func GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryBasicInfo, err error) {
+func GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
 	resp, err = defaultClient.GetCategoryList(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetCategoryList call failed,err =%+v", err)
@@ -71,7 +71,7 @@ func GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions .
 	return resp, nil
 }
 
-func GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryDetail, err error) {
+func GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
 	resp, err = defaultClient.GetCategoryDetail(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetCategoryDetail call failed,err =%+v", err)
@@ -80,7 +80,7 @@ func GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...call
 	return resp, nil
 }
 
-func AddNewCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
+func AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
 	resp, err = defaultClient.AddNewCategory(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "AddNewCategory call failed,err =%+v", err)
@@ -152,10 +152,10 @@ func GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...c
 	return resp, nil
 }
 
-func GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
-	resp, err = defaultClient.GetBrandListByCategory(ctx, req, callOptions...)
+func GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+	resp, err = defaultClient.GetRelatedBrandsByCategoryId(ctx, req, callOptions...)
 	if err != nil {
-		klog.CtxErrorf(ctx, "GetBrandListByCategory call failed,err =%+v", err)
+		klog.CtxErrorf(ctx, "GetRelatedBrandsByCategoryId call failed,err =%+v", err)
 		return nil, err
 	}
 	return resp, nil
@@ -233,15 +233,6 @@ func DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.O
 	return resp, nil
 }
 
-func GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
-	resp, err = defaultClient.GetCategoryBrandList(ctx, req, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "GetCategoryBrandList call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
 func BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
 	resp, err = defaultClient.BatchAddCategoryBrand(ctx, req, callOptions...)
 	if err != nil {
@@ -251,19 +242,10 @@ func BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, 
 	return resp, nil
 }
 
-func UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (resp *product.CategoryBrandInfo, err error) {
-	resp, err = defaultClient.UpdateCategoryBrand(ctx, req, callOptions...)
+func BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	resp, err = defaultClient.BatchReduceCategoryBrand(ctx, req, callOptions...)
 	if err != nil {
-		klog.CtxErrorf(ctx, "UpdateCategoryBrand call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
-func DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	resp, err = defaultClient.DeleteCategoryByBrand(ctx, req, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "DeleteCategoryByBrand call failed,err =%+v", err)
+		klog.CtxErrorf(ctx, "BatchReduceCategoryBrand call failed,err =%+v", err)
 		return nil, err
 	}
 	return resp, nil
@@ -273,6 +255,15 @@ func DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...
 	resp, err = defaultClient.DeleteBrandByCategory(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "DeleteBrandByCategory call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	resp, err = defaultClient.DeleteCategoryByBrand(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "DeleteCategoryByBrand call failed,err =%+v", err)
 		return nil, err
 	}
 	return resp, nil

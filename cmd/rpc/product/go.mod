@@ -10,6 +10,7 @@ require (
 	github.com/cloudwego/kitex v0.8.0
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/jinzhu/copier v0.4.0
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -91,5 +92,4 @@ require (
 	gopkg.in/validator.v2 v2.0.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.2 // indirect
-	gorm.io/gorm v1.25.5 // indirect
 )

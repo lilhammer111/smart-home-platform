@@ -20,12 +20,12 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "Brand"
 	handlerType := (*brand.Brand)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetBrandList":           kitex.NewMethodInfo(getBrandListHandler, newBrandGetBrandListArgs, newBrandGetBrandListResult, false),
-		"GetBrandListByCategory": kitex.NewMethodInfo(getBrandListByCategoryHandler, newBrandGetBrandListByCategoryArgs, newBrandGetBrandListByCategoryResult, false),
-		"GetBrandDetail":         kitex.NewMethodInfo(getBrandDetailHandler, newBrandGetBrandDetailArgs, newBrandGetBrandDetailResult, false),
-		"AddNewBrand":            kitex.NewMethodInfo(addNewBrandHandler, newBrandAddNewBrandArgs, newBrandAddNewBrandResult, false),
-		"UpdateBrand":            kitex.NewMethodInfo(updateBrandHandler, newBrandUpdateBrandArgs, newBrandUpdateBrandResult, false),
-		"DeleteBrand":            kitex.NewMethodInfo(deleteBrandHandler, newBrandDeleteBrandArgs, newBrandDeleteBrandResult, false),
+		"GetBrandList":                 kitex.NewMethodInfo(getBrandListHandler, newBrandGetBrandListArgs, newBrandGetBrandListResult, false),
+		"GetRelatedBrandsByCategoryId": kitex.NewMethodInfo(getRelatedBrandsByCategoryIdHandler, newBrandGetRelatedBrandsByCategoryIdArgs, newBrandGetRelatedBrandsByCategoryIdResult, false),
+		"GetBrandDetail":               kitex.NewMethodInfo(getBrandDetailHandler, newBrandGetBrandDetailArgs, newBrandGetBrandDetailResult, false),
+		"AddNewBrand":                  kitex.NewMethodInfo(addNewBrandHandler, newBrandAddNewBrandArgs, newBrandAddNewBrandResult, false),
+		"UpdateBrand":                  kitex.NewMethodInfo(updateBrandHandler, newBrandUpdateBrandArgs, newBrandUpdateBrandResult, false),
+		"DeleteBrand":                  kitex.NewMethodInfo(deleteBrandHandler, newBrandDeleteBrandArgs, newBrandDeleteBrandResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "brand",
@@ -60,22 +60,22 @@ func newBrandGetBrandListResult() interface{} {
 	return brand.NewBrandGetBrandListResult()
 }
 
-func getBrandListByCategoryHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*brand.BrandGetBrandListByCategoryArgs)
-	realResult := result.(*brand.BrandGetBrandListByCategoryResult)
-	success, err := handler.(brand.Brand).GetBrandListByCategory(ctx, realArg.Req)
+func getRelatedBrandsByCategoryIdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*brand.BrandGetRelatedBrandsByCategoryIdArgs)
+	realResult := result.(*brand.BrandGetRelatedBrandsByCategoryIdResult)
+	success, err := handler.(brand.Brand).GetRelatedBrandsByCategoryId(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newBrandGetBrandListByCategoryArgs() interface{} {
-	return brand.NewBrandGetBrandListByCategoryArgs()
+func newBrandGetRelatedBrandsByCategoryIdArgs() interface{} {
+	return brand.NewBrandGetRelatedBrandsByCategoryIdArgs()
 }
 
-func newBrandGetBrandListByCategoryResult() interface{} {
-	return brand.NewBrandGetBrandListByCategoryResult()
+func newBrandGetRelatedBrandsByCategoryIdResult() interface{} {
+	return brand.NewBrandGetRelatedBrandsByCategoryIdResult()
 }
 
 func getBrandDetailHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -170,11 +170,11 @@ func (p *kClient) GetBrandList(ctx context.Context, req *common.PageFilter) (r [
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetBrandListByCategory(ctx context.Context, req *brand.BrandByCatReq) (r []*brand.BrandInfo, err error) {
-	var _args brand.BrandGetBrandListByCategoryArgs
+func (p *kClient) GetRelatedBrandsByCategoryId(ctx context.Context, req *brand.BrandByCatReq) (r []*brand.BrandInfo, err error) {
+	var _args brand.BrandGetRelatedBrandsByCategoryIdArgs
 	_args.Req = req
-	var _result brand.BrandGetBrandListByCategoryResult
-	if err = p.c.Call(ctx, "GetBrandListByCategory", &_args, &_result); err != nil {
+	var _result brand.BrandGetRelatedBrandsByCategoryIdResult
+	if err = p.c.Call(ctx, "GetRelatedBrandsByCategoryId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

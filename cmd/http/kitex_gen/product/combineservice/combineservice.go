@@ -29,36 +29,35 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "CombineService"
 	handlerType := (*CombineService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetProductList":         kitex.NewMethodInfo(getProductListHandler, newProductServiceGetProductListArgs, newProductServiceGetProductListResult, false),
-		"GetProductDetail":       kitex.NewMethodInfo(getProductDetailHandler, newProductServiceGetProductDetailArgs, newProductServiceGetProductDetailResult, false),
-		"AddNewProduct":          kitex.NewMethodInfo(addNewProductHandler, newProductServiceAddNewProductArgs, newProductServiceAddNewProductResult, false),
-		"UpdateProduct":          kitex.NewMethodInfo(updateProductHandler, newProductServiceUpdateProductArgs, newProductServiceUpdateProductResult, false),
-		"UpdateRating":           kitex.NewMethodInfo(updateRatingHandler, newProductServiceUpdateRatingArgs, newProductServiceUpdateRatingResult, false),
-		"DeleteProduct":          kitex.NewMethodInfo(deleteProductHandler, newProductServiceDeleteProductArgs, newProductServiceDeleteProductResult, false),
-		"GetCategoryList":        kitex.NewMethodInfo(getCategoryListHandler, newCategoryServiceGetCategoryListArgs, newCategoryServiceGetCategoryListResult, false),
-		"GetCategoryDetail":      kitex.NewMethodInfo(getCategoryDetailHandler, newCategoryServiceGetCategoryDetailArgs, newCategoryServiceGetCategoryDetailResult, false),
-		"AddNewCategory":         kitex.NewMethodInfo(addNewCategoryHandler, newCategoryServiceAddNewCategoryArgs, newCategoryServiceAddNewCategoryResult, false),
-		"UpdateCategory":         kitex.NewMethodInfo(updateCategoryHandler, newCategoryServiceUpdateCategoryArgs, newCategoryServiceUpdateCategoryResult, false),
-		"DeleteCategory":         kitex.NewMethodInfo(deleteCategoryHandler, newCategoryServiceDeleteCategoryArgs, newCategoryServiceDeleteCategoryResult, false),
-		"GetAllModels":           kitex.NewMethodInfo(getAllModelsHandler, newModelServiceGetAllModelsArgs, newModelServiceGetAllModelsResult, false),
-		"GetModelDetail":         kitex.NewMethodInfo(getModelDetailHandler, newModelServiceGetModelDetailArgs, newModelServiceGetModelDetailResult, false),
-		"AddNewModel":            kitex.NewMethodInfo(addNewModelHandler, newModelServiceAddNewModelArgs, newModelServiceAddNewModelResult, false),
-		"DeleteModel":            kitex.NewMethodInfo(deleteModelHandler, newModelServiceDeleteModelArgs, newModelServiceDeleteModelResult, false),
-		"GetBrandList":           kitex.NewMethodInfo(getBrandListHandler, newBrandServiceGetBrandListArgs, newBrandServiceGetBrandListResult, false),
-		"GetBrandListByCategory": kitex.NewMethodInfo(getBrandListByCategoryHandler, newBrandServiceGetBrandListByCategoryArgs, newBrandServiceGetBrandListByCategoryResult, false),
-		"GetBrandDetail":         kitex.NewMethodInfo(getBrandDetailHandler, newBrandServiceGetBrandDetailArgs, newBrandServiceGetBrandDetailResult, false),
-		"AddNewBrand":            kitex.NewMethodInfo(addNewBrandHandler, newBrandServiceAddNewBrandArgs, newBrandServiceAddNewBrandResult, false),
-		"UpdateBrand":            kitex.NewMethodInfo(updateBrandHandler, newBrandServiceUpdateBrandArgs, newBrandServiceUpdateBrandResult, false),
-		"DeleteBrand":            kitex.NewMethodInfo(deleteBrandHandler, newBrandServiceDeleteBrandArgs, newBrandServiceDeleteBrandResult, false),
-		"GetAllBanners":          kitex.NewMethodInfo(getAllBannersHandler, newBannerServiceGetAllBannersArgs, newBannerServiceGetAllBannersResult, false),
-		"AddNewBanner":           kitex.NewMethodInfo(addNewBannerHandler, newBannerServiceAddNewBannerArgs, newBannerServiceAddNewBannerResult, false),
-		"UpdateBanner":           kitex.NewMethodInfo(updateBannerHandler, newBannerServiceUpdateBannerArgs, newBannerServiceUpdateBannerResult, false),
-		"DeleteBanner":           kitex.NewMethodInfo(deleteBannerHandler, newBannerServiceDeleteBannerArgs, newBannerServiceDeleteBannerResult, false),
-		"GetCategoryBrandList":   kitex.NewMethodInfo(getCategoryBrandListHandler, newCategoryBrandServiceGetCategoryBrandListArgs, newCategoryBrandServiceGetCategoryBrandListResult, false),
-		"BatchAddCategoryBrand":  kitex.NewMethodInfo(batchAddCategoryBrandHandler, newCategoryBrandServiceBatchAddCategoryBrandArgs, newCategoryBrandServiceBatchAddCategoryBrandResult, false),
-		"UpdateCategoryBrand":    kitex.NewMethodInfo(updateCategoryBrandHandler, newCategoryBrandServiceUpdateCategoryBrandArgs, newCategoryBrandServiceUpdateCategoryBrandResult, false),
-		"DeleteCategoryByBrand":  kitex.NewMethodInfo(deleteCategoryByBrandHandler, newCategoryBrandServiceDeleteCategoryByBrandArgs, newCategoryBrandServiceDeleteCategoryByBrandResult, false),
-		"DeleteBrandByCategory":  kitex.NewMethodInfo(deleteBrandByCategoryHandler, newCategoryBrandServiceDeleteBrandByCategoryArgs, newCategoryBrandServiceDeleteBrandByCategoryResult, false),
+		"GetProductList":               kitex.NewMethodInfo(getProductListHandler, newProductServiceGetProductListArgs, newProductServiceGetProductListResult, false),
+		"GetProductDetail":             kitex.NewMethodInfo(getProductDetailHandler, newProductServiceGetProductDetailArgs, newProductServiceGetProductDetailResult, false),
+		"AddNewProduct":                kitex.NewMethodInfo(addNewProductHandler, newProductServiceAddNewProductArgs, newProductServiceAddNewProductResult, false),
+		"UpdateProduct":                kitex.NewMethodInfo(updateProductHandler, newProductServiceUpdateProductArgs, newProductServiceUpdateProductResult, false),
+		"UpdateRating":                 kitex.NewMethodInfo(updateRatingHandler, newProductServiceUpdateRatingArgs, newProductServiceUpdateRatingResult, false),
+		"DeleteProduct":                kitex.NewMethodInfo(deleteProductHandler, newProductServiceDeleteProductArgs, newProductServiceDeleteProductResult, false),
+		"GetCategoryList":              kitex.NewMethodInfo(getCategoryListHandler, newCategoryServiceGetCategoryListArgs, newCategoryServiceGetCategoryListResult, false),
+		"GetCategoryDetail":            kitex.NewMethodInfo(getCategoryDetailHandler, newCategoryServiceGetCategoryDetailArgs, newCategoryServiceGetCategoryDetailResult, false),
+		"AddNewCategory":               kitex.NewMethodInfo(addNewCategoryHandler, newCategoryServiceAddNewCategoryArgs, newCategoryServiceAddNewCategoryResult, false),
+		"UpdateCategory":               kitex.NewMethodInfo(updateCategoryHandler, newCategoryServiceUpdateCategoryArgs, newCategoryServiceUpdateCategoryResult, false),
+		"DeleteCategory":               kitex.NewMethodInfo(deleteCategoryHandler, newCategoryServiceDeleteCategoryArgs, newCategoryServiceDeleteCategoryResult, false),
+		"GetAllModels":                 kitex.NewMethodInfo(getAllModelsHandler, newModelServiceGetAllModelsArgs, newModelServiceGetAllModelsResult, false),
+		"GetModelDetail":               kitex.NewMethodInfo(getModelDetailHandler, newModelServiceGetModelDetailArgs, newModelServiceGetModelDetailResult, false),
+		"AddNewModel":                  kitex.NewMethodInfo(addNewModelHandler, newModelServiceAddNewModelArgs, newModelServiceAddNewModelResult, false),
+		"DeleteModel":                  kitex.NewMethodInfo(deleteModelHandler, newModelServiceDeleteModelArgs, newModelServiceDeleteModelResult, false),
+		"GetBrandList":                 kitex.NewMethodInfo(getBrandListHandler, newBrandServiceGetBrandListArgs, newBrandServiceGetBrandListResult, false),
+		"GetRelatedBrandsByCategoryId": kitex.NewMethodInfo(getRelatedBrandsByCategoryIdHandler, newBrandServiceGetRelatedBrandsByCategoryIdArgs, newBrandServiceGetRelatedBrandsByCategoryIdResult, false),
+		"GetBrandDetail":               kitex.NewMethodInfo(getBrandDetailHandler, newBrandServiceGetBrandDetailArgs, newBrandServiceGetBrandDetailResult, false),
+		"AddNewBrand":                  kitex.NewMethodInfo(addNewBrandHandler, newBrandServiceAddNewBrandArgs, newBrandServiceAddNewBrandResult, false),
+		"UpdateBrand":                  kitex.NewMethodInfo(updateBrandHandler, newBrandServiceUpdateBrandArgs, newBrandServiceUpdateBrandResult, false),
+		"DeleteBrand":                  kitex.NewMethodInfo(deleteBrandHandler, newBrandServiceDeleteBrandArgs, newBrandServiceDeleteBrandResult, false),
+		"GetAllBanners":                kitex.NewMethodInfo(getAllBannersHandler, newBannerServiceGetAllBannersArgs, newBannerServiceGetAllBannersResult, false),
+		"AddNewBanner":                 kitex.NewMethodInfo(addNewBannerHandler, newBannerServiceAddNewBannerArgs, newBannerServiceAddNewBannerResult, false),
+		"UpdateBanner":                 kitex.NewMethodInfo(updateBannerHandler, newBannerServiceUpdateBannerArgs, newBannerServiceUpdateBannerResult, false),
+		"DeleteBanner":                 kitex.NewMethodInfo(deleteBannerHandler, newBannerServiceDeleteBannerArgs, newBannerServiceDeleteBannerResult, false),
+		"BatchAddCategoryBrand":        kitex.NewMethodInfo(batchAddCategoryBrandHandler, newCategoryBrandServiceBatchAddCategoryBrandArgs, newCategoryBrandServiceBatchAddCategoryBrandResult, false),
+		"BatchReduceCategoryBrand":     kitex.NewMethodInfo(batchReduceCategoryBrandHandler, newCategoryBrandServiceBatchReduceCategoryBrandArgs, newCategoryBrandServiceBatchReduceCategoryBrandResult, false),
+		"DeleteBrandByCategory":        kitex.NewMethodInfo(deleteBrandByCategoryHandler, newCategoryBrandServiceDeleteBrandByCategoryArgs, newCategoryBrandServiceDeleteBrandByCategoryResult, false),
+		"DeleteCategoryByBrand":        kitex.NewMethodInfo(deleteCategoryByBrandHandler, newCategoryBrandServiceDeleteCategoryByBrandArgs, newCategoryBrandServiceDeleteCategoryByBrandResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "product",
@@ -365,22 +364,22 @@ func newBrandServiceGetBrandListResult() interface{} {
 	return product.NewBrandServiceGetBrandListResult()
 }
 
-func getBrandListByCategoryHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.BrandServiceGetBrandListByCategoryArgs)
-	realResult := result.(*product.BrandServiceGetBrandListByCategoryResult)
-	success, err := handler.(product.BrandService).GetBrandListByCategory(ctx, realArg.Req)
+func getRelatedBrandsByCategoryIdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.BrandServiceGetRelatedBrandsByCategoryIdArgs)
+	realResult := result.(*product.BrandServiceGetRelatedBrandsByCategoryIdResult)
+	success, err := handler.(product.BrandService).GetRelatedBrandsByCategoryId(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newBrandServiceGetBrandListByCategoryArgs() interface{} {
-	return product.NewBrandServiceGetBrandListByCategoryArgs()
+func newBrandServiceGetRelatedBrandsByCategoryIdArgs() interface{} {
+	return product.NewBrandServiceGetRelatedBrandsByCategoryIdArgs()
 }
 
-func newBrandServiceGetBrandListByCategoryResult() interface{} {
-	return product.NewBrandServiceGetBrandListByCategoryResult()
+func newBrandServiceGetRelatedBrandsByCategoryIdResult() interface{} {
+	return product.NewBrandServiceGetRelatedBrandsByCategoryIdResult()
 }
 
 func getBrandDetailHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -527,24 +526,6 @@ func newBannerServiceDeleteBannerResult() interface{} {
 	return product.NewBannerServiceDeleteBannerResult()
 }
 
-func getCategoryBrandListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.CategoryBrandServiceGetCategoryBrandListArgs)
-	realResult := result.(*product.CategoryBrandServiceGetCategoryBrandListResult)
-	success, err := handler.(product.CategoryBrandService).GetCategoryBrandList(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newCategoryBrandServiceGetCategoryBrandListArgs() interface{} {
-	return product.NewCategoryBrandServiceGetCategoryBrandListArgs()
-}
-
-func newCategoryBrandServiceGetCategoryBrandListResult() interface{} {
-	return product.NewCategoryBrandServiceGetCategoryBrandListResult()
-}
-
 func batchAddCategoryBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*product.CategoryBrandServiceBatchAddCategoryBrandArgs)
 	realResult := result.(*product.CategoryBrandServiceBatchAddCategoryBrandResult)
@@ -563,40 +544,22 @@ func newCategoryBrandServiceBatchAddCategoryBrandResult() interface{} {
 	return product.NewCategoryBrandServiceBatchAddCategoryBrandResult()
 }
 
-func updateCategoryBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.CategoryBrandServiceUpdateCategoryBrandArgs)
-	realResult := result.(*product.CategoryBrandServiceUpdateCategoryBrandResult)
-	success, err := handler.(product.CategoryBrandService).UpdateCategoryBrand(ctx, realArg.Req)
+func batchReduceCategoryBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.CategoryBrandServiceBatchReduceCategoryBrandArgs)
+	realResult := result.(*product.CategoryBrandServiceBatchReduceCategoryBrandResult)
+	success, err := handler.(product.CategoryBrandService).BatchReduceCategoryBrand(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newCategoryBrandServiceUpdateCategoryBrandArgs() interface{} {
-	return product.NewCategoryBrandServiceUpdateCategoryBrandArgs()
+func newCategoryBrandServiceBatchReduceCategoryBrandArgs() interface{} {
+	return product.NewCategoryBrandServiceBatchReduceCategoryBrandArgs()
 }
 
-func newCategoryBrandServiceUpdateCategoryBrandResult() interface{} {
-	return product.NewCategoryBrandServiceUpdateCategoryBrandResult()
-}
-
-func deleteCategoryByBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.CategoryBrandServiceDeleteCategoryByBrandArgs)
-	realResult := result.(*product.CategoryBrandServiceDeleteCategoryByBrandResult)
-	success, err := handler.(product.CategoryBrandService).DeleteCategoryByBrand(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newCategoryBrandServiceDeleteCategoryByBrandArgs() interface{} {
-	return product.NewCategoryBrandServiceDeleteCategoryByBrandArgs()
-}
-
-func newCategoryBrandServiceDeleteCategoryByBrandResult() interface{} {
-	return product.NewCategoryBrandServiceDeleteCategoryByBrandResult()
+func newCategoryBrandServiceBatchReduceCategoryBrandResult() interface{} {
+	return product.NewCategoryBrandServiceBatchReduceCategoryBrandResult()
 }
 
 func deleteBrandByCategoryHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -615,6 +578,24 @@ func newCategoryBrandServiceDeleteBrandByCategoryArgs() interface{} {
 
 func newCategoryBrandServiceDeleteBrandByCategoryResult() interface{} {
 	return product.NewCategoryBrandServiceDeleteBrandByCategoryResult()
+}
+
+func deleteCategoryByBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.CategoryBrandServiceDeleteCategoryByBrandArgs)
+	realResult := result.(*product.CategoryBrandServiceDeleteCategoryByBrandResult)
+	success, err := handler.(product.CategoryBrandService).DeleteCategoryByBrand(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCategoryBrandServiceDeleteCategoryByBrandArgs() interface{} {
+	return product.NewCategoryBrandServiceDeleteCategoryByBrandArgs()
+}
+
+func newCategoryBrandServiceDeleteCategoryByBrandResult() interface{} {
+	return product.NewCategoryBrandServiceDeleteCategoryByBrandResult()
 }
 
 type kClient struct {
@@ -667,7 +648,7 @@ func (p *kClient) UpdateProduct(ctx context.Context, req *product.ProductInfo) (
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateRating(ctx context.Context, req *product.RatingReq) (r *product.RatingResp, err error) {
+func (p *kClient) UpdateRating(ctx context.Context, req *product.RatingReq) (r *product.RatingInfo, err error) {
 	var _args product.ProductServiceUpdateRatingArgs
 	_args.Req = req
 	var _result product.ProductServiceUpdateRatingResult
@@ -687,7 +668,7 @@ func (p *kClient) DeleteProduct(ctx context.Context, req *common.Req) (r *common
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) (r []*product.CategoryBasicInfo, err error) {
+func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) (r []*product.CategoryInfo, err error) {
 	var _args product.CategoryServiceGetCategoryListArgs
 	_args.Req = req
 	var _result product.CategoryServiceGetCategoryListResult
@@ -697,7 +678,7 @@ func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *product.CategoryDetail, err error) {
+func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *product.CategoryInfo, err error) {
 	var _args product.CategoryServiceGetCategoryDetailArgs
 	_args.Req = req
 	var _result product.CategoryServiceGetCategoryDetailResult
@@ -707,7 +688,7 @@ func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *pr
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) AddNewCategory(ctx context.Context, req *product.AddCategoryReq) (r *product.CategoryInfo, err error) {
+func (p *kClient) AddNewCategory(ctx context.Context, req *product.NewCategory_) (r *product.CategoryInfo, err error) {
 	var _args product.CategoryServiceAddNewCategoryArgs
 	_args.Req = req
 	var _result product.CategoryServiceAddNewCategoryResult
@@ -786,11 +767,11 @@ func (p *kClient) GetBrandList(ctx context.Context, req *product.PageFilter) (r 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq) (r []*product.BrandInfo, err error) {
-	var _args product.BrandServiceGetBrandListByCategoryArgs
+func (p *kClient) GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq) (r []*product.BrandInfo, err error) {
+	var _args product.BrandServiceGetRelatedBrandsByCategoryIdArgs
 	_args.Req = req
-	var _result product.BrandServiceGetBrandListByCategoryResult
-	if err = p.c.Call(ctx, "GetBrandListByCategory", &_args, &_result); err != nil {
+	var _result product.BrandServiceGetRelatedBrandsByCategoryIdResult
+	if err = p.c.Call(ctx, "GetRelatedBrandsByCategoryId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -875,16 +856,6 @@ func (p *kClient) DeleteBanner(ctx context.Context, req *common.Req) (r *common.
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetCategoryBrandList(ctx context.Context, req *common.Req) (r []*product.CategoryBrandInfo, err error) {
-	var _args product.CategoryBrandServiceGetCategoryBrandListArgs
-	_args.Req = req
-	var _result product.CategoryBrandServiceGetCategoryBrandListResult
-	if err = p.c.Call(ctx, "GetCategoryBrandList", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
 func (p *kClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (r []*product.CategoryBrandInfo, err error) {
 	var _args product.CategoryBrandServiceBatchAddCategoryBrandArgs
 	_args.Req = req
@@ -895,21 +866,11 @@ func (p *kClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCat
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo) (r *product.CategoryBrandInfo, err error) {
-	var _args product.CategoryBrandServiceUpdateCategoryBrandArgs
+func (p *kClient) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (r *common.Empty, err error) {
+	var _args product.CategoryBrandServiceBatchReduceCategoryBrandArgs
 	_args.Req = req
-	var _result product.CategoryBrandServiceUpdateCategoryBrandResult
-	if err = p.c.Call(ctx, "UpdateCategoryBrand", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
-	var _args product.CategoryBrandServiceDeleteCategoryByBrandArgs
-	_args.Req = req
-	var _result product.CategoryBrandServiceDeleteCategoryByBrandResult
-	if err = p.c.Call(ctx, "DeleteCategoryByBrand", &_args, &_result); err != nil {
+	var _result product.CategoryBrandServiceBatchReduceCategoryBrandResult
+	if err = p.c.Call(ctx, "BatchReduceCategoryBrand", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -920,6 +881,16 @@ func (p *kClient) DeleteBrandByCategory(ctx context.Context, req *common.Req) (r
 	_args.Req = req
 	var _result product.CategoryBrandServiceDeleteBrandByCategoryResult
 	if err = p.c.Call(ctx, "DeleteBrandByCategory", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
+	var _args product.CategoryBrandServiceDeleteCategoryByBrandArgs
+	_args.Req = req
+	var _result product.CategoryBrandServiceDeleteCategoryByBrandResult
+	if err = p.c.Call(ctx, "DeleteCategoryByBrand", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

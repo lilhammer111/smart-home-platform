@@ -141,7 +141,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) (r []*product.CategoryBasicInfo, err error) {
+func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) (r []*product.CategoryInfo, err error) {
 	var _args product.CategoryServiceGetCategoryListArgs
 	_args.Req = req
 	var _result product.CategoryServiceGetCategoryListResult
@@ -151,7 +151,7 @@ func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *product.CategoryDetail, err error) {
+func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *product.CategoryInfo, err error) {
 	var _args product.CategoryServiceGetCategoryDetailArgs
 	_args.Req = req
 	var _result product.CategoryServiceGetCategoryDetailResult
@@ -161,7 +161,7 @@ func (p *kClient) GetCategoryDetail(ctx context.Context, req *common.Req) (r *pr
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) AddNewCategory(ctx context.Context, req *product.AddCategoryReq) (r *product.CategoryInfo, err error) {
+func (p *kClient) AddNewCategory(ctx context.Context, req *product.NewCategory_) (r *product.CategoryInfo, err error) {
 	var _args product.CategoryServiceAddNewCategoryArgs
 	_args.Req = req
 	var _result product.CategoryServiceAddNewCategoryResult

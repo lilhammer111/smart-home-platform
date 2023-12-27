@@ -475,15 +475,13 @@ func (p *NewCategoryBrand) String() string {
 }
 
 type CategoryBrand interface {
-	GetCategoryBrandList(ctx context.Context, req *common.Req) (r []*CategoryBrandInfo, err error)
-
 	BatchAddCategoryBrand(ctx context.Context, req *NewCategoryBrand) (r []*CategoryBrandInfo, err error)
 
-	UpdateCategoryBrand(ctx context.Context, req *CategoryBrandInfo) (r *CategoryBrandInfo, err error)
-
-	DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error)
+	BatchReduceCategoryBrand(ctx context.Context, req *NewCategoryBrand) (r *common.Empty, err error)
 
 	DeleteBrandByCategory(ctx context.Context, req *common.Req) (r *common.Empty, err error)
+
+	DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error)
 }
 
 type CategoryBrandClient struct {
@@ -512,15 +510,6 @@ func (p *CategoryBrandClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *CategoryBrandClient) GetCategoryBrandList(ctx context.Context, req *common.Req) (r []*CategoryBrandInfo, err error) {
-	var _args CategoryBrandGetCategoryBrandListArgs
-	_args.Req = req
-	var _result CategoryBrandGetCategoryBrandListResult
-	if err = p.Client_().Call(ctx, "GetCategoryBrandList", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
 func (p *CategoryBrandClient) BatchAddCategoryBrand(ctx context.Context, req *NewCategoryBrand) (r []*CategoryBrandInfo, err error) {
 	var _args CategoryBrandBatchAddCategoryBrandArgs
 	_args.Req = req
@@ -530,20 +519,11 @@ func (p *CategoryBrandClient) BatchAddCategoryBrand(ctx context.Context, req *Ne
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *CategoryBrandClient) UpdateCategoryBrand(ctx context.Context, req *CategoryBrandInfo) (r *CategoryBrandInfo, err error) {
-	var _args CategoryBrandUpdateCategoryBrandArgs
+func (p *CategoryBrandClient) BatchReduceCategoryBrand(ctx context.Context, req *NewCategoryBrand) (r *common.Empty, err error) {
+	var _args CategoryBrandBatchReduceCategoryBrandArgs
 	_args.Req = req
-	var _result CategoryBrandUpdateCategoryBrandResult
-	if err = p.Client_().Call(ctx, "UpdateCategoryBrand", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-func (p *CategoryBrandClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
-	var _args CategoryBrandDeleteCategoryByBrandArgs
-	_args.Req = req
-	var _result CategoryBrandDeleteCategoryByBrandResult
-	if err = p.Client_().Call(ctx, "DeleteCategoryByBrand", &_args, &_result); err != nil {
+	var _result CategoryBrandBatchReduceCategoryBrandResult
+	if err = p.Client_().Call(ctx, "BatchReduceCategoryBrand", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -553,6 +533,15 @@ func (p *CategoryBrandClient) DeleteBrandByCategory(ctx context.Context, req *co
 	_args.Req = req
 	var _result CategoryBrandDeleteBrandByCategoryResult
 	if err = p.Client_().Call(ctx, "DeleteBrandByCategory", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *CategoryBrandClient) DeleteCategoryByBrand(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
+	var _args CategoryBrandDeleteCategoryByBrandArgs
+	_args.Req = req
+	var _result CategoryBrandDeleteCategoryByBrandResult
+	if err = p.Client_().Call(ctx, "DeleteCategoryByBrand", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -578,11 +567,10 @@ func (p *CategoryBrandProcessor) ProcessorMap() map[string]thrift.TProcessorFunc
 
 func NewCategoryBrandProcessor(handler CategoryBrand) *CategoryBrandProcessor {
 	self := &CategoryBrandProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("GetCategoryBrandList", &categoryBrandProcessorGetCategoryBrandList{handler: handler})
 	self.AddToProcessorMap("BatchAddCategoryBrand", &categoryBrandProcessorBatchAddCategoryBrand{handler: handler})
-	self.AddToProcessorMap("UpdateCategoryBrand", &categoryBrandProcessorUpdateCategoryBrand{handler: handler})
-	self.AddToProcessorMap("DeleteCategoryByBrand", &categoryBrandProcessorDeleteCategoryByBrand{handler: handler})
+	self.AddToProcessorMap("BatchReduceCategoryBrand", &categoryBrandProcessorBatchReduceCategoryBrand{handler: handler})
 	self.AddToProcessorMap("DeleteBrandByCategory", &categoryBrandProcessorDeleteBrandByCategory{handler: handler})
+	self.AddToProcessorMap("DeleteCategoryByBrand", &categoryBrandProcessorDeleteCategoryByBrand{handler: handler})
 	return self
 }
 func (p *CategoryBrandProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -601,54 +589,6 @@ func (p *CategoryBrandProcessor) Process(ctx context.Context, iprot, oprot thrif
 	oprot.WriteMessageEnd()
 	oprot.Flush(ctx)
 	return false, x
-}
-
-type categoryBrandProcessorGetCategoryBrandList struct {
-	handler CategoryBrand
-}
-
-func (p *categoryBrandProcessorGetCategoryBrandList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := CategoryBrandGetCategoryBrandListArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("GetCategoryBrandList", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := CategoryBrandGetCategoryBrandListResult{}
-	var retval []*CategoryBrandInfo
-	if retval, err2 = p.handler.GetCategoryBrandList(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetCategoryBrandList: "+err2.Error())
-		oprot.WriteMessageBegin("GetCategoryBrandList", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("GetCategoryBrandList", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
 }
 
 type categoryBrandProcessorBatchAddCategoryBrand struct {
@@ -699,16 +639,16 @@ func (p *categoryBrandProcessorBatchAddCategoryBrand) Process(ctx context.Contex
 	return true, err
 }
 
-type categoryBrandProcessorUpdateCategoryBrand struct {
+type categoryBrandProcessorBatchReduceCategoryBrand struct {
 	handler CategoryBrand
 }
 
-func (p *categoryBrandProcessorUpdateCategoryBrand) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := CategoryBrandUpdateCategoryBrandArgs{}
+func (p *categoryBrandProcessorBatchReduceCategoryBrand) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := CategoryBrandBatchReduceCategoryBrandArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("UpdateCategoryBrand", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("BatchReduceCategoryBrand", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -717,59 +657,11 @@ func (p *categoryBrandProcessorUpdateCategoryBrand) Process(ctx context.Context,
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := CategoryBrandUpdateCategoryBrandResult{}
-	var retval *CategoryBrandInfo
-	if retval, err2 = p.handler.UpdateCategoryBrand(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateCategoryBrand: "+err2.Error())
-		oprot.WriteMessageBegin("UpdateCategoryBrand", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("UpdateCategoryBrand", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
-}
-
-type categoryBrandProcessorDeleteCategoryByBrand struct {
-	handler CategoryBrand
-}
-
-func (p *categoryBrandProcessorDeleteCategoryByBrand) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := CategoryBrandDeleteCategoryByBrandArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := CategoryBrandDeleteCategoryByBrandResult{}
+	result := CategoryBrandBatchReduceCategoryBrandResult{}
 	var retval *common.Empty
-	if retval, err2 = p.handler.DeleteCategoryByBrand(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteCategoryByBrand: "+err2.Error())
-		oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.BatchReduceCategoryBrand(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing BatchReduceCategoryBrand: "+err2.Error())
+		oprot.WriteMessageBegin("BatchReduceCategoryBrand", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -777,7 +669,7 @@ func (p *categoryBrandProcessorDeleteCategoryByBrand) Process(ctx context.Contex
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("BatchReduceCategoryBrand", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -843,314 +735,52 @@ func (p *categoryBrandProcessorDeleteBrandByCategory) Process(ctx context.Contex
 	return true, err
 }
 
-type CategoryBrandGetCategoryBrandListArgs struct {
-	Req *common.Req `thrift:"req,1"`
+type categoryBrandProcessorDeleteCategoryByBrand struct {
+	handler CategoryBrand
 }
 
-func NewCategoryBrandGetCategoryBrandListArgs() *CategoryBrandGetCategoryBrandListArgs {
-	return &CategoryBrandGetCategoryBrandListArgs{}
-}
-
-var CategoryBrandGetCategoryBrandListArgs_Req_DEFAULT *common.Req
-
-func (p *CategoryBrandGetCategoryBrandListArgs) GetReq() (v *common.Req) {
-	if !p.IsSetReq() {
-		return CategoryBrandGetCategoryBrandListArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-var fieldIDToName_CategoryBrandGetCategoryBrandListArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
+func (p *categoryBrandProcessorDeleteCategoryByBrand) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := CategoryBrandDeleteCategoryByBrandArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
 	}
 
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := CategoryBrandDeleteCategoryByBrandResult{}
+	var retval *common.Empty
+	if retval, err2 = p.handler.DeleteCategoryByBrand(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing DeleteCategoryByBrand: "+err2.Error())
+		oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
 	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
+	if err2 = oprot.WriteMessageBegin("DeleteCategoryByBrand", thrift.REPLY, seqId); err2 != nil {
+		err = err2
 	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandGetCategoryBrandListArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = common.NewReq()
-
-	if err := p.Req.Read(iprot); err != nil {
-		return err
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
 	}
-	return nil
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("GetCategoryBrandList_args"); err != nil {
-		goto WriteStructBeginError
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
 	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
 	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CategoryBrandGetCategoryBrandListArgs(%+v)", *p)
-}
-
-type CategoryBrandGetCategoryBrandListResult struct {
-	Success []*CategoryBrandInfo `thrift:"success,0,optional"`
-}
-
-func NewCategoryBrandGetCategoryBrandListResult() *CategoryBrandGetCategoryBrandListResult {
-	return &CategoryBrandGetCategoryBrandListResult{}
-}
-
-var CategoryBrandGetCategoryBrandListResult_Success_DEFAULT []*CategoryBrandInfo
-
-func (p *CategoryBrandGetCategoryBrandListResult) GetSuccess() (v []*CategoryBrandInfo) {
-	if !p.IsSetSuccess() {
-		return CategoryBrandGetCategoryBrandListResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-var fieldIDToName_CategoryBrandGetCategoryBrandListResult = map[int16]string{
-	0: "success",
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.LIST {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandGetCategoryBrandListResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) ReadField0(iprot thrift.TProtocol) error {
-	_, size, err := iprot.ReadListBegin()
 	if err != nil {
-		return err
+		return
 	}
-	p.Success = make([]*CategoryBrandInfo, 0, size)
-	for i := 0; i < size; i++ {
-		_elem := NewCategoryBrandInfo()
-
-		if err := _elem.Read(iprot); err != nil {
-			return err
-		}
-
-		p.Success = append(p.Success, _elem)
-	}
-	if err := iprot.ReadListEnd(); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("GetCategoryBrandList_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
-			return err
-		}
-		for _, v := range p.Success {
-			if err := v.Write(oprot); err != nil {
-				return err
-			}
-		}
-		if err := oprot.WriteListEnd(); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *CategoryBrandGetCategoryBrandListResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CategoryBrandGetCategoryBrandListResult(%+v)", *p)
+	return true, err
 }
 
 type CategoryBrandBatchAddCategoryBrandArgs struct {
@@ -1463,32 +1093,32 @@ func (p *CategoryBrandBatchAddCategoryBrandResult) String() string {
 	return fmt.Sprintf("CategoryBrandBatchAddCategoryBrandResult(%+v)", *p)
 }
 
-type CategoryBrandUpdateCategoryBrandArgs struct {
-	Req *CategoryBrandInfo `thrift:"req,1"`
+type CategoryBrandBatchReduceCategoryBrandArgs struct {
+	Req *NewCategoryBrand `thrift:"req,1"`
 }
 
-func NewCategoryBrandUpdateCategoryBrandArgs() *CategoryBrandUpdateCategoryBrandArgs {
-	return &CategoryBrandUpdateCategoryBrandArgs{}
+func NewCategoryBrandBatchReduceCategoryBrandArgs() *CategoryBrandBatchReduceCategoryBrandArgs {
+	return &CategoryBrandBatchReduceCategoryBrandArgs{}
 }
 
-var CategoryBrandUpdateCategoryBrandArgs_Req_DEFAULT *CategoryBrandInfo
+var CategoryBrandBatchReduceCategoryBrandArgs_Req_DEFAULT *NewCategoryBrand
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) GetReq() (v *CategoryBrandInfo) {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) GetReq() (v *NewCategoryBrand) {
 	if !p.IsSetReq() {
-		return CategoryBrandUpdateCategoryBrandArgs_Req_DEFAULT
+		return CategoryBrandBatchReduceCategoryBrandArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_CategoryBrandUpdateCategoryBrandArgs = map[int16]string{
+var fieldIDToName_CategoryBrandBatchReduceCategoryBrandArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) IsSetReq() bool {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1536,7 +1166,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandUpdateCategoryBrandArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandBatchReduceCategoryBrandArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1546,8 +1176,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCategoryBrandInfo()
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewNewCategoryBrand()
 
 	if err := p.Req.Read(iprot); err != nil {
 		return err
@@ -1555,9 +1185,9 @@ func (p *CategoryBrandUpdateCategoryBrandArgs) ReadField1(iprot thrift.TProtocol
 	return nil
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UpdateCategoryBrand_args"); err != nil {
+	if err = oprot.WriteStructBegin("BatchReduceCategoryBrand_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1583,7 +1213,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1600,329 +1230,39 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *CategoryBrandUpdateCategoryBrandArgs) String() string {
+func (p *CategoryBrandBatchReduceCategoryBrandArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CategoryBrandUpdateCategoryBrandArgs(%+v)", *p)
+	return fmt.Sprintf("CategoryBrandBatchReduceCategoryBrandArgs(%+v)", *p)
 }
 
-type CategoryBrandUpdateCategoryBrandResult struct {
-	Success *CategoryBrandInfo `thrift:"success,0,optional"`
-}
-
-func NewCategoryBrandUpdateCategoryBrandResult() *CategoryBrandUpdateCategoryBrandResult {
-	return &CategoryBrandUpdateCategoryBrandResult{}
-}
-
-var CategoryBrandUpdateCategoryBrandResult_Success_DEFAULT *CategoryBrandInfo
-
-func (p *CategoryBrandUpdateCategoryBrandResult) GetSuccess() (v *CategoryBrandInfo) {
-	if !p.IsSetSuccess() {
-		return CategoryBrandUpdateCategoryBrandResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-var fieldIDToName_CategoryBrandUpdateCategoryBrandResult = map[int16]string{
-	0: "success",
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandUpdateCategoryBrandResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewCategoryBrandInfo()
-
-	if err := p.Success.Read(iprot); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("UpdateCategoryBrand_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Success.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *CategoryBrandUpdateCategoryBrandResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CategoryBrandUpdateCategoryBrandResult(%+v)", *p)
-}
-
-type CategoryBrandDeleteCategoryByBrandArgs struct {
-	Req *common.Req `thrift:"req,1"`
-}
-
-func NewCategoryBrandDeleteCategoryByBrandArgs() *CategoryBrandDeleteCategoryByBrandArgs {
-	return &CategoryBrandDeleteCategoryByBrandArgs{}
-}
-
-var CategoryBrandDeleteCategoryByBrandArgs_Req_DEFAULT *common.Req
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) GetReq() (v *common.Req) {
-	if !p.IsSetReq() {
-		return CategoryBrandDeleteCategoryByBrandArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-var fieldIDToName_CategoryBrandDeleteCategoryByBrandArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-				break
-			}
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandDeleteCategoryByBrandArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = common.NewReq()
-
-	if err := p.Req.Read(iprot); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("DeleteCategoryByBrand_args"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *CategoryBrandDeleteCategoryByBrandArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CategoryBrandDeleteCategoryByBrandArgs(%+v)", *p)
-}
-
-type CategoryBrandDeleteCategoryByBrandResult struct {
+type CategoryBrandBatchReduceCategoryBrandResult struct {
 	Success *common.Empty `thrift:"success,0,optional"`
 }
 
-func NewCategoryBrandDeleteCategoryByBrandResult() *CategoryBrandDeleteCategoryByBrandResult {
-	return &CategoryBrandDeleteCategoryByBrandResult{}
+func NewCategoryBrandBatchReduceCategoryBrandResult() *CategoryBrandBatchReduceCategoryBrandResult {
+	return &CategoryBrandBatchReduceCategoryBrandResult{}
 }
 
-var CategoryBrandDeleteCategoryByBrandResult_Success_DEFAULT *common.Empty
+var CategoryBrandBatchReduceCategoryBrandResult_Success_DEFAULT *common.Empty
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) GetSuccess() (v *common.Empty) {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) GetSuccess() (v *common.Empty) {
 	if !p.IsSetSuccess() {
-		return CategoryBrandDeleteCategoryByBrandResult_Success_DEFAULT
+		return CategoryBrandBatchReduceCategoryBrandResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_CategoryBrandDeleteCategoryByBrandResult = map[int16]string{
+var fieldIDToName_CategoryBrandBatchReduceCategoryBrandResult = map[int16]string{
 	0: "success",
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) IsSetSuccess() bool {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1970,7 +1310,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandDeleteCategoryByBrandResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandBatchReduceCategoryBrandResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1980,7 +1320,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) ReadField0(iprot thrift.TProtocol) error {
 	p.Success = common.NewEmpty()
 
 	if err := p.Success.Read(iprot); err != nil {
@@ -1989,9 +1329,9 @@ func (p *CategoryBrandDeleteCategoryByBrandResult) ReadField0(iprot thrift.TProt
 	return nil
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("DeleteCategoryByBrand_result"); err != nil {
+	if err = oprot.WriteStructBegin("BatchReduceCategoryBrand_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -2017,7 +1357,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -2036,11 +1376,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *CategoryBrandDeleteCategoryByBrandResult) String() string {
+func (p *CategoryBrandBatchReduceCategoryBrandResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CategoryBrandDeleteCategoryByBrandResult(%+v)", *p)
+	return fmt.Sprintf("CategoryBrandBatchReduceCategoryBrandResult(%+v)", *p)
 }
 
 type CategoryBrandDeleteBrandByCategoryArgs struct {
@@ -2331,4 +1671,294 @@ func (p *CategoryBrandDeleteBrandByCategoryResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("CategoryBrandDeleteBrandByCategoryResult(%+v)", *p)
+}
+
+type CategoryBrandDeleteCategoryByBrandArgs struct {
+	Req *common.Req `thrift:"req,1"`
+}
+
+func NewCategoryBrandDeleteCategoryByBrandArgs() *CategoryBrandDeleteCategoryByBrandArgs {
+	return &CategoryBrandDeleteCategoryByBrandArgs{}
+}
+
+var CategoryBrandDeleteCategoryByBrandArgs_Req_DEFAULT *common.Req
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) GetReq() (v *common.Req) {
+	if !p.IsSetReq() {
+		return CategoryBrandDeleteCategoryByBrandArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_CategoryBrandDeleteCategoryByBrandArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandDeleteCategoryByBrandArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = common.NewReq()
+
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("DeleteCategoryByBrand_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CategoryBrandDeleteCategoryByBrandArgs(%+v)", *p)
+}
+
+type CategoryBrandDeleteCategoryByBrandResult struct {
+	Success *common.Empty `thrift:"success,0,optional"`
+}
+
+func NewCategoryBrandDeleteCategoryByBrandResult() *CategoryBrandDeleteCategoryByBrandResult {
+	return &CategoryBrandDeleteCategoryByBrandResult{}
+}
+
+var CategoryBrandDeleteCategoryByBrandResult_Success_DEFAULT *common.Empty
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) GetSuccess() (v *common.Empty) {
+	if !p.IsSetSuccess() {
+		return CategoryBrandDeleteCategoryByBrandResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_CategoryBrandDeleteCategoryByBrandResult = map[int16]string{
+	0: "success",
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+				break
+			}
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CategoryBrandDeleteCategoryByBrandResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = common.NewEmpty()
+
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("DeleteCategoryByBrand_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *CategoryBrandDeleteCategoryByBrandResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CategoryBrandDeleteCategoryByBrandResult(%+v)", *p)
 }

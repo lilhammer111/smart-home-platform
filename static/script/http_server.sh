@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # specify the service you need to update and the idl file
-file_dir="http/banner.thrift"
+file_dir="http/category.thrift"
 
 
 # get the directory where the script file is located and change dir to the abs path

@@ -2,6 +2,10 @@ package handler
 
 import (
 	"context"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 
 	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -17,11 +21,12 @@ func NewDeleteCategoryService(Context context.Context, RequestContext *app.Reque
 }
 
 func (h *DeleteCategoryService) Do(req *common.Req) (resp *common.Empty, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	_, err = micro_product_cli.DeleteCategory(h.Context, &rpcCommon.Req{Id: req.Id})
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	h.RequestContext.Set(responder.SuccessMessage, "Deleting category successes.")
+	return &common.Empty{}, nil
 }

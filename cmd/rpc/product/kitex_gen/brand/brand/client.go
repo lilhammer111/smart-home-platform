@@ -13,7 +13,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error)
-	GetBrandListByCategory(ctx context.Context, req *brand.BrandByCatReq, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error)
+	GetRelatedBrandsByCategoryId(ctx context.Context, req *brand.BrandByCatReq, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error)
 	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *brand.BrandInfo, err error)
 	AddNewBrand(ctx context.Context, req *brand.NewBrand_, callOptions ...callopt.Option) (r *brand.BrandInfo, err error)
 	UpdateBrand(ctx context.Context, req *brand.BrandInfo, callOptions ...callopt.Option) (r *brand.BrandInfo, err error)
@@ -54,9 +54,9 @@ func (p *kBrandClient) GetBrandList(ctx context.Context, req *common.PageFilter,
 	return p.kClient.GetBrandList(ctx, req)
 }
 
-func (p *kBrandClient) GetBrandListByCategory(ctx context.Context, req *brand.BrandByCatReq, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error) {
+func (p *kBrandClient) GetRelatedBrandsByCategoryId(ctx context.Context, req *brand.BrandByCatReq, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetBrandListByCategory(ctx, req)
+	return p.kClient.GetRelatedBrandsByCategoryId(ctx, req)
 }
 
 func (p *kBrandClient) GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *brand.BrandInfo, err error) {

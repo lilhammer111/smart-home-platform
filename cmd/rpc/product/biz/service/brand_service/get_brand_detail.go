@@ -6,6 +6,7 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/utils"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
@@ -30,7 +31,7 @@ func (s *GetBrandDetailService) Run(req *common.Req) (resp *product.BrandInfo, e
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 	if res.RowsAffected == 0 {
-		klog.Info("brand record is not found")
+		klog.Info(utils.InfoNotFound)
 		return nil, kerrors.NewBizStatusError(code.NotFound, "The brand is not found.")
 	}
 

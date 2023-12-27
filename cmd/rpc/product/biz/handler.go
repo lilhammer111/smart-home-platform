@@ -44,7 +44,7 @@ func (s *CombineServiceImpl) UpdateProduct(ctx context.Context, req *product.Pro
 }
 
 // UpdateRating implements the ProductServiceImpl interface.
-func (s *CombineServiceImpl) UpdateRating(ctx context.Context, req *product.RatingReq) (resp *product.RatingResp, err error) {
+func (s *CombineServiceImpl) UpdateRating(ctx context.Context, req *product.RatingReq) (resp *product.RatingInfo, err error) {
 	resp, err = product_service.NewUpdateRatingService(ctx).Run(req)
 
 	return resp, err
@@ -58,21 +58,21 @@ func (s *CombineServiceImpl) DeleteProduct(ctx context.Context, req *common.Req)
 }
 
 // GetCategoryList implements the CategoryServiceImpl interface.
-func (s *CombineServiceImpl) GetCategoryList(ctx context.Context, req *product.PageFilter) (resp []*product.CategoryBasicInfo, err error) {
+func (s *CombineServiceImpl) GetCategoryList(ctx context.Context, req *product.PageFilter) (resp []*product.CategoryInfo, err error) {
 	resp, err = category_service.NewGetCategoryListService(ctx).Run(req)
 
 	return resp, err
 }
 
 // GetCategoryDetail implements the CategoryServiceImpl interface.
-func (s *CombineServiceImpl) GetCategoryDetail(ctx context.Context, req *common.Req) (resp *product.CategoryDetail, err error) {
+func (s *CombineServiceImpl) GetCategoryDetail(ctx context.Context, req *common.Req) (resp *product.CategoryInfo, err error) {
 	resp, err = category_service.NewGetCategoryDetailService(ctx).Run(req)
 
 	return resp, err
 }
 
 // AddNewCategory implements the CategoryServiceImpl interface.
-func (s *CombineServiceImpl) AddNewCategory(ctx context.Context, req *product.AddCategoryReq) (resp *product.CategoryInfo, err error) {
+func (s *CombineServiceImpl) AddNewCategory(ctx context.Context, req *product.NewCategory_) (resp *product.CategoryInfo, err error) {
 	resp, err = category_service.NewAddNewCategoryService(ctx).Run(req)
 
 	return resp, err
@@ -176,13 +176,6 @@ func (s *CombineServiceImpl) UpdateBanner(ctx context.Context, req *product.Bann
 	return resp, err
 }
 
-// GetBrandListByCategory implements the BrandServiceImpl interface.
-func (s *CombineServiceImpl) GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq) (resp []*product.BrandInfo, err error) {
-	resp, err = brand_service.NewGetBrandListByCategoryService(ctx).Run(req)
-
-	return resp, err
-}
-
 // DeleteBanner implements the BannerServiceImpl interface.
 func (s *CombineServiceImpl) DeleteBanner(ctx context.Context, req *common.Req) (resp *common.Empty, err error) {
 	resp, err = banner_service.NewDeleteBannerService(ctx).Run(req)
@@ -190,23 +183,9 @@ func (s *CombineServiceImpl) DeleteBanner(ctx context.Context, req *common.Req) 
 	return resp, err
 }
 
-// GetCategoryBrandList implements the CategoryBrandServiceImpl interface.
-func (s *CombineServiceImpl) GetCategoryBrandList(ctx context.Context, req *common.Req) (resp []*product.CategoryBrandInfo, err error) {
-	resp, err = category_brand_service.NewGetCategoryBrandListService(ctx).Run(req)
-
-	return resp, err
-}
-
 // BatchAddCategoryBrand implements the CategoryBrandServiceImpl interface.
 func (s *CombineServiceImpl) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (resp []*product.CategoryBrandInfo, err error) {
 	resp, err = category_brand_service.NewBatchAddCategoryBrandService(ctx).Run(req)
-
-	return resp, err
-}
-
-// UpdateCategoryBrand implements the CategoryBrandServiceImpl interface.
-func (s *CombineServiceImpl) UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo) (resp *product.CategoryBrandInfo, err error) {
-	resp, err = category_brand_service.NewUpdateCategoryBrandService(ctx).Run(req)
 
 	return resp, err
 }
@@ -221,6 +200,20 @@ func (s *CombineServiceImpl) DeleteCategoryByBrand(ctx context.Context, req *com
 // DeleteBrandByCategory implements the CategoryBrandServiceImpl interface.
 func (s *CombineServiceImpl) DeleteBrandByCategory(ctx context.Context, req *common.Req) (resp *common.Empty, err error) {
 	resp, err = category_brand_service.NewDeleteBrandByCategoryService(ctx).Run(req)
+
+	return resp, err
+}
+
+// BatchReduceCategoryBrand implements the CategoryBrandServiceImpl interface.
+func (s *CombineServiceImpl) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (resp *common.Empty, err error) {
+	resp, err = category_brand_service.NewBatchReduceCategoryBrandService(ctx).Run(req)
+
+	return resp, err
+}
+
+// GetRelatedBrandsByCategoryId implements the BrandServiceImpl interface.
+func (s *CombineServiceImpl) GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq) (resp []*product.BrandInfo, err error) {
+	resp, err = brand_service.NewGetRelatedBrandsByCategoryIdService(ctx).Run(req)
 
 	return resp, err
 }

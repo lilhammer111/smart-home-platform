@@ -29,7 +29,7 @@ func (s *DeleteBrandService) Run(req *common.Req) (resp *common.Empty, err error
 	}
 	if res.RowsAffected == 0 {
 		klog.Info("the record to delete does not exist")
-		return nil, kerrors.NewBizStatusError(code.NotFound, "The brand is not existed.")
+		return nil, kerrors.NewBizStatusError(code.NotFound, "Deletion failed. The brand is not existed.")
 	}
 
 	return &common.Empty{}, nil

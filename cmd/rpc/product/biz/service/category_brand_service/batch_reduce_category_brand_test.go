@@ -1,17 +1,18 @@
-package brand_service
+package category_brand_service
 
 import (
 	"context"
+	common "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	product "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"testing"
 )
 
-func TestGetBrandListByCategory_Run(t *testing.T) {
+func TestBatchReduceCategoryBrand_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewGetBrandListByCategoryService(ctx)
+	s := NewBatchReduceCategoryBrandService(ctx)
 	// init req and assert value
 
-	req := &product.BrandByCatReq{}
+	req := &product.NewCategoryBrand_{}
 	resp, err := s.Run(req)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

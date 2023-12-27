@@ -600,7 +600,7 @@ func (p *BrandByCatReq) String() string {
 type Brand interface {
 	GetBrandList(ctx context.Context, req *common.PageFilter) (r []*BrandInfo, err error)
 
-	GetBrandListByCategory(ctx context.Context, req *BrandByCatReq) (r []*BrandInfo, err error)
+	GetRelatedBrandsByCategoryId(ctx context.Context, req *BrandByCatReq) (r []*BrandInfo, err error)
 
 	GetBrandDetail(ctx context.Context, req *common.Req) (r *BrandInfo, err error)
 
@@ -646,11 +646,11 @@ func (p *BrandClient) GetBrandList(ctx context.Context, req *common.PageFilter) 
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *BrandClient) GetBrandListByCategory(ctx context.Context, req *BrandByCatReq) (r []*BrandInfo, err error) {
-	var _args BrandGetBrandListByCategoryArgs
+func (p *BrandClient) GetRelatedBrandsByCategoryId(ctx context.Context, req *BrandByCatReq) (r []*BrandInfo, err error) {
+	var _args BrandGetRelatedBrandsByCategoryIdArgs
 	_args.Req = req
-	var _result BrandGetBrandListByCategoryResult
-	if err = p.Client_().Call(ctx, "GetBrandListByCategory", &_args, &_result); err != nil {
+	var _result BrandGetRelatedBrandsByCategoryIdResult
+	if err = p.Client_().Call(ctx, "GetRelatedBrandsByCategoryId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -713,7 +713,7 @@ func (p *BrandProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
 func NewBrandProcessor(handler Brand) *BrandProcessor {
 	self := &BrandProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("GetBrandList", &brandProcessorGetBrandList{handler: handler})
-	self.AddToProcessorMap("GetBrandListByCategory", &brandProcessorGetBrandListByCategory{handler: handler})
+	self.AddToProcessorMap("GetRelatedBrandsByCategoryId", &brandProcessorGetRelatedBrandsByCategoryId{handler: handler})
 	self.AddToProcessorMap("GetBrandDetail", &brandProcessorGetBrandDetail{handler: handler})
 	self.AddToProcessorMap("AddNewBrand", &brandProcessorAddNewBrand{handler: handler})
 	self.AddToProcessorMap("UpdateBrand", &brandProcessorUpdateBrand{handler: handler})
@@ -786,16 +786,16 @@ func (p *brandProcessorGetBrandList) Process(ctx context.Context, seqId int32, i
 	return true, err
 }
 
-type brandProcessorGetBrandListByCategory struct {
+type brandProcessorGetRelatedBrandsByCategoryId struct {
 	handler Brand
 }
 
-func (p *brandProcessorGetBrandListByCategory) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := BrandGetBrandListByCategoryArgs{}
+func (p *brandProcessorGetRelatedBrandsByCategoryId) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := BrandGetRelatedBrandsByCategoryIdArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("GetBrandListByCategory", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("GetRelatedBrandsByCategoryId", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -804,11 +804,11 @@ func (p *brandProcessorGetBrandListByCategory) Process(ctx context.Context, seqI
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := BrandGetBrandListByCategoryResult{}
+	result := BrandGetRelatedBrandsByCategoryIdResult{}
 	var retval []*BrandInfo
-	if retval, err2 = p.handler.GetBrandListByCategory(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetBrandListByCategory: "+err2.Error())
-		oprot.WriteMessageBegin("GetBrandListByCategory", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.GetRelatedBrandsByCategoryId(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetRelatedBrandsByCategoryId: "+err2.Error())
+		oprot.WriteMessageBegin("GetRelatedBrandsByCategoryId", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -816,7 +816,7 @@ func (p *brandProcessorGetBrandListByCategory) Process(ctx context.Context, seqI
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("GetBrandListByCategory", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("GetRelatedBrandsByCategoryId", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1336,32 +1336,32 @@ func (p *BrandGetBrandListResult) String() string {
 	return fmt.Sprintf("BrandGetBrandListResult(%+v)", *p)
 }
 
-type BrandGetBrandListByCategoryArgs struct {
+type BrandGetRelatedBrandsByCategoryIdArgs struct {
 	Req *BrandByCatReq `thrift:"req,1"`
 }
 
-func NewBrandGetBrandListByCategoryArgs() *BrandGetBrandListByCategoryArgs {
-	return &BrandGetBrandListByCategoryArgs{}
+func NewBrandGetRelatedBrandsByCategoryIdArgs() *BrandGetRelatedBrandsByCategoryIdArgs {
+	return &BrandGetRelatedBrandsByCategoryIdArgs{}
 }
 
-var BrandGetBrandListByCategoryArgs_Req_DEFAULT *BrandByCatReq
+var BrandGetRelatedBrandsByCategoryIdArgs_Req_DEFAULT *BrandByCatReq
 
-func (p *BrandGetBrandListByCategoryArgs) GetReq() (v *BrandByCatReq) {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) GetReq() (v *BrandByCatReq) {
 	if !p.IsSetReq() {
-		return BrandGetBrandListByCategoryArgs_Req_DEFAULT
+		return BrandGetRelatedBrandsByCategoryIdArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_BrandGetBrandListByCategoryArgs = map[int16]string{
+var fieldIDToName_BrandGetRelatedBrandsByCategoryIdArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *BrandGetBrandListByCategoryArgs) IsSetReq() bool {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *BrandGetBrandListByCategoryArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1409,7 +1409,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BrandGetBrandListByCategoryArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BrandGetRelatedBrandsByCategoryIdArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1419,7 +1419,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) ReadField1(iprot thrift.TProtocol) error {
 	p.Req = NewBrandByCatReq()
 
 	if err := p.Req.Read(iprot); err != nil {
@@ -1428,9 +1428,9 @@ func (p *BrandGetBrandListByCategoryArgs) ReadField1(iprot thrift.TProtocol) err
 	return nil
 }
 
-func (p *BrandGetBrandListByCategoryArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetBrandListByCategory_args"); err != nil {
+	if err = oprot.WriteStructBegin("GetRelatedBrandsByCategoryId_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1456,7 +1456,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1473,39 +1473,39 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryArgs) String() string {
+func (p *BrandGetRelatedBrandsByCategoryIdArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BrandGetBrandListByCategoryArgs(%+v)", *p)
+	return fmt.Sprintf("BrandGetRelatedBrandsByCategoryIdArgs(%+v)", *p)
 }
 
-type BrandGetBrandListByCategoryResult struct {
+type BrandGetRelatedBrandsByCategoryIdResult struct {
 	Success []*BrandInfo `thrift:"success,0,optional"`
 }
 
-func NewBrandGetBrandListByCategoryResult() *BrandGetBrandListByCategoryResult {
-	return &BrandGetBrandListByCategoryResult{}
+func NewBrandGetRelatedBrandsByCategoryIdResult() *BrandGetRelatedBrandsByCategoryIdResult {
+	return &BrandGetRelatedBrandsByCategoryIdResult{}
 }
 
-var BrandGetBrandListByCategoryResult_Success_DEFAULT []*BrandInfo
+var BrandGetRelatedBrandsByCategoryIdResult_Success_DEFAULT []*BrandInfo
 
-func (p *BrandGetBrandListByCategoryResult) GetSuccess() (v []*BrandInfo) {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) GetSuccess() (v []*BrandInfo) {
 	if !p.IsSetSuccess() {
-		return BrandGetBrandListByCategoryResult_Success_DEFAULT
+		return BrandGetRelatedBrandsByCategoryIdResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_BrandGetBrandListByCategoryResult = map[int16]string{
+var fieldIDToName_BrandGetRelatedBrandsByCategoryIdResult = map[int16]string{
 	0: "success",
 }
 
-func (p *BrandGetBrandListByCategoryResult) IsSetSuccess() bool {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *BrandGetBrandListByCategoryResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1553,7 +1553,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BrandGetBrandListByCategoryResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_BrandGetRelatedBrandsByCategoryIdResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1563,7 +1563,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) ReadField0(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -1584,9 +1584,9 @@ func (p *BrandGetBrandListByCategoryResult) ReadField0(iprot thrift.TProtocol) e
 	return nil
 }
 
-func (p *BrandGetBrandListByCategoryResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetBrandListByCategory_result"); err != nil {
+	if err = oprot.WriteStructBegin("GetRelatedBrandsByCategoryId_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1612,7 +1612,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
 			goto WriteFieldBeginError
@@ -1639,11 +1639,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *BrandGetBrandListByCategoryResult) String() string {
+func (p *BrandGetRelatedBrandsByCategoryIdResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BrandGetBrandListByCategoryResult(%+v)", *p)
+	return fmt.Sprintf("BrandGetRelatedBrandsByCategoryIdResult(%+v)", *p)
 }
 
 type BrandGetBrandDetailArgs struct {

@@ -23,35 +23,12 @@ struct ProductDetail {
     8: required string Picture (api.body="picture");
     9: required i8 State (api.body="state");
     10: required double Price (api.body="price");
-    11: required double Rating (api.body="rating");
+    11: required i32 RatingId (api.body="rating_id");
     12: required list<string> Showcase (api.body="showcase");
     13: required category.CategoryInfo Category (api.body="category");
     14: required brand.BrandInfo Brand (api.body="brand");
     15: required model.ModelInfo Model (api.body="model");
-}
-
-struct ProductInfo {
-    1: required i32 Id (api.body="id");
-    2: required i32 CategoryId (api.body="category_id");
-    3: required i32 BrandId (api.body="brand_id");
-    4: required string Name (api.body="name");
-    6: required i8 ModelId (api.body="model_id" );
-    7: required string Brief (api.body="brief");
-    8: required string Picture (api.body="picture");
-    9: required i8 State (api.body="state");
-    10: required double Price (api.body="price");
-    11: required list<string> Pictures (api.body="pictures");
-}
-
-
-struct RatingReq {
-    2: required i32 Id (api.body="id");
-    1: required double Rating (api.body="rating");
-}
-
-struct RatingResp {
-    2: required i32 Id (api.body="id");
-    1: required double Rating;
+    16: required RatingInfo Rating (api.body="rating");
 }
 
 struct NewProduct {
@@ -66,38 +43,55 @@ struct NewProduct {
     1: required list<string> Showcase (api.body="showcase");
 }
 
+struct ProductInfo {
+    1: required i32 Id (api.body="id");
+    2: required i32 CategoryId (api.body="category_id");
+    3: required i32 BrandId (api.body="brand_id");
+    4: required string Name (api.body="name");
+    6: required i8 ModelId (api.body="model_id" );
+    7: required string Brief (api.body="brief");
+    8: required string Picture (api.body="picture");
+    9: required i8 State (api.body="state");
+    10: required double Price (api.body="price");
+    11: required i32 RatingId (api.body="rating_id");
+    12: required list<string> Pictures (api.body="pictures");
+}
+
+
+struct RatingReq {
+    2: required i32 ProductId (api.body="product_id");
+    1: required double Rating (api.body="rating");
+}
+
+struct RatingInfo {
+    1: required i32 Id (api.body="id");
+    2: required i32 ProductId (api.body="product_id");
+    3: required i32 TotalCustomer (api.body="total_customer");
+    4: required double CurRating (api.body="cur_rating");
+}
+
 service ProductService {
     list<ProductDetail> GetProductList(1: ProductFilter req) (api.get="/api/products/list");
     ProductDetail GetProductDetail(1: common.Req req) (api.get="/api/products/detail");
     ProductInfo AddNewProduct(1: NewProduct req) (api.post="/api/products/add");
     ProductInfo UpdateProduct (1: ProductInfo req) (api.put="/api/products/update");
-    RatingResp UpdateRating (1: RatingReq req) (api.put="/api/products/update_rating")
+    RatingInfo UpdateRating (1: RatingReq req) (api.put="/api/products/rating/update")
     common.Empty DeleteProduct(1: common.Req req) (api.delete="/api/products/delete");
 }
-
 
 struct CategoryInfo {
     1: required i32 Id (api.body="id");
     2: required string Name (api.body="name");
     3: required string Picture (api.body="picture");
     4: required list<string> Showcase (api.body="showcase");
+    5: required string Brief (api.body="brief")
 }
 
-struct AddCategoryReq {
+struct NewCategory {
     2: required string Name (api.body="name");
     3: required string Picture (api.body="picture");
     4: required list<string> Showcase (api.body="showcase");
-}
-
-struct CategoryBasicInfo {
-    1: required i32 Id (api.body="id");
-    2: required string Name (api.body="name");
-    3: required string Picture (api.body="picture");
-}
-
-struct CategoryDetail {
-    2: required i32 Id (api.body="id");
-    1: required list<string> Showcase (api.body="showcase");
+    5: required string Brief (api.body="brief")
 }
 
 struct PageFilter {
@@ -106,9 +100,9 @@ struct PageFilter {
 }
 
 service CategoryService {
-    list<CategoryBasicInfo> GetCategoryList(1: PageFilter req) (api.get="/api/products/categories/list");
-    CategoryDetail GetCategoryDetail(1: common.Req req) (api.get="/api/products/categories/detail");
-    CategoryInfo AddNewCategory(1: AddCategoryReq req) (api.post="/api/products/categories/add");
+    list<CategoryInfo> GetCategoryList(1: PageFilter req) (api.get="/api/products/categories/list");
+    CategoryInfo GetCategoryDetail(1: common.Req req) (api.get="/api/products/categories/detail");
+    CategoryInfo AddNewCategory(1: NewCategory req) (api.post="/api/products/categories/add");
     CategoryInfo UpdateCategory(1: CategoryInfo req) (api.put="/api/products/categories/update");
     common.Empty DeleteCategory(1: common.Req req) (api.delete="/api/products/categories/delete");
 }
@@ -146,7 +140,7 @@ struct BrandByCatReq {
 
 service BrandService {
     list<BrandInfo> GetBrandList(1: PageFilter req) (api.get="/api/products/brands/list");
-    list<BrandInfo> GetBrandListByCategory(1: BrandByCatReq req) (api.get="/api/products/categories/brands/list");
+    list<BrandInfo> GetRelatedBrandsByCategoryId(1: BrandByCatReq req) (api.get="/api/products/brands/related");
     BrandInfo GetBrandDetail (1:common.Req req) (api.get="/api/products/brands/detail")
     BrandInfo AddNewBrand(1: NewBrand req) (api.post="/api/products/brands/add");
     BrandInfo UpdateBrand(1: BrandInfo req) (api.put="/api/products/brands/update");
@@ -184,11 +178,9 @@ struct NewCategoryBrand {
     2: required list<i32> CategoryId;
 }
 
-
 service CategoryBrandService {
-    list<CategoryBrandInfo> GetCategoryBrandList(1: common.Req req) (api.get="/api/products/category_brand/list");
     list<CategoryBrandInfo> BatchAddCategoryBrand(1: NewCategoryBrand req) (api.post="/api/products/category_brand/batch_add");
-    CategoryBrandInfo UpdateCategoryBrand(1: CategoryBrandInfo req) (api.put="/api/products/category_brand/update");
+    common.Empty BatchReduceCategoryBrand(1: NewCategoryBrand req) (api.delete="/api/products/category_brand/batch_reduce");
+    common.Empty DeleteBrandByCategory(1: common.Req req) (api.delete="/api/products/category_brand/delete_brand");
     common.Empty DeleteCategoryByBrand(1: common.Req req) (api.delete="/api/products/category_brand/delete_category");
-    common.Empty DeleteBrandByCategory(1: common.Req req) (api.delte="/api/products/category_brand/delete_brand")
 }

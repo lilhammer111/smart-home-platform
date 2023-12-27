@@ -29,14 +29,14 @@ func (h *UpdateBrandService) Do(req *brand.BrandInfo) (resp *brand.BrandInfo, er
 		return nil, err
 	}
 
-	updatedBrandInfos, err := micro_product_cli.UpdateBrand(h.Context, &brandsReq)
+	updatedBrandInfo, err := micro_product_cli.UpdateBrand(h.Context, &brandsReq)
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
 
 	resp = &brand.BrandInfo{}
-	err = copier.Copy(resp, updatedBrandInfos)
+	err = copier.Copy(resp, updatedBrandInfo)
 	if err != nil {
 		hlog.Error(err)
 		return nil, err

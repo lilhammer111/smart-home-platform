@@ -12,9 +12,9 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryBasicInfo, err error)
-	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.CategoryDetail, err error)
-	AddNewCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
+	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error)
+	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
+	AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	UpdateCategory(ctx context.Context, req *product.CategoryInfo, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	DeleteCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
@@ -48,17 +48,17 @@ type kCategoryServiceClient struct {
 	*kClient
 }
 
-func (p *kCategoryServiceClient) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryBasicInfo, err error) {
+func (p *kCategoryServiceClient) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetCategoryList(ctx, req)
 }
 
-func (p *kCategoryServiceClient) GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.CategoryDetail, err error) {
+func (p *kCategoryServiceClient) GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.CategoryInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetCategoryDetail(ctx, req)
 }
 
-func (p *kCategoryServiceClient) AddNewCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (r *product.CategoryInfo, err error) {
+func (p *kCategoryServiceClient) AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (r *product.CategoryInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddNewCategory(ctx, req)
 }

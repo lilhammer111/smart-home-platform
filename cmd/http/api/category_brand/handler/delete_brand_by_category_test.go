@@ -4,17 +4,17 @@ import (
 	"context"
 	"testing"
 
-	product "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
+	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )
 
-func TestUpdateProdShowcaseService_Run(t *testing.T) {
+func TestDeleteBrandByCategoryService_Run(t *testing.T) {
 	ctx := context.Background()
 	c := app.NewContext(1)
-	s := NewUpdateProdShowcaseService(ctx, c)
+	s := NewDeleteBrandByCategoryService(ctx, c)
 	// init req and assert value
-	req := &product.ProductShowcase{}
+	req := &common.Req{}
 	resp, err := s.Do(req)
 	assert.DeepEqual(t, nil, resp)
 	assert.DeepEqual(t, nil, err)

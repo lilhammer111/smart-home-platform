@@ -2,14 +2,13 @@ package handler
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category_brand"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
-
-	category_brand "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category_brand"
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 type BatchAddCategoryBrandService struct {
@@ -42,6 +41,6 @@ func (h *BatchAddCategoryBrandService) Do(req *category_brand.NewCategoryBrand) 
 		return nil, err
 	}
 
-	h.RequestContext.Set(responder.SuccessMessage, "Adding all related categories successes.")
+	h.RequestContext.Set(responder.SuccessMessage, "Adding related categories successes.")
 	return resp, nil
 }

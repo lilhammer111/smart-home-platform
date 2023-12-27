@@ -4,7 +4,6 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
-
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product/combineservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
@@ -21,15 +20,15 @@ type RPCClient interface {
 
 	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
 
-	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error)
+	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error)
 
 	DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryBasicInfo, err error)
+	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error)
 
-	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryDetail, err error)
+	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error)
 
-	AddNewCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error)
+	AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error)
 
 	UpdateCategory(ctx context.Context, req *product.CategoryInfo, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error)
 
@@ -45,7 +44,7 @@ type RPCClient interface {
 
 	GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
-	GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
+	GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
 	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.BrandInfo, err error)
 
@@ -63,15 +62,13 @@ type RPCClient interface {
 
 	DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error)
-
 	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error)
 
-	UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (resp *product.CategoryBrandInfo, err error)
-
-	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+	BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
 	DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
+
+	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 }
 
 func NewRPCClient(dstService string, opts ...client.Option) (RPCClient, error) {
@@ -116,7 +113,7 @@ func (c *clientImpl) UpdateProduct(ctx context.Context, req *product.ProductInfo
 	return c.kitexClient.UpdateProduct(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error) {
+func (c *clientImpl) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error) {
 	return c.kitexClient.UpdateRating(ctx, req, callOptions...)
 }
 
@@ -124,15 +121,15 @@ func (c *clientImpl) DeleteProduct(ctx context.Context, req *common.Req, callOpt
 	return c.kitexClient.DeleteProduct(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryBasicInfo, err error) {
+func (c *clientImpl) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
 	return c.kitexClient.GetCategoryList(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryDetail, err error) {
+func (c *clientImpl) GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
 	return c.kitexClient.GetCategoryDetail(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) AddNewCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
+func (c *clientImpl) AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error) {
 	return c.kitexClient.AddNewCategory(ctx, req, callOptions...)
 }
 
@@ -164,8 +161,8 @@ func (c *clientImpl) GetBrandList(ctx context.Context, req *product.PageFilter, 
 	return c.kitexClient.GetBrandList(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
-	return c.kitexClient.GetBrandListByCategory(ctx, req, callOptions...)
+func (c *clientImpl) GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+	return c.kitexClient.GetRelatedBrandsByCategoryId(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.BrandInfo, err error) {
@@ -200,22 +197,18 @@ func (c *clientImpl) DeleteBanner(ctx context.Context, req *common.Req, callOpti
 	return c.kitexClient.DeleteBanner(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetCategoryBrandList(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
-	return c.kitexClient.GetCategoryBrandList(ctx, req, callOptions...)
-}
-
 func (c *clientImpl) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
 	return c.kitexClient.BatchAddCategoryBrand(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) UpdateCategoryBrand(ctx context.Context, req *product.CategoryBrandInfo, callOptions ...callopt.Option) (resp *product.CategoryBrandInfo, err error) {
-	return c.kitexClient.UpdateCategoryBrand(ctx, req, callOptions...)
-}
-
-func (c *clientImpl) DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	return c.kitexClient.DeleteCategoryByBrand(ctx, req, callOptions...)
+func (c *clientImpl) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.BatchReduceCategoryBrand(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
 	return c.kitexClient.DeleteBrandByCategory(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.DeleteCategoryByBrand(ctx, req, callOptions...)
 }

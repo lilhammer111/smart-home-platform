@@ -26,11 +26,10 @@ func Register(r *server.Hertz) {
 			_products.DELETE("/delete", append(_deleteproductMw(), product.DeleteProduct)...)
 			_products.GET("/detail", append(_getproductdetailMw(), product.GetProductDetail)...)
 			_products.GET("/list", append(_getproductlistMw(), product.GetProductList)...)
-			_products.PUT("/update_rating", append(_updateratingMw(), product.UpdateRating)...)
-			_products.PUT("/update_showcase", append(_updateprodshowcaseMw(), product.UpdateProdShowcase)...)
+			_products.PUT("/update", append(_updateproductMw(), product.UpdateProduct)...)
 			{
-				_update_basis := _products.Group("/update_basis", _update_basisMw()...)
-				_update_basis.PUT("/", append(_updateproductbasicinfoMw(), product.UpdateProductBasicInfo)...)
+				_rating := _products.Group("/rating", _ratingMw()...)
+				_rating.PUT("/update", append(_updateratingMw(), product.UpdateRating)...)
 			}
 		}
 	}

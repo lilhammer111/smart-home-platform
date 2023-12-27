@@ -75,3 +75,8 @@ func _getbrandlistbycategoryMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getrelatedbrandsbycategoryidMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

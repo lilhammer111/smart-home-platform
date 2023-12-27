@@ -2,9 +2,13 @@ package handler
 
 import (
 	"context"
-
-	product "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
+	rpcProduct "git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/jinzhu/copier"
 )
 
 type AddNewProductService struct {
@@ -17,11 +21,26 @@ func NewAddNewProductService(Context context.Context, RequestContext *app.Reques
 }
 
 func (h *AddNewProductService) Do(req *product.NewProduct) (resp *product.ProductInfo, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	rpcProductReq := rpcProduct.NewProduct_{}
+	err = copier.Copy(&rpcProductReq, req)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	categoryInfo, err := micro_product_cli.AddNewProduct(h.Context, &rpcProductReq)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	resp = &product.ProductInfo{}
+	err = copier.Copy(resp, categoryInfo)
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
+
+	h.RequestContext.Set(responder.SuccessMessage, "Adding a new product successes.")
+	return resp, nil
 }

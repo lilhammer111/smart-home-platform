@@ -20,12 +20,12 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "BrandService"
 	handlerType := (*product.BrandService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetBrandList":           kitex.NewMethodInfo(getBrandListHandler, newBrandServiceGetBrandListArgs, newBrandServiceGetBrandListResult, false),
-		"GetBrandListByCategory": kitex.NewMethodInfo(getBrandListByCategoryHandler, newBrandServiceGetBrandListByCategoryArgs, newBrandServiceGetBrandListByCategoryResult, false),
-		"GetBrandDetail":         kitex.NewMethodInfo(getBrandDetailHandler, newBrandServiceGetBrandDetailArgs, newBrandServiceGetBrandDetailResult, false),
-		"AddNewBrand":            kitex.NewMethodInfo(addNewBrandHandler, newBrandServiceAddNewBrandArgs, newBrandServiceAddNewBrandResult, false),
-		"UpdateBrand":            kitex.NewMethodInfo(updateBrandHandler, newBrandServiceUpdateBrandArgs, newBrandServiceUpdateBrandResult, false),
-		"DeleteBrand":            kitex.NewMethodInfo(deleteBrandHandler, newBrandServiceDeleteBrandArgs, newBrandServiceDeleteBrandResult, false),
+		"GetBrandList":                 kitex.NewMethodInfo(getBrandListHandler, newBrandServiceGetBrandListArgs, newBrandServiceGetBrandListResult, false),
+		"GetRelatedBrandsByCategoryId": kitex.NewMethodInfo(getRelatedBrandsByCategoryIdHandler, newBrandServiceGetRelatedBrandsByCategoryIdArgs, newBrandServiceGetRelatedBrandsByCategoryIdResult, false),
+		"GetBrandDetail":               kitex.NewMethodInfo(getBrandDetailHandler, newBrandServiceGetBrandDetailArgs, newBrandServiceGetBrandDetailResult, false),
+		"AddNewBrand":                  kitex.NewMethodInfo(addNewBrandHandler, newBrandServiceAddNewBrandArgs, newBrandServiceAddNewBrandResult, false),
+		"UpdateBrand":                  kitex.NewMethodInfo(updateBrandHandler, newBrandServiceUpdateBrandArgs, newBrandServiceUpdateBrandResult, false),
+		"DeleteBrand":                  kitex.NewMethodInfo(deleteBrandHandler, newBrandServiceDeleteBrandArgs, newBrandServiceDeleteBrandResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "product",
@@ -60,22 +60,22 @@ func newBrandServiceGetBrandListResult() interface{} {
 	return product.NewBrandServiceGetBrandListResult()
 }
 
-func getBrandListByCategoryHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.BrandServiceGetBrandListByCategoryArgs)
-	realResult := result.(*product.BrandServiceGetBrandListByCategoryResult)
-	success, err := handler.(product.BrandService).GetBrandListByCategory(ctx, realArg.Req)
+func getRelatedBrandsByCategoryIdHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.BrandServiceGetRelatedBrandsByCategoryIdArgs)
+	realResult := result.(*product.BrandServiceGetRelatedBrandsByCategoryIdResult)
+	success, err := handler.(product.BrandService).GetRelatedBrandsByCategoryId(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newBrandServiceGetBrandListByCategoryArgs() interface{} {
-	return product.NewBrandServiceGetBrandListByCategoryArgs()
+func newBrandServiceGetRelatedBrandsByCategoryIdArgs() interface{} {
+	return product.NewBrandServiceGetRelatedBrandsByCategoryIdArgs()
 }
 
-func newBrandServiceGetBrandListByCategoryResult() interface{} {
-	return product.NewBrandServiceGetBrandListByCategoryResult()
+func newBrandServiceGetRelatedBrandsByCategoryIdResult() interface{} {
+	return product.NewBrandServiceGetRelatedBrandsByCategoryIdResult()
 }
 
 func getBrandDetailHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -170,11 +170,11 @@ func (p *kClient) GetBrandList(ctx context.Context, req *product.PageFilter) (r 
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetBrandListByCategory(ctx context.Context, req *product.BrandByCatReq) (r []*product.BrandInfo, err error) {
-	var _args product.BrandServiceGetBrandListByCategoryArgs
+func (p *kClient) GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq) (r []*product.BrandInfo, err error) {
+	var _args product.BrandServiceGetRelatedBrandsByCategoryIdArgs
 	_args.Req = req
-	var _result product.BrandServiceGetBrandListByCategoryResult
-	if err = p.c.Call(ctx, "GetBrandListByCategory", &_args, &_result); err != nil {
+	var _result product.BrandServiceGetRelatedBrandsByCategoryIdResult
+	if err = p.c.Call(ctx, "GetRelatedBrandsByCategoryId", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

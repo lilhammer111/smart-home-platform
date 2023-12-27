@@ -31,17 +31,17 @@ func _batchaddcategorybrandMw() []app.HandlerFunc {
 	return nil
 }
 
+func _batchreducecategorybrandMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
 func _deletecategorybybrandMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
 
-func _getcategorybrandlistMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _updatecategorybrandMw() []app.HandlerFunc {
+func _deletebrandbycategoryMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

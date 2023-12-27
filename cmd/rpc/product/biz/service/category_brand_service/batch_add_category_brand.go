@@ -35,8 +35,8 @@ func (s *BatchAddCategoryBrandService) Run(req *product.NewCategoryBrand_) (resp
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	// todo test_0001
 	categoryInfo := make([]model.Category, 0)
+	// todo test_0001
 	res := db.GetMysql().Find(&categoryInfo, req.CategoryId)
 	if res.Error != nil {
 		klog.Error(res.Error)
