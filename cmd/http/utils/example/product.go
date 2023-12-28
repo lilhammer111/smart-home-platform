@@ -1,42 +1,32 @@
 package example
 
-type ProductState int8
-
-const (
-	OnSale ProductState = 1 << iota
-	IsFreeShipping
-	IsNew
-	IsHot
-	IsRecommended
-)
-
-type ProductData struct {
-	Id         int32
-	CategoryId int32 `gorm:"type:int unsigned;not null"`
-	BrandId    int32 `gorm:"type:int unsigned;not null"`
-	ModelId    int8  `gorm:"type:tinyint unsigned;not null"`
-
-	Name    string `gorm:"type:varchar(50);not null;uniqueIndex:idx_category_brand_model_name"`
-	Brief   string `gorm:"type:varchar(100);not null"`
-	Picture string `gorm:"type:varchar(200);not null;comment: oss url"`
-
-	State    ProductState `gorm:"type:tinyint unsigned;not null"`
-	Price    float32      `gorm:"type:float unsigned;index;not null"`
-	RatingId int32        `gorm:"type:int unsigned;index;not null"`
-	Showcase []string     `gorm:"type:json;not null;comment:provide a range of product illustrations also as product detail"`
+type ProductState struct {
+	OnSale         bool `json:"on_sale" example:"true"`
+	IsFreeShipping bool `json:"is_free_shipping" example:"false"`
+	IsNew          bool `json:"is_new" example:"true"`
+	IsHot          bool `json:"is_hot" example:"false"`
+	IsRecommended  bool `json:"is_recommended" example:"true"`
 }
 
-type NewProductBody struct {
-	CategoryId int32 `gorm:"type:int unsigned;not null"`
-	BrandId    int32 `gorm:"type:int unsigned;not null"`
-	ModelId    int8  `gorm:"type:tinyint unsigned;not null"`
+type UpdateProductData struct {
+	Id         int32    `json:"id" example:"1"`
+	CategoryId int32    `json:"category_id" example:"10"`
+	BrandId    int32    `json:"brand_id" example:"20"`
+	ModelList  []string `json:"model_list" example:"model1,model2,model3"`
+	Name       string   `json:"name" example:"Product Name"`
+	Brief      string   `json:"brief" example:"Product Description"`
+	Picture    string   `json:"picture" example:"https://example.com/picture.jpg"`
+	Price      float32  `json:"price" example:"99.99"`
+	Showcase   []string `json:"showcase" example:"https://example.com/showcase1.jpg,https://example.com/showcase2.jpg"`
+}
 
-	Name    string `gorm:"type:varchar(50);not null;uniqueIndex:idx_category_brand_model_name"`
-	Brief   string `gorm:"type:varchar(100);not null"`
-	Picture string `gorm:"type:varchar(200);not null;comment: oss url"`
-
-	State    ProductState `gorm:"type:tinyint unsigned;not null"`
-	Price    float32      `gorm:"type:float unsigned;index;not null"`
-	RatingId int32        `gorm:"type:int unsigned;index;not null"`
-	Showcase []string     `gorm:"type:json;not null;comment:provide a range of product illustrations also as product detail"`
+type AddProductData struct {
+	CategoryId int32    `json:"category_id" example:"10"`
+	BrandId    int32    `json:"brand_id" example:"20"`
+	ModelList  []string `json:"model_list" example:"model1,model2,model3"`
+	Name       string   `json:"name" example:"Product Name"`
+	Brief      string   `json:"brief" example:"Product Description"`
+	Picture    string   `json:"picture" example:"https://example.com/picture.jpg"`
+	Price      float32  `json:"price" example:"99.99"`
+	Showcase   []string `json:"showcase" example:"https://example.com/showcase1.jpg,https://example.com/showcase2.jpg"`
 }

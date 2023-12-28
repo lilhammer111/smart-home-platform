@@ -29,7 +29,7 @@ func Register(r *server.Hertz) {
 			_products.PUT("/update", append(_updateproductMw(), product.UpdateProduct)...)
 			{
 				_rating := _products.Group("/rating", _ratingMw()...)
-				_rating.PUT("/update", append(_updateratingMw(), product.UpdateRating)...)
+				_rating.PUT("/update", append(_rateproductMw(), product.RateProduct)...)
 			}
 		}
 	}

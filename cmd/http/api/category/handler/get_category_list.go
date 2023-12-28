@@ -4,7 +4,7 @@ import (
 	"context"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/category"
 	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -22,7 +22,7 @@ func NewGetCategoryListService(Context context.Context, RequestContext *app.Requ
 }
 
 func (h *GetCategoryListService) Do(req *common.PageFilter) (resp *[]*category.CategoryInfo, err error) {
-	pageFilter := product.PageFilter{}
+	pageFilter := rpcCommon.PageFilter{}
 	err = copier.Copy(&pageFilter, req)
 	if err != nil {
 		hlog.Error(err)

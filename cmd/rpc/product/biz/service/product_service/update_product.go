@@ -6,7 +6,6 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
-	baseModel "git.zqbjj.top/lilhammer111/micro-kit/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
@@ -35,8 +34,18 @@ func (s *UpdateProductService) Run(req *product.ProductInfo) (resp *product.Prod
 		}
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
-	// todo test
-	res := db.GetMysql().Model(&model.Product{BaseModel: baseModel.BaseModel{ID: req.Id}}).Omit("rating_id").Updates(req)
+
+	productInfo := model.Product{}
+	err = copier.Copy(&productInfo, req)
+	if err != nil {
+		klog.Error(err)
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	}
+
+	state := parseStateToInt(req.State.OnSale, req.State.IsNew, req.State.IsHot, req.State.IsFreeShipping, req.State.IsRecommended)
+	productInfo.State = state
+
+	res := db.GetMysql().Updates(&productInfo)
 	if res.Error != nil {
 		klog.Error(res.Error)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

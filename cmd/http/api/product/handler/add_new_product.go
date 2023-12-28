@@ -20,8 +20,8 @@ func NewAddNewProductService(Context context.Context, RequestContext *app.Reques
 	return &AddNewProductService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *AddNewProductService) Do(req *product.NewProduct) (resp *product.ProductInfo, err error) {
-	rpcProductReq := rpcProduct.NewProduct_{}
+func (h *AddNewProductService) Do(req *product.AddProductReq) (resp *product.ProductInfo, err error) {
+	rpcProductReq := rpcProduct.AddProductReq{}
 	err = copier.Copy(&rpcProductReq, req)
 	if err != nil {
 		hlog.Error(err)

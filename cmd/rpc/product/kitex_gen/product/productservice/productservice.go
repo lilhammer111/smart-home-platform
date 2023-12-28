@@ -24,7 +24,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetProductDetail": kitex.NewMethodInfo(getProductDetailHandler, newProductServiceGetProductDetailArgs, newProductServiceGetProductDetailResult, false),
 		"AddNewProduct":    kitex.NewMethodInfo(addNewProductHandler, newProductServiceAddNewProductArgs, newProductServiceAddNewProductResult, false),
 		"UpdateProduct":    kitex.NewMethodInfo(updateProductHandler, newProductServiceUpdateProductArgs, newProductServiceUpdateProductResult, false),
-		"UpdateRating":     kitex.NewMethodInfo(updateRatingHandler, newProductServiceUpdateRatingArgs, newProductServiceUpdateRatingResult, false),
+		"RateProduct":      kitex.NewMethodInfo(rateProductHandler, newProductServiceRateProductArgs, newProductServiceRateProductResult, false),
 		"DeleteProduct":    kitex.NewMethodInfo(deleteProductHandler, newProductServiceDeleteProductArgs, newProductServiceDeleteProductResult, false),
 	}
 	extra := map[string]interface{}{
@@ -114,22 +114,22 @@ func newProductServiceUpdateProductResult() interface{} {
 	return product.NewProductServiceUpdateProductResult()
 }
 
-func updateRatingHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.ProductServiceUpdateRatingArgs)
-	realResult := result.(*product.ProductServiceUpdateRatingResult)
-	success, err := handler.(product.ProductService).UpdateRating(ctx, realArg.Req)
+func rateProductHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.ProductServiceRateProductArgs)
+	realResult := result.(*product.ProductServiceRateProductResult)
+	success, err := handler.(product.ProductService).RateProduct(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newProductServiceUpdateRatingArgs() interface{} {
-	return product.NewProductServiceUpdateRatingArgs()
+func newProductServiceRateProductArgs() interface{} {
+	return product.NewProductServiceRateProductArgs()
 }
 
-func newProductServiceUpdateRatingResult() interface{} {
-	return product.NewProductServiceUpdateRatingResult()
+func newProductServiceRateProductResult() interface{} {
+	return product.NewProductServiceRateProductResult()
 }
 
 func deleteProductHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -160,7 +160,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetProductList(ctx context.Context, req *product.ProductFilter) (r []*product.ProductDetail, err error) {
+func (p *kClient) GetProductList(ctx context.Context, req *product.ProductFilter) (r []*product.ProductBasicInfo, err error) {
 	var _args product.ProductServiceGetProductListArgs
 	_args.Req = req
 	var _result product.ProductServiceGetProductListResult
@@ -170,7 +170,7 @@ func (p *kClient) GetProductList(ctx context.Context, req *product.ProductFilter
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetProductDetail(ctx context.Context, req *common.Req) (r *product.ProductDetail, err error) {
+func (p *kClient) GetProductDetail(ctx context.Context, req *common.Req) (r *product.ProductDetailResp, err error) {
 	var _args product.ProductServiceGetProductDetailArgs
 	_args.Req = req
 	var _result product.ProductServiceGetProductDetailResult
@@ -180,7 +180,7 @@ func (p *kClient) GetProductDetail(ctx context.Context, req *common.Req) (r *pro
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) AddNewProduct(ctx context.Context, req *product.NewProduct_) (r *product.ProductInfo, err error) {
+func (p *kClient) AddNewProduct(ctx context.Context, req *product.AddProductReq) (r *product.ProductInfo, err error) {
 	var _args product.ProductServiceAddNewProductArgs
 	_args.Req = req
 	var _result product.ProductServiceAddNewProductResult
@@ -200,11 +200,11 @@ func (p *kClient) UpdateProduct(ctx context.Context, req *product.ProductInfo) (
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) UpdateRating(ctx context.Context, req *product.RatingReq) (r *product.RatingInfo, err error) {
-	var _args product.ProductServiceUpdateRatingArgs
+func (p *kClient) RateProduct(ctx context.Context, req *product.RatingReq) (r *product.RatingResp, err error) {
+	var _args product.ProductServiceRateProductArgs
 	_args.Req = req
-	var _result product.ProductServiceUpdateRatingResult
-	if err = p.c.Call(ctx, "UpdateRating", &_args, &_result); err != nil {
+	var _result product.ProductServiceRateProductResult
+	if err = p.c.Call(ctx, "RateProduct", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

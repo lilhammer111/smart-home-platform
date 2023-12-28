@@ -9,10 +9,10 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/test/assert"
 )
 
-func TestUpdateRatingService_Run(t *testing.T) {
+func TestRateProductService_Run(t *testing.T) {
 	ctx := context.Background()
 	c := app.NewContext(1)
-	s := NewUpdateRatingService(ctx, c)
+	s := NewRateProductService(ctx, c)
 	// init req and assert value
 	req := &product.RatingReq{}
 	resp, err := s.Do(req)

@@ -20,7 +20,6 @@ func NewDeleteModelService(Context context.Context, RequestContext *app.RequestC
 }
 
 func (h *DeleteModelService) Do(req *common.Req) (resp *common.Empty, err error) {
-
 	_, err = micro_product_cli.DeleteModel(h.Context, &rpcCommon.Req{Id: req.Id})
 	if err != nil {
 		hlog.Error(err)

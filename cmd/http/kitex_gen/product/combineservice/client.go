@@ -12,13 +12,13 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductDetail, err error)
-	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetail, err error)
-	AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
+	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductBasicInfo, err error)
+	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetailResp, err error)
+	AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
 	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
-	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error)
+	RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error)
 	DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
-	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error)
+	GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error)
 	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	UpdateCategory(ctx context.Context, req *product.CategoryInfo, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
@@ -27,7 +27,7 @@ type Client interface {
 	GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ModelInfo, err error)
 	AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (r *product.ModelInfo, err error)
 	DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
-	GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error)
+	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error)
 	GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (r []*product.BrandInfo, err error)
 	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.BrandInfo, err error)
 	AddNewBrand(ctx context.Context, req *product.NewBrand_, callOptions ...callopt.Option) (r *product.BrandInfo, err error)
@@ -72,17 +72,17 @@ type kCombineServiceClient struct {
 	*kClient
 }
 
-func (p *kCombineServiceClient) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductDetail, err error) {
+func (p *kCombineServiceClient) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductBasicInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProductList(ctx, req)
 }
 
-func (p *kCombineServiceClient) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetail, err error) {
+func (p *kCombineServiceClient) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetailResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProductDetail(ctx, req)
 }
 
-func (p *kCombineServiceClient) AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (r *product.ProductInfo, err error) {
+func (p *kCombineServiceClient) AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (r *product.ProductInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddNewProduct(ctx, req)
 }
@@ -92,9 +92,9 @@ func (p *kCombineServiceClient) UpdateProduct(ctx context.Context, req *product.
 	return p.kClient.UpdateProduct(ctx, req)
 }
 
-func (p *kCombineServiceClient) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error) {
+func (p *kCombineServiceClient) RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.UpdateRating(ctx, req)
+	return p.kClient.RateProduct(ctx, req)
 }
 
 func (p *kCombineServiceClient) DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {
@@ -102,7 +102,7 @@ func (p *kCombineServiceClient) DeleteProduct(ctx context.Context, req *common.R
 	return p.kClient.DeleteProduct(ctx, req)
 }
 
-func (p *kCombineServiceClient) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error) {
+func (p *kCombineServiceClient) GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.CategoryInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetCategoryList(ctx, req)
 }
@@ -147,7 +147,7 @@ func (p *kCombineServiceClient) DeleteModel(ctx context.Context, req *common.Req
 	return p.kClient.DeleteModel(ctx, req)
 }
 
-func (p *kCombineServiceClient) GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error) {
+func (p *kCombineServiceClient) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetBrandList(ctx, req)
 }

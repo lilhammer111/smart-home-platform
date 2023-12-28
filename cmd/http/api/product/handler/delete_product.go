@@ -2,9 +2,12 @@ package handler
 
 import (
 	"context"
-
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
+	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
 type DeleteProductService struct {
@@ -17,11 +20,12 @@ func NewDeleteProductService(Context context.Context, RequestContext *app.Reques
 }
 
 func (h *DeleteProductService) Do(req *common.Req) (resp *common.Empty, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
+	_, err = micro_product_cli.DeleteProduct(h.Context, &rpcCommon.Req{Id: req.Id})
+	if err != nil {
+		hlog.Error(err)
+		return nil, err
+	}
 
-	return
+	h.RequestContext.Set(responder.SuccessMessage, "Deleting product successes.")
+	return &common.Empty{}, nil
 }

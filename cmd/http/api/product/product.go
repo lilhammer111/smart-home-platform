@@ -17,13 +17,19 @@ import (
 // @Tags		products
 // @Produce		json
 // @Param       Authorization  header    string  true  "Bearer User's access token"
-// @Param		page	query	string	false	"page"
-// @Param		limit	query	string	false	"limit"
-// @Param		state	query	string	false	"state"
-// @Param		category_id	query	string	false	"category_id"
-// @Param		brand_id 	query	string	false	"brand_id"
-// @Param		sorts 	query	string	false	"sorts"
-// @Success		200				{object}		example.RespOk{data=[]example.ProductData} "success"
+// @Param    page             query    int16    false    "Page number for pagination"
+// @Param    limit            query    int16    false    "Number of items per page"
+// @Param    search           query    string   false    "Search term"
+// @Param    category_id      query    int32    false    "Category ID to filter products"
+// @Param    brand_id_list    query    []int32  false    "List of Brand IDs to filter products"
+// @Param    is_price_asc     query    bool     false    "Set to true for ascending price sorting, false for descending"
+// @Param    is_rating_asc    query    bool     false    "Set to true for ascending rating sorting, false for descending"
+// @Param    on_sale          query    bool     false    "Set to true to filter products that are on sale"
+// @Param    is_free_shipping query    bool     false    "Set to true to filter products with free shipping"
+// @Param    is_new           query    bool     false    "Set to true to filter new products"
+// @Param    is_hot           query    bool     false    "Set to true to filter hot products"
+// @Param    is_recommended   query    bool     false    "Set to true to filter recommended products"
+// @Success		200				{object}		example.RespOk{data=[]example.UpdateProductData{state=example.ProductState}} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -56,7 +62,7 @@ func GetProductList(ctx context.Context, c *app.RequestContext) {
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
 // @Param		id		query	int	true	"id"
-// @Success		200				{object}		example.RespOk{data=example.ProductData} "success"
+// @Success		200				{object}		example.RespOk{data=example.UpdateProductData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -88,8 +94,8 @@ func GetProductDetail(ctx context.Context, c *app.RequestContext) {
 // @Tags		products
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		product	body	example.NewProductBody	true	"product data"
-// @Success		201				{object}		example.RespCreated{data=example.ProductData} "success"
+// @Param		product	body	example.AddProductData{state=example.ProductState}	true	"product data"
+// @Success		201				{object}		example.RespCreated{data=example.UpdateProductData{state=example.ProductState}} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -97,7 +103,7 @@ func GetProductDetail(ctx context.Context, c *app.RequestContext) {
 // @router /api/products/add [POST]
 func AddNewProduct(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req product.NewProduct
+	var req product.AddProductReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.Set(responder.ErrorCode, http.StatusBadRequest)
@@ -107,40 +113,6 @@ func AddNewProduct(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp, err := handler.NewAddNewProductService(ctx, c).Do(&req)
-	if err != nil {
-		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
-		return
-	}
-
-	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
-}
-
-// UpdateRating .
-// @id			UpdateRating
-// @Summary		update product rating info
-// @Tags		products
-// @Access		json
-// @Produce		json
-// @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		product	rating body	example.RatingReqBody	true	"product rating data"
-// @Success		200				{object}		example.RespOk{data=example.RatingData} "success"
-// @Failure		400 			{object}		example.RespBadRequest				"bad request"
-// @Failure     404  			{object}		example.RespNotFound				"not found"
-// @Failure		500 			{object}		example.RespInternal				"internal error"
-// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
-// @router /api/products/update_rating [PUT]
-func UpdateRating(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req product.RatingReq
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.Set(responder.ErrorCode, http.StatusBadRequest)
-		c.Set(responder.ErrorMessage, "Invalid parameter.")
-		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
-		return
-	}
-
-	resp, err := handler.NewUpdateRatingService(ctx, c).Do(&req)
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -189,8 +161,8 @@ func DeleteProduct(ctx context.Context, c *app.RequestContext) {
 // @Access		json
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		product	body	example.ProductData	true	"product data"
-// @Success		200				{object}		example.RespOk{data=example.ProductData} "success"
+// @Param		product	body	example.UpdateProductData	true	"product data"
+// @Success		200				{object}		example.RespOk{data=example.UpdateProductData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
 // @Failure		500 			{object}		example.RespInternal				"internal error"
@@ -208,6 +180,39 @@ func UpdateProduct(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp, err := handler.NewUpdateProductService(ctx, c).Do(&req)
+
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// RateProduct .
+// @id			UpdateRating
+// @Summary		update product rating info
+// @Tags		products
+// @Access		json
+// @Produce		json
+// @Param        Authorization  header    string  true  "Bearer User's access token"
+// @Param		product	rating body	example.UpdateRatingData	true	"product rating data"
+// @Success		200				{object}		example.RespOk{data=example.RatingData} "success"
+// @Failure		400 			{object}		example.RespBadRequest				"bad request"
+// @Failure     404  			{object}		example.RespNotFound				"not found"
+// @Failure		500 			{object}		example.RespInternal				"internal error"
+// @Failure		401 			{object}		example.RespUnauthorized			"authentication failed"
+// @router /api/products/rating/update [PUT]
+func RateProduct(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req product.RatingReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := handler.NewRateProductService(ctx, c).Do(&req)
 
 	if err != nil {
 		responder.SendErrResponse(ctx, c, consts.StatusOK, err)

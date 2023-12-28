@@ -27,8 +27,8 @@ type Product struct {
 	Picture string `gorm:"type:varchar(200);not null;comment: oss url"`
 
 	State    ProductState `gorm:"type:tinyint unsigned;not null"`
-	Price    float32      `gorm:"type:float unsigned;index;not null"`
-	RatingId int32        `gorm:"type:int unsigned;not null"`
+	Price    float32      `gorm:"type:float(8,2) unsigned;index;not null"`
+	Rating   float32      `gorm:"type:float(2,1) unsigned;not null;default: 0"`
 	Showcase ctype.CList  `gorm:"type:json;not null;comment:provide a range of product illustrations also as product detail"`
 }
 
@@ -54,18 +54,18 @@ func (p *Product) AfterCreate(tx *gorm.DB) (err error) {
 
 // initRating initialize the rating of the new product as 5.0, a max value.
 func initRating(p *Product, tx *gorm.DB) (err error) {
-	rating := Rating{
+	rating := ProductRating{
 		ProductId:     p.ID,
+		TotalRating:   0,
 		TotalCustomer: 0,
-		CurRating:     5,
 	}
+
 	err = tx.Create(&rating).Error
 	if err != nil {
 		klog.Errorf("failed to create rating record: %s", err)
 		return err
 	}
 
-	p.RatingId = rating.Id
 	return nil
 }
 

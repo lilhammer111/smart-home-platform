@@ -1231,7 +1231,19 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/example.NewProductBody"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.AddProductData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "state": {
+                                            "$ref": "#/definitions/example.ProductState"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 ],
@@ -1247,7 +1259,19 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.ProductData"
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/example.UpdateProductData"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "state": {
+                                                            "$ref": "#/definitions/example.ProductState"
+                                                        }
+                                                    }
+                                                }
+                                            ]
                                         }
                                     }
                                 }
@@ -2718,7 +2742,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.ProductData"
+                                            "$ref": "#/definitions/example.UpdateProductData"
                                         }
                                     }
                                 }
@@ -2771,39 +2795,79 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "page",
+                        "type": "integer",
+                        "description": "Page number for pagination",
                         "name": "page",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "limit",
+                        "type": "integer",
+                        "description": "Number of items per page",
                         "name": "limit",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "state",
-                        "name": "state",
+                        "description": "Search term",
+                        "name": "search",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "category_id",
+                        "type": "integer",
+                        "description": "Category ID to filter products",
                         "name": "category_id",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "brand_id",
-                        "name": "brand_id",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "List of Brand IDs to filter products",
+                        "name": "brand_id_list",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "sorts",
-                        "name": "sorts",
+                        "type": "boolean",
+                        "description": "Set to true for ascending price sorting, false for descending",
+                        "name": "is_price_asc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true for ascending rating sorting, false for descending",
+                        "name": "is_rating_asc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true to filter products that are on sale",
+                        "name": "on_sale",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true to filter products with free shipping",
+                        "name": "is_free_shipping",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true to filter new products",
+                        "name": "is_new",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true to filter hot products",
+                        "name": "is_hot",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Set to true to filter recommended products",
+                        "name": "is_recommended",
                         "in": "query"
                     }
                 ],
@@ -2821,7 +2885,19 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/example.ProductData"
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/definitions/example.UpdateProductData"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "state": {
+                                                                "$ref": "#/definitions/example.ProductState"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
                                             }
                                         }
                                     }
@@ -3142,7 +3218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/update": {
+        "/api/products/rating/update": {
             "put": {
                 "produces": [
                     "application/json"
@@ -3150,8 +3226,8 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "update product info",
-                "operationId": "UpdateProduct",
+                "summary": "update product rating info",
+                "operationId": "UpdateRating",
                 "parameters": [
                     {
                         "type": "string",
@@ -3161,12 +3237,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "product data",
-                        "name": "product",
+                        "description": "product rating data",
+                        "name": "rating",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/example.ProductData"
+                            "$ref": "#/definitions/example.UpdateRatingData"
                         }
                     }
                 ],
@@ -3182,7 +3258,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.ProductData"
+                                            "$ref": "#/definitions/example.RatingData"
                                         }
                                     }
                                 }
@@ -3216,7 +3292,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/products/update_rating": {
+        "/api/products/update": {
             "put": {
                 "produces": [
                     "application/json"
@@ -3224,8 +3300,8 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "update product rating info",
-                "operationId": "UpdateRating",
+                "summary": "update product info",
+                "operationId": "UpdateProduct",
                 "parameters": [
                     {
                         "type": "string",
@@ -3235,12 +3311,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "product rating data",
-                        "name": "rating",
+                        "description": "product data",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/example.RatingReqBody"
+                            "$ref": "#/definitions/example.UpdateProductData"
                         }
                     }
                 ],
@@ -3256,7 +3332,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/example.RatingData"
+                                            "$ref": "#/definitions/example.UpdateProductData"
                                         }
                                     }
                                 }
@@ -3649,6 +3725,56 @@ const docTemplate = `{
                 }
             }
         },
+        "example.AddProductData": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "brief": {
+                    "type": "string",
+                    "example": "Product Description"
+                },
+                "category_id": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "model_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "model1",
+                        "model2",
+                        "model3"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Product Name"
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://example.com/picture.jpg"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 99.99
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://example.com/showcase1.jpg",
+                        "https://example.com/showcase2.jpg"
+                    ]
+                }
+            }
+        },
         "example.AlertData": {
             "type": "object",
             "properties": {
@@ -3966,101 +4092,30 @@ const docTemplate = `{
                 }
             }
         },
-        "example.NewProductBody": {
-            "type": "object",
-            "properties": {
-                "brandId": {
-                    "type": "integer"
-                },
-                "brief": {
-                    "type": "string"
-                },
-                "categoryId": {
-                    "type": "integer"
-                },
-                "modelId": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "picture": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "ratingId": {
-                    "type": "integer"
-                },
-                "showcase": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "state": {
-                    "$ref": "#/definitions/example.ProductState"
-                }
-            }
-        },
-        "example.ProductData": {
-            "type": "object",
-            "properties": {
-                "brandId": {
-                    "type": "integer"
-                },
-                "brief": {
-                    "type": "string"
-                },
-                "categoryId": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "modelId": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "picture": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "ratingId": {
-                    "type": "integer"
-                },
-                "showcase": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "state": {
-                    "$ref": "#/definitions/example.ProductState"
-                }
-            }
-        },
         "example.ProductState": {
-            "type": "integer",
-            "enum": [
-                1,
-                2,
-                4,
-                8,
-                16
-            ],
-            "x-enum-varnames": [
-                "OnSale",
-                "IsFreeShipping",
-                "IsNew",
-                "IsHot",
-                "IsRecommended"
-            ]
+            "type": "object",
+            "properties": {
+                "is_free_shipping": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "is_hot": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "is_new": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "is_recommended": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "on_sale": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
         },
         "example.PwdLoginBody": {
             "type": "object",
@@ -4079,27 +4134,6 @@ const docTemplate = `{
         "example.RatingData": {
             "type": "object",
             "properties": {
-                "cur_rating": {
-                    "type": "number",
-                    "example": 4.5
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "product_id": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "total_customer": {
-                    "type": "integer",
-                    "example": 250
-                }
-            }
-        },
-        "example.RatingReqBody": {
-            "type": "object",
-            "properties": {
                 "product_id": {
                     "type": "integer",
                     "example": 1
@@ -4107,6 +4141,10 @@ const docTemplate = `{
                 "rating": {
                     "type": "number",
                     "example": 4.5
+                },
+                "total_customer": {
+                    "type": "integer",
+                    "example": 250
                 }
             }
         },
@@ -4243,6 +4281,73 @@ const docTemplate = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "example.UpdateProductData": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "brief": {
+                    "type": "string",
+                    "example": "Product Description"
+                },
+                "category_id": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "model_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "model1",
+                        "model2",
+                        "model3"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Product Name"
+                },
+                "picture": {
+                    "type": "string",
+                    "example": "https://example.com/picture.jpg"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 99.99
+                },
+                "showcase": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://example.com/showcase1.jpg",
+                        "https://example.com/showcase2.jpg"
+                    ]
+                }
+            }
+        },
+        "example.UpdateRatingData": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "rating": {
+                    "type": "number",
+                    "example": 4.5
                 }
             }
         },

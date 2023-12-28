@@ -141,7 +141,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetCategoryList(ctx context.Context, req *product.PageFilter) (r []*product.CategoryInfo, err error) {
+func (p *kClient) GetCategoryList(ctx context.Context, req *common.PageFilter) (r []*product.CategoryInfo, err error) {
 	var _args product.CategoryServiceGetCategoryListArgs
 	_args.Req = req
 	var _result product.CategoryServiceGetCategoryListResult

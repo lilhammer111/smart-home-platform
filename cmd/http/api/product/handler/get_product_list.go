@@ -20,7 +20,7 @@ func NewGetProductListService(Context context.Context, RequestContext *app.Reque
 	return &GetProductListService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetProductListService) Do(req *product.ProductFilter) (resp *[]*product.ProductInfo, err error) {
+func (h *GetProductListService) Do(req *product.ProductFilter) (resp *[]*product.ProductBasicInfo, err error) {
 	productFilter := rpcProduct.ProductFilter{}
 	err = copier.Copy(&productFilter, req)
 	if err != nil {
@@ -34,7 +34,7 @@ func (h *GetProductListService) Do(req *product.ProductFilter) (resp *[]*product
 		return nil, err
 	}
 
-	resp = new([]*product.ProductInfo)
+	resp = new([]*product.ProductBasicInfo)
 	err = copier.Copy(resp, productInfos)
 	if err != nil {
 		hlog.Error(err)

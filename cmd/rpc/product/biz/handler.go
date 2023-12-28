@@ -16,21 +16,21 @@ import (
 type CombineServiceImpl struct{}
 
 // GetProductList implements the ProductServiceImpl interface.
-func (s *CombineServiceImpl) GetProductList(ctx context.Context, req *product.ProductFilter) (resp []*product.ProductDetail, err error) {
+func (s *CombineServiceImpl) GetProductList(ctx context.Context, req *product.ProductFilter) (resp []*product.ProductBasicInfo, err error) {
 	resp, err = product_service.NewGetProductListService(ctx).Run(req)
 
 	return resp, err
 }
 
 // GetProductDetail implements the ProductServiceImpl interface.
-func (s *CombineServiceImpl) GetProductDetail(ctx context.Context, req *common.Req) (resp *product.ProductDetail, err error) {
+func (s *CombineServiceImpl) GetProductDetail(ctx context.Context, req *common.Req) (resp *product.ProductDetailResp, err error) {
 	resp, err = product_service.NewGetProductDetailService(ctx).Run(req)
 
 	return resp, err
 }
 
 // AddNewProduct implements the ProductServiceImpl interface.
-func (s *CombineServiceImpl) AddNewProduct(ctx context.Context, req *product.NewProduct_) (resp *product.ProductInfo, err error) {
+func (s *CombineServiceImpl) AddNewProduct(ctx context.Context, req *product.AddProductReq) (resp *product.ProductInfo, err error) {
 	resp, err = product_service.NewAddNewProductService(ctx).Run(req)
 
 	return resp, err
@@ -43,13 +43,6 @@ func (s *CombineServiceImpl) UpdateProduct(ctx context.Context, req *product.Pro
 	return resp, err
 }
 
-// UpdateRating implements the ProductServiceImpl interface.
-func (s *CombineServiceImpl) UpdateRating(ctx context.Context, req *product.RatingReq) (resp *product.RatingInfo, err error) {
-	resp, err = product_service.NewUpdateRatingService(ctx).Run(req)
-
-	return resp, err
-}
-
 // DeleteProduct implements the ProductServiceImpl interface.
 func (s *CombineServiceImpl) DeleteProduct(ctx context.Context, req *common.Req) (resp *common.Empty, err error) {
 	resp, err = product_service.NewDeleteProductService(ctx).Run(req)
@@ -58,7 +51,7 @@ func (s *CombineServiceImpl) DeleteProduct(ctx context.Context, req *common.Req)
 }
 
 // GetCategoryList implements the CategoryServiceImpl interface.
-func (s *CombineServiceImpl) GetCategoryList(ctx context.Context, req *product.PageFilter) (resp []*product.CategoryInfo, err error) {
+func (s *CombineServiceImpl) GetCategoryList(ctx context.Context, req *common.PageFilter) (resp []*product.CategoryInfo, err error) {
 	resp, err = category_service.NewGetCategoryListService(ctx).Run(req)
 
 	return resp, err
@@ -121,7 +114,7 @@ func (s *CombineServiceImpl) DeleteModel(ctx context.Context, req *common.Req) (
 }
 
 // GetBrandList implements the BrandServiceImpl interface.
-func (s *CombineServiceImpl) GetBrandList(ctx context.Context, req *product.PageFilter) (resp []*product.BrandInfo, err error) {
+func (s *CombineServiceImpl) GetBrandList(ctx context.Context, req *common.PageFilter) (resp []*product.BrandInfo, err error) {
 	resp, err = brand_service.NewGetBrandListService(ctx).Run(req)
 
 	return resp, err
@@ -214,6 +207,13 @@ func (s *CombineServiceImpl) BatchReduceCategoryBrand(ctx context.Context, req *
 // GetRelatedBrandsByCategoryId implements the BrandServiceImpl interface.
 func (s *CombineServiceImpl) GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq) (resp []*product.BrandInfo, err error) {
 	resp, err = brand_service.NewGetRelatedBrandsByCategoryIdService(ctx).Run(req)
+
+	return resp, err
+}
+
+// RateProduct implements the ProductServiceImpl interface.
+func (s *CombineServiceImpl) RateProduct(ctx context.Context, req *product.RatingReq) (resp *product.RatingResp, err error) {
+	resp, err = product_service.NewRateProductService(ctx).Run(req)
 
 	return resp, err
 }

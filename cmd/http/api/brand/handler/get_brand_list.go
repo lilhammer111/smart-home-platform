@@ -2,15 +2,14 @@ package handler
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/brand"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	rpcCommon "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
-
-	brand "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/brand"
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 type GetBrandListService struct {
@@ -23,7 +22,7 @@ func NewGetBrandListService(Context context.Context, RequestContext *app.Request
 }
 
 func (h *GetBrandListService) Do(req *common.PageFilter) (resp *[]*brand.BrandInfo, err error) {
-	pageFilter := product.PageFilter{}
+	pageFilter := rpcCommon.PageFilter{}
 	err = copier.Copy(&pageFilter, req)
 	if err != nil {
 		hlog.Error(err)

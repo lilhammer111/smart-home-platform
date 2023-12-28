@@ -21,14 +21,14 @@ func NewGetProductDetailService(Context context.Context, RequestContext *app.Req
 	return &GetProductDetailService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetProductDetailService) Do(req *common.Req) (resp *product.ProductInfo, err error) {
+func (h *GetProductDetailService) Do(req *common.Req) (resp *product.ProductDetailResp, err error) {
 	productInfo, err := micro_product_cli.GetProductDetail(h.Context, &rpcCommon.Req{Id: req.Id})
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
 
-	resp = &product.ProductInfo{}
+	resp = &product.ProductDetailResp{}
 	err = copier.Copy(resp, productInfo)
 	if err != nil {
 		hlog.Error(err)

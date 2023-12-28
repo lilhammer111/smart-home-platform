@@ -5,6 +5,42 @@ definitions:
         example: 豪华旗舰款
         type: string
     type: object
+  example.AddProductData:
+    properties:
+      brand_id:
+        example: 20
+        type: integer
+      brief:
+        example: Product Description
+        type: string
+      category_id:
+        example: 10
+        type: integer
+      model_list:
+        example:
+        - model1
+        - model2
+        - model3
+        items:
+          type: string
+        type: array
+      name:
+        example: Product Name
+        type: string
+      picture:
+        example: https://example.com/picture.jpg
+        type: string
+      price:
+        example: 99.99
+        type: number
+      showcase:
+        example:
+        - https://example.com/showcase1.jpg
+        - https://example.com/showcase2.jpg
+        items:
+          type: string
+        type: array
+    type: object
   example.AlertData:
     properties:
       count:
@@ -230,72 +266,24 @@ definitions:
           type: integer
         type: array
     type: object
-  example.NewProductBody:
-    properties:
-      brandId:
-        type: integer
-      brief:
-        type: string
-      categoryId:
-        type: integer
-      modelId:
-        type: integer
-      name:
-        type: string
-      picture:
-        type: string
-      price:
-        type: number
-      ratingId:
-        type: integer
-      showcase:
-        items:
-          type: string
-        type: array
-      state:
-        $ref: '#/definitions/example.ProductState'
-    type: object
-  example.ProductData:
-    properties:
-      brandId:
-        type: integer
-      brief:
-        type: string
-      categoryId:
-        type: integer
-      id:
-        type: integer
-      modelId:
-        type: integer
-      name:
-        type: string
-      picture:
-        type: string
-      price:
-        type: number
-      ratingId:
-        type: integer
-      showcase:
-        items:
-          type: string
-        type: array
-      state:
-        $ref: '#/definitions/example.ProductState'
-    type: object
   example.ProductState:
-    enum:
-    - 1
-    - 2
-    - 4
-    - 8
-    - 16
-    type: integer
-    x-enum-varnames:
-    - OnSale
-    - IsFreeShipping
-    - IsNew
-    - IsHot
-    - IsRecommended
+    properties:
+      is_free_shipping:
+        example: false
+        type: boolean
+      is_hot:
+        example: false
+        type: boolean
+      is_new:
+        example: true
+        type: boolean
+      is_recommended:
+        example: true
+        type: boolean
+      on_sale:
+        example: true
+        type: boolean
+    type: object
   example.PwdLoginBody:
     properties:
       password:
@@ -308,27 +296,15 @@ definitions:
     type: object
   example.RatingData:
     properties:
-      cur_rating:
-        example: 4.5
-        type: number
-      id:
-        example: 1
-        type: integer
-      product_id:
-        example: 1
-        type: integer
-      total_customer:
-        example: 250
-        type: integer
-    type: object
-  example.RatingReqBody:
-    properties:
       product_id:
         example: 1
         type: integer
       rating:
         example: 4.5
         type: number
+      total_customer:
+        example: 250
+        type: integer
     type: object
   example.RespBadRequest:
     properties:
@@ -425,6 +401,54 @@ definitions:
       success:
         example: false
         type: boolean
+    type: object
+  example.UpdateProductData:
+    properties:
+      brand_id:
+        example: 20
+        type: integer
+      brief:
+        example: Product Description
+        type: string
+      category_id:
+        example: 10
+        type: integer
+      id:
+        example: 1
+        type: integer
+      model_list:
+        example:
+        - model1
+        - model2
+        - model3
+        items:
+          type: string
+        type: array
+      name:
+        example: Product Name
+        type: string
+      picture:
+        example: https://example.com/picture.jpg
+        type: string
+      price:
+        example: 99.99
+        type: number
+      showcase:
+        example:
+        - https://example.com/showcase1.jpg
+        - https://example.com/showcase2.jpg
+        items:
+          type: string
+        type: array
+    type: object
+  example.UpdateRatingData:
+    properties:
+      product_id:
+        example: 1
+        type: integer
+      rating:
+        example: 4.5
+        type: number
     type: object
   example.UserData:
     properties:
@@ -1232,7 +1256,12 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/example.NewProductBody'
+          allOf:
+          - $ref: '#/definitions/example.AddProductData'
+          - properties:
+              state:
+                $ref: '#/definitions/example.ProductState'
+            type: object
       produces:
       - application/json
       responses:
@@ -1243,7 +1272,12 @@ paths:
             - $ref: '#/definitions/example.RespCreated'
             - properties:
                 data:
-                  $ref: '#/definitions/example.ProductData'
+                  allOf:
+                  - $ref: '#/definitions/example.UpdateProductData'
+                  - properties:
+                      state:
+                        $ref: '#/definitions/example.ProductState'
+                    type: object
               type: object
         "400":
           description: bad request
@@ -2175,7 +2209,7 @@ paths:
             - $ref: '#/definitions/example.RespOk'
             - properties:
                 data:
-                  $ref: '#/definitions/example.ProductData'
+                  $ref: '#/definitions/example.UpdateProductData'
               type: object
         "400":
           description: bad request
@@ -2205,30 +2239,57 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: page
+      - description: Page number for pagination
         in: query
         name: page
-        type: string
-      - description: limit
+        type: integer
+      - description: Number of items per page
         in: query
         name: limit
-        type: string
-      - description: state
+        type: integer
+      - description: Search term
         in: query
-        name: state
+        name: search
         type: string
-      - description: category_id
+      - description: Category ID to filter products
         in: query
         name: category_id
-        type: string
-      - description: brand_id
+        type: integer
+      - collectionFormat: csv
+        description: List of Brand IDs to filter products
         in: query
-        name: brand_id
-        type: string
-      - description: sorts
+        items:
+          type: integer
+        name: brand_id_list
+        type: array
+      - description: Set to true for ascending price sorting, false for descending
         in: query
-        name: sorts
-        type: string
+        name: is_price_asc
+        type: boolean
+      - description: Set to true for ascending rating sorting, false for descending
+        in: query
+        name: is_rating_asc
+        type: boolean
+      - description: Set to true to filter products that are on sale
+        in: query
+        name: on_sale
+        type: boolean
+      - description: Set to true to filter products with free shipping
+        in: query
+        name: is_free_shipping
+        type: boolean
+      - description: Set to true to filter new products
+        in: query
+        name: is_new
+        type: boolean
+      - description: Set to true to filter hot products
+        in: query
+        name: is_hot
+        type: boolean
+      - description: Set to true to filter recommended products
+        in: query
+        name: is_recommended
+        type: boolean
       produces:
       - application/json
       responses:
@@ -2240,7 +2301,12 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/example.ProductData'
+                    allOf:
+                    - $ref: '#/definitions/example.UpdateProductData'
+                    - properties:
+                        state:
+                          $ref: '#/definitions/example.ProductState'
+                      type: object
                   type: array
               type: object
         "400":
@@ -2440,53 +2506,7 @@ paths:
       summary: get all models
       tags:
       - product models
-  /api/products/update:
-    put:
-      operationId: UpdateProduct
-      parameters:
-      - description: Bearer User's access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: product data
-        in: body
-        name: product
-        required: true
-        schema:
-          $ref: '#/definitions/example.ProductData'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            allOf:
-            - $ref: '#/definitions/example.RespOk'
-            - properties:
-                data:
-                  $ref: '#/definitions/example.ProductData'
-              type: object
-        "400":
-          description: bad request
-          schema:
-            $ref: '#/definitions/example.RespBadRequest'
-        "401":
-          description: authentication failed
-          schema:
-            $ref: '#/definitions/example.RespUnauthorized'
-        "404":
-          description: not found
-          schema:
-            $ref: '#/definitions/example.RespNotFound'
-        "500":
-          description: internal error
-          schema:
-            $ref: '#/definitions/example.RespInternal'
-      summary: update product info
-      tags:
-      - products
-  /api/products/update_rating:
+  /api/products/rating/update:
     put:
       operationId: UpdateRating
       parameters:
@@ -2500,7 +2520,7 @@ paths:
         name: rating
         required: true
         schema:
-          $ref: '#/definitions/example.RatingReqBody'
+          $ref: '#/definitions/example.UpdateRatingData'
       produces:
       - application/json
       responses:
@@ -2530,6 +2550,52 @@ paths:
           schema:
             $ref: '#/definitions/example.RespInternal'
       summary: update product rating info
+      tags:
+      - products
+  /api/products/update:
+    put:
+      operationId: UpdateProduct
+      parameters:
+      - description: Bearer User's access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/example.UpdateProductData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/example.RespOk'
+            - properties:
+                data:
+                  $ref: '#/definitions/example.UpdateProductData'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/example.RespBadRequest'
+        "401":
+          description: authentication failed
+          schema:
+            $ref: '#/definitions/example.RespUnauthorized'
+        "404":
+          description: not found
+          schema:
+            $ref: '#/definitions/example.RespNotFound'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/example.RespInternal'
+      summary: update product info
       tags:
       - products
   /api/users/current:

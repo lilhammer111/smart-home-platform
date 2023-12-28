@@ -7,6 +7,7 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/lilhammer111/micro-kit/model/scope"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -23,7 +24,7 @@ func NewGetCategoryListService(ctx context.Context) *GetCategoryListService {
 }
 
 // Run create note info
-func (s *GetCategoryListService) Run(req *product.PageFilter) (resp []*product.CategoryInfo, err error) {
+func (s *GetCategoryListService) Run(req *common.PageFilter) (resp []*product.CategoryInfo, err error) {
 	categoryInfos := make([]model.Category, 0)
 	res := db.GetMysql().Model(&model.Category{}).Scopes(scope.Paginate(req.Page, req.Limit)).Find(&categoryInfos)
 	if res.Error != nil {

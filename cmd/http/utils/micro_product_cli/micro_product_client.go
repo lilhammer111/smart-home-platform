@@ -12,19 +12,19 @@ import (
 type RPCClient interface {
 	KitexClient() combineservice.Client
 	Service() string
-	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductDetail, err error)
+	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductBasicInfo, err error)
 
-	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetail, err error)
+	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetailResp, err error)
 
-	AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
+	AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
 
 	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (resp *product.ProductInfo, err error)
 
-	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error)
+	RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error)
 
 	DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error)
+	GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error)
 
 	GetCategoryDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.CategoryInfo, err error)
 
@@ -42,7 +42,7 @@ type RPCClient interface {
 
 	DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
+	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
 	GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
@@ -97,15 +97,15 @@ func (c *clientImpl) KitexClient() combineservice.Client {
 	return c.kitexClient
 }
 
-func (c *clientImpl) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductDetail, err error) {
+func (c *clientImpl) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductBasicInfo, err error) {
 	return c.kitexClient.GetProductList(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetail, err error) {
+func (c *clientImpl) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetailResp, err error) {
 	return c.kitexClient.GetProductDetail(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
+func (c *clientImpl) AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
 	return c.kitexClient.AddNewProduct(ctx, req, callOptions...)
 }
 
@@ -113,15 +113,15 @@ func (c *clientImpl) UpdateProduct(ctx context.Context, req *product.ProductInfo
 	return c.kitexClient.UpdateProduct(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error) {
-	return c.kitexClient.UpdateRating(ctx, req, callOptions...)
+func (c *clientImpl) RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error) {
+	return c.kitexClient.RateProduct(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
 	return c.kitexClient.DeleteProduct(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
+func (c *clientImpl) GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
 	return c.kitexClient.GetCategoryList(ctx, req, callOptions...)
 }
 
@@ -157,7 +157,7 @@ func (c *clientImpl) DeleteModel(ctx context.Context, req *common.Req, callOptio
 	return c.kitexClient.DeleteModel(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+func (c *clientImpl) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
 	return c.kitexClient.GetBrandList(ctx, req, callOptions...)
 }
 

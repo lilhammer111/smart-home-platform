@@ -8,6 +8,7 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/model/scope"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/utils"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -23,7 +24,7 @@ func NewGetBrandListService(ctx context.Context) *GetBrandListService {
 }
 
 // Run create note info
-func (s *GetBrandListService) Run(req *product.PageFilter) (resp []*product.BrandInfo, err error) {
+func (s *GetBrandListService) Run(req *common.PageFilter) (resp []*product.BrandInfo, err error) {
 	resp = make([]*product.BrandInfo, 0)
 	res := db.GetMysql().Model(&model.Brand{}).Scopes(scope.Paginate(req.Page, req.Limit)).Find(&resp)
 	if res.Error != nil {

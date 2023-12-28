@@ -2,14 +2,13 @@ package handler
 
 import (
 	"context"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
 	rpcProduct "git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_product_cli"
 	"git.zqbjj.top/pet/services/cmd/http/utils/responder"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/jinzhu/copier"
-
-	product "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/product"
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 type UpdateProductService struct {

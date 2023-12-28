@@ -12,11 +12,11 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductDetail, err error)
-	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetail, err error)
-	AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
+	GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductBasicInfo, err error)
+	GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetailResp, err error)
+	AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
 	UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ...callopt.Option) (r *product.ProductInfo, err error)
-	UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error)
+	RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error)
 	DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 }
 
@@ -49,17 +49,17 @@ type kProductServiceClient struct {
 	*kClient
 }
 
-func (p *kProductServiceClient) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductDetail, err error) {
+func (p *kProductServiceClient) GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (r []*product.ProductBasicInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProductList(ctx, req)
 }
 
-func (p *kProductServiceClient) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetail, err error) {
+func (p *kProductServiceClient) GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ProductDetailResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProductDetail(ctx, req)
 }
 
-func (p *kProductServiceClient) AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (r *product.ProductInfo, err error) {
+func (p *kProductServiceClient) AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (r *product.ProductInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddNewProduct(ctx, req)
 }
@@ -69,9 +69,9 @@ func (p *kProductServiceClient) UpdateProduct(ctx context.Context, req *product.
 	return p.kClient.UpdateProduct(ctx, req)
 }
 
-func (p *kProductServiceClient) UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingInfo, err error) {
+func (p *kProductServiceClient) RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (r *product.RatingResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.UpdateRating(ctx, req)
+	return p.kClient.RateProduct(ctx, req)
 }
 
 func (p *kProductServiceClient) DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {

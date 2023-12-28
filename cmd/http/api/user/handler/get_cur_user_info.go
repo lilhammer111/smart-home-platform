@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 	"errors"
-	common "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
-	user "git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/common"
+	"git.zqbjj.top/pet/services/cmd/http/dto/hertz_gen/user"
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/micro_user"
 	"git.zqbjj.top/pet/services/cmd/http/mw"
 	"git.zqbjj.top/pet/services/cmd/http/utils/micro_user_cli"

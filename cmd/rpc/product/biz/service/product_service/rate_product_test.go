@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestUpdateRating_Run(t *testing.T) {
+func TestRateProduct_Run(t *testing.T) {
 	ctx := context.Background()
-	s := NewUpdateRatingService(ctx)
+	s := NewRateProductService(ctx)
 	// init req and assert value
 
 	req := &product.RatingReq{}

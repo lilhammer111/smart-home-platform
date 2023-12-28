@@ -8,7 +8,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 
-func GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductDetail, err error) {
+func GetProductList(ctx context.Context, req *product.ProductFilter, callOptions ...callopt.Option) (resp []*product.ProductBasicInfo, err error) {
 	resp, err = defaultClient.GetProductList(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetProductList call failed,err =%+v", err)
@@ -17,7 +17,7 @@ func GetProductList(ctx context.Context, req *product.ProductFilter, callOptions
 	return resp, nil
 }
 
-func GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetail, err error) {
+func GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ProductDetailResp, err error) {
 	resp, err = defaultClient.GetProductDetail(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetProductDetail call failed,err =%+v", err)
@@ -26,7 +26,7 @@ func GetProductDetail(ctx context.Context, req *common.Req, callOptions ...callo
 	return resp, nil
 }
 
-func AddNewProduct(ctx context.Context, req *product.NewProduct_, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
+func AddNewProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (resp *product.ProductInfo, err error) {
 	resp, err = defaultClient.AddNewProduct(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "AddNewProduct call failed,err =%+v", err)
@@ -44,10 +44,10 @@ func UpdateProduct(ctx context.Context, req *product.ProductInfo, callOptions ..
 	return resp, nil
 }
 
-func UpdateRating(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingInfo, err error) {
-	resp, err = defaultClient.UpdateRating(ctx, req, callOptions...)
+func RateProduct(ctx context.Context, req *product.RatingReq, callOptions ...callopt.Option) (resp *product.RatingResp, err error) {
+	resp, err = defaultClient.RateProduct(ctx, req, callOptions...)
 	if err != nil {
-		klog.CtxErrorf(ctx, "UpdateRating call failed,err =%+v", err)
+		klog.CtxErrorf(ctx, "RateProduct call failed,err =%+v", err)
 		return nil, err
 	}
 	return resp, nil
@@ -62,7 +62,7 @@ func DeleteProduct(ctx context.Context, req *common.Req, callOptions ...callopt.
 	return resp, nil
 }
 
-func GetCategoryList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
+func GetCategoryList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.CategoryInfo, err error) {
 	resp, err = defaultClient.GetCategoryList(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetCategoryList call failed,err =%+v", err)
@@ -143,7 +143,7 @@ func DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Op
 	return resp, nil
 }
 
-func GetBrandList(ctx context.Context, req *product.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+func GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
 	resp, err = defaultClient.GetBrandList(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetBrandList call failed,err =%+v", err)

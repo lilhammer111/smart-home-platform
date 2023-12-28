@@ -11,16 +11,16 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-type UpdateRatingService struct {
+type RateProductService struct {
 	RequestContext *app.RequestContext
 	Context        context.Context
 }
 
-func NewUpdateRatingService(Context context.Context, RequestContext *app.RequestContext) *UpdateRatingService {
-	return &UpdateRatingService{RequestContext: RequestContext, Context: Context}
+func NewRateProductService(Context context.Context, RequestContext *app.RequestContext) *RateProductService {
+	return &RateProductService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *UpdateRatingService) Do(req *product.RatingReq) (resp *product.RatingInfo, err error) {
+func (h *RateProductService) Do(req *product.RatingReq) (resp *product.RatingResp, err error) {
 	rpcRatingReq := rpcProduct.RatingReq{}
 	err = copier.Copy(&rpcRatingReq, req)
 	if err != nil {
@@ -28,13 +28,13 @@ func (h *UpdateRatingService) Do(req *product.RatingReq) (resp *product.RatingIn
 		return nil, err
 	}
 
-	updatedRatingInfo, err := micro_product_cli.UpdateRating(h.Context, &rpcRatingReq)
+	updatedRatingInfo, err := micro_product_cli.RateProduct(h.Context, &rpcRatingReq)
 	if err != nil {
 		hlog.Error(err)
 		return nil, err
 	}
 
-	resp = &product.RatingInfo{}
+	resp = &product.RatingResp{}
 	err = copier.Copy(resp, updatedRatingInfo)
 	if err != nil {
 		hlog.Error(err)

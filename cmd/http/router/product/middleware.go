@@ -180,3 +180,8 @@ func _ratingMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _rateproductMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
