@@ -51,3 +51,11 @@ func (p Product) AfterCreate(tx *gorm.DB) (err error) {
 	p.RatingId = rating.Id
 	return nil
 }
+
+func (p Product) BeforeCreate(tx *gorm.DB) (err error) {
+	return nil
+}
+
+func isValidState(status ProductState) bool {
+	return false
+}

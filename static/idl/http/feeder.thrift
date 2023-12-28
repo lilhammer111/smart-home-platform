@@ -1,4 +1,4 @@
-namespace go feed_program
+namespace go feeder
 include "common.thrift"
 
 

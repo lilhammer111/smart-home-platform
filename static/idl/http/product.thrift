@@ -41,6 +41,11 @@ struct NewProduct {
     9: required i8 State (api.body="state");
     10: required double Price (api.body="price");
     1: required list<string> Showcase (api.body="showcase");
+    20: required bool OnSale (api.body="on_sale");
+    21: required bool IsFreeShipping (api.body="is_free_shipping");
+    22: required bool IsNew (api.body="is_new");
+    23: required bool IsHot (api.body="is_hot");
+    24: required bool IsRecommended (api.body="is_recommended");
 }
 
 struct ProductInfo {
