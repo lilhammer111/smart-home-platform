@@ -43,8 +43,8 @@ struct ProductBasicInfo {
     2: required string Name (api.body="name");
     3: required string Brief (api.body="brief");
     4: required string Picture (api.body="picture");
-    6: required double Price (api.body="price");
-    7: required double Rating (api.body="rating");
+    6: required string Price (api.body="price");
+    7: required string Rating (api.body="rating");
 }
 
 struct AddProductReq {
@@ -65,7 +65,7 @@ struct ProductDetailResp {
     2: optional string Name (api.body="name");
     3: optional string Brief (api.body="brief");
     4: optional string Picture (api.body="picture");
-    6: optional double Price (api.body="price");
+    6: optional string Price (api.body="price");
     5: optional ProductState State (api.body="state");
 
     10: optional i32 CategoryId (api.body="category_id");
@@ -73,7 +73,7 @@ struct ProductDetailResp {
     13: optional list<string> ModelList (api.body="model_list");
     14: optional list<string> Showcase (api.body="showcase");
 
-    7: required double Rating (api.body="rating");
+    7: required string Rating (api.body="rating");
 }
 
 struct ProductInfo {
@@ -81,7 +81,7 @@ struct ProductInfo {
     2: optional string Name (api.body="name");
     3: optional string Brief (api.body="brief");
     4: optional string Picture (api.body="picture");
-    6: optional double Price (api.body="price");
+    6: optional string Price (api.body="price");
     5: optional OptionalState State (api.body="state");
 
     10: optional i32 CategoryId (api.body="category_id");

@@ -1932,12 +1932,12 @@ func (p *OptionalState) Field24DeepEqual(src *bool) bool {
 }
 
 type ProductBasicInfo struct {
-	Id      int32   `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
-	Name    string  `thrift:"Name,2,required" frugal:"2,required,string" json:"Name"`
-	Brief   string  `thrift:"Brief,3,required" frugal:"3,required,string" json:"Brief"`
-	Picture string  `thrift:"Picture,4,required" frugal:"4,required,string" json:"Picture"`
-	Price   float64 `thrift:"Price,6,required" frugal:"6,required,double" json:"Price"`
-	Rating  float64 `thrift:"Rating,7,required" frugal:"7,required,double" json:"Rating"`
+	Id      int32  `thrift:"Id,1,required" frugal:"1,required,i32" json:"Id"`
+	Name    string `thrift:"Name,2,required" frugal:"2,required,string" json:"Name"`
+	Brief   string `thrift:"Brief,3,required" frugal:"3,required,string" json:"Brief"`
+	Picture string `thrift:"Picture,4,required" frugal:"4,required,string" json:"Picture"`
+	Price   string `thrift:"Price,6,required" frugal:"6,required,string" json:"Price"`
+	Rating  string `thrift:"Rating,7,required" frugal:"7,required,string" json:"Rating"`
 }
 
 func NewProductBasicInfo() *ProductBasicInfo {
@@ -1964,11 +1964,11 @@ func (p *ProductBasicInfo) GetPicture() (v string) {
 	return p.Picture
 }
 
-func (p *ProductBasicInfo) GetPrice() (v float64) {
+func (p *ProductBasicInfo) GetPrice() (v string) {
 	return p.Price
 }
 
-func (p *ProductBasicInfo) GetRating() (v float64) {
+func (p *ProductBasicInfo) GetRating() (v string) {
 	return p.Rating
 }
 func (p *ProductBasicInfo) SetId(val int32) {
@@ -1983,10 +1983,10 @@ func (p *ProductBasicInfo) SetBrief(val string) {
 func (p *ProductBasicInfo) SetPicture(val string) {
 	p.Picture = val
 }
-func (p *ProductBasicInfo) SetPrice(val float64) {
+func (p *ProductBasicInfo) SetPrice(val string) {
 	p.Price = val
 }
-func (p *ProductBasicInfo) SetRating(val float64) {
+func (p *ProductBasicInfo) SetRating(val string) {
 	p.Rating = val
 }
 
@@ -2069,7 +2069,7 @@ func (p *ProductBasicInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2080,7 +2080,7 @@ func (p *ProductBasicInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2188,7 +2188,7 @@ func (p *ProductBasicInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductBasicInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = v
@@ -2197,7 +2197,7 @@ func (p *ProductBasicInfo) ReadField6(iprot thrift.TProtocol) error {
 }
 func (p *ProductBasicInfo) ReadField7(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Rating = v
@@ -2318,10 +2318,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *ProductBasicInfo) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+	if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Price); err != nil {
+	if err := oprot.WriteString(p.Price); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2334,10 +2334,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 func (p *ProductBasicInfo) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Rating", thrift.DOUBLE, 7); err != nil {
+	if err = oprot.WriteFieldBegin("Rating", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Rating); err != nil {
+	if err := oprot.WriteString(p.Rating); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2412,16 +2412,16 @@ func (p *ProductBasicInfo) Field4DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *ProductBasicInfo) Field6DeepEqual(src float64) bool {
+func (p *ProductBasicInfo) Field6DeepEqual(src string) bool {
 
-	if p.Price != src {
+	if strings.Compare(p.Price, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *ProductBasicInfo) Field7DeepEqual(src float64) bool {
+func (p *ProductBasicInfo) Field7DeepEqual(src string) bool {
 
-	if p.Rating != src {
+	if strings.Compare(p.Rating, src) != 0 {
 		return false
 	}
 	return true
@@ -3185,13 +3185,13 @@ type ProductDetailResp struct {
 	Name       *string       `thrift:"Name,2,optional" frugal:"2,optional,string" json:"Name,omitempty"`
 	Brief      *string       `thrift:"Brief,3,optional" frugal:"3,optional,string" json:"Brief,omitempty"`
 	Picture    *string       `thrift:"Picture,4,optional" frugal:"4,optional,string" json:"Picture,omitempty"`
-	Price      *float64      `thrift:"Price,6,optional" frugal:"6,optional,double" json:"Price,omitempty"`
+	Price      *string       `thrift:"Price,6,optional" frugal:"6,optional,string" json:"Price,omitempty"`
 	State      *ProductState `thrift:"State,5,optional" frugal:"5,optional,ProductState" json:"State,omitempty"`
 	CategoryId *int32        `thrift:"CategoryId,10,optional" frugal:"10,optional,i32" json:"CategoryId,omitempty"`
 	BrandId    *int32        `thrift:"BrandId,12,optional" frugal:"12,optional,i32" json:"BrandId,omitempty"`
 	ModelList  []string      `thrift:"ModelList,13,optional" frugal:"13,optional,list<string>" json:"ModelList,omitempty"`
 	Showcase   []string      `thrift:"Showcase,14,optional" frugal:"14,optional,list<string>" json:"Showcase,omitempty"`
-	Rating     float64       `thrift:"Rating,7,required" frugal:"7,required,double" json:"Rating"`
+	Rating     string        `thrift:"Rating,7,required" frugal:"7,required,string" json:"Rating"`
 }
 
 func NewProductDetailResp() *ProductDetailResp {
@@ -3233,9 +3233,9 @@ func (p *ProductDetailResp) GetPicture() (v string) {
 	return *p.Picture
 }
 
-var ProductDetailResp_Price_DEFAULT float64
+var ProductDetailResp_Price_DEFAULT string
 
-func (p *ProductDetailResp) GetPrice() (v float64) {
+func (p *ProductDetailResp) GetPrice() (v string) {
 	if !p.IsSetPrice() {
 		return ProductDetailResp_Price_DEFAULT
 	}
@@ -3287,7 +3287,7 @@ func (p *ProductDetailResp) GetShowcase() (v []string) {
 	return p.Showcase
 }
 
-func (p *ProductDetailResp) GetRating() (v float64) {
+func (p *ProductDetailResp) GetRating() (v string) {
 	return p.Rating
 }
 func (p *ProductDetailResp) SetId(val int32) {
@@ -3302,7 +3302,7 @@ func (p *ProductDetailResp) SetBrief(val *string) {
 func (p *ProductDetailResp) SetPicture(val *string) {
 	p.Picture = val
 }
-func (p *ProductDetailResp) SetPrice(val *float64) {
+func (p *ProductDetailResp) SetPrice(val *string) {
 	p.Price = val
 }
 func (p *ProductDetailResp) SetState(val *ProductState) {
@@ -3320,7 +3320,7 @@ func (p *ProductDetailResp) SetModelList(val []string) {
 func (p *ProductDetailResp) SetShowcase(val []string) {
 	p.Showcase = val
 }
-func (p *ProductDetailResp) SetRating(val float64) {
+func (p *ProductDetailResp) SetRating(val string) {
 	p.Rating = val
 }
 
@@ -3437,7 +3437,7 @@ func (p *ProductDetailResp) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -3497,7 +3497,7 @@ func (p *ProductDetailResp) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -3585,7 +3585,7 @@ func (p *ProductDetailResp) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductDetailResp) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = &v
@@ -3664,7 +3664,7 @@ func (p *ProductDetailResp) ReadField14(iprot thrift.TProtocol) error {
 }
 func (p *ProductDetailResp) ReadField7(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Rating = v
@@ -3812,10 +3812,10 @@ WriteFieldEndError:
 }
 func (p *ProductDetailResp) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+		if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteDouble(*p.Price); err != nil {
+		if err := oprot.WriteString(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3935,10 +3935,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 14 end error: ", p), err)
 }
 func (p *ProductDetailResp) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Rating", thrift.DOUBLE, 7); err != nil {
+	if err = oprot.WriteFieldBegin("Rating", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Rating); err != nil {
+	if err := oprot.WriteString(p.Rating); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -4043,14 +4043,14 @@ func (p *ProductDetailResp) Field4DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *ProductDetailResp) Field6DeepEqual(src *float64) bool {
+func (p *ProductDetailResp) Field6DeepEqual(src *string) bool {
 
 	if p.Price == src {
 		return true
 	} else if p.Price == nil || src == nil {
 		return false
 	}
-	if *p.Price != *src {
+	if strings.Compare(*p.Price, *src) != 0 {
 		return false
 	}
 	return true
@@ -4112,9 +4112,9 @@ func (p *ProductDetailResp) Field14DeepEqual(src []string) bool {
 	}
 	return true
 }
-func (p *ProductDetailResp) Field7DeepEqual(src float64) bool {
+func (p *ProductDetailResp) Field7DeepEqual(src string) bool {
 
-	if p.Rating != src {
+	if strings.Compare(p.Rating, src) != 0 {
 		return false
 	}
 	return true
@@ -4125,7 +4125,7 @@ type ProductInfo struct {
 	Name       *string        `thrift:"Name,2,optional" frugal:"2,optional,string" json:"Name,omitempty"`
 	Brief      *string        `thrift:"Brief,3,optional" frugal:"3,optional,string" json:"Brief,omitempty"`
 	Picture    *string        `thrift:"Picture,4,optional" frugal:"4,optional,string" json:"Picture,omitempty"`
-	Price      *float64       `thrift:"Price,6,optional" frugal:"6,optional,double" json:"Price,omitempty"`
+	Price      *string        `thrift:"Price,6,optional" frugal:"6,optional,string" json:"Price,omitempty"`
 	State      *OptionalState `thrift:"State,5,optional" frugal:"5,optional,OptionalState" json:"State,omitempty"`
 	CategoryId *int32         `thrift:"CategoryId,10,optional" frugal:"10,optional,i32" json:"CategoryId,omitempty"`
 	BrandId    *int32         `thrift:"BrandId,12,optional" frugal:"12,optional,i32" json:"BrandId,omitempty"`
@@ -4172,9 +4172,9 @@ func (p *ProductInfo) GetPicture() (v string) {
 	return *p.Picture
 }
 
-var ProductInfo_Price_DEFAULT float64
+var ProductInfo_Price_DEFAULT string
 
-func (p *ProductInfo) GetPrice() (v float64) {
+func (p *ProductInfo) GetPrice() (v string) {
 	if !p.IsSetPrice() {
 		return ProductInfo_Price_DEFAULT
 	}
@@ -4237,7 +4237,7 @@ func (p *ProductInfo) SetBrief(val *string) {
 func (p *ProductInfo) SetPicture(val *string) {
 	p.Picture = val
 }
-func (p *ProductInfo) SetPrice(val *float64) {
+func (p *ProductInfo) SetPrice(val *string) {
 	p.Price = val
 }
 func (p *ProductInfo) SetState(val *OptionalState) {
@@ -4367,7 +4367,7 @@ func (p *ProductInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -4499,7 +4499,7 @@ func (p *ProductInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = &v
@@ -4713,10 +4713,10 @@ WriteFieldEndError:
 }
 func (p *ProductInfo) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+		if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteDouble(*p.Price); err != nil {
+		if err := oprot.WriteString(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -4925,14 +4925,14 @@ func (p *ProductInfo) Field4DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *ProductInfo) Field6DeepEqual(src *float64) bool {
+func (p *ProductInfo) Field6DeepEqual(src *string) bool {
 
 	if p.Price == src {
 		return true
 	} else if p.Price == nil || src == nil {
 		return false
 	}
-	if *p.Price != *src {
+	if strings.Compare(*p.Price, *src) != 0 {
 		return false
 	}
 	return true

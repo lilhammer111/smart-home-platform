@@ -3,6 +3,7 @@ package product_service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
@@ -75,6 +76,8 @@ func (s *AddNewProductService) Run(req *product.AddProductReq) (resp *product.Pr
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 	resp.Id = productInfo.ID
+	price := fmt.Sprintf("%.2f", productInfo.Price)
+	resp.Price = &price
 
 	return resp, nil
 }

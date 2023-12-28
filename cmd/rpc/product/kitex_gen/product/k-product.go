@@ -1537,7 +1537,7 @@ func (p *ProductBasicInfo) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
@@ -1552,7 +1552,7 @@ func (p *ProductBasicInfo) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField7(buf[offset:])
 				offset += l
 				if err != nil {
@@ -1691,7 +1691,7 @@ func (p *ProductBasicInfo) FastReadField4(buf []byte) (int, error) {
 func (p *ProductBasicInfo) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadDouble(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -1705,7 +1705,7 @@ func (p *ProductBasicInfo) FastReadField6(buf []byte) (int, error) {
 func (p *ProductBasicInfo) FastReadField7(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadDouble(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -1726,11 +1726,11 @@ func (p *ProductBasicInfo) FastWriteNocopy(buf []byte, binaryWriter bthrift.Bina
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "ProductBasicInfo")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
-		offset += p.fastWriteField6(buf[offset:], binaryWriter)
-		offset += p.fastWriteField7(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField6(buf[offset:], binaryWriter)
+		offset += p.fastWriteField7(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -1791,8 +1791,8 @@ func (p *ProductBasicInfo) fastWriteField4(buf []byte, binaryWriter bthrift.Bina
 
 func (p *ProductBasicInfo) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.DOUBLE, 6)
-	offset += bthrift.Binary.WriteDouble(buf[offset:], p.Price)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.STRING, 6)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Price)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1800,8 +1800,8 @@ func (p *ProductBasicInfo) fastWriteField6(buf []byte, binaryWriter bthrift.Bina
 
 func (p *ProductBasicInfo) fastWriteField7(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Rating", thrift.DOUBLE, 7)
-	offset += bthrift.Binary.WriteDouble(buf[offset:], p.Rating)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Rating", thrift.STRING, 7)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Rating)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1845,8 +1845,8 @@ func (p *ProductBasicInfo) field4Length() int {
 
 func (p *ProductBasicInfo) field6Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Price", thrift.DOUBLE, 6)
-	l += bthrift.Binary.DoubleLength(p.Price)
+	l += bthrift.Binary.FieldBeginLength("Price", thrift.STRING, 6)
+	l += bthrift.Binary.StringLengthNocopy(p.Price)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -1854,8 +1854,8 @@ func (p *ProductBasicInfo) field6Length() int {
 
 func (p *ProductBasicInfo) field7Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Rating", thrift.DOUBLE, 7)
-	l += bthrift.Binary.DoubleLength(p.Rating)
+	l += bthrift.Binary.FieldBeginLength("Rating", thrift.STRING, 7)
+	l += bthrift.Binary.StringLengthNocopy(p.Rating)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -2574,7 +2574,7 @@ func (p *ProductDetailResp) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
@@ -2658,7 +2658,7 @@ func (p *ProductDetailResp) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField7(buf[offset:])
 				offset += l
 				if err != nil {
@@ -2774,7 +2774,7 @@ func (p *ProductDetailResp) FastReadField4(buf []byte) (int, error) {
 func (p *ProductDetailResp) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadDouble(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -2886,7 +2886,7 @@ func (p *ProductDetailResp) FastReadField14(buf []byte) (int, error) {
 func (p *ProductDetailResp) FastReadField7(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadDouble(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -2907,16 +2907,16 @@ func (p *ProductDetailResp) FastWriteNocopy(buf []byte, binaryWriter bthrift.Bin
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "ProductDetailResp")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
-		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField10(buf[offset:], binaryWriter)
 		offset += p.fastWriteField12(buf[offset:], binaryWriter)
-		offset += p.fastWriteField7(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 		offset += p.fastWriteField13(buf[offset:], binaryWriter)
 		offset += p.fastWriteField14(buf[offset:], binaryWriter)
+		offset += p.fastWriteField7(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -2989,8 +2989,8 @@ func (p *ProductDetailResp) fastWriteField4(buf []byte, binaryWriter bthrift.Bin
 func (p *ProductDetailResp) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetPrice() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.DOUBLE, 6)
-		offset += bthrift.Binary.WriteDouble(buf[offset:], *p.Price)
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.STRING, 6)
+		offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, *p.Price)
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
@@ -3069,8 +3069,8 @@ func (p *ProductDetailResp) fastWriteField14(buf []byte, binaryWriter bthrift.Bi
 
 func (p *ProductDetailResp) fastWriteField7(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Rating", thrift.DOUBLE, 7)
-	offset += bthrift.Binary.WriteDouble(buf[offset:], p.Rating)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Rating", thrift.STRING, 7)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Rating)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -3121,8 +3121,8 @@ func (p *ProductDetailResp) field4Length() int {
 func (p *ProductDetailResp) field6Length() int {
 	l := 0
 	if p.IsSetPrice() {
-		l += bthrift.Binary.FieldBeginLength("Price", thrift.DOUBLE, 6)
-		l += bthrift.Binary.DoubleLength(*p.Price)
+		l += bthrift.Binary.FieldBeginLength("Price", thrift.STRING, 6)
+		l += bthrift.Binary.StringLengthNocopy(*p.Price)
 
 		l += bthrift.Binary.FieldEndLength()
 	}
@@ -3193,8 +3193,8 @@ func (p *ProductDetailResp) field14Length() int {
 
 func (p *ProductDetailResp) field7Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("Rating", thrift.DOUBLE, 7)
-	l += bthrift.Binary.DoubleLength(p.Rating)
+	l += bthrift.Binary.FieldBeginLength("Rating", thrift.STRING, 7)
+	l += bthrift.Binary.StringLengthNocopy(p.Rating)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -3281,7 +3281,7 @@ func (p *ProductInfo) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
@@ -3461,7 +3461,7 @@ func (p *ProductInfo) FastReadField4(buf []byte) (int, error) {
 func (p *ProductInfo) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadDouble(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -3580,12 +3580,12 @@ func (p *ProductInfo) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWri
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "ProductInfo")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
-		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField10(buf[offset:], binaryWriter)
 		offset += p.fastWriteField12(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 		offset += p.fastWriteField13(buf[offset:], binaryWriter)
 		offset += p.fastWriteField14(buf[offset:], binaryWriter)
@@ -3660,8 +3660,8 @@ func (p *ProductInfo) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWri
 func (p *ProductInfo) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetPrice() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.DOUBLE, 6)
-		offset += bthrift.Binary.WriteDouble(buf[offset:], *p.Price)
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "Price", thrift.STRING, 6)
+		offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, *p.Price)
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
@@ -3783,8 +3783,8 @@ func (p *ProductInfo) field4Length() int {
 func (p *ProductInfo) field6Length() int {
 	l := 0
 	if p.IsSetPrice() {
-		l += bthrift.Binary.FieldBeginLength("Price", thrift.DOUBLE, 6)
-		l += bthrift.Binary.DoubleLength(*p.Price)
+		l += bthrift.Binary.FieldBeginLength("Price", thrift.STRING, 6)
+		l += bthrift.Binary.StringLengthNocopy(*p.Price)
 
 		l += bthrift.Binary.FieldEndLength()
 	}

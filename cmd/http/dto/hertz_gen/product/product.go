@@ -1517,12 +1517,12 @@ func (p *OptionalState) String() string {
 }
 
 type ProductBasicInfo struct {
-	Id      int32   `thrift:"Id,1,required" form:"id,required" json:"id,required"`
-	Name    string  `thrift:"Name,2,required" form:"name,required" json:"name,required"`
-	Brief   string  `thrift:"Brief,3,required" form:"brief,required" json:"brief,required"`
-	Picture string  `thrift:"Picture,4,required" form:"picture,required" json:"picture,required"`
-	Price   float64 `thrift:"Price,6,required" form:"price,required" json:"price,required"`
-	Rating  float64 `thrift:"Rating,7,required" form:"rating,required" json:"rating,required"`
+	Id      int32  `thrift:"Id,1,required" form:"id,required" json:"id,required"`
+	Name    string `thrift:"Name,2,required" form:"name,required" json:"name,required"`
+	Brief   string `thrift:"Brief,3,required" form:"brief,required" json:"brief,required"`
+	Picture string `thrift:"Picture,4,required" form:"picture,required" json:"picture,required"`
+	Price   string `thrift:"Price,6,required" form:"price,required" json:"price,required"`
+	Rating  string `thrift:"Rating,7,required" form:"rating,required" json:"rating,required"`
 }
 
 func NewProductBasicInfo() *ProductBasicInfo {
@@ -1545,11 +1545,11 @@ func (p *ProductBasicInfo) GetPicture() (v string) {
 	return p.Picture
 }
 
-func (p *ProductBasicInfo) GetPrice() (v float64) {
+func (p *ProductBasicInfo) GetPrice() (v string) {
 	return p.Price
 }
 
-func (p *ProductBasicInfo) GetRating() (v float64) {
+func (p *ProductBasicInfo) GetRating() (v string) {
 	return p.Rating
 }
 
@@ -1632,7 +1632,7 @@ func (p *ProductBasicInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1643,7 +1643,7 @@ func (p *ProductBasicInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1751,7 +1751,7 @@ func (p *ProductBasicInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductBasicInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = v
@@ -1760,7 +1760,7 @@ func (p *ProductBasicInfo) ReadField6(iprot thrift.TProtocol) error {
 }
 func (p *ProductBasicInfo) ReadField7(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Rating = v
@@ -1881,10 +1881,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *ProductBasicInfo) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+	if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Price); err != nil {
+	if err := oprot.WriteString(p.Price); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1897,10 +1897,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 func (p *ProductBasicInfo) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Rating", thrift.DOUBLE, 7); err != nil {
+	if err = oprot.WriteFieldBegin("Rating", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Rating); err != nil {
+	if err := oprot.WriteString(p.Rating); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1925,13 +1925,13 @@ type ProductDetailResp struct {
 	Name       *string       `thrift:"Name,2,optional" form:"name" json:"name,omitempty"`
 	Brief      *string       `thrift:"Brief,3,optional" form:"brief" json:"brief,omitempty"`
 	Picture    *string       `thrift:"Picture,4,optional" form:"picture" json:"picture,omitempty"`
-	Price      *float64      `thrift:"Price,6,optional" form:"price" json:"price,omitempty"`
+	Price      *string       `thrift:"Price,6,optional" form:"price" json:"price,omitempty"`
 	State      *ProductState `thrift:"State,5,optional" form:"state" json:"state,omitempty"`
 	CategoryId *int32        `thrift:"CategoryId,10,optional" form:"category_id" json:"category_id,omitempty"`
 	BrandId    *int32        `thrift:"BrandId,12,optional" form:"brand_id" json:"brand_id,omitempty"`
 	ModelList  []string      `thrift:"ModelList,13,optional" form:"model_list" json:"model_list,omitempty"`
 	Showcase   []string      `thrift:"Showcase,14,optional" form:"showcase" json:"showcase,omitempty"`
-	Rating     float64       `thrift:"Rating,7,required" form:"rating,required" json:"rating,required"`
+	Rating     string        `thrift:"Rating,7,required" form:"rating,required" json:"rating,required"`
 }
 
 func NewProductDetailResp() *ProductDetailResp {
@@ -1969,9 +1969,9 @@ func (p *ProductDetailResp) GetPicture() (v string) {
 	return *p.Picture
 }
 
-var ProductDetailResp_Price_DEFAULT float64
+var ProductDetailResp_Price_DEFAULT string
 
-func (p *ProductDetailResp) GetPrice() (v float64) {
+func (p *ProductDetailResp) GetPrice() (v string) {
 	if !p.IsSetPrice() {
 		return ProductDetailResp_Price_DEFAULT
 	}
@@ -2023,7 +2023,7 @@ func (p *ProductDetailResp) GetShowcase() (v []string) {
 	return p.Showcase
 }
 
-func (p *ProductDetailResp) GetRating() (v float64) {
+func (p *ProductDetailResp) GetRating() (v string) {
 	return p.Rating
 }
 
@@ -2140,7 +2140,7 @@ func (p *ProductDetailResp) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2200,7 +2200,7 @@ func (p *ProductDetailResp) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2288,7 +2288,7 @@ func (p *ProductDetailResp) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductDetailResp) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = &v
@@ -2367,7 +2367,7 @@ func (p *ProductDetailResp) ReadField14(iprot thrift.TProtocol) error {
 }
 func (p *ProductDetailResp) ReadField7(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Rating = v
@@ -2515,10 +2515,10 @@ WriteFieldEndError:
 }
 func (p *ProductDetailResp) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+		if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteDouble(*p.Price); err != nil {
+		if err := oprot.WriteString(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2638,10 +2638,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 14 end error: ", p), err)
 }
 func (p *ProductDetailResp) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Rating", thrift.DOUBLE, 7); err != nil {
+	if err = oprot.WriteFieldBegin("Rating", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteDouble(p.Rating); err != nil {
+	if err := oprot.WriteString(p.Rating); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -3276,7 +3276,7 @@ type ProductInfo struct {
 	Name       *string        `thrift:"Name,2,optional" form:"name" json:"name,omitempty"`
 	Brief      *string        `thrift:"Brief,3,optional" form:"brief" json:"brief,omitempty"`
 	Picture    *string        `thrift:"Picture,4,optional" form:"picture" json:"picture,omitempty"`
-	Price      *float64       `thrift:"Price,6,optional" form:"price" json:"price,omitempty"`
+	Price      *string        `thrift:"Price,6,optional" form:"price" json:"price,omitempty"`
 	State      *OptionalState `thrift:"State,5,optional" form:"state" json:"state,omitempty"`
 	CategoryId *int32         `thrift:"CategoryId,10,optional" form:"category_id" json:"category_id,omitempty"`
 	BrandId    *int32         `thrift:"BrandId,12,optional" form:"brand_id" json:"brand_id,omitempty"`
@@ -3319,9 +3319,9 @@ func (p *ProductInfo) GetPicture() (v string) {
 	return *p.Picture
 }
 
-var ProductInfo_Price_DEFAULT float64
+var ProductInfo_Price_DEFAULT string
 
-func (p *ProductInfo) GetPrice() (v float64) {
+func (p *ProductInfo) GetPrice() (v string) {
 	if !p.IsSetPrice() {
 		return ProductInfo_Price_DEFAULT
 	}
@@ -3484,7 +3484,7 @@ func (p *ProductInfo) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.DOUBLE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -3616,7 +3616,7 @@ func (p *ProductInfo) ReadField4(iprot thrift.TProtocol) error {
 }
 func (p *ProductInfo) ReadField6(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadDouble(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
 		p.Price = &v
@@ -3830,10 +3830,10 @@ WriteFieldEndError:
 }
 func (p *ProductInfo) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("Price", thrift.DOUBLE, 6); err != nil {
+		if err = oprot.WriteFieldBegin("Price", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteDouble(*p.Price); err != nil {
+		if err := oprot.WriteString(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {

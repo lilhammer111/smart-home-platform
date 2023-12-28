@@ -3,6 +3,7 @@ package product_service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
@@ -43,6 +44,10 @@ func (s *GetProductDetailService) Run(req *common.Req) (resp *product.ProductDet
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
+
+	resp.Rating = fmt.Sprintf("%.1f", productInfo.Rating)
+	price := fmt.Sprintf("%.2f", productInfo.Price)
+	resp.Price = &price
 
 	// Parsing the state field in product table from integer to  struct
 	// And then assign the result value to the state field in resp
