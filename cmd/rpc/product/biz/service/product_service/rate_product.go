@@ -80,3 +80,54 @@ func (s *RateProductService) Run(req *product.RatingReq) (resp *product.RatingRe
 
 	return resp, nil
 }
+func (s *RateProductService) RunTest(req *product.RatingReq) (resp *product.RatingResp, err error) {
+	tx := db.GetMysql().Begin()
+	productRatingInfo := model.ProductRating{}
+	// 查找特定产品的评分信息
+	err = tx.First(&productRatingInfo, req.ProductId).Error
+	if err != nil {
+		klog.Error(err)
+		tx.Rollback()
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, kerrors.NewBizStatusError(code.NotFound, "The product is not existed.")
+		}
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+
+	// 在 Go 程序中计算新的 total_customer 和 total_rating
+	productRatingInfo.TotalCustomer += 1
+	productRatingInfo.TotalRating += float32(req.Rating)
+
+	// 更新产品评分信息
+	err = tx.Save(&productRatingInfo).Error
+	if err != nil {
+		klog.Error(err)
+		tx.Rollback()
+		return nil, kerrors.NewBizStatusError(code.BadRequest, msg.InternalError)
+	}
+
+	// 计算并更新产品的平均评分
+	newRating := productRatingInfo.TotalRating / float32(productRatingInfo.TotalCustomer)
+	productInfo := model.Product{}
+	productInfo.ID = req.ProductId
+	err = tx.Model(&productInfo).Update("rating", newRating).Error
+	if err != nil {
+		klog.Error(err)
+		tx.Rollback()
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+
+	// 提交事务
+	err = tx.Commit().Error
+	if err != nil {
+		klog.Error(err)
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+
+	// 构建响应
+	resp = &product.RatingResp{
+		Rating: fmt.Sprintf("%.1f", newRating),
+	}
+
+	return resp, nil
+}
