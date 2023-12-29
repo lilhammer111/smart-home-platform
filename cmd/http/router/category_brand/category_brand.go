@@ -28,6 +28,7 @@ func Register(r *server.Hertz) {
 				_category_brand.DELETE("/batch_reduce", append(_batchreducecategorybrandMw(), category_brand.BatchReduceCategoryBrand)...)
 				_category_brand.DELETE("/delete_brand", append(_deletebrandbycategoryMw(), category_brand.DeleteBrandByCategory)...)
 				_category_brand.DELETE("/delete_category", append(_deletecategorybybrandMw(), category_brand.DeleteCategoryByBrand)...)
+				_category_brand.PUT("/update", append(_updatecategorybrandMw(), category_brand.UpdateCategoryBrand)...)
 			}
 		}
 	}

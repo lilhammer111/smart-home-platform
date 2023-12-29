@@ -13,6 +13,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error)
+	UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error)
 	BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error)
 	DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
@@ -50,6 +51,11 @@ type kCategoryBrandServiceClient struct {
 func (p *kCategoryBrandServiceClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.BatchAddCategoryBrand(ctx, req)
+}
+
+func (p *kCategoryBrandServiceClient) UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateCategoryBrand(ctx, req)
 }
 
 func (p *kCategoryBrandServiceClient) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error) {

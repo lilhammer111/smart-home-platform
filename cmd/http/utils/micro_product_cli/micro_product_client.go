@@ -2,8 +2,9 @@ package micro_product_cli
 
 import (
 	"context"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
-	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+	commonSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/common"
+	productSrv "git.zqbjj.top/pet/services/cmd/http/kitex_gen/product"
+
 	"git.zqbjj.top/pet/services/cmd/http/kitex_gen/product/combineservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
@@ -55,6 +56,8 @@ type RPCClient interface {
 	DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
 	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error)
+
+	UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
 	BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
@@ -175,6 +178,10 @@ func (c *clientImpl) DeleteBanner(ctx context.Context, req *common.Req, callOpti
 
 func (c *clientImpl) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp []*product.CategoryBrandInfo, err error) {
 	return c.kitexClient.BatchAddCategoryBrand(ctx, req, callOptions...)
+}
+
+func (c *clientImpl) UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	return c.kitexClient.UpdateCategoryBrand(ctx, req, callOptions...)
 }
 
 func (c *clientImpl) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {

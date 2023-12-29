@@ -16,6 +16,7 @@ struct NewCategoryBrand {
 service CategoryBrand {
     list<CategoryBrandInfo> BatchAddCategoryBrand(1: NewCategoryBrand req) (api.post="/api/products/category_brand/batch_add");
     common.Empty BatchReduceCategoryBrand(1: NewCategoryBrand req) (api.delete="/api/products/category_brand/batch_reduce");
+    common.Empty UpdateCategoryBrand(1: NewCategoryBrand req) (api.put="/api/products/category_brand/update");
     common.Empty DeleteBrandByCategory(1: common.Req req) (api.delete="/api/products/category_brand/delete_brand");
     common.Empty DeleteCategoryByBrand(1: common.Req req) (api.delete="/api/products/category_brand/delete_category");
 }

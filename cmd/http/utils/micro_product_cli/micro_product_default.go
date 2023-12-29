@@ -206,6 +206,15 @@ func BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, 
 	return resp, nil
 }
 
+func UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {
+	resp, err = defaultClient.UpdateCategoryBrand(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "UpdateCategoryBrand call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
 func BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (resp *common.Empty, err error) {
 	resp, err = defaultClient.BatchReduceCategoryBrand(ctx, req, callOptions...)
 	if err != nil {

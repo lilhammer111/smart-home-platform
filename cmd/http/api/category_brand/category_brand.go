@@ -142,3 +142,24 @@ func DeleteCategoryByBrand(ctx context.Context, c *app.RequestContext) {
 	}
 	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
+
+// UpdateCategoryBrand .
+// @router /api/products/category_brand/update [PUT]
+func UpdateCategoryBrand(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req category_brand.NewCategoryBrand
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.Set(responder.ErrorMessage, "Invalid parameter.")
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := handler.NewUpdateCategoryBrandService(ctx, c).Do(&req)
+
+	if err != nil {
+		responder.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+	responder.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}

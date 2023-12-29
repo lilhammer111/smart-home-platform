@@ -188,3 +188,10 @@ func (s *CombineServiceImpl) RateProduct(ctx context.Context, req *product.Ratin
 
 	return resp, err
 }
+
+// UpdateCategoryBrand implements the CategoryBrandServiceImpl interface.
+func (s *CombineServiceImpl) UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (resp *common.Empty, err error) {
+	resp, err = service.NewUpdateCategoryBrandService(ctx).Run(req)
+
+	return resp, err
+}

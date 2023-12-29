@@ -45,3 +45,8 @@ func _deletebrandbycategoryMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updatecategorybrandMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

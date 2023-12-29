@@ -34,6 +34,7 @@ type Client interface {
 	UpdateBanner(ctx context.Context, req *product.BannerInfo, callOptions ...callopt.Option) (r *product.BannerInfo, err error)
 	DeleteBanner(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 	BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error)
+	UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error)
 	BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error)
 	DeleteBrandByCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
 	DeleteCategoryByBrand(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
@@ -176,6 +177,11 @@ func (p *kCombineServiceClient) DeleteBanner(ctx context.Context, req *common.Re
 func (p *kCombineServiceClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r []*product.CategoryBrandInfo, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.BatchAddCategoryBrand(ctx, req)
+}
+
+func (p *kCombineServiceClient) UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateCategoryBrand(ctx, req)
 }
 
 func (p *kCombineServiceClient) BatchReduceCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_, callOptions ...callopt.Option) (r *common.Empty, err error) {

@@ -21,6 +21,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*product.CategoryBrandService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"BatchAddCategoryBrand":    kitex.NewMethodInfo(batchAddCategoryBrandHandler, newCategoryBrandServiceBatchAddCategoryBrandArgs, newCategoryBrandServiceBatchAddCategoryBrandResult, false),
+		"UpdateCategoryBrand":      kitex.NewMethodInfo(updateCategoryBrandHandler, newCategoryBrandServiceUpdateCategoryBrandArgs, newCategoryBrandServiceUpdateCategoryBrandResult, false),
 		"BatchReduceCategoryBrand": kitex.NewMethodInfo(batchReduceCategoryBrandHandler, newCategoryBrandServiceBatchReduceCategoryBrandArgs, newCategoryBrandServiceBatchReduceCategoryBrandResult, false),
 		"DeleteBrandByCategory":    kitex.NewMethodInfo(deleteBrandByCategoryHandler, newCategoryBrandServiceDeleteBrandByCategoryArgs, newCategoryBrandServiceDeleteBrandByCategoryResult, false),
 		"DeleteCategoryByBrand":    kitex.NewMethodInfo(deleteCategoryByBrandHandler, newCategoryBrandServiceDeleteCategoryByBrandArgs, newCategoryBrandServiceDeleteCategoryByBrandResult, false),
@@ -56,6 +57,24 @@ func newCategoryBrandServiceBatchAddCategoryBrandArgs() interface{} {
 
 func newCategoryBrandServiceBatchAddCategoryBrandResult() interface{} {
 	return product.NewCategoryBrandServiceBatchAddCategoryBrandResult()
+}
+
+func updateCategoryBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.CategoryBrandServiceUpdateCategoryBrandArgs)
+	realResult := result.(*product.CategoryBrandServiceUpdateCategoryBrandResult)
+	success, err := handler.(product.CategoryBrandService).UpdateCategoryBrand(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCategoryBrandServiceUpdateCategoryBrandArgs() interface{} {
+	return product.NewCategoryBrandServiceUpdateCategoryBrandArgs()
+}
+
+func newCategoryBrandServiceUpdateCategoryBrandResult() interface{} {
+	return product.NewCategoryBrandServiceUpdateCategoryBrandResult()
 }
 
 func batchReduceCategoryBrandHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -127,6 +146,16 @@ func (p *kClient) BatchAddCategoryBrand(ctx context.Context, req *product.NewCat
 	_args.Req = req
 	var _result product.CategoryBrandServiceBatchAddCategoryBrandResult
 	if err = p.c.Call(ctx, "BatchAddCategoryBrand", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateCategoryBrand(ctx context.Context, req *product.NewCategoryBrand_) (r *common.Empty, err error) {
+	var _args product.CategoryBrandServiceUpdateCategoryBrandArgs
+	_args.Req = req
+	var _result product.CategoryBrandServiceUpdateCategoryBrandResult
+	if err = p.c.Call(ctx, "UpdateCategoryBrand", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
