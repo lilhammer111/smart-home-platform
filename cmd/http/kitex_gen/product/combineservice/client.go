@@ -23,11 +23,7 @@ type Client interface {
 	AddNewCategory(ctx context.Context, req *product.NewCategory_, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	UpdateCategory(ctx context.Context, req *product.CategoryInfo, callOptions ...callopt.Option) (r *product.CategoryInfo, err error)
 	DeleteCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
-	GetAllModels(ctx context.Context, callOptions ...callopt.Option) (r []*product.ModelInfo, err error)
-	GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ModelInfo, err error)
-	AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (r *product.ModelInfo, err error)
-	DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error)
-	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error)
+	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandListResp, err error)
 	GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (r []*product.BrandInfo, err error)
 	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.BrandInfo, err error)
 	AddNewBrand(ctx context.Context, req *product.NewBrand_, callOptions ...callopt.Option) (r *product.BrandInfo, err error)
@@ -127,27 +123,7 @@ func (p *kCombineServiceClient) DeleteCategory(ctx context.Context, req *common.
 	return p.kClient.DeleteCategory(ctx, req)
 }
 
-func (p *kCombineServiceClient) GetAllModels(ctx context.Context, callOptions ...callopt.Option) (r []*product.ModelInfo, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetAllModels(ctx)
-}
-
-func (p *kCombineServiceClient) GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *product.ModelInfo, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetModelDetail(ctx, req)
-}
-
-func (p *kCombineServiceClient) AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (r *product.ModelInfo, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.AddNewModel(ctx, req)
-}
-
-func (p *kCombineServiceClient) DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *common.Empty, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.DeleteModel(ctx, req)
-}
-
-func (p *kCombineServiceClient) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandInfo, err error) {
+func (p *kCombineServiceClient) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*product.BrandListResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetBrandList(ctx, req)
 }

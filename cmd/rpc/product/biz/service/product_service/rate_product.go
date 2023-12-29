@@ -27,8 +27,8 @@ func NewRateProductService(ctx context.Context) *RateProductService {
 // Run create note info
 func (s *RateProductService) Run(req *product.RatingReq) (resp *product.RatingResp, err error) {
 	tx := db.GetMysql().Begin()
-	productRatingInfo := model.ProductRating{}
 
+	productRatingInfo := model.ProductRating{}
 	err = tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&productRatingInfo, req.ProductId).Error
 	if err != nil {
 		klog.Error(err)
@@ -42,7 +42,7 @@ func (s *RateProductService) Run(req *product.RatingReq) (resp *product.RatingRe
 	res := tx.Model(&productRatingInfo).Updates(map[string]interface{}{
 		"total_customer": gorm.Expr("total_customer + ?", 1),
 		"total_rating":   gorm.Expr("total_rating + ?", req.Rating),
-	})
+	}).Scan(&productRatingInfo)
 	if res.Error != nil || res.RowsAffected == 0 {
 		klog.Error(res.Error)
 		tx.Rollback()
@@ -50,16 +50,10 @@ func (s *RateProductService) Run(req *product.RatingReq) (resp *product.RatingRe
 		return nil, kerrors.NewBizStatusError(code.BadRequest, msg.InternalError)
 	}
 
-	err = tx.First(&productRatingInfo, req.ProductId).Error
-	if err != nil {
-		klog.Error(err)
-		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
-	}
-
 	productInfo := model.Product{}
-	productInfo.ID = req.ProductId
-	res = tx.Model(&productInfo).Select("rating").
-		Update("rating", gorm.Expr("? / ?", productRatingInfo.TotalRating, productRatingInfo.TotalCustomer))
+	res = tx.Model(&model.Product{}).Where("id = ?", req.ProductId).Select("rating").
+		Update("rating", gorm.Expr("? / ?", productRatingInfo.TotalRating, productRatingInfo.TotalCustomer)).
+		Scan(&productInfo)
 	if res.Error != nil {
 		klog.Error(res.Error)
 		tx.Rollback()
@@ -68,23 +62,17 @@ func (s *RateProductService) Run(req *product.RatingReq) (resp *product.RatingRe
 	// Don't judge the RowsAffected, because the rating is possible to be the same with the previous.
 	tx.Commit()
 
-	err = db.GetMysql().First(&productInfo, req.ProductId).Error
-	if err != nil {
-		klog.Error(err)
-		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
-	}
-
 	resp = &product.RatingResp{
 		Rating: fmt.Sprintf("%.1f", productInfo.Rating),
 	}
 
 	return resp, nil
 }
+
 func (s *RateProductService) RunTest(req *product.RatingReq) (resp *product.RatingResp, err error) {
 	tx := db.GetMysql().Begin()
 	productRatingInfo := model.ProductRating{}
-	// 查找特定产品的评分信息
-	err = tx.First(&productRatingInfo, req.ProductId).Error
+	err = tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&productRatingInfo, req.ProductId).Error
 	if err != nil {
 		klog.Error(err)
 		tx.Rollback()
@@ -94,11 +82,9 @@ func (s *RateProductService) RunTest(req *product.RatingReq) (resp *product.Rati
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	// 在 Go 程序中计算新的 total_customer 和 total_rating
 	productRatingInfo.TotalCustomer += 1
 	productRatingInfo.TotalRating += float32(req.Rating)
 
-	// 更新产品评分信息
 	err = tx.Save(&productRatingInfo).Error
 	if err != nil {
 		klog.Error(err)
@@ -106,7 +92,6 @@ func (s *RateProductService) RunTest(req *product.RatingReq) (resp *product.Rati
 		return nil, kerrors.NewBizStatusError(code.BadRequest, msg.InternalError)
 	}
 
-	// 计算并更新产品的平均评分
 	newRating := productRatingInfo.TotalRating / float32(productRatingInfo.TotalCustomer)
 	productInfo := model.Product{}
 	productInfo.ID = req.ProductId
@@ -117,14 +102,12 @@ func (s *RateProductService) RunTest(req *product.RatingReq) (resp *product.Rati
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	// 提交事务
 	err = tx.Commit().Error
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
-	// 构建响应
 	resp = &product.RatingResp{
 		Rating: fmt.Sprintf("%.1f", newRating),
 	}

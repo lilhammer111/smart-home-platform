@@ -26,7 +26,7 @@ func NewGetCategoryListService(ctx context.Context) *GetCategoryListService {
 // Run create note info
 func (s *GetCategoryListService) Run(req *common.PageFilter) (resp []*product.CategoryInfo, err error) {
 	categoryInfos := make([]model.Category, 0)
-	res := db.GetMysql().Model(&model.Category{}).Scopes(scope.Paginate(req.Page, req.Limit)).Find(&categoryInfos)
+	res := db.GetMysql().Model(&model.Category{}).Scopes(scope.Paginate(req.Page, req.Limit)).Order("id desc").Find(&categoryInfos)
 	if res.Error != nil {
 		klog.Error(res.Error)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

@@ -2,7 +2,6 @@ namespace go product
 include "common.thrift"
 include "category.thrift"
 include "brand.thrift"
-include "model.thrift"
 
 struct ProductFilter {
     30: optional i16 Page (api.query="page");

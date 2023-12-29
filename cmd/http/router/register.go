@@ -10,7 +10,6 @@ import (
 	category "git.zqbjj.top/pet/services/cmd/http/router/category"
 	category_brand "git.zqbjj.top/pet/services/cmd/http/router/category_brand"
 	device "git.zqbjj.top/pet/services/cmd/http/router/device"
-	model "git.zqbjj.top/pet/services/cmd/http/router/model"
 	product "git.zqbjj.top/pet/services/cmd/http/router/product"
 
 	"git.zqbjj.top/pet/services/cmd/http/router/user"
@@ -21,8 +20,6 @@ import (
 func GeneratedRegister(r *server.Hertz) {
 	//INSERT_POINT: DO NOT DELETE THIS LINE!
 	category_brand.Register(r)
-
-	model.Register(r)
 
 	brand.Register(r)
 

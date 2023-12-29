@@ -160,7 +160,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) GetBrandList(ctx context.Context, req *common.PageFilter) (r []*brand.BrandInfo, err error) {
+func (p *kClient) GetBrandList(ctx context.Context, req *common.PageFilter) (r []*brand.BrandListResp, err error) {
 	var _args brand.BrandGetBrandListArgs
 	_args.Req = req
 	var _result brand.BrandGetBrandListResult

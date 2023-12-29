@@ -6,7 +6,7 @@ import (
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model"
-	product "git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
+	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
@@ -22,7 +22,7 @@ func NewGetAllBannersService(ctx context.Context) *GetAllBannersService {
 
 // Run create note info
 func (s *GetAllBannersService) Run() (resp []*product.BannerInfo, err error) {
-	res := db.GetMysql().Model(&model.Banner{}).Find(&resp)
+	res := db.GetMysql().Model(&model.Banner{}).Order("id desc").Find(&resp)
 	if res.Error != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

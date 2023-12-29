@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type FeedingProgram struct {
 	BaseModel
@@ -19,13 +21,12 @@ type FeederStatus struct {
 }
 
 type FeedData struct {
-	Success  bool  `gorm:"type:bool;not null" json:"success"`
-	DeviceID int32 `gorm:"type:int unsigned;not null;index" json:"device_id"`
-	Amount   int16 `gorm:"type:smallint unsigned;not null" json:"amount"`
-	Food     int8  `gorm:"type:tinyint unsigned;not null" json:"food"`
-	// Consider adding an index to the field FeedAt
-	FeedAt time.Time `gorm:"type:datetime;not null" json:"feed_at"`
-	Remark string    `gorm:"type:varchar(255);not null;comment:Provides additional details about the feeding process, including failure reasons, adjustments, and other observations." json:"remark"`
+	Success  bool   `gorm:"type:bool;not null" json:"success"`
+	DeviceID int32  `gorm:"type:int unsigned;not null;index" json:"device_id"`
+	Amount   int16  `gorm:"type:smallint unsigned;not null" json:"amount"`
+	Food     int8   `gorm:"type:tinyint unsigned;not null" json:"food"`
+	FedAt    int32  `gorm:"type:int unsigned;not null" json:"fed_at"`
+	Remark   string `gorm:"type:varchar(255);not null;comment:Provides additional details about the feeding process, including failure reasons, adjustments, and other observations." json:"remark"`
 }
 
 type TimedFeedingRecord struct {

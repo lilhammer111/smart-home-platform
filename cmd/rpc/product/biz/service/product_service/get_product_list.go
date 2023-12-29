@@ -66,7 +66,7 @@ func (s *GetProductListService) Run(req *product.ProductFilter) (resp []*product
 
 	// by pagination
 	productInfos := make([]model.Product, 0)
-	res := tx.Scopes(scope.Paginate(req.Page, req.Limit)).Find(&productInfos)
+	res := tx.Scopes(scope.Paginate(req.Page, req.Limit)).Order("id desc").Find(&productInfos)
 	if res.Error != nil {
 		klog.Error(res.Error)
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)

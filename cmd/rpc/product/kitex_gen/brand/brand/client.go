@@ -12,7 +12,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error)
+	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*brand.BrandListResp, err error)
 	GetRelatedBrandsByCategoryId(ctx context.Context, req *brand.BrandByCatReq, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error)
 	GetBrandDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (r *brand.BrandInfo, err error)
 	AddNewBrand(ctx context.Context, req *brand.NewBrand_, callOptions ...callopt.Option) (r *brand.BrandInfo, err error)
@@ -49,7 +49,7 @@ type kBrandClient struct {
 	*kClient
 }
 
-func (p *kBrandClient) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*brand.BrandInfo, err error) {
+func (p *kBrandClient) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (r []*brand.BrandListResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetBrandList(ctx, req)
 }

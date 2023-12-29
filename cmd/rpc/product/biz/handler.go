@@ -6,7 +6,6 @@ import (
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/service/brand_service"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/service/category_brand_service"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/service/category_service"
-	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/service/model_service"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/service/product_service"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/common"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/kitex_gen/product"
@@ -85,36 +84,8 @@ func (s *CombineServiceImpl) DeleteCategory(ctx context.Context, req *common.Req
 	return resp, err
 }
 
-// GetAllModels implements the ModelServiceImpl interface.
-func (s *CombineServiceImpl) GetAllModels(ctx context.Context) (resp []*product.ModelInfo, err error) {
-	resp, err = model_service.NewGetAllModelsService(ctx).Run()
-
-	return resp, err
-}
-
-// GetModelDetail implements the ModelServiceImpl interface.
-func (s *CombineServiceImpl) GetModelDetail(ctx context.Context, req *common.Req) (resp *product.ModelInfo, err error) {
-	resp, err = model_service.NewGetModelDetailService(ctx).Run(req)
-
-	return resp, err
-}
-
-// AddNewModel implements the ModelServiceImpl interface.
-func (s *CombineServiceImpl) AddNewModel(ctx context.Context, req *product.NewModel_) (resp *product.ModelInfo, err error) {
-	resp, err = model_service.NewAddNewModelService(ctx).Run(req)
-
-	return resp, err
-}
-
-// DeleteModel implements the ModelServiceImpl interface.
-func (s *CombineServiceImpl) DeleteModel(ctx context.Context, req *common.Req) (resp *common.Empty, err error) {
-	resp, err = model_service.NewDeleteModelService(ctx).Run(req)
-
-	return resp, err
-}
-
 // GetBrandList implements the BrandServiceImpl interface.
-func (s *CombineServiceImpl) GetBrandList(ctx context.Context, req *common.PageFilter) (resp []*product.BrandInfo, err error) {
+func (s *CombineServiceImpl) GetBrandList(ctx context.Context, req *common.PageFilter) (resp []*product.BrandListResp, err error) {
 	resp, err = brand_service.NewGetBrandListService(ctx).Run(req)
 
 	return resp, err

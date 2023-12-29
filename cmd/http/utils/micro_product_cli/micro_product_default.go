@@ -107,43 +107,7 @@ func DeleteCategory(ctx context.Context, req *common.Req, callOptions ...callopt
 	return resp, nil
 }
 
-func GetAllModels(ctx context.Context, callOptions ...callopt.Option) (resp []*product.ModelInfo, err error) {
-	resp, err = defaultClient.GetAllModels(ctx, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "GetAllModels call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
-func GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
-	resp, err = defaultClient.GetModelDetail(ctx, req, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "GetModelDetail call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
-func AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
-	resp, err = defaultClient.AddNewModel(ctx, req, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "AddNewModel call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
-func DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	resp, err = defaultClient.DeleteModel(ctx, req, callOptions...)
-	if err != nil {
-		klog.CtxErrorf(ctx, "DeleteModel call failed,err =%+v", err)
-		return nil, err
-	}
-	return resp, nil
-}
-
-func GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+func GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandListResp, err error) {
 	resp, err = defaultClient.GetBrandList(ctx, req, callOptions...)
 	if err != nil {
 		klog.CtxErrorf(ctx, "GetBrandList call failed,err =%+v", err)

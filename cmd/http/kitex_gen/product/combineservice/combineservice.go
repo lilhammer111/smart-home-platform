@@ -13,7 +13,6 @@ import (
 type CombineService interface {
 	product.ProductService
 	product.CategoryService
-	product.ModelService
 	product.BrandService
 	product.BannerService
 	product.CategoryBrandService
@@ -40,10 +39,6 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"AddNewCategory":               kitex.NewMethodInfo(addNewCategoryHandler, newCategoryServiceAddNewCategoryArgs, newCategoryServiceAddNewCategoryResult, false),
 		"UpdateCategory":               kitex.NewMethodInfo(updateCategoryHandler, newCategoryServiceUpdateCategoryArgs, newCategoryServiceUpdateCategoryResult, false),
 		"DeleteCategory":               kitex.NewMethodInfo(deleteCategoryHandler, newCategoryServiceDeleteCategoryArgs, newCategoryServiceDeleteCategoryResult, false),
-		"GetAllModels":                 kitex.NewMethodInfo(getAllModelsHandler, newModelServiceGetAllModelsArgs, newModelServiceGetAllModelsResult, false),
-		"GetModelDetail":               kitex.NewMethodInfo(getModelDetailHandler, newModelServiceGetModelDetailArgs, newModelServiceGetModelDetailResult, false),
-		"AddNewModel":                  kitex.NewMethodInfo(addNewModelHandler, newModelServiceAddNewModelArgs, newModelServiceAddNewModelResult, false),
-		"DeleteModel":                  kitex.NewMethodInfo(deleteModelHandler, newModelServiceDeleteModelArgs, newModelServiceDeleteModelResult, false),
 		"GetBrandList":                 kitex.NewMethodInfo(getBrandListHandler, newBrandServiceGetBrandListArgs, newBrandServiceGetBrandListResult, false),
 		"GetRelatedBrandsByCategoryId": kitex.NewMethodInfo(getRelatedBrandsByCategoryIdHandler, newBrandServiceGetRelatedBrandsByCategoryIdArgs, newBrandServiceGetRelatedBrandsByCategoryIdResult, false),
 		"GetBrandDetail":               kitex.NewMethodInfo(getBrandDetailHandler, newBrandServiceGetBrandDetailArgs, newBrandServiceGetBrandDetailResult, false),
@@ -64,7 +59,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"ServiceFilePath": `../../static/idl/rpc/product.thrift`,
 	}
 	extra["combine_service"] = true
-	extra["combined_service_list"] = []string{"ProductService", "CategoryService", "ModelService", "BrandService", "BannerService", "CategoryBrandService"}
+	extra["combined_service_list"] = []string{"ProductService", "CategoryService", "BrandService", "BannerService", "CategoryBrandService"}
 	svcInfo := &kitex.ServiceInfo{
 		ServiceName:     serviceName,
 		HandlerType:     handlerType,
@@ -272,78 +267,6 @@ func newCategoryServiceDeleteCategoryArgs() interface{} {
 
 func newCategoryServiceDeleteCategoryResult() interface{} {
 	return product.NewCategoryServiceDeleteCategoryResult()
-}
-
-func getAllModelsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-
-	realResult := result.(*product.ModelServiceGetAllModelsResult)
-	success, err := handler.(product.ModelService).GetAllModels(ctx)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newModelServiceGetAllModelsArgs() interface{} {
-	return product.NewModelServiceGetAllModelsArgs()
-}
-
-func newModelServiceGetAllModelsResult() interface{} {
-	return product.NewModelServiceGetAllModelsResult()
-}
-
-func getModelDetailHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.ModelServiceGetModelDetailArgs)
-	realResult := result.(*product.ModelServiceGetModelDetailResult)
-	success, err := handler.(product.ModelService).GetModelDetail(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newModelServiceGetModelDetailArgs() interface{} {
-	return product.NewModelServiceGetModelDetailArgs()
-}
-
-func newModelServiceGetModelDetailResult() interface{} {
-	return product.NewModelServiceGetModelDetailResult()
-}
-
-func addNewModelHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.ModelServiceAddNewModelArgs)
-	realResult := result.(*product.ModelServiceAddNewModelResult)
-	success, err := handler.(product.ModelService).AddNewModel(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newModelServiceAddNewModelArgs() interface{} {
-	return product.NewModelServiceAddNewModelArgs()
-}
-
-func newModelServiceAddNewModelResult() interface{} {
-	return product.NewModelServiceAddNewModelResult()
-}
-
-func deleteModelHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*product.ModelServiceDeleteModelArgs)
-	realResult := result.(*product.ModelServiceDeleteModelResult)
-	success, err := handler.(product.ModelService).DeleteModel(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newModelServiceDeleteModelArgs() interface{} {
-	return product.NewModelServiceDeleteModelArgs()
-}
-
-func newModelServiceDeleteModelResult() interface{} {
-	return product.NewModelServiceDeleteModelResult()
 }
 
 func getBrandListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -718,46 +641,7 @@ func (p *kClient) DeleteCategory(ctx context.Context, req *common.Req) (r *commo
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetAllModels(ctx context.Context) (r []*product.ModelInfo, err error) {
-	var _args product.ModelServiceGetAllModelsArgs
-	var _result product.ModelServiceGetAllModelsResult
-	if err = p.c.Call(ctx, "GetAllModels", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) GetModelDetail(ctx context.Context, req *common.Req) (r *product.ModelInfo, err error) {
-	var _args product.ModelServiceGetModelDetailArgs
-	_args.Req = req
-	var _result product.ModelServiceGetModelDetailResult
-	if err = p.c.Call(ctx, "GetModelDetail", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) AddNewModel(ctx context.Context, req *product.NewModel_) (r *product.ModelInfo, err error) {
-	var _args product.ModelServiceAddNewModelArgs
-	_args.Req = req
-	var _result product.ModelServiceAddNewModelResult
-	if err = p.c.Call(ctx, "AddNewModel", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) DeleteModel(ctx context.Context, req *common.Req) (r *common.Empty, err error) {
-	var _args product.ModelServiceDeleteModelArgs
-	_args.Req = req
-	var _result product.ModelServiceDeleteModelResult
-	if err = p.c.Call(ctx, "DeleteModel", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) GetBrandList(ctx context.Context, req *common.PageFilter) (r []*product.BrandInfo, err error) {
+func (p *kClient) GetBrandList(ctx context.Context, req *common.PageFilter) (r []*product.BrandListResp, err error) {
 	var _args product.BrandServiceGetBrandListArgs
 	_args.Req = req
 	var _result product.BrandServiceGetBrandListResult

@@ -17,8 +17,8 @@ const (
 
 type Device struct {
 	model.BaseModel
-	OwnerId   int32 `gorm:"type:int unsigned;index;not null" json:"owner"`
-	ProductId int32 `gorm:"type:smallint unsigned;not null" json:"type"`
+	OwnerId    int32 `gorm:"type:int unsigned;index;not null" json:"owner"`
+	DeviceType int32 `gorm:"type:smallint unsigned;not null" json:"device_type"`
 
 	SerialNo *string `gorm:"type:varchar(255)" json:"serial_no"`
 	Name     *string `gorm:"type:varchar(50);index" json:"name"`
@@ -33,4 +33,9 @@ type Device struct {
 type Location struct {
 	Id    int16  `gorm:"type:smallint unsigned;primaryKey" json:"id"`
 	Title string `gorm:"type:varchar(50);not null" json:"title"`
+}
+
+type DeviceType struct {
+	model.BaseModel
+	Title string
 }

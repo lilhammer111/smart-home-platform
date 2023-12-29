@@ -2,7 +2,6 @@ namespace go product
 include "../http/common.thrift"
 include "../http/category.thrift"
 include "../http/brand.thrift"
-include "../http/model.thrift"
 
 struct ProductFilter {
     30: optional i16 Page (api.query="page");
@@ -131,26 +130,17 @@ service CategoryService {
     common.Empty DeleteCategory(1: common.Req req) (api.delete="/api/products/categories/delete");
 }
 
-struct ModelInfo {
-    1: required i32 Id (api.body="id");
-    2: required string Name (api.body="name");
-}
-
-struct NewModel {
-    1: required string Name (api.body="name");
-}
-
-service ModelService {
-    list<ModelInfo> GetAllModels() (api.get="/api/products/models/list");
-    ModelInfo GetModelDetail(1: common.Req req) (api.get="/api/products/models/detail");
-    ModelInfo AddNewModel(1: NewModel req) (api.post="/api/products/models/add");
-    common.Empty DeleteModel(1: common.Req req) (api.delete="/api/products/models/delete");
-}
-
 struct BrandInfo {
     1: required i32 Id (api.body="id");
     2: required string Name (api.body="name");
     3: required string Logo (api.body="logo");
+}
+
+struct BrandListResp {
+    1: required i32 Id (api.body="id");
+    2: required string Name (api.body="name");
+    3: required string Logo (api.body="logo");
+    5: required list<string> CategoryList (api.body="category_list");
 }
 
 struct NewBrand {
@@ -163,7 +153,7 @@ struct BrandByCatReq {
 }
 
 service BrandService {
-    list<BrandInfo> GetBrandList(1: common.PageFilter req) (api.get="/api/products/brands/list");
+    list<BrandListResp> GetBrandList(1: common.PageFilter req) (api.get="/api/products/brands/list");
     list<BrandInfo> GetRelatedBrandsByCategoryId(1: BrandByCatReq req) (api.get="/api/products/brands/related");
     BrandInfo GetBrandDetail (1:common.Req req) (api.get="/api/products/brands/detail")
     BrandInfo AddNewBrand(1: NewBrand req) (api.post="/api/products/brands/add");

@@ -34,15 +34,7 @@ type RPCClient interface {
 
 	DeleteCategory(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
 
-	GetAllModels(ctx context.Context, callOptions ...callopt.Option) (resp []*product.ModelInfo, err error)
-
-	GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ModelInfo, err error)
-
-	AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (resp *product.ModelInfo, err error)
-
-	DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error)
-
-	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
+	GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandListResp, err error)
 
 	GetRelatedBrandsByCategoryId(ctx context.Context, req *product.BrandByCatReq, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error)
 
@@ -141,23 +133,7 @@ func (c *clientImpl) DeleteCategory(ctx context.Context, req *common.Req, callOp
 	return c.kitexClient.DeleteCategory(ctx, req, callOptions...)
 }
 
-func (c *clientImpl) GetAllModels(ctx context.Context, callOptions ...callopt.Option) (resp []*product.ModelInfo, err error) {
-	return c.kitexClient.GetAllModels(ctx, callOptions...)
-}
-
-func (c *clientImpl) GetModelDetail(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
-	return c.kitexClient.GetModelDetail(ctx, req, callOptions...)
-}
-
-func (c *clientImpl) AddNewModel(ctx context.Context, req *product.NewModel_, callOptions ...callopt.Option) (resp *product.ModelInfo, err error) {
-	return c.kitexClient.AddNewModel(ctx, req, callOptions...)
-}
-
-func (c *clientImpl) DeleteModel(ctx context.Context, req *common.Req, callOptions ...callopt.Option) (resp *common.Empty, err error) {
-	return c.kitexClient.DeleteModel(ctx, req, callOptions...)
-}
-
-func (c *clientImpl) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandInfo, err error) {
+func (c *clientImpl) GetBrandList(ctx context.Context, req *common.PageFilter, callOptions ...callopt.Option) (resp []*product.BrandListResp, err error) {
 	return c.kitexClient.GetBrandList(ctx, req, callOptions...)
 }
 

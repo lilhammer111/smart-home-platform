@@ -37,6 +37,7 @@ func BenchmarkDatabaseMethod(b *testing.B) {
 			ProductId: 1,
 			Rating:    4.3,
 		}
+
 		_, err := s.Run(req)
 		if err != nil {
 			panic(err)
@@ -55,8 +56,9 @@ func BenchmarkGoMethod(b *testing.B) {
 
 		req := &product.RatingReq{
 			ProductId: 1,
-			Rating:    4.3,
+			Rating:    3,
 		}
+
 		_, err := s.RunTest(req)
 		if err != nil {
 			panic(err)

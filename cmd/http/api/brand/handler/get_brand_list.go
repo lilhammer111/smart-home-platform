@@ -21,7 +21,7 @@ func NewGetBrandListService(Context context.Context, RequestContext *app.Request
 	return &GetBrandListService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *GetBrandListService) Do(req *common.PageFilter) (resp *[]*brand.BrandInfo, err error) {
+func (h *GetBrandListService) Do(req *common.PageFilter) (resp *[]*brand.BrandListResp, err error) {
 	pageFilter := rpcCommon.PageFilter{}
 	err = copier.Copy(&pageFilter, req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (h *GetBrandListService) Do(req *common.PageFilter) (resp *[]*brand.BrandIn
 		return nil, err
 	}
 
-	resp = new([]*brand.BrandInfo)
+	resp = new([]*brand.BrandListResp)
 	err = copier.Copy(resp, brandInfos)
 	if err != nil {
 		hlog.Error(err)
