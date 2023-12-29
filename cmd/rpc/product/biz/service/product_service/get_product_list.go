@@ -2,6 +2,7 @@ package product_service
 
 import (
 	"context"
+	"fmt"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
 	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/initializer/db"
@@ -80,6 +81,11 @@ func (s *GetProductListService) Run(req *product.ProductFilter) (resp []*product
 	if err != nil {
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	}
+
+	for i, productInfo := range productInfos {
+		resp[i].Price = fmt.Sprintf("%.2f", productInfo.Price)
+		resp[i].Rating = fmt.Sprintf("%.1f", productInfo.Rating)
 	}
 
 	return resp, nil

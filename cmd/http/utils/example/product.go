@@ -16,7 +16,7 @@ type UpdateProductData struct {
 	Name       string   `json:"name" example:"Product Name"`
 	Brief      string   `json:"brief" example:"Product Description"`
 	Picture    string   `json:"picture" example:"https://example.com/picture.jpg"`
-	Price      float32  `json:"price" example:"99.99"`
+	Price      string   `json:"price" example:"99.99"`
 	Showcase   []string `json:"showcase" example:"https://example.com/showcase1.jpg,https://example.com/showcase2.jpg"`
 }
 

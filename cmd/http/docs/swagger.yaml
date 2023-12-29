@@ -431,8 +431,8 @@ definitions:
         example: https://example.com/picture.jpg
         type: string
       price:
-        example: 99.99
-        type: number
+        example: "99.99"
+        type: string
       showcase:
         example:
         - https://example.com/showcase1.jpg
@@ -2566,7 +2566,12 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/example.UpdateProductData'
+          allOf:
+          - $ref: '#/definitions/example.UpdateProductData'
+          - properties:
+              state:
+                $ref: '#/definitions/example.ProductState'
+            type: object
       produces:
       - application/json
       responses:

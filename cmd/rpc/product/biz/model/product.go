@@ -1,8 +1,11 @@
 package model
 
 import (
+	"git.zqbjj.top/lilhammer111/micro-kit/error/code"
+	"git.zqbjj.top/lilhammer111/micro-kit/error/msg"
 	"git.zqbjj.top/lilhammer111/micro-kit/model"
 	"git.zqbjj.top/pet/services/cmd/rpc/product/biz/model/ctype"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/gorm"
 )
@@ -52,6 +55,15 @@ func (p *Product) AfterCreate(tx *gorm.DB) (err error) {
 	return nil
 }
 
+func (p *Product) AfterUpdate(tx *gorm.DB) (err error) {
+	err = updateCategoryBrandRelation(p, tx)
+	if err != nil {
+		klog.Errorf("failed to update category_brand record: %s", err)
+		return err
+	}
+	return err
+}
+
 // initRating initialize the rating of the new product as 5.0, a max value.
 func initRating(p *Product, tx *gorm.DB) (err error) {
 	rating := ProductRating{
@@ -63,7 +75,7 @@ func initRating(p *Product, tx *gorm.DB) (err error) {
 	err = tx.Create(&rating).Error
 	if err != nil {
 		klog.Errorf("failed to create rating record: %s", err)
-		return err
+		return kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
 	}
 
 	return nil
@@ -74,6 +86,30 @@ func initRating(p *Product, tx *gorm.DB) (err error) {
 // should be inserted into the category_brand table to record it for querying brands with
 // the specific category in the next time.
 func createCategoryBrandRelation(p *Product, tx *gorm.DB) (err error) {
-	// todo
+	categoryBrandInfo := CategoryBrand{
+		Id:         p.ID,
+		CategoryId: p.CategoryId,
+		BrandId:    p.BrandId,
+	}
+	err = tx.Create(&categoryBrandInfo).Error
+	if err != nil {
+		klog.Error(err)
+		return kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+	return nil
+}
+
+func updateCategoryBrandRelation(p *Product, tx *gorm.DB) (err error) {
+
+	cbInfo := CategoryBrand{
+		Id:         p.ID,
+		CategoryId: p.CategoryId,
+		BrandId:    p.BrandId,
+	}
+	err = tx.Updates(&cbInfo).Error
+	if err != nil {
+		klog.Error(err)
+		return kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
 	return nil
 }

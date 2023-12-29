@@ -25,7 +25,6 @@ func NewUpdateProductService(ctx context.Context) *UpdateProductService {
 
 // Run create note info
 func (s *UpdateProductService) Run(req *product.ProductInfo) (resp *product.ProductInfo, err error) {
-	// todo bug of rating_id in product info
 	err = db.GetMysql().First(&model.Product{}, req.Id).Error
 	if err != nil {
 		klog.Error(err)
@@ -33,6 +32,24 @@ func (s *UpdateProductService) Run(req *product.ProductInfo) (resp *product.Prod
 			return nil, kerrors.NewBizStatusError(code.NotFound, "The product you'd like to update is not existed.")
 		}
 		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+
+	err = db.GetMysql().First(&model.Brand{}, req.BrandId).Error
+	if err != nil {
+		klog.Error(err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, kerrors.NewBizStatusError(code.BadRequest, "The product brand is not existed.")
+		}
+		return nil, kerrors.NewBizStatusError(code.ExternalError, msg.InternalError)
+	}
+
+	err = db.GetMysql().First(&model.Category{}, req.CategoryId).Error
+	if err != nil {
+		klog.Error(err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, kerrors.NewBizStatusError(code.BadRequest, "The product category is not existed.")
+		}
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
 
 	productInfo := model.Product{}

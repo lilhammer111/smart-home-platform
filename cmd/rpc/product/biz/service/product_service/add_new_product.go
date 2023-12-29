@@ -60,9 +60,11 @@ func (s *AddNewProductService) Run(req *product.AddProductReq) (resp *product.Pr
 	state := parseStateToInt(&req.State.OnSale, &req.State.IsNew, &req.State.IsHot, &req.State.IsFreeShipping, &req.State.IsRecommended)
 	productInfo.State = state
 
-	err = db.GetMysql().Create(&productInfo).Error
+	tx := db.GetMysql().Begin()
+	err = tx.Create(&productInfo).Error
 	if err != nil {
 		klog.Error(err)
+		tx.Rollback()
 		if isConflict, kerr := utils.CheckResourceConflict(err, "Product name conflicts."); isConflict {
 			return nil, kerr
 		}
@@ -72,6 +74,7 @@ func (s *AddNewProductService) Run(req *product.AddProductReq) (resp *product.Pr
 	resp = &product.ProductInfo{}
 	err = copier.Copy(resp, req)
 	if err != nil {
+		tx.Rollback()
 		klog.Error(err)
 		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
 	}
@@ -79,5 +82,21 @@ func (s *AddNewProductService) Run(req *product.AddProductReq) (resp *product.Pr
 	price := fmt.Sprintf("%.2f", productInfo.Price)
 	resp.Price = &price
 
+	// create model
+	modelInfos := make([]model.Model, 0)
+
+	for _, modelName := range req.ModelList {
+		modelInfos = append(modelInfos, model.Model{
+			ProductId: productInfo.ID,
+			Name:      modelName,
+		})
+	}
+	err = tx.Create(&modelInfos).Error
+	if err != nil {
+		klog.Error(err)
+		tx.Rollback()
+		return nil, kerrors.NewBizStatusError(code.InternalError, msg.InternalError)
+	}
+	tx.Commit()
 	return resp, nil
 }

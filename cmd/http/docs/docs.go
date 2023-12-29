@@ -3316,7 +3316,19 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/example.UpdateProductData"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/example.UpdateProductData"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "state": {
+                                            "$ref": "#/definitions/example.ProductState"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 ],
@@ -4323,8 +4335,8 @@ const docTemplate = `{
                     "example": "https://example.com/picture.jpg"
                 },
                 "price": {
-                    "type": "number",
-                    "example": 99.99
+                    "type": "string",
+                    "example": "99.99"
                 },
                 "showcase": {
                     "type": "array",

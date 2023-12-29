@@ -161,7 +161,7 @@ func DeleteProduct(ctx context.Context, c *app.RequestContext) {
 // @Access		json
 // @Produce		json
 // @Param        Authorization  header    string  true  "Bearer User's access token"
-// @Param		product	body	example.UpdateProductData	true	"product data"
+// @Param		product	body	example.UpdateProductData{state=example.ProductState}	true	"product data"
 // @Success		200				{object}		example.RespOk{data=example.UpdateProductData} "success"
 // @Failure		400 			{object}		example.RespBadRequest				"bad request"
 // @Failure     404  			{object}		example.RespNotFound				"not found"
