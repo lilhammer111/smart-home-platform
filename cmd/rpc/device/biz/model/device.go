@@ -17,17 +17,13 @@ const (
 
 type Device struct {
 	model.BaseModel
-	OwnerId    int32 `gorm:"type:int unsigned;index;not null" json:"owner"`
-	DeviceType int32 `gorm:"type:smallint unsigned;not null" json:"device_type"`
-
-	SerialNo *string `gorm:"type:varchar(255)" json:"serial_no"`
-	Name     *string `gorm:"type:varchar(50);index" json:"name"`
-	//Manufacturer    string `gorm:"type:varchar(50)" json:"manufacturer"`
-	Desc            *string     `gorm:"type:varchar(255);comment:description" json:"desc"`
-	State           DeviceState `gorm:"type:tinyint unsigned;not null" json:"status"`
-	LocationId      *int16      `gorm:"type:smallint unsigned" json:"location_id"`
-	HardwareVersion *string     `gorm:"type:varchar(50)" json:"hardware_version"`
-	SoftwareVersion *string     `gorm:"type:varchar(50)" json:"software_version"`
+	OwnerId         int32       `gorm:"type:int unsigned;index;not null" json:"owner"`
+	ProductId       int32       `gorm:"type:int unsigned;not null" json:"product_id"`
+	LocationId      int8        `gorm:"type:tinyint unsigned;not null" json:"location_id"`
+	State           DeviceState `gorm:"type:tinyint unsigned;not null" json:"State"`
+	Desc            string      `gorm:"type:varchar(255);not null;default:'';comment:description" json:"desc"`
+	HardwareVersion string      `gorm:"type:varchar(50);not null" json:"hardware_version"`
+	SoftwareVersion string      `gorm:"type:varchar(50);not null" json:"software_version"`
 }
 
 type Location struct {

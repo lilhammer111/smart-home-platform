@@ -60,3 +60,6 @@ service MicroDevice {
     common.Empty DeleteAlert(1: RpcDeleteAlertReq req)
 }
 
+service DeviceService {
+
+}
